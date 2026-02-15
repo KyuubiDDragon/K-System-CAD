@@ -16,17 +16,17 @@ services:
     ports:
       - "3307:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-CHANGE_ME}
       MYSQL_DATABASE: ksystems
       MYSQL_USER: ksystems
-      MYSQL_PASSWORD: ksystems_password
+      MYSQL_PASSWORD: ${DB_PASSWORD:-CHANGE_ME}
     volumes:
       - db_data:/var/lib/mysql
       - ./database/database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     networks:
       - internal
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-CHANGE_ME}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -49,13 +49,13 @@ services:
       DB_PORT: 3306
       DB_DATABASE: ksystems
       DB_USERNAME: ksystems
-      DB_PASSWORD: ksystems_password
+      DB_PASSWORD: ${DB_PASSWORD:-CHANGE_ME}
       APP_ENV: development
       SOCKET_SERVER_URL: http://socket-server:3001
-      SOCKET_API_KEY: dev_socket_api_key
+      SOCKET_API_KEY: ${SOCKET_API_KEY:-CHANGE_ME}
       APP_URL_PROD: http://localhost:8080
       FRONTEND_URL_PROD: http://localhost:5173
-      JWT_SECRET_KEY: dev_jwt_secret_key_change_me_in_production
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-CHANGE_ME}
       COOKIE_DOMAIN: localhost
       COOKIE_SECURE: "false"
       COOKIE_SAMESITE: "Lax"
@@ -78,8 +78,8 @@ services:
     environment:
       PORT: 3001
       NODE_ENV: development
-      API_KEY: dev_socket_api_key
-      JWT_SECRET: dev_jwt_secret_key_change_me_in_production
+      API_KEY: ${SOCKET_API_KEY:-CHANGE_ME}
+      JWT_SECRET: ${JWT_SECRET_KEY:-CHANGE_ME}
       CORS_ORIGIN: http://localhost:5173
       PHP_API_URL: http://backend:80
       DEBUG: "true"

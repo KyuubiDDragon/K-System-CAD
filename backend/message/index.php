@@ -428,7 +428,7 @@ function getGroupMembers(PDO $pdo, string $authority, int $group_id): array {
 function sendWebSocketMessage(string $title, int $sender_id, string $sender_name, int $recipient_id): void {
     try {
         // API-Schlüssel aus der Umgebung oder direkt angeben
-        $apiKey = getenv('SOCKET_API_KEY') ?: '0j8BD6CY2k7nYtWgQ9PhKO8HxbQJFiD5UXieXmvRkLk=';
+        $apiKey = getenv('SOCKET_API_KEY') ?: ($GLOBALS['config']['socket_api_key'] ?? '');
         
         // Socket.io-Server URL aus der Umgebung oder Standardwert
         $socketUrl = getenv('SOCKET_SERVER_URL') ?: 'http://localhost:3001';

@@ -6,10 +6,10 @@ services:
     image: mysql:8.0
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-ksystems}
       MYSQL_USER: ${MYSQL_USER:-ksystems}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ksystems_password}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
     volumes:
       - db_data:/var/lib/mysql
     networks:
@@ -30,14 +30,14 @@ services:
       DB_PORT: 3306
       DB_DATABASE: ${MYSQL_DATABASE:-ksystems}
       DB_USERNAME: ${MYSQL_USER:-ksystems}
-      DB_PASSWORD: ${MYSQL_PASSWORD:-ksystems_password}
+      DB_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
       APP_ENV: ${APP_ENV:-production}
       NODE_ENV: ${NODE_ENV:-production}
       SOCKET_SERVER_URL: http://socket-server:3001
-      SOCKET_API_KEY: ${SOCKET_API_KEY:-socket_api_key}
+      SOCKET_API_KEY: ${SOCKET_API_KEY:?SOCKET_API_KEY must be set}
       APP_URL_PROD: https://${DOMAIN:-localhost}/api
       FRONTEND_URL_PROD: https://${DOMAIN:-localhost}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-jwt_secret_key}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
     ports:
       - "${BACKEND_HOST_PORT:-9080}:80"
     networks:
@@ -57,8 +57,8 @@ services:
     environment:
       PORT: 3001
       NODE_ENV: ${NODE_ENV:-production}
-      API_KEY: ${SOCKET_API_KEY:-socket_api_key}
-      JWT_SECRET: ${JWT_SECRET_KEY:-jwt_secret_key}
+      API_KEY: ${SOCKET_API_KEY:?SOCKET_API_KEY must be set}
+      JWT_SECRET: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
       CORS_ORIGIN: https://${DOMAIN:-localhost}
       PHP_API_URL: http://backend:80
     ports:

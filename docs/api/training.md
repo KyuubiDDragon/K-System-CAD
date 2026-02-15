@@ -220,7 +220,7 @@ Retrieves companies for external training provider information.
       "address": "123 Education St",
       "city": "Boston",
       "phone": "+1-555-0100",
-      "email": "info@pti.com"
+      "email": "info@example.com"
     }
   ]
 }

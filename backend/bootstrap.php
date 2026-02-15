@@ -79,15 +79,15 @@ $dbHost = getEnvVar('DB_HOST', 'db'); // Default: 'db' (Docker Service Name)
 $dbPort = getEnvVar('DB_PORT', '3306');
 $dbName = getEnvVar('DB_DATABASE', 'ksystems');
 $dbUser = getEnvVar('DB_USERNAME', 'ksystems');
-$dbPass = getEnvVar('DB_PASSWORD', 'ksystems_password');
+$dbPass = getEnvVar('DB_PASSWORD');
 
 // Frontend URLs für CORS
 $frontendUrlDev = getEnvVar('FRONTEND_URL_DEV');
 $frontendUrlProd = getEnvVar('FRONTEND_URL_PROD');
 
 // Weitere globale Konfigurationen
-$jwtSecret = getEnvVar('JWT_SECRET_KEY', 'default_jwt_secret');
-$socketApiKey = getEnvVar('SOCKET_API_KEY', 'default_socket_api_key');
+$jwtSecret = getEnvVar('JWT_SECRET_KEY');
+$socketApiKey = getEnvVar('SOCKET_API_KEY');
 // ... lies hier alle weiteren benötigten Umgebungsvariablen aus ...
 
 

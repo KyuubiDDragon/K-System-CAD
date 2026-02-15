@@ -5,11 +5,11 @@
  */
 
 // Database connection parameters - update these as needed
-$dbHost = '127.0.0.1';
-$dbPort = 3306;
-$dbName = 'ksystems';
-$dbUser = 'root';
-$dbPass = '';
+$dbHost = getenv('DB_HOST') ?: '127.0.0.1';
+$dbPort = getenv('DB_PORT') ?: 3306;
+$dbName = getenv('DB_DATABASE') ?: 'ksystems';
+$dbUser = getenv('DB_USERNAME') ?: 'root';
+$dbPass = getenv('DB_PASSWORD') ?: '';
 
 // Data Source Name (DSN) for PDO
 $dsn = "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4";
