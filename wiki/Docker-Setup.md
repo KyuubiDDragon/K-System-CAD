@@ -47,8 +47,8 @@ docker-compose -f docker-compose.dev.yml up -d --build
 | Port | 3307 |
 | Database | ksystems |
 | User | ksystems |
-| Password | ksystems_password |
-| Root Password | rootpassword |
+| Password | *(set in your `.env` file)* |
+| Root Password | *(set in your `.env` file)* |
 
 ---
 
@@ -130,7 +130,7 @@ docker-compose -f docker-compose.dev.yml exec backend bash
 docker-compose -f docker-compose.dev.yml exec socket-server sh
 
 # Database
-docker-compose -f docker-compose.dev.yml exec db mysql -u root -prootpassword ksystems
+docker-compose -f docker-compose.dev.yml exec db mysql -u root -p'$DB_ROOT_PASSWORD' ksystems
 ```
 
 ## Health Checks

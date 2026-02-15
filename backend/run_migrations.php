@@ -234,7 +234,7 @@ try {
         $host = $_ENV['DB_HOST'] ?? 'db';
         $dbname = $_ENV['DB_DATABASE'] ?? 'ksystems';
         $username = $_ENV['DB_USERNAME'] ?? 'root';
-        $password = $_ENV['DB_PASSWORD'] ?? 'rootpassword';
+        $password = $_ENV['DB_PASSWORD'] ?? '';
         
         // Wait for database to be ready (for Docker)
         $maxAttempts = 30;

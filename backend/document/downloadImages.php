@@ -18,7 +18,7 @@ chdir(__DIR__);
 
 // Error Reporting (Set high for CLI scripts)
 error_reporting(E_ALL);
-ini_set('display_errors', '1'); // Display errors to console
+ini_set('display_errors', php_sapi_name() === 'cli' ? '1' : '0'); // Display errors only in CLI
 ini_set('log_errors', '1'); // Also log errors (configure error_log in php.ini)
 
 // --- Dependencies & DB Connection ---

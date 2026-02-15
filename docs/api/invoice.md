@@ -298,8 +298,8 @@ Retrieves detailed data for a specific company.
     "country": "USA",
     "tax_id": "12-3456789",
     "phone": "+1-212-555-0100",
-    "email": "billing@acme.com",
-    "website": "www.acme.com"
+    "email": "billing@example.com",
+    "website": "www.example.com"
   }
 }
 ```

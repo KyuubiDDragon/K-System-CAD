@@ -12,7 +12,7 @@ wait_for_mysql() {
     while [ $attempt -lt $max_attempts ]; do
         if php -r "
             try {
-                \$pdo = new PDO('mysql:host=${DB_HOST:-db};port=${DB_PORT:-3306}', '${DB_USERNAME:-root}', '${DB_PASSWORD:-rootpassword}');
+                \$pdo = new PDO('mysql:host=${DB_HOST:-db};port=${DB_PORT:-3306}', '${DB_USERNAME:-root}', '${DB_PASSWORD}');
                 echo 'MySQL is ready';
                 exit(0);
             } catch (Exception \$e) {

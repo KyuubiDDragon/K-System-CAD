@@ -118,7 +118,7 @@ df -h
 4. **Verify database connectivity from the backend:**
    ```bash
    docker compose exec backend php -r "
-   \$conn = new mysqli('db', 'ksystems', 'ksystems_password', 'ksystems', 3306);
+   \$conn = new mysqli('db', 'ksystems', '\$YOUR_DB_PASSWORD', 'ksystems', 3306);
    echo \$conn->connect_error ? 'FAILED: '.\$conn->connect_error : 'OK';
    echo PHP_EOL;
    "
@@ -462,11 +462,11 @@ Default development credentials:
 - Host: `localhost`
 - Port: `3307`
 - User: `ksystems`
-- Password: `ksystems_password`
+- Password: *(set in your `.env` file)*
 - Database: `ksystems`
 
 ```bash
-mysql -h 127.0.0.1 -P 3307 -u ksystems -pksystems_password ksystems
+mysql -h 127.0.0.1 -P 3307 -u ksystems -p'$YOUR_DB_PASSWORD' ksystems
 ```
 
 ## Getting More Help
