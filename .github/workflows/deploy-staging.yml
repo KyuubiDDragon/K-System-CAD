@@ -1,0 +1,80 @@
+# .github/workflows/deploy-staging.yml
+# Workflow zum Deployment in der Staging Umgebung
+
+name: Deploy to Staging
+
+on:
+  workflow_run:
+    workflows: ["Docker Build and Push"]
+    branches: [develop]
+    types: [completed]
+  workflow_dispatch: # Manueller Trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Repository- und Owner-Namen in Kleinbuchstaben wandeln
+      - name: Set lowercase owner & repo names
+        shell: bash
+        run: |
+          LOWERCASE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          LOWERCASE_REPO=$(echo "${{ github.event.repository.name }}"   | tr '[:upper:]' '[:lower:]')
+          echo "LOWERCASE_OWNER=${LOWERCASE_OWNER}" >> $GITHUB_ENV
+          echo "LOWERCASE_REPO=${LOWERCASE_REPO}"     >> $GITHUB_ENV
+          
+          # Version für Staging ist immer "develop"
+          echo "VERSION=develop" >> $GITHUB_ENV
+
+      # SSH auf den Staging Server und Deployment ausführen
+      - name: Deploy to staging server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USERNAME }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_SSH_PORT }}
+          script: |
+            cd ${{ secrets.STAGING_PROJECT_PATH }}
+            
+            # Login to GitHub Container Registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Pull develop images
+            docker pull ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-backend:develop
+            docker pull ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-socket-server:develop
+            docker pull ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-frontend:develop
+            
+            # Update docker-compose.yml to use the pulled images
+            sed -i "s|build: *\.\/backend.*|image: ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-backend:develop|g" docker-compose.yml
+            sed -i "s|build: *\.\/socket-server.*|image: ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-socket-server:develop|g" docker-compose.yml
+            sed -i "s|build: *\.\/frontend.*|image: ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-frontend:develop|g" docker-compose.yml
+            
+            # Create/update .env file with staging secrets
+            cat > .env << EOL
+            CADDY_DOMAIN=${{ secrets.STAGING_DOMAIN }}
+            MYSQL_ROOT_PASSWORD=${{ secrets.STAGING_MYSQL_ROOT_PASSWORD }}
+            MYSQL_DATABASE=ksystems
+            MYSQL_USER=ksystems
+            MYSQL_PASSWORD=${{ secrets.STAGING_MYSQL_PASSWORD }}
+            FRONTEND_HOST_PORT=5173
+            BACKEND_HOST_PORT=8080
+            SOCKET_HOST_PORT=3001
+            SOCKET_API_KEY=${{ secrets.STAGING_SOCKET_API_KEY }}
+            JWT_SECRET_KEY=${{ secrets.STAGING_JWT_SECRET_KEY }}
+            APP_ENV=staging
+            NODE_ENV=development
+            EOL
+            
+            # Restart all services
+            docker-compose down
+            docker-compose up -d
+            
+            # Cleanup old images
+            docker image prune -f 

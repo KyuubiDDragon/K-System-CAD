@@ -1,0 +1,100 @@
+/* Contact Form Configuration Styling */
+.contact-form-config {
+    background-color: rgba(30, 41, 59, 0.4);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-form-config h4 {
+    display: flex;
+    align-items: center;
+    color: #e2e8f0;
+    border-bottom: 1px solid #4b5563;
+    padding-bottom: 10px;
+}
+
+.contact-form-config h4 i {
+    margin-right: 8px;
+    color: #4caf50;
+    font-size: 1.3em;
+}
+
+.contact-fields-list {
+    max-width: 100%;
+}
+
+.contact-field-item {
+    background-color: #1e293b;
+    border: 1px solid #374151;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contact-field-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.contact-field-item .card-header {
+    background-color: #273549;
+    border-bottom: 1px solid #374151;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    border-radius: 8px 8px 0 0;
+}
+
+.contact-field-item .drag-handle {
+    cursor: grab;
+    color: #9ca3af;
+    font-size: 1.1em;
+    padding: 4px;
+}
+
+.contact-field-item .card-body {
+    padding: 16px;
+}
+
+.field-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.field-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.field-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: #9ca3af;
+}
+
+.field-icon i {
+    font-size: 1.1em;
+}
+
+.contact-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #14b8a6;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    margin-left: 6px;
+}
+
+.contact-indicator i {
+    font-size: 12px;
+} 

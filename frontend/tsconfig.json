@@ -1,0 +1,27 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ],
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2022",
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    "ignoreDeprecations": "5.0",
+    "strict": false,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "plugins": [
+      {
+        "name": "@vue/typescript-plugin"
+      }
+    ]
+  }
+}

@@ -1,0 +1,570 @@
+# Profil- und Kontoeinstellungen
+
+Benutzerprofilverwaltung und Kontoeinstellungen zur Personalisierung Ihrer K-Systems-Erfahrung, Verwaltung von Benachrichtigungen, Sicherheit und Präferenzen.
+
+## Überblick
+
+Funktionen:
+- Persönliche Informationen
+- Profilbild
+- Passwortverwaltung
+- Zwei-Faktor-Authentifizierung
+- Benachrichtigungspräferenzen
+- Sprache und Zeitzone
+- Theme-Anpassung
+- Datenschutzeinstellungen
+- Verbundene Konten
+- Sitzungsverwaltung
+- E-Mail-Präferenzen
+- Anzeigeeinstellungen
+
+## Anforderungen
+
+**Erforderliche Berechtigung:** `READ_ACCOUNT` (alle Benutzer haben diese)
+
+## Profileinstellungen öffnen
+
+**Desktop:** Klicken Sie auf Ihr Profilavatar → **Profileinstellungen**
+**Menü:** Startmenü → Einstellungen → Profil
+**Schnellzugriff:** Obere rechte Ecke → Profilsymbol → Einstellungen
+**Route:** `/profile`
+
+## Profilinformationen
+
+### Grundinformationen
+
+**Profil anzeigen/bearbeiten:**
+1. Navigieren Sie zu Profileinstellungen
+2. Tab **Grundinfo**
+
+**Bearbeitbare Felder:**
+- **Profilbild**: Hochladen oder ändern
+- **Vorname**: Vorname
+- **Nachname**: Nachname
+- **Anzeigename**: Wie der Name erscheint
+- **E-Mail**: Primäre E-Mail-Adresse
+- **Telefon**: Kontaktnummer
+- **Berufsbezeichnung**: Ihre Position
+- **Abteilung**: Ihre Abteilung
+- **Bio**: Kurze Beschreibung (optional)
+- **Standort**: Arbeitsstandort
+
+**Änderungen speichern:**
+Klicken Sie nach der Bearbeitung auf **Speichern**
+
+### Profilbild
+
+**Bild hochladen:**
+1. Profileinstellungen → Bereich **Bild**
+2. Klicken Sie auf **Bild ändern**
+3. Optionen:
+   - **Neues hochladen**: Bilddatei auswählen
+     - JPG, PNG, GIF
+     - Max 5MB
+     - Quadratisch empfohlen (500x500px)
+   - **Foto aufnehmen**: Webcam verwenden (falls verfügbar)
+   - **Bild entfernen**: Aktuelles Bild löschen
+4. Bild zuschneiden (ziehen zum Positionieren, zoomen)
+5. Klicken Sie auf **Speichern**
+
+**Richtlinien für Bilder:**
+- Professionelles Erscheinungsbild
+- Klar, gut beleuchtet
+- Neutraler Hintergrund
+- Gesicht deutlich sichtbar
+- Aktuelles Foto
+
+**Wo das Bild erscheint:**
+- Obere Navigationsleiste
+- Kommentare und Notizen
+- Berichte (Autor)
+- Nachrichten
+- Kalenderereignisse
+- Benutzerlisten
+
+## Kontosicherheit
+
+### Passwort ändern
+
+**Passwort aktualisieren:**
+1. Profileinstellungen → Tab **Sicherheit**
+2. Klicken Sie auf **Passwort ändern**
+3. Eingeben:
+   - **Aktuelles Passwort**: Zur Verifizierung
+   - **Neues Passwort**: Neues Passwort
+   - **Neues Passwort bestätigen**: Neues Passwort wiederholen
+4. Klicken Sie auf **Passwort aktualisieren**
+
+**Passwortanforderungen:**
+- Mindestens 8 Zeichen
+- Mindestens ein Großbuchstabe
+- Mindestens ein Kleinbuchstabe
+- Mindestens eine Zahl
+- Mindestens ein Sonderzeichen (@$!%*?&)
+- Darf nicht mit den letzten 3 Passwörtern übereinstimmen
+- Darf keinen Benutzernamen enthalten
+
+**Passwortstärke:**
+- Schwach: Nur Grundanforderungen
+- Mittel: 10+ Zeichen
+- Stark: 12+ Zeichen mit Vielfalt
+
+### Zwei-Faktor-Authentifizierung (2FA)
+
+**2FA aktivieren:**
+1. Sicherheitstab → **Zwei-Faktor-Authentifizierung**
+2. Klicken Sie auf **2FA aktivieren**
+3. Methode wählen:
+   - **Authenticator-App** (empfohlen):
+     - Google Authenticator
+     - Microsoft Authenticator
+     - Authy
+   - **SMS**: Textcode
+   - **E-Mail**: E-Mail-Codes
+4. Einrichtungsassistent folgen:
+   - QR-Code scannen (Authenticator-App)
+   - Verifizierungscode eingeben
+   - Backup-Codes speichern
+5. 2FA aktiviert
+
+**Backup-Codes:**
+- Herunterladen und sicher aufbewahren
+- Verwenden, wenn Gerät verloren
+- Jeder Code einmalig verwendbar
+- Jederzeit neue Codes generieren
+
+**2FA deaktivieren:**
+1. Sicherheit → 2FA-Bereich
+2. Klicken Sie auf **2FA deaktivieren**
+3. Aktuelles Passwort eingeben
+4. Bestätigen
+
+### Aktive Sitzungen
+
+**Sitzungen anzeigen:**
+1. Sicherheitstab → **Aktive Sitzungen**
+2. Alle angemeldeten Geräte sehen:
+   - Gerätetyp (Desktop, Mobil)
+   - Browser
+   - IP-Adresse
+   - Standort (ungefähr)
+   - Letzte Aktivität
+   - Aktuelle Sitzung (markiert)
+
+**Sitzungsaktionen:**
+- **Beenden**: Gerät abmelden
+- **Alle anderen beenden**: Alle außer aktueller abmelden
+- **Aktivität überprüfen**: Sitzungsdetails ansehen
+
+**Wann beenden:**
+- Verlorenes Gerät
+- Verdächtige Aktivität
+- Gemeinsam genutzter Computer
+- Nach Verwendung öffentlicher Computer
+
+## Benachrichtigungseinstellungen
+
+### Benachrichtigungspräferenzen
+
+**Benachrichtigungen konfigurieren:**
+1. Profileinstellungen → Tab **Benachrichtigungen**
+2. Pro Funktion konfigurieren:
+
+**Kalenderbenachrichtigungen:**
+- Ereigniserinnerungen
+- Ereigniseinladungen
+- Ereignisänderungen
+- Ereignisabsagen
+- Zustellmethode: E-Mail, Push, In-App
+
+**Nachrichten:**
+- Neue Nachrichten
+- @Erwähnungen
+- Gruppennachrichten
+- Zustellmethode: E-Mail, Push, In-App
+
+**Berichte:**
+- Bericht zugewiesen
+- Bericht aktualisiert
+- Berichtskommentare
+- Bericht geteilt
+- Zustellmethode: E-Mail, In-App
+
+**Dokumente:**
+- Dokument geteilt
+- Dokument aktualisiert
+- Dokumentkommentare
+- Dokument läuft ab
+- Zustellmethode: E-Mail, In-App
+
+**Schulung:**
+- Schulung zugewiesen
+- Schulung fällig
+- Schulung abgeschlossen
+- Zertifikat läuft ab
+- Zustellmethode: E-Mail, In-App
+
+**Urlaub/Ferien:**
+- Urlaub genehmigt/abgelehnt
+- Urlaubserinnerung
+- Teammitglied Urlaub
+- Zustellmethode: E-Mail, In-App
+
+**Allgemeines System:**
+- Systemankündigungen
+- Wartungshinweise
+- Sicherheitswarnungen
+- Zustellmethode: E-Mail, In-App
+
+### Benachrichtigungszustellung
+
+**Zustellmethoden:**
+- **E-Mail**: An E-Mail-Adresse senden
+- **In-App**: Benachrichtigungscenter
+- **Push**: Mobile/Desktop-Push-Benachrichtigungen
+- **SMS**: Textnachricht (falls aktiviert)
+
+**E-Mail-Zusammenfassung:**
+Anstelle einzelner E-Mails:
+- **Sofort**: Jede Benachrichtigung
+- **Stündlich**: Stündlich gebündelt
+- **Täglich**: Einmal pro Tag
+- **Wöchentlich**: Wöchentliche Zusammenfassung
+
+**Ruhezeiten:**
+- Zeitplan für keine Benachrichtigungen festlegen
+- Beispiel: 22:00 - 7:00 Uhr
+- Notfallbenachrichtigungen kommen trotzdem durch
+
+### Mobile Push-Benachrichtigungen
+
+**Push aktivieren:**
+1. K-Systems Mobile App installieren
+2. Benachrichtigungsberechtigung erteilen
+3. Benachrichtigungen synchronisieren automatisch
+4. In Profil → Benachrichtigungen konfigurieren
+
+**Push-Einstellungen:**
+- Pro Benachrichtigungstyp aktivieren/deaktivieren
+- Ton ein/aus
+- Vibration ein/aus
+- Vorschau in Benachrichtigung anzeigen
+- Badge-Zähler
+
+## Anzeigeeinstellungen
+
+### Sprache
+
+**Sprache ändern:**
+1. Profileinstellungen → Tab **Präferenzen**
+2. Dropdown **Sprache**
+3. Sprache auswählen:
+   - English (en)
+   - Deutsch (de)
+   - Español (es)
+   - Français (fr)
+   - Benutzerdefinierte Sprachen (falls konfiguriert)
+4. Speichern
+5. Oberfläche aktualisiert sich sofort
+
+### Zeitzone
+
+**Zeitzone einstellen:**
+1. Präferenzen-Tab → **Zeitzone**
+2. Ihre Zeitzone auswählen
+3. Alle Daten/Zeiten werden in Ihrer Zeitzone angezeigt
+4. Betrifft:
+   - Kalenderereignisse
+   - Berichtszeitstempel
+   - Nachrichtenzeiten
+   - Benachrichtigungen
+
+**Auto-Erkennung:**
+- Option zur automatischen Erkennung vom System
+- Aktualisiert sich bei Reisen
+
+### Datum/Uhrzeit-Format
+
+**Format-Präferenzen:**
+- **Datumsformat**:
+  - MM/TT/JJJJ (US)
+  - TT/MM/JJJJ (Europa)
+  - JJJJ-MM-TT (ISO)
+- **Zeitformat**:
+  - 12-Stunden (AM/PM)
+  - 24-Stunden
+- **Erster Tag der Woche**:
+  - Sonntag
+  - Montag
+
+### Theme
+
+**Theme wählen:**
+1. Präferenzen → **Theme**
+2. Auswählen:
+   - **Hell**: Heller Hintergrund, dunkler Text
+   - **Dunkel**: Dunkler Hintergrund, heller Text
+   - **Auto**: Systemeinstellung übernehmen
+   - **Benutzerdefiniert**: Geplant (hell tagsüber, dunkel nachts)
+3. Änderungen werden sofort angewendet
+
+**Benutzerdefinierter Zeitplan:**
+- Hellmodus: 6:00 - 18:00 Uhr
+- Dunkelmodus: 18:00 - 6:00 Uhr
+- Zeiten anpassen
+
+### Desktop-Präferenzen
+
+**Desktop-Modus-Einstellungen:**
+- **Standardansicht**: Desktop oder normal
+- **Desktop-Hintergrund**: Bild oder Farbe
+- **Symbolgröße**: Klein, Mittel, Groß
+- **Desktop-Symbole anzeigen**: Ja/Nein
+- **Taskleisten-Position**: Unten, Oben (falls aktiviert)
+
+## Datenschutzeinstellungen
+
+### Profilsichtbarkeit
+
+**Wer kann sehen:**
+1. Profileinstellungen → Tab **Datenschutz**
+2. Sichtbarkeit konfigurieren:
+
+**Profilinformationen:**
+- **Jeder**: Alle Benutzer
+- **Meine Abteilung**: Nur Abteilung
+- **Mein Team**: Direktes Team
+- **Privat**: Nur ich
+
+**Kontaktinformationen:**
+- Öffentlich: Jeder kann sehen
+- Eingeschränkt: Nur Abteilung
+- Privat: Verborgen
+
+**Aktivitätsstatus:**
+- Online-Status anzeigen: Ja/Nein
+- Zuletzt aktiv anzeigen: Ja/Nein
+- Tippindikator anzeigen: Ja/Nein
+
+### Datenschutz
+
+**Datenschutzkontrollen:**
+- **Suchsichtbarkeit**: Können andere Sie in der Suche finden
+- **Profilvorschläge**: Ihr Profil anderen vorschlagen
+- **Aktivitätsprotokollierung**: Meine Aktivität protokollieren (erforderlich für Audit)
+- **Nutzungsanalyse**: Anonyme Nutzungsdaten teilen
+
+### Datenexport
+
+**Ihre Daten exportieren:**
+1. Datenschutztab → **Datenexport**
+2. Datenexport anfordern
+3. Auswählen, was exportiert werden soll:
+   - Profilinformationen
+   - Nachrichten
+   - Erstellte Berichte
+   - Dokumente
+   - Kalenderereignisse
+   - Aktivitätsverlauf
+4. Klicken Sie auf **Export anfordern**
+5. Download-Link per E-Mail erhalten (innerhalb von 24 Stunden)
+6. ZIP-Datei herunterladen
+
+**Export-Inhalte:**
+- JSON-Format (maschinenlesbar)
+- CSV für tabellarische Daten
+- Originaldateien (Dokumente, Bilder)
+
+## E-Mail-Präferenzen
+
+### E-Mail-Adresse
+
+**Primäre E-Mail:**
+- Wird für Login verwendet
+- Empfängt alle Benachrichtigungen
+- Kann nicht geändert werden (Admin kontaktieren)
+
+**Alternative E-Mail:**
+- Backup-E-Mail
+- Kann Benachrichtigungen empfangen
+- Wird für Kontowiederherstellung verwendet
+
+**E-Mail verifizieren:**
+- Verifizierungslink in E-Mail klicken
+- Erforderlich für einige Funktionen
+
+### E-Mail-Abonnements
+
+**Abonnements verwalten:**
+1. Profileinstellungen → Tab **E-Mail**
+2. Abonnieren/Abbestellen:
+   - Wöchentliche Zusammenfassung
+   - Monatlicher Newsletter
+   - Produktaktualisierungen
+   - Schulungsmöglichkeiten
+   - Systemankündigungen
+
+**Alle abbestellen:**
+- Nur kritische E-Mails behalten
+- Erhalten Sie weiterhin kontobezogene E-Mails
+- Jederzeit wieder anmelden
+
+## Verbundene Konten
+
+### Drittanbieter-Integrationen
+
+**Konten verbinden:**
+1. Profileinstellungen → Tab **Verbundene Konten**
+2. Verfügbare Verbindungen:
+
+**Google:**
+- Kalendersynchronisation
+- E-Mail-Integration
+- Single Sign-On (SSO)
+
+**Microsoft:**
+- Outlook-Kalender
+- Teams-Integration
+- Azure AD SSO
+
+**Andere Dienste:**
+- Zoom (Videomeetings)
+- Dropbox (Dateispeicher)
+- Slack (Benachrichtigungen)
+
+**Konto verbinden:**
+1. Klicken Sie auf **Verbinden** neben Dienst
+2. Zugriff autorisieren
+3. Berechtigungen bestätigen
+4. Konto verbunden
+
+**Trennen:**
+- Klicken Sie auf **Trennen**
+- Widerruft Zugriff
+- Daten in K-Systems bleiben erhalten
+
+## Erweiterte Einstellungen
+
+### API-Zugriff
+
+**Persönliches API-Token:**
+1. Profileinstellungen → Tab **Erweitert**
+2. Bereich **API-Zugriff**
+3. Klicken Sie auf **Token generieren**
+4. Token kopieren (nur einmal angezeigt)
+5. In API-Aufrufen verwenden
+6. Läuft in 90 Tagen ab (oder benutzerdefiniert)
+
+**Token-Verwaltung:**
+- Aktive Token anzeigen
+- Token widerrufen
+- Ablaufdatum festlegen
+- Bei Kompromittierung neu generieren
+
+### Entwickleroptionen
+
+**Für Entwickler:**
+- Debug-Modus umschalten
+- Element-IDs anzeigen
+- API-Anforderungsprotokollierung
+- Leistungsmetriken
+
+## Kontoverwaltung
+
+### Kontostatus
+
+**Konto anzeigen:**
+- Erstellungsdatum des Kontos
+- Letzter Login
+- Gesamtanzahl Logins
+- Verwendeter Speicher
+- Lizenztyp
+- Kontostatus
+
+### Konto deaktivieren
+
+**Vorübergehend deaktivieren:**
+1. Administrator kontaktieren
+2. Konto deaktiviert
+3. Daten bewahrt
+4. Kann jederzeit reaktiviert werden
+
+**Löschung anfordern:**
+1. Erweitert → **Konto löschen**
+2. Permanente Löschung anfordern
+3. Admin-Prüfung erforderlich
+4. Daten nach 30 Tagen gelöscht
+5. Kann nicht rückgängig gemacht werden
+
+## Tastenkombinationen
+
+**Profileinstellungen:**
+- **Strg+,**: Profileinstellungen öffnen
+- **Strg+S**: Änderungen speichern
+- **Esc**: Einstellungen schließen
+- **Tab**: Felder navigieren
+
+**Schnellaktionen:**
+- **Alt+P**: Bild hochladen
+- **Alt+N**: Benachrichtigungen
+- **Alt+S**: Sicherheitseinstellungen
+
+## Best Practices
+
+**Tun Sie:**
+✅ Informationen aktuell halten
+✅ Starkes Passwort verwenden
+✅ 2FA aktivieren
+✅ Aktive Sitzungen regelmäßig überprüfen
+✅ Benachrichtigungen angemessen konfigurieren
+✅ Profilbild aktualisieren
+✅ Korrekte Zeitzone einstellen
+✅ Datenschutzeinstellungen überprüfen
+
+**Nicht tun:**
+❌ Passwort teilen
+❌ Schwaches Passwort verwenden
+❌ Sicherheitswarnungen ignorieren
+❌ Sitzungen auf gemeinsamen Computern offen lassen
+❌ Alle Benachrichtigungen aktivieren
+❌ 2FA-Einrichtung überspringen
+❌ Vergessen, Änderungen zu speichern
+
+## Fehlerbehebung
+
+### Kann mich nicht anmelden
+- Passwort überprüfen
+- Feststelltaste überprüfen
+- Passwort zurücksetzen
+- 2FA-Code überprüfen
+- Anderen Browser versuchen
+- Administrator kontaktieren
+
+### Erhalte keine Benachrichtigungen
+- Benachrichtigungseinstellungen überprüfen
+- E-Mail-Spam-Ordner überprüfen
+- E-Mail-Adresse verifizieren
+- Ruhezeiten überprüfen
+- Benachrichtigung testen
+
+### Profilbild wird nicht hochgeladen
+- Dateigröße überprüfen (< 5MB)
+- Dateiformat überprüfen (JPG, PNG)
+- Anderes Bild versuchen
+- Browser-Cache leeren
+- Anderen Browser versuchen
+
+### Änderungen werden nicht gespeichert
+- Pflichtfelder überprüfen
+- Internetverbindung überprüfen
+- Seite aktualisieren versuchen
+- Browser-Cache leeren
+- Anderen Browser versuchen
+
+---
+
+## Nächste Schritte
+- [🔐 Sicherheits-Best-Practices](/guide/security)
+- [🔔 Benachrichtigungsleitfaden](/guide/notifications)
+- [⚙️ Systemeinstellungen](/guide/admin/settings)
+- [👥 Admin: Benutzerverwaltung](/guide/admin/users)

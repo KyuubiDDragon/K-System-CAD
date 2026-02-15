@@ -1,0 +1,113 @@
+# Dependency directories
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+pnpm-debug.log
+frontend/node_modules/
+backend/vendor/
+
+# Project specific folders
+CaD_Project/
+CaD_System/
+migration_backup/
+sql_fixes_backup/
+db_migration_script*/
+*_migration_script*/
+
+# Upload directories
+upload/
+uploads/
+backend/uploads/
+frontend/uploads/
+backend/src/migrations/
+
+# Build output
+dist/
+dist-ssr/
+*.local
+frontend/public/docs/
+docs/.vitepress/dist/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Cursor IDE files
+.cursor/
+.cursor-database
+.cursor.json
+.cursor-project
+.history/
+
+# Claude Code
+CLAUDE.md
+.claude/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Cache and temp files
+.cache/
+.temp/
+.eslintcache
+.stylelintcache
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Socket server logs and temp files (specific to this project)
+socket-server/logs/
+socket-server/node_modules/
+
+# Backend temp files and uploads
+backend/temp/
+uploads/
+temp/
+
+# Database files
+*.sqlite
+*.db
+backend/db/*
+*.bak.sql
+*_backup.sql
+db_backup/
+sql_backup/
+
+# PHP composer
+vendor/
+composer.lock
+backend/vendor/
+
+# Testing
+/cypress/videos/
+/cypress/screenshots/
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+
+# Miscellaneous
+.thumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.bak
+*.swp
+*~ 

@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    
+    # Vermeiden Sie die Verarbeitung von WebSocket-Verbindungen durch Rewrite-Regeln
+    RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+    
+    RewriteRule ^index\.html$ - [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>
+
+
+<Files ~ "\.(png)$">
+    Order allow,deny
+    Allow from all
+</Files>

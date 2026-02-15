@@ -1,0 +1,53 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "include": [
+    "env.d.ts", 
+    "src/**/*", 
+    "src/**/*.vue",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts"
+  ],
+  "exclude": ["src/**/__tests__/*"],
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": [
+      "vite/client", 
+      "node"
+    ],
+    "module": "ESNext",
+    "target": "ES2022",
+    "strict": false,
+    "noImplicitAny": false,
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitOverride": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "preserveValueImports": true,
+    "isolatedModules": true,
+    "noImplicitThis": false,
+    "useDefineForClassFields": false
+  },
+  "vueCompilerOptions": {
+    "target": 3.5,
+    "strictTemplates": false,
+    "experimentalDisableTemplateSupport": false,
+    "skipTemplateCodegen": false,
+    "nativeTags": ["template", "script", "style"]
+  }
+}

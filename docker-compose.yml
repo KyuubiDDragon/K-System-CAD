@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    ports:
+      - "${DB_HOST_PORT:-3307}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_DATABASE:-ksystems}
+      MYSQL_USER: ${DB_USERNAME:-ksystems}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-ksystems_password}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/var/www/html/uploads
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-ksystems}
+      DB_USERNAME: ${DB_USERNAME:-ksystems}
+      DB_PASSWORD: ${DB_PASSWORD:-ksystems_password}
+      APP_ENV: ${APP_ENV:-production}
+      NODE_ENV: ${NODE_ENV:-production}
+      SOCKET_SERVER_URL: http://socket-server:3001
+      SOCKET_API_KEY: ${SOCKET_API_KEY:-socket_api_key}
+      APP_URL_PROD: https://${DOMAIN}/api
+      FRONTEND_URL_PROD: https://${DOMAIN}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-jwt_secret_key}
+      COOKIE_DOMAIN: ${DOMAIN}
+      COOKIE_SECURE: "true"
+      COOKIE_SAMESITE: "Lax"
+      UPLOAD_BASE_DIR: /var/www/html/uploads
+      PUBLIC_UPLOAD_URL: https://${DOMAIN}/uploads
+      DOCUMENT_IMAGE_STORAGE_PATH: /var/www/html/uploads/documents
+      DOCUMENT_IMAGE_PUBLIC_URL: https://${DOMAIN}/uploads/documents
+    networks:
+      - web
+      - internal
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.backend-${STACK_NAME}.rule=Host(`${DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/uploads`))
+      - traefik.http.routers.backend-${STACK_NAME}.entrypoints=websecure
+      - traefik.http.routers.backend-${STACK_NAME}.tls=true
+      - traefik.http.routers.backend-${STACK_NAME}.tls.certresolver=letsencrypt
+      - traefik.http.routers.backend-${STACK_NAME}.priority=10
+      - traefik.http.services.backend-${STACK_NAME}.loadbalancer.server.port=80
+      - traefik.http.routers.backend-http-${STACK_NAME}.rule=Host(`${DOMAIN}`) && (PathPrefix(`/api`) || PathPrefix(`/uploads`))
+      - traefik.http.routers.backend-http-${STACK_NAME}.entrypoints=web
+      - traefik.http.routers.backend-http-${STACK_NAME}.middlewares=https-redirect@docker
+      - traefik.http.routers.backend-http-${STACK_NAME}.priority=10
+
+  socket-server:
+    build:
+      context: ./socket-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      PORT: 3001
+      NODE_ENV: ${NODE_ENV:-production}
+      API_KEY: ${SOCKET_API_KEY:-socket_api_key}
+      JWT_SECRET: ${JWT_SECRET_KEY:-jwt_secret_key}
+      CORS_ORIGIN: https://${DOMAIN}
+      PHP_API_URL: http://backend:80
+      DEBUG: "false"
+      LOG_LEVEL: info
+    command: ["node", "server.js"]
+    networks:
+      - web
+      - internal
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.socket-${STACK_NAME}.rule=Host(`${DOMAIN}`) && PathPrefix(`/socket.io`)
+      - traefik.http.routers.socket-${STACK_NAME}.entrypoints=websecure
+      - traefik.http.routers.socket-${STACK_NAME}.tls=true
+      - traefik.http.routers.socket-${STACK_NAME}.tls.certresolver=letsencrypt
+      - traefik.http.routers.socket-${STACK_NAME}.priority=10
+      - traefik.http.services.socket-${STACK_NAME}.loadbalancer.server.port=3001
+      - traefik.http.routers.socket-http-${STACK_NAME}.rule=Host(`${DOMAIN}`) && PathPrefix(`/socket.io`)
+      - traefik.http.routers.socket-http-${STACK_NAME}.entrypoints=web
+      - traefik.http.routers.socket-http-${STACK_NAME}.middlewares=https-redirect@docker
+      - traefik.http.routers.socket-http-${STACK_NAME}.priority=10
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: https://${DOMAIN}/api
+        VITE_SOCKET_URL: wss://${DOMAIN}/socket.io
+        VITE_REDIRECT_URL: https://${DOMAIN}
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=web
+      - traefik.http.routers.frontend-${STACK_NAME}.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.frontend-${STACK_NAME}.entrypoints=websecure
+      - traefik.http.routers.frontend-${STACK_NAME}.tls=true
+      - traefik.http.routers.frontend-${STACK_NAME}.tls.certresolver=letsencrypt
+      - traefik.http.routers.frontend-${STACK_NAME}.priority=1
+      - traefik.http.services.frontend-${STACK_NAME}.loadbalancer.server.port=80
+      - traefik.http.routers.frontend-http-${STACK_NAME}.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.frontend-http-${STACK_NAME}.entrypoints=web
+      - traefik.http.routers.frontend-http-${STACK_NAME}.middlewares=https-redirect@docker
+      - traefik.http.routers.frontend-http-${STACK_NAME}.priority=1
+    healthcheck:
+      disable: true
+
+volumes:
+  db_data:
+  uploads_data:
+
+networks:
+  web:
+    external: true
+  internal:
+    driver: bridge

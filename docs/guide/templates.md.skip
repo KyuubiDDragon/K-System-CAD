@@ -1,0 +1,787 @@
+# Template System
+
+Text template management system with placeholder variables, categories, and drag-and-drop organization for creating reusable document templates.
+
+## Overview
+
+Features:
+- Template text with placeholder variables
+- Template categories
+- Dynamic variable extraction from placeholders
+- Predefined fields library
+- Template preview with variable filling
+- Category and template sorting (drag-and-drop)
+- Clipboard copy of filled templates
+- Search and filter templates
+- Icon picker for templates
+- Inline category name editing
+- Authority-specific data isolation
+
+**Required Permission:** `READ_TEMPLATES` (view), `WRITE_TEMPLATES` (create/edit), `DELETE_TEMPLATES` (delete)
+
+## Accessing Templates
+
+**Desktop:** Double-click **Templates** icon
+**Menu:** Start Menu → Documents → Templates
+**Route:** `/template`
+
+## Interface Layout
+
+### Header Section
+
+**Action Buttons (if WRITE permission):**
+- **Add Template** - Create new template
+- **Add Category** - Create new category
+- **Sort Categories** - Drag-and-drop category reordering
+
+**Search Field:**
+- Filters templates and categories by name/description
+- Real-time filtering
+- Clearable
+
+### Template Display
+
+**Category Sections:**
+- Expansion panels for each category
+- Category header shows:
+  - Folder icon with category name
+  - Template count badge
+  - Double-click name to edit (inline editing)
+  - Delete button (if category empty)
+
+**Template Grid:**
+- Grid layout (auto-fill, min 250px per card)
+- Each template card shows:
+  - **Toolbar** with drag handle (if WRITE), edit, delete buttons
+  - **Icon** - Custom MDI icon
+  - **Name** - Template title
+  - **Description** - Brief description
+  - **Open button** - Opens fill dialog
+- Cards clickable to open template
+- Drag-and-drop reordering within category (if WRITE)
+
+**Empty State:**
+- Shows when no templates exist or no search results
+- Icon and helpful message
+- Button to add template or reset search
+
+## Template Variables
+
+### Variable Syntax
+
+**Placeholder Format:**
+```
+`{{ variable_name }}`
+`{{ variable_name, required }}`
+`{{ variable_name, multiple }}`
+`{{ variable_name, required, multiple }}`
+```
+
+**Properties:**
+- **required**: Field is mandatory when filling template
+- **multiple**: Field accepts multiple values (combobox with chips)
+
+**Example Template:**
+```
+`{{ header }}`
+
+Sehr geehrte/r Herr/Frau `{{ name, required }}`,
+
+...
+
+`{{ footer }}`
+
+`{{ signature }}`
+```
+
+### Predefined Fields
+
+**Available Predefined Fields:**
+Fetched from `/templates/?action=getFields`
+
+Each field has:
+- `field_name` - Placeholder name
+- `field_label` - Display label
+- `field_type` - Input type (text, textarea, date, select)
+- `field_description` - Help text
+- `field_value` - Default/predefined value
+
+**Special Built-in Fields:**
+- ``{{ header }}`` - Organization mail header image
+- ``{{ footer }}`` - Organization mail footer image
+- ``{{ header_neutral }}`` - Neutral header image
+- ``{{ footer_neutral }}`` - Neutral footer image
+- ``{{ signature }}`` - User signature image
+
+**Image Syntax:**
+Images rendered as `[img]url[/img]` in output
+
+### Field Types
+
+**text** (default):
+- Single-line text field
+- Multiple: Combobox with chips
+
+**textarea**:
+- Multi-line text input
+- Auto-grows with content
+
+**date**:
+- Date picker
+- Format: YYYY-MM-DD (input), DD.MM.YYYY (display)
+
+**select** (special cases):
+- **salutation**: Dropdown with German salutations
+  - "Sehr geehrter Herr"
+  - "Sehr geehrte Frau"
+  - "Sehr geehrte Damen und Herren"
+  - "Guten Tag"
+- **gender**: Dropdown with pronouns
+  - "Herr"
+  - "Frau"
+  - "" (empty)
+
+### Variable Extraction
+
+**Automatic Detection:**
+When template opened, system:
+1. Scans template text for ``{{ ... }}`` placeholders
+2. Extracts variable name and properties
+3. Looks up predefined field details
+4. Builds form fields dynamically
+5. Pre-fills with default values
+
+**Unique Handling:**
+- Same variable can appear multiple times
+- System tracks uniquely as name:1, name:2, etc.
+- Each instance replaced separately
+
+## Creating Templates
+
+### Add Template
+
+1. Click **Add Template** button
+2. Dialog opens with form
+
+**Template Form:**
+
+**Category*** (required)
+- Dropdown select
+- Choose from existing categories
+
+**Name*** (required)
+- Template title
+- Shown on card
+
+**Description*** (required)
+- Brief description
+- Shown on card
+
+**Icon*** (required)
+- MDI icon path (e.g., mdi-file-document-outline)
+- Click field to open icon picker
+- Visual icon selector
+
+**Recipient** (optional)
+- Default email recipient
+- Can be filled when using template
+
+**Subject** (optional)
+- Default email subject
+- Can be filled when using template
+
+**Template Text*** (required)
+- Large textarea (10 rows)
+- Enter template content with placeholders
+- Default starter text provided:
+```
+`{{ header }}`
+
+Sehr geehrte/r Herr/Frau `{{ name }}`,
+
+...
+
+`{{ footer }}`
+
+`{{ signature }}`
+```
+
+**Available Fields Table:**
+- Shows all predefined fields
+- Columns: Placeholder, Description
+- Includes built-in fields (header, footer, signature)
+- Copy placeholder syntax to use
+
+3. Click **Save**
+4. Template added to category
+5. Category refreshes with new template
+
+**Validation:**
+- Category, name, description, icon, text required
+- Save disabled until valid
+
+## Editing Templates
+
+### Edit Template
+
+1. Click **Edit** button on template card toolbar
+2. Edit dialog opens with current data
+3. Modify any fields
+4. Icon picker available
+5. Click **Save** to update
+6. Template updated in place
+
+**Edit Behavior:**
+- All fields editable
+- Icon can be changed via picker
+- Category can be changed (moves template)
+
+## Deleting Templates
+
+### Delete Template
+
+1. Click **Delete** button on template card toolbar
+2. Confirmation dialog appears
+3. Confirm deletion
+4. Template removed from database
+5. Category refreshes
+
+**Warning:** Deletion is permanent.
+
+## Using Templates
+
+### Fill Template
+
+1. Click template card or **Öffnen** button
+2. Template fill dialog opens
+
+**Left Side - Form Fields:**
+- Dynamic fields based on template variables
+- Field types match predefined field types
+- Required fields marked
+- Enter or select values
+- Multiple fields show combobox with chips
+
+**Right Side - Preview:**
+- **Preview** section shows rendered template
+- Variables replaced with entered values
+- Updates in real-time as you type
+- Textarea shows full rendered text
+- Auto-sizing based on content (10-25 rows)
+
+**Email Fields:**
+- **Recipient** - Email address (optional)
+- **Subject** - Email subject (optional)
+- Pre-filled from template defaults
+
+3. Fill all required fields
+4. Review preview
+5. Click **Copy to Clipboard** to copy rendered text
+6. Or click **Close** to cancel
+
+**Copy to Clipboard:**
+- Copies final rendered template text
+- Variables replaced with actual values
+- Empty placeholders remain as ``{{ variable }}``
+- Success notification shown
+
+**Rendering Logic:**
+- Built-in fields (header, footer, signature) replaced first
+- User-entered field values replace placeholders
+- Only replaces if value is non-empty
+- Arrays joined with ", "
+
+## Template Categories
+
+### Add Category
+
+1. Click **Add Category** button
+2. Dialog opens
+
+**Category Form:**
+- **Name*** (required) - Category name
+
+3. Click **Save**
+4. Category added to list
+5. Empty category appears with 0 templates badge
+
+### Edit Category Name
+
+1. Double-click category name
+2. Inline text field appears
+3. Edit name
+4. Press Enter or click outside to save
+5. Press Esc to cancel
+6. Name updated via API
+
+**Visual Feedback:**
+- Pencil icon hint on hover (if WRITE permission)
+- Tooltip: "Doppelklick zum Bearbeiten"
+- Optimistic UI update
+
+### Delete Category
+
+1. Click **Delete** button on category header
+2. Only available if category has 0 templates
+3. Confirmation dialog appears
+4. Confirm deletion
+5. Category removed
+
+**Protection:**
+- Cannot delete category with templates
+- Warning shown if attempted
+- Disabled delete button with tooltip
+
+## Sorting
+
+### Sort Categories
+
+1. Click **Sort Categories** button
+2. Drag-and-drop modal opens
+3. Shows list of all categories
+4. Drag handle on each item
+5. Drag to reorder
+6. Click **Save** to persist order
+7. Or **Cancel** to discard
+
+**Behavior:**
+- Categories sorted by `sort_order` field
+- API updates sort_order for all categories
+- Main view refreshes with new order
+
+### Sort Templates
+
+**Drag-and-Drop in Grid:**
+- If WRITE permission, drag handle shown on cards
+- Drag template to new position within category
+- Drop to reorder
+- Auto-saves new order via API
+- Category refreshes
+
+**Sort Logic:**
+- Templates sorted by `sort_order` within category
+- Lower sort_order appears first
+- Drag updates sort_order for all templates in category
+
+## Icon Picker
+
+### Select Icon
+
+1. Click icon field in template form
+2. Icon picker dialog opens
+3. Grid of ~40 MDI icons shown
+4. Click icon to select
+5. Selected icon path saved to template
+6. Dialog closes
+
+**Available Icons:**
+Common MDI icons like:
+- mdi-home, mdi-account, mdi-email, mdi-phone
+- mdi-calendar, mdi-folder, mdi-file-document-outline
+- mdi-receipt, mdi-cash, mdi-briefcase, mdi-car
+- And more (see component for full list)
+
+**Icon Display:**
+- Template cards show selected icon
+- Falls back to mdi-file-document-outline if invalid
+
+## Data Model
+
+**Template:**
+```typescript
+interface Template {
+  id: number;
+  category_id: number;
+  name: string;
+  description: string;
+  icon: string; // MDI icon path
+  text: string; // Template content with `{{ placeholders }}`
+  recipient: string; // Default email recipient
+  subject: string; // Default email subject
+  sort_order?: number;
+}
+```
+
+**Category:**
+```typescript
+interface Category {
+  id: number;
+  name: string;
+  sort_order: number;
+  templates: Template[];
+}
+```
+
+**Field:**
+```typescript
+interface Field {
+  id: number;
+  template_id: number | null;
+  field_name: string; // Variable name
+  field_label: string; // Display label
+  field_type: string; // text, textarea, date, select
+  field_description: string; // Help text
+  field_value?: string | string[]; // Default value
+  is_multiple?: boolean;
+  is_required?: boolean;
+}
+```
+
+**ExtractedField:**
+```typescript
+interface ExtractedField {
+  field_name: string; // Unique name (name:1, name:2)
+  is_multiple: boolean; // From `{{ name, multiple }}`
+  is_required: boolean; // From `{{ name, required }}`
+  field_label?: string; // From predefined field
+  field_type: string; // From predefined field
+  field_description?: string; // From predefined field
+  field_value?: string | string[]; // Default value
+}
+```
+
+## API Integration
+
+**Base Path:** `/templates/`
+
+**Get Templates with Categories:**
+```
+GET /templates/?action=getTemplates
+Response: Category[] (with nested templates)
+```
+
+**Get Predefined Fields:**
+```
+GET /templates/?action=getFields
+Response: Field[]
+```
+
+**Add Category:**
+```
+POST /templates/?action=addCategorie
+Payload: { name: string }
+```
+
+**Update Category Name:**
+```
+POST /templates/?action=updateCategoryName
+Payload: { id: number, name: string }
+```
+
+**Delete Category:**
+```
+POST /templates/?action=deleteCategorie
+Payload: { id: number }
+```
+
+**Save Category Sorting:**
+```
+POST /templates/?action=saveCategorySorting
+Payload: {
+  categories: [
+    { id: number, sort_order: number }
+  ]
+}
+```
+
+**Add Template:**
+```
+POST /templates/?action=addTemplate
+Payload: {
+  category_id: number;
+  name: string;
+  description: string;
+  icon: string;
+  text: string;
+  recipient?: string;
+  subject?: string;
+}
+```
+
+**Update Template:**
+```
+POST /templates/?action=updateTemplate
+Payload: {
+  id: number;
+  category_id: number;
+  name: string;
+  description: string;
+  icon: string;
+  text: string;
+  recipient?: string;
+  subject?: string;
+}
+```
+
+**Delete Template:**
+```
+POST /templates/?action=deleteTemplate
+Payload: { id: number }
+```
+
+**Save Template Sorting:**
+```
+POST /templates/?action=saveTemplateSorting
+Payload: {
+  templates: [
+    { id: number, sort_order: number }
+  ]
+}
+```
+
+**Error Handling:**
+- Toast notifications for errors
+- Console logging for debugging
+- Loading states during operations
+
+## Multi-Tenant Security
+
+**Authority Isolation:**
+- All templates scoped to `authority_id`
+- All categories scoped to `authority_id`
+- All fields scoped to `authority_id`
+- Users only see data from their organization
+- Backend filters by authority automatically
+- Cross-organization access prevented
+
+## Desktop Window Mode
+
+**Props Support:**
+```typescript
+interface Props {
+  meta?: Record<string, any>;
+  canEdit?: boolean;
+  canDelete?: boolean;
+  canCreate?: boolean;
+  allPermissions?: boolean;
+}
+```
+
+**Permission Resolution:**
+- Checks props, route.meta, and permissions
+- Edit/Delete buttons show based on permissions
+
+## Styling & Theme
+
+**Dark Theme:**
+- Dark backgrounds (#0f172a, #111723)
+- Blue gradient accents
+- Glass-morphism effects (backdrop-filter blur)
+- Hover animations (translateY, scale)
+- Primary color for interactive elements
+
+**Responsive:**
+- Grid adapts to screen size
+- Desktop: Auto-fill columns (min 250px)
+- Mobile: Single column
+- Touch-friendly spacing
+
+**Cards:**
+- Elevation on hover
+- Smooth transitions
+- Icon-based visual hierarchy
+- Compact information display
+
+## Limitations
+
+**What's NOT Available:**
+
+### Template Types
+- ❌ No separate report templates
+- ❌ No invoice templates
+- ❌ No email integration (just clipboard copy)
+- ❌ No PDF generation
+- ❌ No rich text editor (plain text only)
+- ❌ No HTML formatting
+- ❌ No page setup (margins, headers, footers)
+
+### Variables
+- ❌ No conditional variables (if/else)
+- ❌ No loop variables (foreach)
+- ❌ No calculated fields
+- ❌ No variable library management UI
+- ❌ No custom variable creation (only predefined)
+- ❌ No variable testing interface
+- ❌ No date/number formatting options
+- ❌ No default value configuration
+
+### Sharing
+- ❌ No template sharing functionality
+- ❌ No permission levels (view, use, edit, manage)
+- ❌ No share links
+- ❌ No access control beyond READ/WRITE/DELETE
+- ❌ No department-specific templates
+
+### Version Control
+- ❌ No version history
+- ❌ No version comparison
+- ❌ No version restoration
+- ❌ No version notes
+- ❌ No change tracking
+- ❌ No audit trail
+
+### Import/Export
+- ❌ No template export
+- ❌ No template import
+- ❌ No bulk import/export
+- ❌ No .docx/.pdf export
+- ❌ No ZIP packaging
+- ❌ No conflict resolution
+
+### Template Features
+- ❌ No template cloning
+- ❌ No template preview (only when filling)
+- ❌ No template status (active/inactive)
+- ❌ No template tags
+- ❌ No template approval workflow
+- ❌ No template analytics
+- ❌ No usage tracking
+
+### Document Generation
+- ❌ No "Create from Template" in Documents module
+- ❌ No document library integration
+- ❌ No auto-save of filled templates
+- ❌ No template-based document creation
+- ❌ No PDF output
+
+### Email Features
+- ❌ No email sending from templates
+- ❌ No bulk email
+- ❌ No email tracking
+- ❌ No unsubscribe links
+- ❌ No personalization beyond variables
+- ❌ No scheduled sending
+
+### UI Limitations
+- ❌ No keyboard shortcuts
+- ❌ No batch operations
+- ❌ No bulk delete
+- ❌ No template duplication
+- ❌ No template archiving
+- ❌ No favorite templates
+- ❌ No recent templates list
+- ❌ No template usage statistics
+
+**Current Reality:**
+This is a **simple text template system** with placeholder variables that you fill in and copy to clipboard. It is not a comprehensive document management system, PDF generator, or email template engine. Templates are plain text with variable placeholders that get replaced when you fill them out.
+
+## Use Cases
+
+**Text Template Management:**
+- Create reusable letter templates
+- Store standard email text
+- Organize templates by category
+- Use placeholders for dynamic content
+
+**Copy-Paste Workflow:**
+- Fill template variables
+- Copy rendered text to clipboard
+- Paste into email client
+- Paste into document editor
+- Paste into message system
+
+**Organization:**
+- Categorize templates logically
+- Sort by priority or usage
+- Search for specific templates
+- Visual icon-based browsing
+
+## Best Practices
+
+**Creating Templates:**
+1. Use clear, descriptive names
+2. Write helpful descriptions
+3. Choose appropriate icons
+4. Use meaningful variable names
+5. Document template purpose in description
+
+**Using Variables:**
+1. Mark critical fields as required
+2. Use multiple for lists (addresses, names)
+3. Leverage predefined fields when available
+4. Keep variable names consistent
+5. Use built-in header/footer/signature
+
+**Categories:**
+1. Create logical groupings
+2. Use descriptive category names
+3. Keep category count manageable
+4. Order categories by frequency of use
+
+**Organizing:**
+1. Sort categories for easy access
+2. Sort templates within categories
+3. Delete unused templates
+4. Regular template maintenance
+5. Update descriptions as needed
+
+## Troubleshooting
+
+### Template Not Saving
+
+**Problem:** Save doesn't persist
+
+**Solutions:**
+1. Check all required fields filled (name, category, description, icon, text)
+2. Verify internet connection
+3. Check browser console for API errors
+4. Ensure backend is running
+
+### Variables Not Replacing
+
+**Problem:** Placeholders show as ``{{ variable }}`` in preview
+
+**Solutions:**
+1. Check variable syntax: ``{{ variable_name }}``
+2. Ensure field value is not empty
+3. Variables only replace if value entered
+4. Empty fields remain as placeholders
+
+### Category Can't Delete
+
+**Problem:** Delete button disabled or warning shown
+
+**Solutions:**
+1. Category must have 0 templates
+2. Move or delete templates first
+3. Then delete category
+
+### Drag-and-Drop Not Working
+
+**Problem:** Cannot reorder templates or categories
+
+**Solutions:**
+1. Check WRITE_TEMPLATES permission
+2. Use drag handle (not entire card)
+3. Refresh page
+4. Check browser console for errors
+
+### Icon Not Showing
+
+**Problem:** Template card shows default icon
+
+**Solutions:**
+1. Ensure icon path is valid MDI icon (starts with mdi-)
+2. Use icon picker to select
+3. Check icon exists in MDI library
+4. Refresh page
+
+### Search Not Working
+
+**Problem:** Search doesn't filter templates
+
+**Solutions:**
+1. Check spelling
+2. Try partial name
+3. Clear search and try again
+4. Search filters both name and description
+
+## Related Documentation
+
+- [📄 Documents](/guide/documents) - Document management
+- [💬 Messages](/guide/messages) - Messaging system
+
+---
+
+**Last Updated:** 2025-10-02
+**Version:** 2.0.0 (Corrected to match actual implementation)

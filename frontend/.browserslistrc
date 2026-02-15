@@ -1,0 +1,10 @@
+# Modern browsers (default)
+defaults
+
+# Legacy support for CEF 103
+chrome >= 103
+
+# Additional legacy support
+firefox >= 102
+safari >= 15.4
+edge >= 103

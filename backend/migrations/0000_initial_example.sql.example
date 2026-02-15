@@ -1,0 +1,24 @@
+-- Example Migration File
+-- This is an example migration file. Rename without .example extension to use.
+-- Date: YYYY-MM-DD
+-- Description: Brief description of what this migration does
+
+-- Example: Create a new table
+CREATE TABLE IF NOT EXISTS example_table (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    authority_id INT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_authority (authority_id),
+    FOREIGN KEY (authority_id) REFERENCES authority(id) ON DELETE CASCADE
+);
+
+-- Example: Add a column to existing table
+-- ALTER TABLE existing_table ADD COLUMN new_column VARCHAR(100) DEFAULT NULL;
+
+-- Example: Create an index
+-- CREATE INDEX idx_example ON example_table(name);
+
+-- Example: Insert initial data
+-- INSERT INTO settings (name, value) VALUES ('feature_flag', 'enabled');

@@ -1,0 +1,75 @@
+# .github/workflows/deploy-production.yml
+# Workflow zum Deployment in der Produktionsumgebung
+
+name: Deploy to Production
+
+on:
+  workflow_run:
+    workflows: ["Docker Build and Push"]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch: # Manueller Trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Repository- und Owner-Namen in Kleinbuchstaben wandeln
+      - name: Set lowercase owner & repo names
+        shell: bash
+        run: |
+          LOWERCASE_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          LOWERCASE_REPO=$(echo "${{ github.event.repository.name }}"   | tr '[:upper:]' '[:lower:]')
+          echo "LOWERCASE_OWNER=${LOWERCASE_OWNER}" >> $GITHUB_ENV
+          echo "LOWERCASE_REPO=${LOWERCASE_REPO}"     >> $GITHUB_ENV
+
+      # SSH auf den Produktionsserver und Deployment ausführen
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USERNAME }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT }}
+          script: |
+            cd ${{ secrets.PROD_PROJECT_PATH }}
+            
+            # Login to GitHub Container Registry
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+            
+            # Pull latest images
+            docker pull ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-backend:latest
+            docker pull ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-socket-server:latest
+            docker pull ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-frontend:latest
+            
+            # Update docker-compose.yml to use the pulled images
+            sed -i "s|build: *\.\/backend.*|image: ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-backend:latest|g" docker-compose.yml
+            sed -i "s|build: *\.\/socket-server.*|image: ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-socket-server:latest|g" docker-compose.yml
+            sed -i "s|build: *\.\/frontend.*|image: ghcr.io/${{ env.LOWERCASE_OWNER }}/${{ env.LOWERCASE_REPO }}-frontend:latest|g" docker-compose.yml
+            
+            # Create/update .env file with secrets
+            cat > .env << EOL
+            CADDY_DOMAIN=${{ secrets.PUBLIC_DOMAIN }}
+            MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}
+            MYSQL_DATABASE=ksystems
+            MYSQL_USER=ksystems
+            MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}
+            FRONTEND_HOST_PORT=5173
+            BACKEND_HOST_PORT=8080
+            SOCKET_HOST_PORT=3001
+            SOCKET_API_KEY=${{ secrets.SOCKET_API_KEY }}
+            JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+            EOL
+            
+            # Restart all services
+            docker-compose down
+            docker-compose up -d
+            
+            # Cleanup old images
+            docker image prune -f 

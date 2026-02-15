@@ -1,0 +1,111 @@
+# Docker Compose - Local Development (without Traefik)
+# Usage: docker-compose -f docker-compose.dev.yml up -d
+#
+# Access:
+#   Frontend:      http://localhost:5173
+#   Backend API:   http://localhost:8080
+#   Socket Server: http://localhost:3001
+#   Database:      localhost:3307
+
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: ksystems
+      MYSQL_USER: ksystems
+      MYSQL_PASSWORD: ksystems_password
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/var/www/html/uploads
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ksystems
+      DB_USERNAME: ksystems
+      DB_PASSWORD: ksystems_password
+      APP_ENV: development
+      SOCKET_SERVER_URL: http://socket-server:3001
+      SOCKET_API_KEY: dev_socket_api_key
+      APP_URL_PROD: http://localhost:8080
+      FRONTEND_URL_PROD: http://localhost:5173
+      JWT_SECRET_KEY: dev_jwt_secret_key_change_me_in_production
+      COOKIE_DOMAIN: localhost
+      COOKIE_SECURE: "false"
+      COOKIE_SAMESITE: "Lax"
+      UPLOAD_BASE_DIR: /var/www/html/uploads
+      PUBLIC_UPLOAD_URL: http://localhost:8080/uploads
+      DOCUMENT_IMAGE_STORAGE_PATH: /var/www/html/uploads/documents
+      DOCUMENT_IMAGE_PUBLIC_URL: http://localhost:8080/uploads/documents
+    networks:
+      - internal
+
+  socket-server:
+    build:
+      context: ./socket-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
+    environment:
+      PORT: 3001
+      NODE_ENV: development
+      API_KEY: dev_socket_api_key
+      JWT_SECRET: dev_jwt_secret_key_change_me_in_production
+      CORS_ORIGIN: http://localhost:5173
+      PHP_API_URL: http://backend:80
+      DEBUG: "true"
+      LOG_LEVEL: debug
+    command: ["node", "server.js"]
+    networks:
+      - internal
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8080/api
+        VITE_SOCKET_URL: ws://localhost:3001/socket.io
+        VITE_REDIRECT_URL: http://localhost:5173
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    networks:
+      - internal
+
+volumes:
+  db_data:
+  uploads_data:
+
+networks:
+  internal:
+    driver: bridge

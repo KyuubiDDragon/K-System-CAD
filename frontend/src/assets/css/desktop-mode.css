@@ -1,0 +1,68 @@
+/* Desktop Mode Styles */
+
+/* Verstecke die linke Navigation im Desktop-Modus */
+.desktop-mode.hide-left-nav .modern-drawer {
+    display: none !important;
+}
+
+/* Verstecke die obere Navigationsleiste im Desktop-Modus */
+.desktop-mode.hide-top-nav .app-bar {
+    display: none !important;
+}
+
+/* Entferne das Padding links im Desktop-Modus */
+.desktop-mode .app-container {
+    padding-left: 0 !important;
+}
+
+/* Vollständige Breite ohne linke Navigation */
+.desktop-mode.hide-left-nav .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+}
+
+/* Volle Höhe ohne obere Navigation */
+.desktop-mode.hide-top-nav .main-content {
+    margin-top: 0 !important;
+    height: 100vh !important;
+}
+
+/* Stelle sicher, dass im Desktop-Modus mit oberer Navigation der Abstand korrekt ist */
+.desktop-mode:not(.hide-top-nav) .main-content {
+}
+
+/* Verhindere Scrollen der Seite im Desktop-Modus */
+.desktop-mode {
+    overflow: hidden !important;
+}
+
+/* Erlaube Scrollen innerhalb von Fenstern */
+.desktop-mode .window-content {
+    overflow: hidden !important;
+}
+
+.desktop-mode .window-iframe {
+    overflow: auto !important;
+}
+
+/* Erlaube Scrollen für den Inhalt im iframe */
+body.desktop-window-content {
+    overflow: auto !important;
+}
+
+.desktop-window-content .main-content {
+    overflow: auto !important;
+}
+
+.desktop-window-content #app {
+    overflow: auto !important;
+}
+
+.desktop-window-content .v-main {
+    overflow: auto !important;
+}
+
+/* Stelle sicher, dass jeder Router-View innerhalb eines Desktop-Fensters scrollbar ist */
+[desktop_window="true"] {
+    overflow: auto !important;
+} 
