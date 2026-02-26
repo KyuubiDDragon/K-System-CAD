@@ -7,7 +7,7 @@ import type { EmployeeOnly } from '@/types/Training'; // Adjust path if needed
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store
 import { useModulePermission } from '@/composables/useModulePermission'; // Permission checking
 import ImageLinkWithTooltip from '@/components/Admin/ImageLinkWithTooltip.vue'; // Assuming a reusable component
-import LogoutUserButton from '@/components/admin/LogoutUserButton.vue'; // Session management
+import LogoutUserButton from '@/components/Admin/LogoutUserButton.vue'; // Session management
 import { useToast } from 'vue-toastification'; // Import toast
 import { useI18n } from 'vue-i18n';
 

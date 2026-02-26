@@ -1,7 +1,3 @@
-// Initialisiere die Debug-Konsole als allererstes
-import { initDebugConsole } from './plugins/debug-console';
-initDebugConsole();
-
 import { createApp } from 'vue';
 import type { App as VueApp } from 'vue';
 import { createPinia } from 'pinia';
