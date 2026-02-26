@@ -65,7 +65,6 @@ export const componentsMap: ComponentsMap = {
   // Weitere Komponenten, die zuvor gefehlt haben könnten
   'cheatsheet': () => import('@/views/CheatsheetView.vue'),
   'desktopDebug': () => import('@/views/DesktopDebug.vue'),
-  'socketDebug': () => import('@/views/SocketDebugView.vue'),
   'mapglobal': () => import('@/views/MapView.vue'),
   'mapOnly': () => import('@/views/MapOnlyView.vue'),
   'website': () => import('@/views/WebsiteView.vue'),

@@ -103,7 +103,6 @@ const routes: Array<RouteRecordRaw> = [
     { path: '/cheatsheet', name: "cheatsheet", component: () => import('@/views/CheatsheetView.vue'), meta: { requiresAuth: true, requiredModule: 'cheatsheet', requiredAction: 'read' }},
     { path: '/admin/cheatsheet', name: "admin_cheatsheet", component: () => import('@/views/admin/CheatsheetView.vue'), meta: { requiresAuth: true, requiredModule: 'cheatsheet', requiredAction: 'admin' }},
     { path: '/desktopDebug', name: "desktopDebug", component: () => import('@/views/DesktopDebug.vue'), meta: { requiresAuth: true }},
-    { path: '/socketDebug', name: "socketDebug", component: () => import('@/views/SocketDebugView.vue'), meta: { requiresAuth: true }},
     { path: '/whiteboard', name: "whiteboard", component: () => import('@/views/WhiteboardView.vue'), meta: { requiresAuth: true, requiredModule: 'whiteboard', requiredAction: 'read', requiredFeature: 'whiteboard' }},
     { path: '/waterduck', name: "waterduck", component: () => import('@/components/desktop/WaterDuck.vue'), meta: { requiresAuth: false, isAppWindow: true }},
     { path: '/preview/website/:id', name: "website_preview", component: () => import('@/views/WebsitePreviewView.vue'), meta: { requiresAuth: true, requiredModule: 'company.websites', requiredAction: 'read', requiredFeature: 'company_websites' }},
