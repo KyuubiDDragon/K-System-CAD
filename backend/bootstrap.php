@@ -123,18 +123,21 @@ if ($appEnv === 'development') {
     ini_set('display_startup_errors', '0');
     // Fehler in Log-Datei schreiben konfigurieren (Passe den Pfad an)
     ini_set('log_errors', 1);
-    // Log-Pfad aus Config oder fix:
-    $logPath = $_ENV['LOG_PATH'] ?? (__DIR__ . '/../logs/php_errors.log'); // Beispiel mit ENV-Variable oder fixem Pfad
-    // Stelle sicher, dass das Verzeichnis existiert und beschreibbar ist (wichtig in Docker)
-    $logDir = dirname($logPath);
-    if (!is_dir($logDir)) {
-        mkdir($logDir, 0775, true); // Erstelle Verzeichnis rekursiv, wenn nötig
-    }
-    if (is_writable($logDir)) {
-        ini_set('error_log', $logPath);
-    } else {
-        error_log("Warning: PHP error log directory not writable: " . $logDir);
-        // Fehler gehen dann standardmäßig an SAPI-Log (Apache Log in Docker)
+    // Ohne LOG_PATH gehen Fehler an das SAPI-Log (Apache -> stderr -> `docker logs`).
+    // Das ist im Container der Standard, weil eine Log-Datei den Redeploy nicht
+    // uebersteht und in der Coolify-UI nicht sichtbar ist.
+    $logPath = $_ENV['LOG_PATH'] ?? null;
+    if ($logPath !== null && $logPath !== '') {
+        $logDir = dirname($logPath);
+        if (!is_dir($logDir)) {
+            @mkdir($logDir, 0775, true); // Erstelle Verzeichnis rekursiv, wenn noetig
+        }
+        if (is_writable($logDir)) {
+            ini_set('error_log', $logPath);
+        } else {
+            // Kein error_log setzen -> Fallback bleibt das SAPI-Log.
+            error_log("Warning: LOG_PATH not writable, using stderr instead: " . $logDir);
+        }
     }
 }
 
