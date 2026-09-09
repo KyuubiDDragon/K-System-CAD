@@ -100,7 +100,6 @@ onMounted(fetchPersons);
 	<v-card 
 	  v-if="modelValue" 
 	  class="apartment-add-card elevation-4"
-	  theme="dark"
 	>
 	  <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">

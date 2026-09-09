@@ -907,7 +907,7 @@ onMounted(async () => {
 <template>
     <v-container fluid class="mail-system-container pa-0">
         <!-- Seitenleiste -->
-        <v-navigation-drawer app rail permanent class="sidebar-drawer" theme="dark">
+        <v-navigation-drawer app rail permanent class="sidebar-drawer">
             <v-list density="compact" nav class="sidebar-list">
                 <v-tooltip :text="$t('messageView.inbox')" location="end">
                     <template v-slot:activator="{ props }">
@@ -1048,7 +1048,7 @@ onMounted(async () => {
                     </v-row>
 
                     <!-- Nachrichten oder Ordner Tabelle -->
-                    <v-card v-if="view !== 'folders' && !isReadingMessage" class="main-card elevation-4" theme="dark">
+                    <v-card v-if="view !== 'folders' && !isReadingMessage" class="main-card elevation-4">
                         <v-toolbar flat density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-h6">{{
                                 currentViewTitle
@@ -1336,7 +1336,7 @@ onMounted(async () => {
                     </v-card>
 
                     <!-- Nachricht lesen Ansicht -->
-                    <v-card v-if="isReadingMessage" class="main-card elevation-4" theme="dark">
+                    <v-card v-if="isReadingMessage" class="main-card elevation-4">
                         <v-toolbar color="primary" class="dialog-header">
                             <v-btn icon @click="closeReadMessageDialog" class="mr-2">
                                 <v-icon>mdi-arrow-left</v-icon>
@@ -1558,7 +1558,7 @@ onMounted(async () => {
                     </v-card>
 
                     <!-- Ordneransicht -->
-                    <v-card v-if="view === 'folders'" class="main-card elevation-4" theme="dark">
+                    <v-card v-if="view === 'folders'" class="main-card elevation-4">
                         <v-toolbar flat density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-h6">{{
                                 currentViewTitle
@@ -1660,7 +1660,7 @@ onMounted(async () => {
 
         <!-- Neue Nachricht Dialog -->
         <v-dialog v-model="newMessageDialog" max-width="70%" class="custom-dialog">
-            <v-card theme="dark" class="dialog-card">
+            <v-card class="dialog-card">
                 <v-toolbar color="primary" class="dialog-header">
                     <v-toolbar-title class="text-h5">{{ t('messageView.newMessage') }}</v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -1754,7 +1754,7 @@ onMounted(async () => {
             persistent
             class="custom-dialog"
         >
-            <v-card theme="dark" class="dialog-card">
+            <v-card class="dialog-card">
                 <v-toolbar :color="deleteConfirmationColor" class="dialog-header">
                     <v-icon start class="mr-2">
                         {{
@@ -1805,7 +1805,7 @@ onMounted(async () => {
 
         <!-- Folder Dialog -->
         <v-dialog v-model="folderDialog" max-width="600" persistent class="custom-dialog">
-            <v-card theme="dark" class="dialog-card">
+            <v-card class="dialog-card">
                 <v-toolbar color="info" class="dialog-header">
                     <v-icon start class="mr-2">
                         {{ isEditingFolder ? 'mdi-folder-edit' : 'mdi-folder-plus' }}

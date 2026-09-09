@@ -690,7 +690,7 @@ watch(
 </script>
 
 <template>
-    <v-card v-if="reportToEdit" class="report-card" elevation="4" theme="dark">
+    <v-card v-if="reportToEdit" class="report-card" elevation="4">
         <v-overlay
             :model-value="isDataLoading"
             class="align-center justify-center"

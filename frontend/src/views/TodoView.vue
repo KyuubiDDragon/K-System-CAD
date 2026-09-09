@@ -761,7 +761,7 @@ onMounted(async () => {
             <v-row>
                 <!-- Linke Spalte: Ordner und Listen -->
                 <v-col cols="12" md="4" lg="3">
-                    <v-card class="list-card" elevation="3" theme="dark">
+                    <v-card class="list-card" elevation="3">
                         <v-toolbar density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-subtitle-1">
                                 <v-icon icon="mdi-folder-multiple" size="18" class="mr-2"></v-icon>
@@ -894,7 +894,6 @@ onMounted(async () => {
                         :disabled="!selectedList"
                         :loading="loadingTodos"
                         elevation="3"
-                        theme="dark"
                     >
                         <v-toolbar density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-subtitle-1">
@@ -1115,7 +1114,6 @@ onMounted(async () => {
                         :disabled="!selectedTodo"
                         :loading="loadingTodoDetails || savingTodoDetails"
                         elevation="3"
-                        theme="dark"
                     >
                         <v-toolbar density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-subtitle-1">

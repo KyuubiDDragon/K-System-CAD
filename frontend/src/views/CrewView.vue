@@ -220,7 +220,7 @@ onMounted(fetchCrews);
         </div>
         
         <!-- Datentabelle -->
-        <v-card class="main-table-card" elevation="3" theme="dark">
+        <v-card class="main-table-card" elevation="3">
           <v-data-table
             :headers="headers"
             :items="crews"

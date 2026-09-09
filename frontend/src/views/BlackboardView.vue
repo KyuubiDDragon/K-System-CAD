@@ -55,7 +55,6 @@
                     class="board-entry"
                     :prepend-icon="entry.pinned ? 'mdi-pin' : undefined"
                     elevation="4"
-                    theme="dark"
                     :class="{'pinned-entry': entry.pinned}"
                 >
                     <div class="entry-color-bar" :style="`background-color: ${entry.color || '#3b82f6'}`"></div>
@@ -179,7 +178,7 @@
         <!-- Add/Edit Form - Shown instead of entries list -->
         <v-row v-if="showDetailView">
             <v-col cols="12">
-                <v-card :loading="savingEntry" theme="dark" class="editor-card">
+                <v-card :loading="savingEntry" class="editor-card">
                     <v-toolbar color="primary" flat>
                         <v-btn icon="mdi-arrow-left" @click="closeAddEditDialog"></v-btn>
                         <v-toolbar-title class="text-h6">{{
@@ -289,7 +288,7 @@
 
         <!-- Delete Confirmation Dialog -->
         <v-dialog v-model="deleteConfirmationDialog" max-width="500px" persistent>
-            <v-card theme="dark" class="confirmation-dialog">
+            <v-card class="confirmation-dialog">
                 <v-card-title class="text-h6">
                     <v-icon color="error" class="mr-2">mdi-delete-alert</v-icon>
                     {{ t('blackboardView.deleteTitle') }}

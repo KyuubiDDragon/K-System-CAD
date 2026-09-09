@@ -366,7 +366,6 @@ async function addVacation(member: Employee) {
     <v-col cols="12" sm="6" md="4" lg="4" xl="3">
         <v-card
             class="employee-card elevation-4"
-            theme="dark"
             :class="{
                 'terminated-employee': member.is_terminated == true && !showIsTerminated,
                 'vacation-employee': currentVacation,
@@ -742,7 +741,7 @@ async function addVacation(member: Employee) {
 
     <!-- Beförderungsverlauf Dialog -->
     <v-dialog v-model="promotionDialog" max-width="700" class="promotion-dialog">
-        <v-card theme="dark" class="dialog-card">
+        <v-card class="dialog-card">
             <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">
                     <v-icon start size="18" class="mr-2">mdi-medal</v-icon>
@@ -788,7 +787,7 @@ async function addVacation(member: Employee) {
 
     <!-- Urlaubsverlauf Dialog -->
     <v-dialog v-model="vacationDialog" max-width="800" class="vacation-dialog">
-        <v-card theme="dark" class="dialog-card">
+        <v-card class="dialog-card">
             <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">
                     <v-icon start size="18" class="mr-2">mdi-calendar-check</v-icon>
@@ -842,7 +841,7 @@ async function addVacation(member: Employee) {
 
     <!-- Neuer Urlaub Dialog -->
     <v-dialog v-model="newVacationDialog" max-width="700" persistent class="new-vacation-dialog">
-        <v-card theme="dark" class="dialog-card">
+        <v-card class="dialog-card">
             <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">
                     <v-icon start size="18" class="mr-2">mdi-calendar-plus</v-icon>

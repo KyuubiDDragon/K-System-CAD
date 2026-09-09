@@ -429,7 +429,7 @@ watch(filteredQuestions, newQuestions => {
                             </v-btn>
                         </template>
 
-                        <v-card class="filter-menu" theme="dark">
+                        <v-card class="filter-menu">
                             <v-list density="compact" subheader>
                                 <v-list-subheader>NACH POSITION FILTERN</v-list-subheader>
                                 <v-list-item v-if="loadingJobTypes" class="text-center">
@@ -606,7 +606,6 @@ watch(filteredQuestions, newQuestions => {
                     <v-card
                         class="applicant-card flex-grow-1"
                         elevation="2"
-                        theme="dark"
                         @click="openEditDialog(applicant)"
                         :style="{ '--index': index }"
                         height="100%"

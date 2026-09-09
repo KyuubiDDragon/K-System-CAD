@@ -675,7 +675,7 @@ onMounted(fetchAllInitialData);
                 </v-row>
 
                 <!-- Haupttabelle -->
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
             <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                 <v-toolbar-title class="text-h6">
                     <v-icon start size="20" class="mr-2">mdi-shield-account</v-icon>

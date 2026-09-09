@@ -338,7 +338,7 @@ function getRoleColor(role: any) {
 
 <template>
     <!-- Person View Card -->
-    <v-card v-if="personToView && isVisible" class="person-card elevation-4" theme="dark">
+    <v-card v-if="personToView && isVisible" class="person-card elevation-4">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-btn icon variant="text" @click="closeDialog" class="mr-2">
                 <v-icon>mdi-arrow-left</v-icon>

@@ -370,7 +370,7 @@ onMounted(() => {
 
         <v-row>
             <v-col cols="12" md="4">
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
                     <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                         <v-toolbar-title class="text-h6 d-flex align-center">
                             <v-icon start size="20" class="mr-2">mdi-domain</v-icon>
@@ -481,7 +481,7 @@ onMounted(() => {
             </v-col>
 
             <v-col cols="12" md="4">
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
                     <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                         <v-toolbar-title class="text-h6 d-flex align-center">
                             <v-icon start size="20" class="mr-2">mdi-office-building</v-icon>
@@ -593,7 +593,7 @@ onMounted(() => {
 
             <!-- New Job Roles Section -->
             <v-col cols="12" md="4">
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
                     <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                         <v-toolbar-title class="text-h6 d-flex align-center">
                             <v-icon start size="20" class="mr-2">mdi-account-tie</v-icon>

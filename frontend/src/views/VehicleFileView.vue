@@ -395,7 +395,6 @@ onMounted(async () => {
 	  <v-card 
 		v-if="!addVehicleDialog && !editVehicleDialog && !viewVehicleDialog && !isInDetailMode"
 		class="main-card elevation-4"
-		theme="dark"
 	  >
 		<v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                   <v-toolbar-title class="text-h6">
@@ -537,7 +536,6 @@ onMounted(async () => {
 	  <v-card 
 		v-if="isInDetailMode && detailVehicle"
 		class="vehicle-detail-card elevation-4"
-		theme="dark"
 	  >
 		<v-toolbar density="compact" color="primary" class="card-toolbar">
 			<v-toolbar-title class="text-subtitle-1">
@@ -777,7 +775,7 @@ onMounted(async () => {
   
 	  <!-- Delete Confirmation Dialog -->
 	  <v-dialog v-model="deleteVehicleDialog" max-width="500" persistent class="confirmation-dialog">
-		<v-card theme="dark">
+		<v-card>
 		  <v-card-title class="text-h5 dialog-title">
 			<v-icon color="error" class="mr-2">mdi-delete-alert</v-icon>
                         {{ t('vehicleFileView.deleteTitle') }}

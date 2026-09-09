@@ -1,5 +1,5 @@
 <template>
-  <v-card class="data-table-card" elevation="3" theme="dark">
+  <v-card class="data-table-card" elevation="3">
     <v-card-title v-if="title" class="px-4 py-3 table-card-title">
       <v-icon v-if="icon" :icon="icon" size="20" class="mr-2"></v-icon>
       {{ title }}

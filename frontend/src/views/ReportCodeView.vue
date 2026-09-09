@@ -235,7 +235,7 @@ onMounted(() => {
 	  </v-row>
   
 	  <!-- Tabelle -->
-	  <v-card class="main-card" elevation="4" theme="dark">
+	  <v-card class="main-card" elevation="4">
 		<v-data-table
 		  :headers="codeHeaders"
 		  :items="tableItems"

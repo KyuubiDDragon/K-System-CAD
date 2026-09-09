@@ -396,7 +396,7 @@ onMounted(async () => {
             </v-row>
             
             <!-- Detail View Content -->
-            <v-card class="detail-card elevation-4" theme="dark">
+            <v-card class="detail-card elevation-4">
                 <v-card-text class="pa-6">
                     <v-row>
                         <v-col cols="12" md="6">
@@ -553,7 +553,7 @@ onMounted(async () => {
             <!-- Aktionsleiste -->
             <v-row class="action-section mb-4 align-center">
                 <v-col cols="12" md="4" lg="3" v-if="isFireAuthority">
-                    <v-card class="extinguisher-card elevation-2" theme="dark">
+                    <v-card class="extinguisher-card elevation-2">
                         <v-card-text class="py-2 px-4">
                             <v-text-field
                                 :append-inner-icon="canEdit ? 'mdi-content-save' : undefined"
@@ -590,7 +590,7 @@ onMounted(async () => {
             </v-row>
 
             <!-- Haupttabelle -->
-            <v-card class="main-card elevation-4" theme="dark">
+            <v-card class="main-card elevation-4">
                 <v-card-text class="pa-0">
                     <!-- Filterleiste -->
                     <v-toolbar

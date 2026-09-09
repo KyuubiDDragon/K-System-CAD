@@ -3,7 +3,7 @@
         <v-row>
             <!-- Linke/Mittlere Spalte: Dispatches -->
             <v-col :cols="dispatchColumnSize">
-                <v-card class="list-card" :loading="loadingDispatches" elevation="4" theme="dark">
+                <v-card class="list-card" :loading="loadingDispatches" elevation="4">
                     <v-toolbar density="compact" color="primary" class="card-toolbar">
                         <v-toolbar-title class="text-subtitle-1">
                             <v-icon start size="18" class="mr-1">mdi-radio-tower</v-icon>
@@ -74,7 +74,6 @@
                                     class="dispatch-card fill-height d-flex flex-column"
                                     :data-id="dispatch.id"
                                     elevation="3"
-                                    theme="dark"
                                 >
                                     <v-toolbar
                                         density="compact"
@@ -270,7 +269,7 @@
 
             <!-- Rechte Spalte: Mitarbeiter/Fahrzeuge (erscheint nur wenn Button geklickt) -->
             <v-col v-if="sidePanelOpen" cols="12" md="3" lg="3" xl="3" class="side-panel">
-                <v-card class="list-card" elevation="4" theme="dark" style="max-width: 350px; margin-left: auto;">
+                <v-card class="list-card" elevation="4" style="max-width: 350px; margin-left: auto;">
                     <!-- Mitarbeiter Panel -->
                     <template v-if="employeeDrawerOpen">
                         <v-toolbar density="compact" color="primary">

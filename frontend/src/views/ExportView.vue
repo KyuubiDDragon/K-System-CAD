@@ -41,7 +41,7 @@
             <v-row v-else>
                 <!-- Left Column: Available Columns -->
                 <v-col cols="12" md="5">
-                    <v-card class="config-card" variant="outlined" theme="dark">
+                    <v-card class="config-card" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-view-column" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.availableColumns') }}
@@ -252,7 +252,7 @@
 
                 <!-- Right Column: Selected Columns & Options -->
                 <v-col cols="12" md="7">
-                    <v-card class="config-card mb-4" variant="outlined" theme="dark">
+                    <v-card class="config-card mb-4" variant="outlined">
                         <v-card-title class="text-subtitle-1 d-flex align-center">
                             <v-icon icon="mdi-format-list-checks" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.selectedColumns') }}
@@ -358,7 +358,7 @@
                     </v-card>
 
                     <!-- Export Options -->
-                    <v-card class="config-card mb-4" variant="outlined" theme="dark">
+                    <v-card class="config-card mb-4" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-cog" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.options') }}
@@ -459,7 +459,7 @@
                     </v-card>
 
                     <!-- Preview -->
-                    <v-card v-if="selectedColumns.length > 0" class="config-card mb-4" variant="outlined" theme="dark">
+                    <v-card v-if="selectedColumns.length > 0" class="config-card mb-4" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-eye" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.preview') }}
@@ -526,7 +526,7 @@
                     </v-card>
 
                     <!-- Export -->
-                    <v-card class="config-card" variant="outlined" theme="dark">
+                    <v-card class="config-card" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-export" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.export') }}
@@ -569,7 +569,7 @@
 
         <!-- Save Preset Dialog -->
         <v-dialog v-model="showSavePresetDialog" max-width="450">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title>{{ t('exportView.savePresetTitle') }}</v-card-title>
                 <v-card-text>
                     <v-text-field
@@ -600,7 +600,7 @@
 
         <!-- Load Preset Dialog -->
         <v-dialog v-model="showLoadPresetDialog" max-width="550">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title>{{ t('exportView.loadPresetTitle') }}</v-card-title>
                 <v-card-text>
                     <div v-if="loadingPresets" class="d-flex justify-center pa-4">
@@ -650,7 +650,7 @@
 
         <!-- Rename Column Dialog -->
         <v-dialog v-model="showRenameDialog" max-width="400">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title>{{ t('exportView.renameColumnTitle') }}</v-card-title>
                 <v-card-text>
                     <v-text-field
@@ -675,7 +675,7 @@
 
         <!-- Google Sheets Help Dialog -->
         <v-dialog v-model="showGoogleSheetsHelp" max-width="700">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title class="d-flex align-center">
                     <v-icon icon="mdi-google-spreadsheet" color="green" class="mr-2"></v-icon>
                     {{ t('exportView.googleSheetsHelpTitle') }}

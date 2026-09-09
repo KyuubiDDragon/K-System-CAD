@@ -250,7 +250,6 @@ onMounted(() => {
                 <v-card 
                     hover 
                     class="position-card elevation-4 fill-height d-flex flex-column"
-                    theme="dark"
                 >
                     <v-toolbar density="compact" flat color="transparent" class="card-toolbar">
                         <v-spacer></v-spacer>

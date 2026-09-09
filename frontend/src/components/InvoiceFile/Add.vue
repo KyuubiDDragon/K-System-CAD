@@ -171,7 +171,7 @@ onMounted(() => {
 
 ```vue
 <template>
-    <v-card class="invoice-card elevation-4" theme="dark">
+    <v-card class="invoice-card elevation-4">
         <v-toolbar flat density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-file-document-plus</v-icon>

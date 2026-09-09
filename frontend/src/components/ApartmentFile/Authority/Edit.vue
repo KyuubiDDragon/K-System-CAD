@@ -107,7 +107,7 @@ onMounted(fetchPersons);
 
 <template>
     <!-- Wohnung bearbeiten Formular -->
-    <v-card v-if="apartmentToEdit" class="apartment-edit-card elevation-4" theme="dark">
+    <v-card v-if="apartmentToEdit" class="apartment-edit-card elevation-4">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-home-edit</v-icon>

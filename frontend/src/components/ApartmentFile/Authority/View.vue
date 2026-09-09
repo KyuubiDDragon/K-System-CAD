@@ -135,7 +135,6 @@ const { t } = useI18n();
 	<v-card 
 	  v-if="apartmentToView" 
 	  class="apartment-card elevation-4"
-	  theme="dark"
 	>
 	  <v-toolbar density="compact" color="primary" class="card-toolbar">
 		<v-toolbar-title class="text-subtitle-1">

@@ -221,7 +221,7 @@ watch(
 
 <template>
     <!-- Firma Details Card -->
-    <v-card v-if="viewCompanyDialog && !selectedReport" class="company-detail-card" theme="dark">
+    <v-card v-if="viewCompanyDialog && !selectedReport" class="company-detail-card">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-domain</v-icon>
@@ -739,7 +739,7 @@ watch(
     </v-card>
 
     <!-- Bericht Details Ansicht -->
-    <v-card v-else-if="selectedReport" class="report-detail-card" theme="dark">
+    <v-card v-else-if="selectedReport" class="report-detail-card">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-file-document-outline</v-icon>

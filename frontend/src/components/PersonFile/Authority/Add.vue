@@ -128,7 +128,6 @@ const closeDialog = () => {
 	<v-card 
 	  v-if="addPersonDialog" 
 	  class="person-add-card elevation-4"
-	  theme="dark"
 	>
 	  <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">

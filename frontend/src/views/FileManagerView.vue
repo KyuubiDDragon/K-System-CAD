@@ -355,7 +355,7 @@ onMounted(() => {
 			</div>
 
 			<!-- Aktionsleiste mit Navigation und Datei-Upload -->
-			<v-card class="action-bar mb-5" variant="outlined" theme="dark">
+			<v-card class="action-bar mb-5" variant="outlined">
 				<v-card-text class="py-3 px-4">
 					<!-- Navigation und aktuelle Position -->
 					<div class="path-navigator d-flex align-center flex-wrap">
@@ -463,7 +463,7 @@ onMounted(() => {
 				</v-fade-transition>
 
 				<!-- Haupt-Content-Bereich -->
-				<v-card variant="outlined" class="content-area" theme="dark">
+				<v-card variant="outlined" class="content-area">
 					<!-- Leerstandsanzeige -->
 					<v-card-text
 						v-if="!filteredFolders.length && !filteredFiles.length"
@@ -531,7 +531,6 @@ onMounted(() => {
 											v-bind="props"
 											class="folder-card flex-grow-1"
 											@click="navigateToFolder(folder.id)"
-											theme="dark"
 											:elevation="isHovering ? 8 : 1"
 										>
 											<div
@@ -634,7 +633,6 @@ onMounted(() => {
 										<v-card
 											v-bind="props"
 											class="file-card flex-grow-1"
-											theme="dark"
 											:elevation="isHovering ? 8 : 1"
 										>
 											<div
@@ -770,7 +768,6 @@ onMounted(() => {
 							<!-- List View -->
 							<v-card
 								v-else
-								theme="dark"
 								variant="flat"
 								class="file-list-container"
 							>

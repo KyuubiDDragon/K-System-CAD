@@ -379,7 +379,7 @@ onMounted(() => {
             </v-row>
 
             <!-- Tabs für bessere Organisation -->
-            <v-card class="mb-6" variant="outlined" theme="dark">
+            <v-card class="mb-6" variant="outlined">
                 <v-tabs
                     v-model="activeTab"
                     color="primary"
@@ -408,7 +408,7 @@ onMounted(() => {
                 <v-window-item value="personal">
                     <v-row>
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-tune</v-icon>
                                     Allgemeine Einstellungen
@@ -450,7 +450,7 @@ onMounted(() => {
                     <v-row>
                         <!-- Normale Template Bilder -->
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-image-outline</v-icon>
                                     Organisationsbranding
@@ -537,7 +537,7 @@ onMounted(() => {
 
                         <!-- Neutrale Template Bilder -->
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-image-filter</v-icon>
                                     Neutrale Vorlagen
@@ -624,7 +624,7 @@ onMounted(() => {
 
                         <!-- Unterschrift -->
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-draw</v-icon>
                                     Unterschrift
@@ -688,7 +688,7 @@ onMounted(() => {
                 <v-window-item value="security">
                     <v-row>
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-lock</v-icon>
                                     Passwort ändern
@@ -769,7 +769,7 @@ onMounted(() => {
                         </v-col>
 
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4 security-tips" variant="outlined" theme="dark">
+                            <v-card class="mb-4 security-tips" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-shield-check</v-icon>
                                     Sicherheitshinweise

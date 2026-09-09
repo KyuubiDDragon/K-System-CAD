@@ -525,7 +525,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
                     </v-row>
 
                     <!-- Kalender Container -->
-                    <v-card class="calendar-card" elevation="4" theme="dark">
+                    <v-card class="calendar-card" elevation="4">
                         <!-- Kalender -->
                         <vue-cal
                             ref="calendar"

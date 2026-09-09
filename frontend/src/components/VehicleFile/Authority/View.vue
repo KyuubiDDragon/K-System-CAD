@@ -145,7 +145,7 @@ const closeDialog = () => {
         transition="dialog-transition"
     >
         <!-- Fahrzeugdetails anzeigen -->
-        <v-card v-if="vehicle" class="vehicle-card elevation-4" theme="dark">
+        <v-card v-if="vehicle" class="vehicle-card elevation-4">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-car</v-icon>

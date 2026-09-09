@@ -861,7 +861,7 @@ onMounted(async () => {
             </v-row>
 
             <!-- Action Bar -->
-            <v-card class="action-bar mb-5" variant="outlined" theme="dark">
+            <v-card class="action-bar mb-5" variant="outlined">
                 <v-card-text class="py-3 px-4">
                     <div class="d-flex align-center flex-wrap">
                         <div class="actions-group">
@@ -926,7 +926,7 @@ onMounted(async () => {
             </v-card>
 
             <!-- Filter Section -->
-            <v-card class="filter-card mb-5" variant="outlined" theme="dark">
+            <v-card class="filter-card mb-5" variant="outlined">
                 <v-card-text class="py-3 px-4">
                     <div class="d-flex align-center filter-title mb-2">
                         <v-icon icon="mdi-filter-variant" size="small" class="mr-2"></v-icon>
@@ -975,7 +975,7 @@ onMounted(async () => {
             </v-card>
 
             <!-- Quick Assign Section -->
-            <v-card v-if="canEdit" class="quick-assign-card mb-5" variant="outlined" theme="dark">
+            <v-card v-if="canEdit" class="quick-assign-card mb-5" variant="outlined">
                 <v-card-text class="py-3 px-4">
                     <div class="d-flex align-center filter-title mb-2">
                         <v-icon icon="mdi-lightning-bolt" size="small" class="mr-2"></v-icon>
@@ -1060,7 +1060,6 @@ onMounted(async () => {
                     :key="category.id"
                     class="category-card mb-5"
                     variant="outlined"
-                    theme="dark"
                 >
                     <div 
                         class="category-header px-4 py-3"

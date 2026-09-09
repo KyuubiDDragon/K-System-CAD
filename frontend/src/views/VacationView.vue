@@ -124,7 +124,7 @@ onMounted(() => {
       <!-- Filter-Leiste -->
       <v-row class="filter-section mb-5">
         <v-col cols="12" md="8" lg="9">
-          <v-card class="filter-card elevation-2" theme="dark">
+          <v-card class="filter-card elevation-2">
             <v-card-text class="py-2">
               <v-btn-toggle 
                 v-model="activeFilter" 

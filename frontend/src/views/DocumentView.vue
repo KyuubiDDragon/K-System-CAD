@@ -1026,7 +1026,6 @@ onMounted(async () => {
                 "
                 class="main-table-card"
                 elevation="3"
-                theme="dark"
             >
                 <v-data-table
                     :headers="tableHeaders"

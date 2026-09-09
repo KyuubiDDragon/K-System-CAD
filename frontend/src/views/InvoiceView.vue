@@ -329,7 +329,6 @@ onMounted(async () => {
         <v-card
             v-if="!showAddInvoice && !editInvoiceDialog && !viewInvoiceDialog"
             class="main-card elevation-4"
-            theme="dark"
         >
             <v-card-text class="pa-0">
                 <!-- Filterleiste -->

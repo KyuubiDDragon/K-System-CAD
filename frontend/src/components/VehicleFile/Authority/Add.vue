@@ -94,7 +94,6 @@ const dialog = computed({
 	<v-card 
 	  v-if="dialog" 
 	  class="vehicle-add-card elevation-4"
-	  theme="dark"
 	>
 	  <v-toolbar density="compact" color="primary" class="card-toolbar">
 		<v-toolbar-title class="text-subtitle-1">

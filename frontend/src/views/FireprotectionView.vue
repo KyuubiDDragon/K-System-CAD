@@ -383,7 +383,7 @@ onBeforeUnmount(() => {
     <v-container fluid>
         <v-row>
             <v-col cols="12" md="5" lg="4">
-                <v-card class="pa-4" elevation="2" theme="dark">
+                <v-card class="pa-4" elevation="2">
                     <v-card-title class="text-h6 mb-3">{{ t('fireprotectionView.formTitle') }}</v-card-title>
                     <v-form ref="formRef" v-model="isFormValid">
                         <v-select
@@ -563,7 +563,7 @@ onBeforeUnmount(() => {
                     </v-form>
                 </v-card>
 
-                <v-card class="mt-5 pa-0" elevation="2" theme="dark">
+                <v-card class="mt-5 pa-0" elevation="2">
                     <v-toolbar density="compact" flat color="grey-darken-3" class="card-toolbar">
                         <v-toolbar-title class="text-subtitle-1">
                             {{ t('fireprotectionView.lastCertificates') }}

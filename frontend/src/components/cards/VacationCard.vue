@@ -12,7 +12,6 @@
     >
       <v-card
         class="vacation-card elevation-3"
-        theme="dark"
         :class="{
           'terminated-card': member.is_terminated == true && !showIsTerminated,
           'current-vacation-card': currentVacation,

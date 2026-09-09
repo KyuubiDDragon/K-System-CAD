@@ -756,7 +756,7 @@ const showErrorSnackbar = (message: string) => {
 </script>
 
 <template>
-    <v-card v-if="dialog && (selectedCategory !== undefined && selectedCategory !== null)" class="report-card" elevation="4" theme="dark">
+    <v-card v-if="dialog && (selectedCategory !== undefined && selectedCategory !== null)" class="report-card" elevation="4">
         <v-overlay
             :model-value="isDataLoading"
             class="align-center justify-center"

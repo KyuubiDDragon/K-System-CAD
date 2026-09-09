@@ -63,7 +63,7 @@ onMounted(async () => {
 
 <template>
     <!-- Neue Firma hinzufügen Formular -->
-    <v-card v-if="newCompanyDialog" class="company-add-card" theme="dark">
+    <v-card v-if="newCompanyDialog" class="company-add-card">
         <v-toolbar density="compact" color="success" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-domain-plus</v-icon>

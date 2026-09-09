@@ -61,7 +61,7 @@ onMounted(async () => {
 
 <template>
     <!-- Firma bearbeiten Formular -->
-    <v-card v-if="editCompanyDialog" class="company-edit-card" theme="dark">
+    <v-card v-if="editCompanyDialog" class="company-edit-card">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-domain-edit</v-icon>

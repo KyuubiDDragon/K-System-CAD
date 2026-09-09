@@ -209,7 +209,7 @@ onMounted(fetchCompanyTypes);
         </v-row>
 
         <!-- Haupttabelle -->
-        <v-card class="main-card elevation-4" theme="dark">
+        <v-card class="main-card elevation-4">
             <v-data-table
                 :headers="typeHeaders"
                 :items="companyTypes"

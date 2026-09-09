@@ -1079,7 +1079,7 @@ const closeSharedReportDialog = () => {
             </v-row>
 
             <!-- Filter Buttons -->
-            <v-card v-if="!isAddingOrEditing" class="filter-card mb-4" elevation="4" theme="dark">
+            <v-card v-if="!isAddingOrEditing" class="filter-card mb-4" elevation="4">
                 <v-toolbar flat density="comfortable" color="transparent" class="px-4 py-2">
                     <v-toolbar-title class="text-subtitle-1">
                         <v-icon start size="18" class="mr-1">mdi-filter-variant</v-icon>
@@ -1257,7 +1257,7 @@ const closeSharedReportDialog = () => {
             </v-card>
 
             <!-- Tabs für normale/geteilte Berichte -->
-            <v-card v-if="!isAddingOrEditing" class="tabs-card mb-4" elevation="4" theme="dark">
+            <v-card v-if="!isAddingOrEditing" class="tabs-card mb-4" elevation="4">
                 <v-tabs v-model="activeTab" color="primary" centered grow>
                     <v-tab value="all">{{ $t('reportView.allReports') }}</v-tab>
                     <v-tab value="shared-with-me" @click="fetchSharedWithMeReports()">{{ $t('reportView.sharedWithMe') }}</v-tab>
@@ -1267,7 +1267,7 @@ const closeSharedReportDialog = () => {
             </v-card>
 
             <!-- Haupttabelle -->
-            <v-card v-if="!isAddingOrEditing" class="main-card" elevation="4" theme="dark">
+            <v-card v-if="!isAddingOrEditing" class="main-card" elevation="4">
                 <v-data-table
                     :headers="reportHeaders"
                     :items="activeTab === 'all' 

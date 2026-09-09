@@ -450,7 +450,7 @@ onMounted(() => {
             </v-row>
 
             <!-- Action Bar -->
-            <v-card class="action-bar mb-5" variant="outlined" theme="dark">
+            <v-card class="action-bar mb-5" variant="outlined">
                 <v-card-text class="py-3 px-4">
                     <div class="d-flex align-center flex-wrap">
                         <div class="actions-group">
@@ -479,7 +479,7 @@ onMounted(() => {
             </v-card>
 
             <!-- Question Table -->
-            <v-card class="main-card elevation-4 mb-5" theme="dark">
+            <v-card class="main-card elevation-4 mb-5">
                 <v-toolbar
                     flat
                     density="compact"
@@ -732,7 +732,6 @@ onMounted(() => {
                 v-if="testQuestions.length > 0"
                 class="test-card mb-5"
                 variant="outlined"
-                theme="dark"
             >
                 <div class="test-header px-4 py-3">
                     <div class="d-flex align-center justify-space-between">
