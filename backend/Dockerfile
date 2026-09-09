@@ -22,17 +22,30 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 COPY uploads.ini /usr/local/etc/php/conf.d/custom-uploads.ini
 
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install Composer (pinned major version, :latest can break the build without notice)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Composer runs as root inside the image; silence the superuser warning
+ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy composer files and install dependencies first (for better layer caching)
-COPY composer.json composer.lock* ./
-RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+# Copy composer files and install dependencies first (for better layer caching).
+# composer.lock is committed, so this installs a fixed set of packages instead of
+# re-resolving the dependency graph against Packagist on every build.
+COPY composer.json composer.lock ./
+RUN composer install \
+        --no-dev \
+        --no-interaction \
+        --no-progress \
+        --no-scripts \
+        --prefer-dist \
+        --optimize-autoloader \
+    && composer clear-cache
 
 # Copy existing application directory contents
+# (.dockerignore keeps the local vendor/ out so the installed one is not overwritten)
 COPY . /var/www/html
 
 # Copy migrations directory

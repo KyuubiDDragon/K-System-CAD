@@ -93,8 +93,9 @@ db_backup/
 sql_backup/
 
 # PHP composer
+# composer.lock is intentionally committed: it makes the Docker build
+# reproducible and removes the dependency resolution step at build time.
 vendor/
-composer.lock
 backend/vendor/
 
 # Testing

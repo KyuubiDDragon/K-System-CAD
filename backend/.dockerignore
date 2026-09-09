@@ -1,0 +1,21 @@
+# Dependencies are installed inside the image by "composer install";
+# a local vendor/ must not overwrite them via "COPY . /var/www/html".
+vendor/
+node_modules/
+
+# Never bake local secrets into the image (.env.template is kept on purpose)
+.env
+.env.local
+.env.production
+
+# VCS / editor / OS noise
+.git/
+.gitignore
+.idea/
+.vscode/
+*.swp
+.DS_Store
+
+# Not needed inside the image
+Dockerfile
+.dockerignore
