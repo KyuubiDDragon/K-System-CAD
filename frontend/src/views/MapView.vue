@@ -1429,7 +1429,7 @@ watch([markers, categories], () => {
     min-height: calc(100vh - 64px);
     height: calc(100vh - 64px);
     width: 100%;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1454,14 +1454,14 @@ watch([markers, categories], () => {
     border-radius: 12px;
     overflow: hidden;
     background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
 }
 
 .map-style-controls {
     padding: 12px;
     background: rgba(30, 41, 59, 0.4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--k-line);
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1487,7 +1487,7 @@ watch([markers, categories], () => {
     flex-direction: column;
     border-radius: 12px;
     background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     overflow: hidden;
 }
@@ -1495,7 +1495,7 @@ watch([markers, categories], () => {
 .sidebar-header {
     padding: 16px;
     background: rgba(30, 41, 59, 0.4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .sidebar-title {
@@ -1509,7 +1509,7 @@ watch([markers, categories], () => {
 
 .sidebar-filters {
     padding: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .location-list {
@@ -1522,7 +1522,7 @@ watch([markers, categories], () => {
     border-radius: 8px;
     margin-bottom: 8px;
     background-color: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
 }
 
 .map-category-panel :deep(.v-expansion-panel-title) {
@@ -1558,12 +1558,12 @@ watch([markers, categories], () => {
 .no-locations {
     padding: 12px;
     text-align: center;
-    color: #64748b;
+    color: var(--k-ink-muted);
     font-size: 0.875rem;
 }
 
 .marker-popup :deep(.leaflet-popup-content-wrapper) {
-    background-color: #1e293b;
+    background-color: var(--k-sunken);
     color: #e2e8f0;
     border-radius: 8px;
     box-shadow:
@@ -1572,7 +1572,7 @@ watch([markers, categories], () => {
 }
 
 .marker-popup :deep(.leaflet-popup-tip) {
-    background-color: #1e293b;
+    background-color: var(--k-sunken);
 }
 
 .popup-content {
@@ -1601,19 +1601,19 @@ watch([markers, categories], () => {
 }
 
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 
 .required-field-notice {
     font-size: 0.75rem;
-    color: #64748b;
+    color: var(--k-ink-muted);
     margin-top: 8px;
 }
 

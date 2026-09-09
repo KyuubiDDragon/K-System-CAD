@@ -79,7 +79,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   icon: 'mdi-chart-line',
-  color: '#3b82f6',
+  color: 'var(--k-accent)',
   label: '',
   subLabel: '',
   type: 'statistic',
@@ -108,7 +108,7 @@ const getWeatherType = (icon: string): string => {
 
 // Function to get weather-specific color
 const getWeatherColor = (icon: string): string => {
-  if (!icon) return '#3b82f6';
+  if (!icon) return 'var(--k-accent)';
   
   const colorMap: { [key: string]: string } = {
     'mdi-fire-alert': '#ef4444', // Bright red for wildfire
@@ -125,7 +125,7 @@ const getWeatherColor = (icon: string): string => {
     'mdi-weather-windy': '#64748b', // Blue-gray for wind
   };
   
-  return colorMap[icon] || '#3b82f6';
+  return colorMap[icon] || 'var(--k-accent)';
 };
 
 // Function for weather icon specific colors
@@ -159,7 +159,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
   box-shadow: var(--shadow-medium);
   overflow: hidden;
   width: var(--desktop-widget-width);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   transition: all var(--animation-duration-normal) var(--animation-easing);
   animation: widget-appear 0.5s var(--animation-easing);
   position: relative;
@@ -168,7 +168,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 .desktop-widget:hover {
   transform: var(--button-hover-translate);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.15);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--k-line);
 }
 
 /* Weather type specific styles */
@@ -228,7 +228,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
   display: flex;
   align-items: center;
   padding: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--k-line);
   font-weight: 500;
   font-size: 14px;
   position: relative;
@@ -254,7 +254,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
   top: 15%;
   height: 70%;
   width: 1px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
 }
 
 .desktop-widget:hover .widget-icon-container {
@@ -282,7 +282,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 
 .widget-label-badge {
   font-size: 11px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   padding: 2px 8px;
   border-radius: 10px;
   margin-right: 10px;
@@ -499,12 +499,12 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
   align-items: center;
   padding: 5px;
   border-radius: var(--border-radius-sm);
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--k-row-hover);
   transition: all var(--animation-duration-fast) var(--animation-easing);
 }
 
 .activity-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   transform: translateX(3px);
 }
 

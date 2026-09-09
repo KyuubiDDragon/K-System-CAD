@@ -1796,7 +1796,7 @@ onMounted(() => {
 <style scoped>
 .app-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1809,7 +1809,7 @@ onMounted(() => {
     justify-content: space-between;
     padding-bottom: 16px;
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .action-buttons {
@@ -1848,7 +1848,7 @@ onMounted(() => {
     justify-content: space-between;
     padding: 12px 16px;
     background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -1874,7 +1874,7 @@ onMounted(() => {
 
 .template-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     transition: all 0.2s ease;
@@ -1891,7 +1891,7 @@ onMounted(() => {
 
 .template-toolbar {
     background: rgba(30, 41, 59, 0.4) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .template-icon-container {
@@ -1921,20 +1921,20 @@ onMounted(() => {
 }
 
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     overflow: hidden;
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 
 .empty-state-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -1982,12 +1982,12 @@ onMounted(() => {
     background: rgba(15, 23, 42, 0.4) !important;
     border-radius: 8px;
     padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
 }
 
 .draggable-item {
     background: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     margin-bottom: 8px;
     border-radius: 6px;
     transition: all 0.2s ease;
@@ -2046,7 +2046,7 @@ code {
 
 .template-card {
   background: rgba(15, 23, 42, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   transition: all 0.2s ease;
@@ -2097,7 +2097,7 @@ code {
 .template-description {
   font-size: 0.875rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -2175,7 +2175,7 @@ code {
 /* Stilisierung der Karten */
 .template-card {
   background: rgba(15, 23, 42, 0.6) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   backdrop-filter: blur(10px);
   border-radius: 12px;
   transition: all 0.2s ease;
@@ -2194,7 +2194,7 @@ code {
 
 .template-toolbar {
   background: rgba(30, 41, 59, 0.4) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--k-line);
   min-height: 48px !important;
   height: 48px;
   padding: 0 8px;
@@ -2236,7 +2236,7 @@ code {
 .template-description {
   font-size: 0.875rem;
   text-align: center;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;

@@ -359,7 +359,7 @@ const handleSearchClick = () => {
 const getAppColor = (app: App) => {
     // Find app in the allApps list to get its color
     const appMatch = props.allApps?.find(a => a.id === app.appId);
-    return appMatch?.color || '#3b82f6';
+    return appMatch?.color || 'var(--k-accent)';
 };
 
 // Fetch weather data from API
@@ -452,7 +452,7 @@ const formattedReportsCount = computed(() => {
 // Mock data for apps - in a real implementation, this would be passed down
 // Commented out because we're now receiving allApps from props
 // const allApps = ref([
-//     { id: 'dashboard', title: t('dashboard'), icon: 'mdi-view-dashboard', color: '#3b82f6' },
+//     { id: 'dashboard', title: t('dashboard'), icon: 'mdi-view-dashboard', color: 'var(--k-accent)' },
 //     { id: 'users', title: t('users'), icon: 'mdi-account-multiple', color: '#10b981' },
 //     { id: 'messages', title: t('messages'), icon: 'mdi-email', color: '#f59e0b' },
 //     { id: 'calendar', title: t('calendar'), icon: 'mdi-calendar', color: '#ef4444' },
@@ -655,7 +655,7 @@ const handleClickOutside = (event: MouseEvent) => {
     margin-left: 0;
     padding: 6px 0;
     border-left: none;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    border-top: 1px solid var(--k-line);
     padding-top: 18px;
 }
 
@@ -712,7 +712,7 @@ const handleClickOutside = (event: MouseEvent) => {
     bottom: -5px;
     right: -5px;
     background-color: var(--desktop-accent-blue);
-    color: white;
+    color: var(--k-ink);
     border-radius: 50%;
     font-size: 9px;
     min-width: 16px;
@@ -736,7 +736,7 @@ const handleClickOutside = (event: MouseEvent) => {
     flex-direction: column;
     gap: 5px;
     min-width: 220px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     z-index: 100;
     animation: fade-in 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     max-height: 80vh;
@@ -777,7 +777,7 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 .group-app-item:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--k-row-hover);
     transform: translateX(3px);
 }
 
@@ -811,7 +811,7 @@ const handleClickOutside = (event: MouseEvent) => {
     bottom: -5px;
     right: -5px;
     background: linear-gradient(45deg, var(--desktop-accent-blue), var(--desktop-accent-purple, #8b5cf6));
-    color: white;
+    color: var(--k-ink);
     border-radius: 50%;
     font-size: 10px;
     min-width: 18px;
@@ -939,7 +939,7 @@ const handleClickOutside = (event: MouseEvent) => {
     border-radius: 12px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
     padding: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     z-index: 1001;
     animation: fade-in 0.2s ease;
     width: 250px;
@@ -963,7 +963,7 @@ const handleClickOutside = (event: MouseEvent) => {
     padding: 8px 12px;
     border-radius: 8px;
     background-color: rgba(var(--desktop-bg-dark-2), 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     color: var(--desktop-text-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
@@ -976,7 +976,7 @@ const handleClickOutside = (event: MouseEvent) => {
 
 .position-buttons button.active {
     background-color: var(--desktop-accent-blue);
-    color: white;
+    color: var(--k-ink);
 }
 
 .close-controls {
@@ -1038,7 +1038,7 @@ const handleClickOutside = (event: MouseEvent) => {
     justify-content: space-between;
     padding: 0 var(--desktop-padding, 16px);
     z-index: 1000;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid var(--k-line);
     box-shadow:
         0 -10px 40px rgba(0, 0, 0, 0.3),
         0 -4px 16px rgba(0, 0, 0, 0.2),
@@ -1101,7 +1101,7 @@ const handleClickOutside = (event: MouseEvent) => {
     color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.75));
     margin-right: 12px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1114,7 +1114,7 @@ const handleClickOutside = (event: MouseEvent) => {
         0 8px 20px rgba(0, 0, 0, 0.25),
         0 4px 8px rgba(0, 0, 0, 0.15);
     color: var(--desktop-text, rgba(255, 255, 255, 0.95));
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--k-line);
 }
 
 .search-button:active {
@@ -1150,7 +1150,7 @@ const handleClickOutside = (event: MouseEvent) => {
     position: relative;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
@@ -1197,7 +1197,7 @@ const handleClickOutside = (event: MouseEvent) => {
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.25),
         0 3px 8px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--k-line);
 }
 
 .taskbar-app:active {
@@ -1226,7 +1226,7 @@ const handleClickOutside = (event: MouseEvent) => {
     gap: 10px;
     margin-left: auto;
     padding-left: 20px;
-    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 1px solid var(--k-line);
     height: 100%;
     padding-right: 16px;
 }
@@ -1241,7 +1241,7 @@ const handleClickOutside = (event: MouseEvent) => {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
@@ -1252,7 +1252,7 @@ const handleClickOutside = (event: MouseEvent) => {
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.25),
         0 3px 8px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--k-line);
 }
 
 .tray-item:active {
@@ -1271,7 +1271,7 @@ const handleClickOutside = (event: MouseEvent) => {
     padding: 8px 14px;
     border-radius: 12px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
@@ -1283,7 +1283,7 @@ const handleClickOutside = (event: MouseEvent) => {
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.25),
         0 3px 8px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--k-line);
 }
 
 .clock:active {
@@ -1309,7 +1309,7 @@ const handleClickOutside = (event: MouseEvent) => {
     top: -6px;
     right: -6px;
     background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
+    color: var(--k-ink);
     border-radius: 50%;
     font-size: 10px;
     font-weight: 700;
@@ -1465,7 +1465,7 @@ const handleClickOutside = (event: MouseEvent) => {
     padding: 8px;
     min-width: 180px;
     z-index: 1001;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     animation: fade-in 0.2s ease;
@@ -1482,7 +1482,7 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 .language-option:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--k-row-hover);
     color: var(--desktop-text, rgba(255, 255, 255, 0.95));
 }
 
@@ -1503,7 +1503,7 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 .check-icon {
-    color: var(--desktop-accent-blue, #3b82f6);
+    color: var(--desktop-accent-blue, var(--k-accent));
 }
 
 /* Positioning adjustments for different taskbar positions */

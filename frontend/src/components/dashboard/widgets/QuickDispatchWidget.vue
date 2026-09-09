@@ -77,6 +77,6 @@ defineExpose({ refresh: loadDispatchStats })
 .stat-card {
   text-align: center;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
 }
 </style>

@@ -107,7 +107,7 @@ export default {
         site_name: 'Beispiel-Website',
         site_slogan: 'Eine professionelle Webpräsenz',
         site_description: 'Dies ist eine Beispiel-Website für die Vorschaufunktion.',
-        primary_color: '#3b82f6',
+        primary_color: 'var(--k-accent)',
         secondary_color: '#1e3a8a',
         background_color: '#ffffff',
         contact_email: 'kontakt@beispiel.de',
@@ -128,7 +128,7 @@ export default {
   computed: {
     websiteStyles() {
       return {
-        '--primary-color': this.website.primary_color || '#3b82f6',
+        '--primary-color': this.website.primary_color || 'var(--k-accent)',
         '--secondary-color': this.website.secondary_color || '#1e3a8a',
         '--background-color': this.website.background_color || '#ffffff',
         'background-color': this.website.background_color || '#ffffff',
@@ -308,7 +308,7 @@ export default {
 
 .preview-header {
   background-color: #3b5998;
-  color: white;
+  color: var(--k-ink);
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -328,7 +328,7 @@ export default {
 }
 
 .preview-label {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
   padding: 3px 8px;
   border-radius: 4px;
   font-size: 0.8rem;
@@ -337,7 +337,7 @@ export default {
 
 .back-btn {
   background-color: rgba(0, 0, 0, 0.2);
-  color: white;
+  color: var(--k-ink);
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -384,8 +384,8 @@ export default {
 
 /* Website Template Styles */
 .site-header {
-  background-color: var(--primary-color, #3b82f6);
-  color: white;
+  background-color: var(--primary-color, var(--k-accent));
+  color: var(--k-ink);
   padding: 20px;
   text-align: center;
 }
@@ -417,7 +417,7 @@ export default {
 }
 
 .site-nav a {
-  color: white;
+  color: var(--k-ink);
   text-decoration: none;
   padding: 5px 10px;
   border-radius: 4px;
@@ -426,13 +426,13 @@ export default {
 }
 
 .site-nav a.active {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--k-ink-faint);
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .site-nav a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
   transform: translateY(-2px);
   transition: all 0.2s ease;
 }
@@ -485,7 +485,7 @@ export default {
 }
 
 .site-nav .submenu a:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: var(--k-row-hover);
 }
 
 .site-main {
@@ -498,7 +498,7 @@ export default {
   text-align: center;
   padding: 50px 20px;
   background-color: var(--secondary-color, #1e3a8a);
-  color: white;
+  color: var(--k-ink);
   margin-bottom: 40px;
   border-radius: 8px;
 }
@@ -517,8 +517,8 @@ export default {
 }
 
 .cta-button {
-  background-color: var(--primary-color, #3b82f6);
-  color: white;
+  background-color: var(--primary-color, var(--k-accent));
+  color: var(--k-ink);
   border: none;
   padding: 12px 30px;
   border-radius: 4px;
@@ -539,7 +539,7 @@ export default {
   text-align: center;
   margin-bottom: 40px;
   font-size: 2rem;
-  color: var(--primary-color, #3b82f6);
+  color: var(--primary-color, var(--k-accent));
 }
 
 .features-grid {
@@ -549,7 +549,7 @@ export default {
 }
 
 .feature-card {
-  background-color: white;
+  background-color: var(--k-ink);
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -564,7 +564,7 @@ export default {
 .feature-card i {
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: var(--primary-color, #3b82f6);
+  color: var(--primary-color, var(--k-accent));
 }
 
 .feature-card h3 {
@@ -574,7 +574,7 @@ export default {
 
 .site-footer {
   background-color: var(--secondary-color, #1e3a8a);
-  color: white;
+  color: var(--k-ink);
   padding: 20px;
   text-align: center;
   margin-top: auto;
@@ -602,7 +602,7 @@ export default {
   left: 0;
   width: 50px;
   height: 2px;
-  background-color: var(--primary-color, #3b82f6);
+  background-color: var(--primary-color, var(--k-accent));
 }
 
 .footer-section p {
@@ -623,7 +623,7 @@ export default {
 }
 
 .footer-section a {
-  color: white;
+  color: var(--k-ink);
   text-decoration: none;
   opacity: 0.8;
   transition: opacity 0.3s;
@@ -634,7 +634,7 @@ export default {
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--k-line);
   padding-top: 20px;
   text-align: center;
   opacity: 0.7;
@@ -651,7 +651,7 @@ export default {
 
 .overlay-message {
   background-color: rgba(0, 0, 0, 0.7);
-  color: white;
+  color: var(--k-ink);
   padding: 8px 16px;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -729,7 +729,7 @@ export default {
 }
 
 .post-item {
-  background-color: white;
+  background-color: var(--k-ink);
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
@@ -763,7 +763,7 @@ export default {
 .post-item h2 {
   padding: 20px 20px 10px;
   margin: 0;
-  color: var(--primary-color, #3b82f6);
+  color: var(--primary-color, var(--k-accent));
     font-size: 1.5rem;
   }
   
@@ -785,8 +785,8 @@ export default {
 }
 
 .category-tag {
-  background-color: var(--primary-color, #3b82f6);
-  color: white;
+  background-color: var(--primary-color, var(--k-accent));
+  color: var(--k-ink);
   padding: 3px 8px;
   border-radius: 15px;
   font-size: 0.8rem;
@@ -802,7 +802,7 @@ export default {
 .read-more {
   display: inline-block;
   margin: 0 20px 20px;
-  color: var(--primary-color, #3b82f6);
+  color: var(--primary-color, var(--k-accent));
   text-decoration: none;
   font-weight: 500;
   position: relative;
@@ -842,7 +842,7 @@ export default {
 
 .no-navigation-message {
   padding: 10px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   text-align: center;
   font-style: italic;
   background-color: rgba(0, 0, 0, 0.1);
@@ -854,7 +854,7 @@ export default {
 .error-message {
   padding: 20px;
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
   border-radius: 8px;
   margin: 20px 0;
   }
@@ -915,7 +915,7 @@ export default {
 /* Hero Section Styles */
 .section-hero {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
+  color: var(--k-ink);
   text-align: center;
   min-height: 500px;
   display: flex;
@@ -949,7 +949,7 @@ export default {
 
 .hero-button {
   display: inline-block;
-  background-color: white;
+  background-color: var(--k-ink);
   color: var(--primary-color);
   padding: 15px 40px;
   border-radius: 50px;
@@ -968,7 +968,7 @@ export default {
 
 /* About Section Styles */
 .section-about {
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
   text-align: center;
 }
 
@@ -995,7 +995,7 @@ export default {
 
 /* Services Section Styles */
 .section-services {
-  background-color: white;
+  background-color: var(--k-ink);
   text-align: center;
 }
 
@@ -1014,7 +1014,7 @@ export default {
 }
 
 .service-card {
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
   padding: 40px 30px;
   border-radius: 12px;
   transition: all 0.3s ease;
@@ -1048,22 +1048,22 @@ export default {
 /* Contact Section Styles */
 .section-contact {
   background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
-  color: white;
+  color: var(--k-ink);
   text-align: center;
 }
 
 .section-contact h2 {
   font-size: 2.5rem;
   margin-bottom: 15px;
-  color: white;
+  color: var(--k-ink);
 }
 
 .section-contact .section-subtitle {
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--k-ink);
 }
 
 .section-contact .section-content {
-  color: white;
+  color: var(--k-ink);
   margin-bottom: 30px;
 }
 
@@ -1083,7 +1083,7 @@ export default {
 
 /* Generic Section Styles */
 .section-generic {
-  background-color: white;
+  background-color: var(--k-ink);
   text-align: center;
 }
 
@@ -1096,19 +1096,19 @@ export default {
 /* Alternating background colors for sections */
 .onepager-section:nth-child(even) .section-generic,
 .onepager-section:nth-child(even) .section-about {
-  background-color: white;
+  background-color: var(--k-ink);
 }
 
 .onepager-section:nth-child(odd) .section-generic,
 .onepager-section:nth-child(odd) .section-about {
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
 }
 
 /* No sections message */
 .no-sections-message {
   padding: 60px 20px;
   text-align: center;
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
 }
 
 /* Responsive Design */

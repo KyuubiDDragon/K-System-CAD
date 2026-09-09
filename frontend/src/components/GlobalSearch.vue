@@ -681,7 +681,7 @@ const selectResult = (result: SearchResult) => {
         title: t('tabs.person'),
         icon: 'mdi-account-group',
         route: result.route || `/person?id=${result.id}`,
-        color: '#3b82f6'
+        color: 'var(--k-accent)'
       },
       company: {
         id: 'company',
@@ -863,7 +863,7 @@ const createNewPerson = () => {
         title: t('tabs.person'),
         icon: 'mdi-account-group',
         route: `/person/create?prefill=${encodeURIComponent(cleanSearchQuery.value)}`,
-        color: '#3b82f6'
+        color: 'var(--k-accent)'
       }
     }));
   } else {
@@ -1015,7 +1015,7 @@ defineExpose({
   background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--k-line);
   border-radius: 24px;
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.4),
@@ -1026,7 +1026,7 @@ defineExpose({
 .search-header {
   padding: 20px;
   background: linear-gradient(135deg, rgba(51, 65, 85, 0.4), rgba(71, 85, 105, 0.3));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--k-line);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
@@ -1036,11 +1036,11 @@ defineExpose({
     font-size: 18px;
     background: rgba(15, 23, 42, 0.5) !important;
     border-radius: 16px !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: var(--k-line);
       background: rgba(15, 23, 42, 0.6) !important;
     }
 
@@ -1054,7 +1054,7 @@ defineExpose({
   }
 
   :deep(.v-field__input) {
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--k-ink);
     font-weight: 500;
     padding: 12px 16px;
   }
@@ -1064,7 +1064,7 @@ defineExpose({
   }
 
   :deep(.v-icon) {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
   }
 }
@@ -1072,12 +1072,12 @@ defineExpose({
 .search-shortcut {
   padding: 4px 10px;
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.7));
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--k-line);
   border-radius: 6px;
   font-size: 11px;
   font-family: monospace;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--k-ink);
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -1094,14 +1094,14 @@ defineExpose({
 
 .search-tabs {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.5));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--k-line);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   min-height: 48px;
   flex-shrink: 0;
 
   :deep(.v-tab) {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     font-weight: 600;
     text-transform: none;
     letter-spacing: 0.3px;
@@ -1112,20 +1112,20 @@ defineExpose({
     font-size: 0.875rem;
 
     &:hover {
-      color: rgba(255, 255, 255, 0.9);
-      background: rgba(255, 255, 255, 0.05);
+      color: var(--k-ink);
+      background: var(--k-row-hover);
     }
 
     &.v-tab--selected {
-      color: rgba(255, 255, 255, 0.95);
+      color: var(--k-ink);
       background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.2));
       border: 1px solid rgba(59, 130, 246, 0.3);
       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
     }
 
     .v-chip {
-      background: rgba(255, 255, 255, 0.15);
-      color: rgba(255, 255, 255, 0.95);
+      background: var(--k-row-hover);
+      color: var(--k-ink);
       font-weight: 700;
       font-size: 10px;
     }
@@ -1168,7 +1168,7 @@ defineExpose({
   background: transparent;
 
   :deep(.v-list-subheader) {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     font-weight: 700;
     font-size: 12px;
     text-transform: uppercase;
@@ -1185,7 +1185,7 @@ defineExpose({
   margin: 4px 8px;
   padding: 12px !important;
   background: rgba(30, 41, 59, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--k-line);
 
   &:hover {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
@@ -1209,13 +1209,13 @@ defineExpose({
   }
 
   :deep(.v-list-item-title) {
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--k-ink);
     font-weight: 600;
     font-size: 14px;
   }
 
   :deep(.v-list-item-subtitle) {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     font-size: 12px;
   }
 
@@ -1236,7 +1236,7 @@ defineExpose({
 
   .area-subheader {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1297,7 +1297,7 @@ defineExpose({
 .no-results {
   text-align: center;
   padding: 64px 24px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 
   .v-icon {
     opacity: 0.4;
@@ -1305,39 +1305,39 @@ defineExpose({
   }
 
   .text-h6 {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     font-weight: 600;
     margin-top: 16px;
   }
 
   .text-body-2 {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--k-ink-faint);
     margin-top: 8px;
   }
 }
 
 .search-footer {
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(51, 65, 85, 0.6));
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--k-line);
   padding: 14px 20px;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
   .text-caption {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     font-weight: 500;
     letter-spacing: 0.3px;
   }
 
   :deep(.v-btn) {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     font-weight: 600;
     text-transform: none;
     border-radius: 10px;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.9);
+      background: var(--k-row-hover);
+      color: var(--k-ink);
     }
   }
 }
@@ -1345,12 +1345,12 @@ defineExpose({
 .action-shortcut {
   padding: 3px 8px;
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.7));
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--k-line);
   border-radius: 6px;
   font-size: 10px;
   font-family: monospace;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--k-ink);
   margin-left: 8px;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.15),
@@ -1371,10 +1371,10 @@ kbd {
   padding: 4px 8px;
   font-size: 11px;
   line-height: 1.2;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--k-ink);
   vertical-align: middle;
   background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(51, 65, 85, 0.8));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--k-line);
   border-radius: 6px;
   box-shadow:
     0 2px 6px rgba(0, 0, 0, 0.2),

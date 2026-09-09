@@ -1287,7 +1287,7 @@ onMounted(async () => {
 <style scoped>
 .document-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1301,7 +1301,7 @@ onMounted(async () => {
     justify-content: space-between;
     padding-bottom: 16px;
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .header-actions {
@@ -1318,14 +1318,14 @@ onMounted(async () => {
 
 .empty-state-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
 }
 
 .main-table-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -1333,7 +1333,7 @@ onMounted(async () => {
 
 .category-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -1385,7 +1385,7 @@ onMounted(async () => {
     align-items: center;
     padding: 8px;
     background: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     transition: all 0.2s ease;
 }
 
@@ -1445,7 +1445,7 @@ onMounted(async () => {
 .table-document-title {
     display: flex;
     align-items: center;
-    color: #3b82f6;
+    color: var(--k-accent);
     cursor: pointer;
     transition: transform 0.2s ease;
 }
@@ -1464,7 +1464,7 @@ onMounted(async () => {
 
 .draggable-category-item {
     background: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     margin-bottom: 8px;
     border-radius: 6px;
     transition: all 0.2s ease;
@@ -1484,7 +1484,7 @@ onMounted(async () => {
     background: rgba(15, 23, 42, 0.4) !important;
     border-radius: 8px;
     padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
 }
 
 .ghost-item {
@@ -1497,12 +1497,12 @@ onMounted(async () => {
     cursor: move;
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;
-    color: #64748b;
+    color: var(--k-ink-muted);
 }
 
 .draggable-category-item:hover .drag-handle {
     opacity: 1;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
 }
 
 .action-btn {
@@ -1532,18 +1532,18 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
     padding: 32px;
-    color: #64748b;
+    color: var(--k-ink-muted);
 }
 
 /* Dialog styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

@@ -26,8 +26,8 @@
 }
 
 .contact-field-item {
-    background-color: #1e293b;
-    border: 1px solid #374151;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, box-shadow 0.2s;
@@ -40,7 +40,7 @@
 
 .contact-field-item .card-header {
     background-color: #273549;
-    border-bottom: 1px solid #374151;
+    border-bottom: 1px solid var(--k-line);
     color: #e2e8f0;
     padding: 12px 16px;
     border-radius: 8px 8px 0 0;
@@ -48,7 +48,7 @@
 
 .contact-field-item .drag-handle {
     cursor: grab;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 1.1em;
     padding: 4px;
 }
@@ -75,7 +75,7 @@
     justify-content: center;
     width: 24px;
     height: 24px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .field-icon i {
@@ -87,7 +87,7 @@
     align-items: center;
     justify-content: center;
     background-color: #14b8a6;
-    color: white;
+    color: var(--k-ink);
     border-radius: 50%;
     width: 20px;
     height: 20px;

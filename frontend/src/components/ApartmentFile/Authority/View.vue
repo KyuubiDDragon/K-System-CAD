@@ -540,7 +540,7 @@ const { t } = useI18n();
 	align-items: center;
 	color: #e2e8f0;
 	padding-bottom: 8px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid var(--k-line);
   }
   
   /* Form Field Styling */
@@ -566,7 +566,7 @@ const { t } = useI18n();
 	align-items: center;
 	justify-content: center;
 	min-height: 150px;
-	color: #94a3b8;
+	color: var(--k-ink-faint);
   }
   
   /* Table Card */
@@ -581,7 +581,7 @@ const { t } = useI18n();
   }
   
   .person-table :deep(tr:hover) {
-	background-color: rgba(255, 255, 255, 0.05) !important;
+	background-color: var(--k-row-hover) !important;
   }
   
   /* Empty States */
@@ -591,7 +591,7 @@ const { t } = useI18n();
 	align-items: center;
 	justify-content: center;
 	padding: 32px 16px;
-	color: #64748b;
+	color: var(--k-ink-muted);
 	text-align: center;
   }
   

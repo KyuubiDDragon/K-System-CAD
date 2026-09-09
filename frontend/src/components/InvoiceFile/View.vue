@@ -523,7 +523,7 @@ const getFileIcon = path => {
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -547,7 +547,7 @@ const getFileIcon = path => {
     border-radius: 8px;
     overflow: hidden;
     transition: all var(--transition-timing);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
 }
 
 .invoice-item:hover {
@@ -570,7 +570,7 @@ const getFileIcon = path => {
     height: 24px;
     border-radius: 50%;
     background: var(--v-theme-primary);
-    color: white;
+    color: var(--k-ink);
     font-size: 12px;
     font-weight: bold;
     margin-right: 12px;
@@ -601,7 +601,7 @@ const getFileIcon = path => {
 
 .detail-label {
     flex: 0 0 140px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
 }
 
 .detail-value {
@@ -616,7 +616,7 @@ const getFileIcon = path => {
     padding: 32px;
     background: rgba(30, 41, 59, 0.3);
     border-radius: 8px;
-    color: #64748b;
+    color: var(--k-ink-muted);
 }
 
 .invoice-totals {
@@ -629,7 +629,7 @@ const getFileIcon = path => {
 .total-row {
     margin-top: 8px;
     padding-top: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--k-line);
 }
 
 /* Attachments */
@@ -639,7 +639,7 @@ const getFileIcon = path => {
     flex-direction: column;
     border-radius: 8px;
     background: rgba(30, 41, 59, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
     transition: all var(--transition-timing);
     overflow: hidden;
 }

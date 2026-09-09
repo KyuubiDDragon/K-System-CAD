@@ -881,7 +881,7 @@ onBeforeUnmount(() => {
 /* Card Toolbar */
 .card-toolbar {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Loading & Empty States */

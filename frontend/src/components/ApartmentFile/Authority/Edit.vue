@@ -391,7 +391,7 @@ onMounted(fetchPersons);
     align-items: center;
     color: #e2e8f0;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Form Field Styling */

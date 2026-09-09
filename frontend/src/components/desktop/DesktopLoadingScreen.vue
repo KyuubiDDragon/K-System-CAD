@@ -108,7 +108,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-row-hover);
     border-radius: 50%;
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -136,7 +136,7 @@ onMounted(() => {
 
 .loading-text {
     text-align: center;
-    color: white;
+    color: var(--k-ink);
 }
 
 .loading-text h2 {
@@ -171,7 +171,7 @@ onMounted(() => {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    background: linear-gradient(135deg, var(--k-accent), #60a5fa);
     animation: dotBounce 1.4s ease-in-out infinite;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
@@ -189,7 +189,7 @@ onMounted(() => {
 
 .progress-text {
     font-size: 14px;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
     font-weight: 300;
     text-align: center;
     min-height: 20px;
@@ -221,7 +221,7 @@ onMounted(() => {
 }
 
 :deep(.theme-light) .loading-logo {
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--k-row-hover);
     border-color: rgba(0, 0, 0, 0.1);
 }
 

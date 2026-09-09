@@ -490,7 +490,7 @@ onUnmounted(() => {
 
 .difficulty-button.active {
     background: linear-gradient(45deg, var(--desktop-accent-blue), var(--desktop-accent-purple));
-    color: white;
+    color: var(--k-ink);
     border-color: transparent;
     box-shadow: var(--shadow-small);
 }
@@ -498,7 +498,7 @@ onUnmounted(() => {
 .new-game-button {
     padding: 5px 10px;
     background: linear-gradient(90deg, var(--desktop-accent-blue), var(--desktop-accent-purple));
-    color: white;
+    color: var(--k-ink);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -560,7 +560,7 @@ onUnmounted(() => {
 
 .sudoku-cell.selected {
     background-color: rgba(var(--desktop-accent-blue-raw), 0.4);
-    color: white;
+    color: var(--k-ink);
 }
 
 .sudoku-cell.highlight-row,

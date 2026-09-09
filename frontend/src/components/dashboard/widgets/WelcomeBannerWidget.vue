@@ -152,18 +152,18 @@ onMounted(() => {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   gap: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--k-line);
 }
 
 .stat-item {
   text-align: center;
   padding: 0.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--k-row-hover);
   border-radius: 8px;
   transition: background 0.2s ease;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-row-hover);
   }
 }
 

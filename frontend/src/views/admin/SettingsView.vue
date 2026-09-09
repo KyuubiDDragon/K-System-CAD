@@ -1138,7 +1138,7 @@ const colorPickers = reactive({
 
 // Default colors for reset
 const defaultColors = {
-    primary: '#3B82F6', // Blue
+    primary: 'var(--k-accent)', // Blue
     secondary: '#343541',
     accent: '#10B981', // Green
     background: '#111723',
@@ -1655,7 +1655,7 @@ onMounted(() => {
 /* Main card styling */
 .settings-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -1702,7 +1702,7 @@ onMounted(() => {
     width: 40px;
     height: 40px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .color-preview-container {
@@ -1716,7 +1716,7 @@ onMounted(() => {
     height: 40px;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .on-preview {
@@ -1782,7 +1782,7 @@ onMounted(() => {
     width: 60px;
     height: 60px;
     background: linear-gradient(135deg, var(--v-theme-primary), rgba(59, 130, 246, 0.7));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .radius-preview-btn {
@@ -1792,7 +1792,7 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     background: var(--v-theme-primary);
-    color: white;
+    color: var(--k-ink);
     font-weight: 500;
 }
 
@@ -1803,13 +1803,13 @@ onMounted(() => {
     display: flex;
     align-items: center;
     background: rgba(30, 41, 59, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 /* Design preview dialog */
 .preview-dialog {
-    background: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--k-canvas) !important;
+    border: 1px solid var(--k-line);
 }
 
 .preview-title {
@@ -1819,7 +1819,7 @@ onMounted(() => {
 
 .preview-content {
     padding: 24px;
-    background-color: #0f172a;
+    background-color: var(--k-ink);
 }
 
 .preview-container {
@@ -1834,7 +1834,7 @@ onMounted(() => {
 .preview-header {
     height: 64px;
     background-color: var(--surface-color);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1865,7 +1865,7 @@ onMounted(() => {
 
 .preview-nav-item.active {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--k-ink);
 }
 
 .preview-main {
@@ -1887,12 +1887,12 @@ onMounted(() => {
 }
 
 .preview-sidebar-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .preview-sidebar-item.active {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--k-ink);
 }
 
 .preview-content-area {
@@ -1911,7 +1911,7 @@ onMounted(() => {
 .preview-card-title {
     padding: 16px;
     font-weight: 600;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     background: rgba(0, 0, 0, 0.1);
 }
 
@@ -1935,12 +1935,12 @@ onMounted(() => {
 
 .preview-btn.primary {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--k-ink);
 }
 
 .preview-btn.secondary {
     background-color: var(--accent-color);
-    color: white;
+    color: var(--k-ink);
 }
 
 .preview-form-row {
@@ -1954,8 +1954,8 @@ onMounted(() => {
     height: 40px;
     padding: 0 12px;
     border-radius: var(--border-radius);
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-row-hover);
+    border: 1px solid var(--k-line);
     display: flex;
     align-items: center;
     width: 140px;

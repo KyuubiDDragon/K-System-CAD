@@ -211,7 +211,7 @@ const uploadBackground = (event: Event) => {
 .selector-toggle {
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(var(--glass-blur));
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .background-panel {
@@ -307,7 +307,7 @@ const uploadBackground = (event: Event) => {
 
 .background-option.upload {
     height: 80px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--k-row-hover);
     display: flex;
     justify-content: center;
     align-items: center;

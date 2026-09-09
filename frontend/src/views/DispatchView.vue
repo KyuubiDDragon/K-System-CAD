@@ -1457,7 +1457,7 @@ function handleDispatchUpdate(updateData: WebSocketUpdateData): void {
 }
 
 .dispatch-toolbar {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .drop-zone-header {

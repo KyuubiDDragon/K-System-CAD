@@ -358,7 +358,7 @@ const backgroundFile = ref<File[]>([]);
 // Branding Data
 const brandingData = reactive({
     logo_url: '',
-    primary_color: '#3B82F6',
+    primary_color: 'var(--k-accent)',
     secondary_color: '#6B7280',
     app_title: '',
     default_background: '',
@@ -711,7 +711,7 @@ onMounted(() => {
     border-radius: 8px;
     border: 2px dashed rgba(0, 0, 0, 0.2);
     padding: 8px;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--k-row-hover);
     opacity: 0.7;
     transition: all 0.3s ease;
 }
@@ -768,7 +768,7 @@ onMounted(() => {
     left: 0;
     right: 0;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    color: white;
+    color: var(--k-ink);
     text-align: center;
     padding: 0.5rem;
     font-size: 0.75rem;

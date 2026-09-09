@@ -130,7 +130,7 @@ const { t } = useI18n();
 // Color options
 const colorOptions = [
   { name: 'Amber', value: '#fbbf24' },
-  { name: 'Blue', value: '#3b82f6' },
+  { name: 'Blue', value: 'var(--k-accent)' },
   { name: 'Green', value: '#10b981' },
   { name: 'Red', value: '#ef4444' },
   { name: 'Purple', value: '#8b5cf6' },
@@ -324,7 +324,7 @@ watch(() => props.note, (newNote) => {
   backdrop-filter: blur(calc(var(--glass-blur) + 3px));
   width: var(--desktop-widget-width);
   box-shadow: var(--shadow-medium);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   transition: all var(--animation-duration-normal) var(--animation-easing);
   animation: note-appear 0.5s var(--animation-easing);
   display: flex;
@@ -337,7 +337,7 @@ watch(() => props.note, (newNote) => {
 .note-widget:hover {
   transform: var(--button-hover-translate);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.15);
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--k-line);
 }
 
 .note-header {
@@ -345,7 +345,7 @@ watch(() => props.note, (newNote) => {
   align-items: center;
   justify-content: space-between;
   padding: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--k-line);
   background: rgba(0, 0, 0, 0.15);
 }
 
@@ -375,7 +375,7 @@ watch(() => props.note, (newNote) => {
 
 .note-tag-section {
   padding: 8px 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--k-line);
   background: rgba(0, 0, 0, 0.05);
 }
 
@@ -383,7 +383,7 @@ watch(() => props.note, (newNote) => {
   display: flex;
   align-items: center;
   margin-bottom: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--k-row-hover);
   border-radius: var(--border-radius-sm);
   padding: 0 5px;
 }
@@ -428,7 +428,7 @@ watch(() => props.note, (newNote) => {
   display: flex;
   gap: 6px;
   padding: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--k-line);
   background: rgba(0, 0, 0, 0.1);
   justify-content: center;
 }
@@ -438,7 +438,7 @@ watch(() => props.note, (newNote) => {
   height: 18px;
   border-radius: 50%;
   cursor: pointer;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--k-line);
   transition: all 0.2s ease;
 }
 
@@ -469,14 +469,14 @@ textarea {
 }
 
 textarea:focus {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
 }
 
 .note-footer {
   padding: 6px 10px;
   font-size: 10px;
   color: var(--desktop-text-secondary);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--k-line);
   background: rgba(0, 0, 0, 0.1);
   text-align: right;
 }

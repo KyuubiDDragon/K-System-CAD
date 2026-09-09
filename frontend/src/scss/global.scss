@@ -173,7 +173,7 @@
   background-color: var(--container-color, #1E1E1E) !important;
   color: var(--text-color, #FFFFFF) !important;
   border-radius: var(--border-radius, 8px) !important;
-  border-left: 4px solid var(--primary, #3B82F6) !important;
+  border-left: 4px solid var(--primary, var(--k-accent)) !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
   
   &.Vue-Toastification__toast--success {

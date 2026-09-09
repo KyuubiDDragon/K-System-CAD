@@ -1543,7 +1543,7 @@ onUnmounted(() => {
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background: #111723;
+    background: var(--k-surface);
 }
 
 .top-toolbar {
@@ -1552,7 +1552,7 @@ onUnmounted(() => {
     align-items: center;
     padding: 16px 24px;
     background: rgba(30, 41, 59, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--k-line);
     flex-shrink: 0;
     z-index: 10;
 }
@@ -1582,7 +1582,7 @@ onUnmounted(() => {
 .left-panel {
     width: 350px;
     flex-shrink: 0;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--k-line);
     display: flex;
     flex-direction: column;
     background: rgba(15, 23, 42, 0.6);
@@ -1599,7 +1599,7 @@ onUnmounted(() => {
 .panel-header {
     padding: 16px;
     background: rgba(30, 41, 59, 0.5);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--k-line);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1615,7 +1615,7 @@ onUnmounted(() => {
 .category-item {
     margin-bottom: 8px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
     transition: all 0.2s ease;
 }
 
@@ -1687,7 +1687,7 @@ onUnmounted(() => {
     cursor: move;
     transition: all 0.2s ease;
     background-color: rgba(15, 23, 42, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .items-table tbody tr:hover {
@@ -1734,7 +1734,7 @@ onUnmounted(() => {
     justify-content: center;
     align-items: center;
     height: 100%;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
 }
 
 /* Preview Styles */
@@ -1746,7 +1746,7 @@ onUnmounted(() => {
 
 .preview-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     display: flex;
@@ -1754,11 +1754,11 @@ onUnmounted(() => {
 }
 
 .preview-card .v-toolbar {
-    color: white !important;
+    color: var(--k-ink) !important;
 }
 
 .preview-card .v-toolbar-title {
-    color: white !important;
+    color: var(--k-ink) !important;
 }
 
 .preview-card:hover {
@@ -1984,7 +1984,7 @@ onUnmounted(() => {
 .items-table-container::-webkit-scrollbar-thumb,
 .preview-container::-webkit-scrollbar-thumb,
 .preview-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--k-row-hover);
     border-radius: 4px;
 }
 
@@ -1992,6 +1992,6 @@ onUnmounted(() => {
 .items-table-container::-webkit-scrollbar-thumb:hover,
 .preview-container::-webkit-scrollbar-thumb:hover,
 .preview-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--k-row-hover);
 }
 </style>

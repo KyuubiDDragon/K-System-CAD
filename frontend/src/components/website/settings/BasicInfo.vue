@@ -111,14 +111,14 @@ function emitChange() {
 .form-control {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -126,6 +126,6 @@ function emitChange() {
     display: block;
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 </style>

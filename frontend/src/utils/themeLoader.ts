@@ -438,6 +438,19 @@ export function applyThemeToDOM(settings?: ThemeSettings): void {
     '--divider-color': tokens.line,
     '--on-surface': tokens.ink,
     '--on-background': tokens.ink,
+    // Der Fenster-Modus hat eigene Variablen. Ohne diese Zuordnung blieben
+    // Taskleiste, Fenstertitel und Symbolbeschriftungen dort weiss und damit
+    // im hellen Modus unlesbar.
+    '--desktop-text': tokens.ink,
+    '--desktop-text-secondary': tokens.inkMuted,
+    '--desktop-text-tertiary': tokens.inkFaint,
+    '--desktop-text-muted': tokens.inkFaint,
+    '--desktop-border': tokens.line,
+    '--card-border': tokens.line,
+    '--desktop-accent-blue': tokens.accent,
+    '--desktop-button-highlight': tokens.rowHover,
+    '--scrollbar-thumb-color': tokens.lineStrong,
+    '--scrollbar-track-color': tokens.sunken,
   };
   for (const [name, value] of Object.entries(legacyFromTokens)) {
     html.style.setProperty(name, value);

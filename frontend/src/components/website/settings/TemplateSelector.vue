@@ -203,9 +203,9 @@ function updateSettings() {
 .settings-section {
     margin-bottom: 2rem;
     padding: 1.5rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     border-radius: 8px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
 }
 
 .settings-section h3 {
@@ -216,7 +216,7 @@ function updateSettings() {
 }
 
 .section-description {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 0.875rem;
     margin-bottom: 1.5rem;
 }
@@ -240,7 +240,7 @@ function updateSettings() {
 }
 
 .template-card:hover:not(.disabled) {
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
 }
@@ -268,7 +268,7 @@ function updateSettings() {
 
 .template-preview i {
     font-size: 3rem;
-    color: white;
+    color: var(--k-ink);
 }
 
 .template-preview.onepager {
@@ -295,7 +295,7 @@ function updateSettings() {
 }
 
 .template-info p {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 0.875rem;
     margin-bottom: 1rem;
     line-height: 1.4;
@@ -326,7 +326,7 @@ function updateSettings() {
     top: 1rem;
     right: 1rem;
     background-color: #10b981;
-    color: white;
+    color: var(--k-ink);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -340,8 +340,8 @@ function updateSettings() {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -352,8 +352,8 @@ function updateSettings() {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
     font-size: 0.75rem;
@@ -364,7 +364,7 @@ function updateSettings() {
     background-color: #1e2327;
     padding: 1.5rem;
     border-radius: 8px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
 }
 
 .template-settings h4 {

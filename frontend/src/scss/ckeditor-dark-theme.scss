@@ -3,7 +3,7 @@
 
 // Dark mode color variables
 $main-background: #2c2c2c;
-$main-color: #ffffff;
+$main-color: var(--k-ink);
 $main-border: #434343;
 
 // Override the theme colors

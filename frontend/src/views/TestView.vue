@@ -992,7 +992,7 @@ onMounted(() => {
 <style scoped>
 .question-catalog-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1016,7 +1016,7 @@ onMounted(() => {
 /* Action Bar */
 .action-bar {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1041,7 +1041,7 @@ onMounted(() => {
 .main-card,
 .test-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -1051,7 +1051,7 @@ onMounted(() => {
 
 .card-toolbar {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--k-line);
 }
 
 :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
@@ -1172,14 +1172,14 @@ onMounted(() => {
 
 /* Dialog Styles */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-toolbar {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
 }
 
 .dialog-toolbar.v-toolbar {

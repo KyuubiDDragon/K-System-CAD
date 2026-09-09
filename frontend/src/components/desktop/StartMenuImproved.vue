@@ -47,7 +47,7 @@
                         @click="launchApp(app)"
                         @mouseenter="setSelectedIndex(index, 'search')"
                     >
-                        <div class="list-app-icon" :style="{ backgroundColor: app.color || '#3b82f6' }">
+                        <div class="list-app-icon" :style="{ backgroundColor: app.color || 'var(--k-accent)' }">
                             <v-icon size="16" color="white">{{ app.icon }}</v-icon>
                         </div>
                         <div class="list-app-title">{{ app.title }}</div>
@@ -85,7 +85,7 @@
                             @contextmenu.prevent="openContextMenu($event, app)"
                             @mouseenter="setSelectedIndex(index, 'recent')"
                         >
-                            <div class="menu-app-icon" :style="{ backgroundColor: app.color || '#3b82f6' }">
+                            <div class="menu-app-icon" :style="{ backgroundColor: app.color || 'var(--k-accent)' }">
                                 <v-icon size="22" color="white">{{ app.icon }}</v-icon>
                             </div>
                             <div class="menu-app-title">{{ app.title }}</div>
@@ -114,7 +114,7 @@
                             @contextmenu.prevent="openContextMenu($event, app)"
                             @mouseenter="setSelectedIndex(index, 'favorites')"
                         >
-                            <div class="menu-app-icon" :style="{ backgroundColor: app.color || '#3b82f6' }">
+                            <div class="menu-app-icon" :style="{ backgroundColor: app.color || 'var(--k-accent)' }">
                                 <v-icon size="22" color="white">{{ app.icon }}</v-icon>
                                 <v-icon v-if="app.isPinned" size="12" class="pin-indicator">mdi-pin</v-icon>
                             </div>
@@ -144,7 +144,7 @@
                             @contextmenu.prevent="openContextMenu($event, app)"
                             @mouseenter="setSelectedIndex(index, 'tools')"
                         >
-                            <div class="menu-app-icon" :style="{ backgroundColor: app.color || '#3b82f6' }">
+                            <div class="menu-app-icon" :style="{ backgroundColor: app.color || 'var(--k-accent)' }">
                                 <template v-if="app.icon && (app.icon.startsWith('/') || app.icon.startsWith('http'))">
                                     <img :src="app.icon" style="width: 32px; height: 32px; object-fit: contain;" :alt="app.title">
                                 </template>
@@ -178,7 +178,7 @@
                             @contextmenu.prevent="openContextMenu($event, app)"
                             @mouseenter="setSelectedIndex(index, 'allApps')"
                         >
-                            <div class="list-app-icon" :style="{ backgroundColor: app.color || '#3b82f6' }">
+                            <div class="list-app-icon" :style="{ backgroundColor: app.color || 'var(--k-accent)' }">
                                 <v-icon size="16" color="white">{{ app.icon }}</v-icon>
                             </div>
                             <div class="list-app-title">{{ app.title }}</div>
@@ -575,7 +575,7 @@ watch(() => props.apps, () => {
     overflow-y: auto;
     border-radius: 16px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
     z-index: 1001;
     animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-origin: bottom left;
@@ -597,7 +597,7 @@ watch(() => props.apps, () => {
 /* Search Section */
 .menu-search-section {
     padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     background: rgba(0, 0, 0, 0.2);
 }
 
@@ -605,7 +605,7 @@ watch(() => props.apps, () => {
     position: relative;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--k-row-hover);
     border-radius: 10px;
     padding: 10px 12px;
     transition: all 0.3s ease;
@@ -613,13 +613,13 @@ watch(() => props.apps, () => {
 }
 
 .search-input-wrapper:focus-within {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: #3b82f6;
+    background: var(--k-row-hover);
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .search-icon {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     margin-right: 8px;
 }
 
@@ -628,23 +628,23 @@ watch(() => props.apps, () => {
     background: transparent;
     border: none;
     outline: none;
-    color: white;
+    color: var(--k-ink);
     font-size: 14px;
     font-weight: 500;
 }
 
 .search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
 }
 
 .search-clear {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     cursor: pointer;
     transition: color 0.2s;
 }
 
 .search-clear:hover {
-    color: white;
+    color: var(--k-ink);
 }
 
 /* User Section */
@@ -653,7 +653,7 @@ watch(() => props.apps, () => {
     align-items: center;
     padding: 16px 20px;
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .user-avatar {
@@ -661,7 +661,7 @@ watch(() => props.apps, () => {
     height: 48px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #3b82f6;
+    border: 3px solid var(--k-accent);
     margin-right: 16px;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     transition: all 0.3s ease;
@@ -681,14 +681,14 @@ watch(() => props.apps, () => {
 .user-name {
     font-size: 16px;
     font-weight: 700;
-    color: white;
+    color: var(--k-ink);
     margin-bottom: 4px;
     letter-spacing: 0.3px;
 }
 
 .user-status {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--k-ink-muted);
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -722,7 +722,7 @@ watch(() => props.apps, () => {
 }
 
 .collapsible .section-header:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .section-title-row {
@@ -732,19 +732,19 @@ watch(() => props.apps, () => {
 }
 
 .section-icon {
-    color: #3b82f6;
+    color: var(--k-accent);
 }
 
 .section-title {
     font-size: 13px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--k-ink);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .collapse-icon {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     transition: transform 0.3s ease;
 }
 
@@ -778,7 +778,7 @@ watch(() => props.apps, () => {
 .menu-app:hover,
 .menu-app.active {
     transform: translateY(-4px) scale(1.05);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .menu-app-icon {
@@ -807,7 +807,7 @@ watch(() => props.apps, () => {
 
 .menu-app-title {
     font-size: 12px;
-    color: white;
+    color: var(--k-ink);
     text-align: center;
     max-width: 80px;
     white-space: nowrap;
@@ -832,7 +832,7 @@ watch(() => props.apps, () => {
 .apps-list.scrollable {
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+    scrollbar-color: var(--k-ink-faint) rgba(0, 0, 0, 0.2);
 }
 
 .apps-list::-webkit-scrollbar {
@@ -845,7 +845,7 @@ watch(() => props.apps, () => {
 }
 
 .apps-list::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--k-ink-faint);
     border-radius: 8px;
 }
 
@@ -876,19 +876,19 @@ watch(() => props.apps, () => {
 
 .list-app-title {
     font-size: 13px;
-    color: white;
+    color: var(--k-ink);
     flex: 1;
 }
 
 .arrow-icon {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--k-ink-faint);
 }
 
 /* No Results */
 .no-results {
     padding: 40px 20px;
     text-align: center;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
 }
 
 .no-results-text {
@@ -903,7 +903,7 @@ watch(() => props.apps, () => {
     gap: 12px;
     padding: 12px 20px;
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid var(--k-line);
     border-radius: 0 0 16px 16px;
     margin-top: auto;
 }
@@ -913,12 +913,12 @@ watch(() => props.apps, () => {
     align-items: center;
     padding: 10px 16px;
     border-radius: 10px;
-    color: white;
+    color: var(--k-ink);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     flex: 1;
     justify-content: center;
@@ -926,7 +926,7 @@ watch(() => props.apps, () => {
 }
 
 .action-button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--k-row-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -954,7 +954,7 @@ watch(() => props.apps, () => {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
     backdrop-filter: blur(20px);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     z-index: 10;
@@ -966,14 +966,14 @@ watch(() => props.apps, () => {
     display: flex;
     align-items: center;
     padding: 12px 16px;
-    color: white;
+    color: var(--k-ink);
     font-size: 13px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .power-option:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .power-option.danger:hover {
@@ -991,7 +991,7 @@ watch(() => props.apps, () => {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
     backdrop-filter: blur(20px);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     z-index: 2000;
     min-width: 200px;
@@ -1008,14 +1008,14 @@ watch(() => props.apps, () => {
     display: flex;
     align-items: center;
     padding: 10px 16px;
-    color: white;
+    color: var(--k-ink);
     font-size: 13px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .context-menu-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .context-menu-item span {
@@ -1024,7 +1024,7 @@ watch(() => props.apps, () => {
 
 .context-menu-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--k-row-hover);
     margin: 4px 0;
 }
 

@@ -1166,7 +1166,7 @@ const extractMenuItems = () => {
             title: t('tabs.dashboard'),
             icon: 'mdi-view-dashboard-outline',
             route: '/dashboard',
-            color: '#3b82f6',
+            color: 'var(--k-accent)',
         });
     }
 
@@ -1196,7 +1196,7 @@ const extractMenuItems = () => {
         id: 'minesweeper',
         title: t('tabs.minesweeper'),
         icon: 'mdi-mine',
-        color: '#3b82f6',
+        color: 'var(--k-accent)',
         isDesktopApp: true,
         parent: 'tools-group',
         hideOnDesktop: true,
@@ -1320,7 +1320,7 @@ const extractMenuItems = () => {
                 title: t('tabs.roles'),
                 icon: 'mdi-account-key-outline',
                 route: '/admin/roles',
-                color: '#3b82f6',
+                color: 'var(--k-accent)',
                 parent: 'admin',
             });
         }
@@ -1365,7 +1365,7 @@ const extractMenuItems = () => {
                 title: t('tabs.employee'),
                 icon: 'mdi-account-group-outline',
                 route: '/admin/employees',
-                color: '#2563eb',
+                color: 'var(--k-accent-hover)',
                 parent: 'admin',
             });
         }
@@ -2005,7 +2005,7 @@ const extractMenuItems = () => {
             title: t('tabs.map'),
             icon: 'mdi-map',
             route: '/map',
-            color: '#3b82f6',
+            color: 'var(--k-accent)',
         });
     }
 
@@ -2023,7 +2023,7 @@ const extractMenuItems = () => {
         id: 'widget-weather',
         title: t('widgets.weather.title'),
         icon: 'mdi-weather-partly-cloudy',
-        color: '#3b82f6',
+        color: 'var(--k-accent)',
         action: 'addWidget',
         widgetType: 'weather',
         parent: 'widgets-group',
@@ -3410,7 +3410,7 @@ const appDefinitions = [
         title: t('tabs.dashboard'),
         icon: 'mdi-view-dashboard',
         route: '/dashboard',
-        color: '#3b82f6',
+        color: 'var(--k-accent)',
     },
     {
         id: 'calendar',
@@ -3528,7 +3528,7 @@ const appDefinitions = [
         id: 'weather',
         title: t('desktop.weather'),
         icon: 'mdi-weather-partly-cloudy',
-        color: '#3b82f6',
+        color: 'var(--k-accent)',
         isApp: true,
     },
     {
@@ -3696,7 +3696,7 @@ const testOpenFirstDocArea = () => {
     pointer-events: none;
     z-index: 10;
     background: rgba(0, 0, 0, 0.02);
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid var(--k-line);
 }
 
 .desktop-widgets > * {
@@ -3728,7 +3728,7 @@ const testOpenFirstDocArea = () => {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.9));
     backdrop-filter: blur(25px) saturate(180%);
     -webkit-backdrop-filter: blur(25px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
     border-radius: 20px;
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.5),
@@ -3756,7 +3756,7 @@ const testOpenFirstDocArea = () => {
     align-items: center;
     padding: 16px 20px;
     background: linear-gradient(135deg, rgba(51, 65, 85, 0.6), rgba(71, 85, 105, 0.5));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid var(--k-line);
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.3px;
@@ -3801,7 +3801,7 @@ const testOpenFirstDocArea = () => {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
     font-weight: 500;
 }
 
@@ -3809,7 +3809,7 @@ const testOpenFirstDocArea = () => {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06));
     transform: translateX(4px) scale(1.01);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.12);
+    border-color: var(--k-line);
 }
 
 .folder-item:active {
@@ -3928,7 +3928,7 @@ const testOpenFirstDocArea = () => {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    color: white;
+    color: var(--k-ink);
     font-size: 18px;
 }
 
@@ -4084,7 +4084,7 @@ const testOpenFirstDocArea = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: white;
+    color: var(--k-ink);
 }
 
 .desktop-loading-spinner {
@@ -4092,7 +4092,7 @@ const testOpenFirstDocArea = () => {
     height: 50px;
     border: 5px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
-    border-top-color: white;
+    border-top-color: var(--k-ink);
     animation: spin 1s ease-in-out infinite;
     margin-bottom: 20px;
 }
@@ -4100,7 +4100,7 @@ const testOpenFirstDocArea = () => {
 .desktop-loading-text {
     font-size: 18px;
     font-weight: 500;
-    color: white;
+    color: var(--k-ink);
 }
 
 @keyframes spin {

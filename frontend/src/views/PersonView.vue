@@ -645,8 +645,8 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

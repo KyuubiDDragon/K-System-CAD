@@ -127,7 +127,7 @@
                         :style="{
                             backgroundColor: localSettings.useCustomColors
                                 ? localSettings.customColors.primary
-                                : getSelectedSchemeColor('primary') || '#3b82f6',
+                                : getSelectedSchemeColor('primary') || 'var(--k-accent)',
                         }"
                     ></div>
                     <div class="color-label">Primärfarbe</div>
@@ -320,7 +320,7 @@ h3 {
 /* Links anpassen */
 a {
     /* Linkfarbe */
-    color: #3b82f6;
+    color: var(--k-accent);
 
     /* Übergangseffekt bei Hover */
     transition: color 0.3s ease;
@@ -372,14 +372,14 @@ a:hover {
 
 .site-nav a {
     /* Anpassungen für die Navigationslinks */
-    color: white;
+    color: var(--k-ink);
     text-decoration: none;
     display: inline-block;
     font-weight: 500;
     padding: 0.6rem 1.2rem;
     border-radius: 4px;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }`;
 
     localSettings.value.custom_css = cssTemplate;
@@ -413,17 +413,17 @@ a:hover {
 .form-control {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     color: #e5e7eb;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     background-color: #374151;
 }
 
@@ -431,7 +431,7 @@ a:hover {
     display: block;
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .color-schemes-grid {
@@ -466,17 +466,17 @@ a:hover {
     padding: 0.75rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
 }
 
 .color-scheme-item:hover {
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .color-scheme-item.selected {
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     background-color: #1e3a8a;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
 }
@@ -506,9 +506,9 @@ a:hover {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     border-radius: 8px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
 }
 
 .toggle-label {
@@ -547,13 +547,13 @@ a:hover {
     width: 18px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: var(--k-ink);
     transition: 0.4s;
     border-radius: 50%;
 }
 
 .toggle-switch input:checked + label {
-    background-color: #3b82f6;
+    background-color: var(--k-accent);
 }
 
 .toggle-switch input:checked + label:before {
@@ -578,9 +578,9 @@ a:hover {
 .colorscheme-preview {
     margin-top: 2rem;
     padding: 1.5rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     border-radius: 8px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
 }
 
 .colorscheme-preview h4 {
@@ -616,7 +616,7 @@ a:hover {
 
 .color-label {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .css-template-actions {
@@ -639,12 +639,12 @@ a:hover {
 }
 
 .btn-secondary {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 
 .code-editor {

@@ -378,12 +378,12 @@ const formatCustomFieldValue = (value: any): string => {
 /* For dark theme compatibility */
 :deep(.v-theme--dark) .creator-info-bar {
   background-color: rgba(30, 41, 59, 0.4);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--k-ink);
 }
 
 :deep(.v-theme--dark) .formatted-content {
   background-color: rgba(15, 23, 42, 0.3);
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: var(--k-ink);
 }
 
 /* Sorge dafür, dass Bilder im Inhalt nicht die Container-Breite überschreiten */

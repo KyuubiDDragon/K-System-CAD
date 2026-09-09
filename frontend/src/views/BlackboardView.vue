@@ -57,7 +57,7 @@
                     elevation="4"
                     :class="{'pinned-entry': entry.pinned}"
                 >
-                    <div class="entry-color-bar" :style="`background-color: ${entry.color || '#3b82f6'}`"></div>
+                    <div class="entry-color-bar" :style="`background-color: ${entry.color || 'var(--k-accent)'}`"></div>
                     
                     <template v-slot:title>
                         <div class="d-flex align-center">
@@ -242,7 +242,7 @@
                                         mode="hexa"
                                         width="100%"
                                         class="color-picker"
-                                        style="background-color: #0f172a !important;"
+                                        style="background-color: var(--k-ink) !important;"
                                     ></v-color-picker>
                                 </v-col>
                                 <v-col cols="12" sm="4" class="d-flex flex-column justify-center options-container">
@@ -1075,7 +1075,7 @@ onMounted(async () => {
 .editor-card {
     border-radius: 12px;
     overflow: hidden;
-    background-color: #0f172a !important;
+    background-color: var(--k-ink) !important;
     border: 1px solid var(--card-border);
 }
 
@@ -1085,7 +1085,7 @@ onMounted(async () => {
 }
 
 .color-picker :deep(.v-color-picker__controls) {
-    background-color: #0f172a !important;
+    background-color: var(--k-ink) !important;
     border-radius: 8px;
 }
 

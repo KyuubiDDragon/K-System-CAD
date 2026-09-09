@@ -909,8 +909,8 @@ onMounted(async () => {
   }
   
   .dialog-title {
-	background: linear-gradient(90deg, #1e3a8a, #2563eb);
-	color: white;
+	background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+	color: var(--k-ink);
 	padding: 16px;
   }
   
@@ -980,7 +980,7 @@ onMounted(async () => {
   }
 
   .vehicle-detail-card .person-table :deep(tr:hover) {
-	background-color: rgba(255, 255, 255, 0.05) !important;
+	background-color: var(--k-row-hover) !important;
   }
 
   .vehicle-detail-card .section-title {
@@ -1003,7 +1003,7 @@ onMounted(async () => {
 	align-items: center;
 	justify-content: center;
 	padding: 32px 16px;
-	color: #64748b;
+	color: var(--k-ink-muted);
 	text-align: center;
   }
 

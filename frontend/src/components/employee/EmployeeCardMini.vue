@@ -75,7 +75,7 @@ const statusInfo = computed(() => {
         const isSick = currentVacation.reason.toLowerCase().includes('krank');
         return {
             class: isSick ? 'sick' : 'vacation',
-            color: isSick ? '#f59e0b' : '#3b82f6'
+            color: isSick ? '#f59e0b' : 'var(--k-accent)'
         };
     }
 
@@ -121,7 +121,7 @@ const handleClick = () => {
 <style scoped>
 .employee-card-mini {
     background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
     backdrop-filter: blur(10px);
@@ -136,7 +136,7 @@ const handleClick = () => {
 }
 
 .employee-card-mini.selected {
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
     transform: scale(1.02);
 }
@@ -151,7 +151,7 @@ const handleClick = () => {
 .card-mini-avatar {
     flex-shrink: 0;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    background: linear-gradient(135deg, #1e3a8a, var(--k-accent));
 }
 
 .card-mini-info {
@@ -177,7 +177,7 @@ const handleClick = () => {
 }
 
 .card-mini-rank {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     font-size: 0.8rem;
 }
 

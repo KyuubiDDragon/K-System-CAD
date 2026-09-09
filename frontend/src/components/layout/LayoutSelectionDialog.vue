@@ -157,7 +157,7 @@ function confirmSelection() {
 .layout-selection-card {
   background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--k-line);
 }
 
 .layout-option {
@@ -186,7 +186,7 @@ function confirmSelection() {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.05));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--k-line);
   transition: all 0.3s ease;
 
   .v-icon {
@@ -230,7 +230,7 @@ function confirmSelection() {
 }
 
 .v-card-text {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   font-size: 0.9rem;
   line-height: 1.5;
 }

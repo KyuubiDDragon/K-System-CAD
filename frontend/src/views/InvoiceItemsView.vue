@@ -391,7 +391,7 @@ onMounted(fetchItems);
 
 .invoice-items-container {
   min-height: 89vh;
-  background-color: #111723;
+  background-color: var(--k-ink);
   background-image:
     radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
     radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -438,7 +438,7 @@ onMounted(fetchItems);
 }
 
 .description-text {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   font-size: 0.9rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -494,7 +494,7 @@ onMounted(fetchItems);
 
 .dialog-title {
   background: linear-gradient(90deg, #991b1b, #dc2626);
-  color: white;
+  color: var(--k-ink);
   padding: 16px;
 }
 

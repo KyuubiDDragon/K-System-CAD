@@ -56,6 +56,6 @@ export default {
 
 h1 {
   margin-bottom: 30px;
-  color: var(--primary-color, #3b82f6);
+  color: var(--primary-color, var(--k-accent));
 }
 </style> 

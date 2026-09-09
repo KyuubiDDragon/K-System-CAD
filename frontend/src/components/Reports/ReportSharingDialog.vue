@@ -521,7 +521,7 @@ function capitalizeFirstLetter(string: string = ''): string {
 
 <style scoped>
 .border-bottom {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .access-level-select {

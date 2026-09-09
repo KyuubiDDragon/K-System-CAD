@@ -482,7 +482,7 @@ const closeDialog = () => {
 }
 
 .person-table :deep(tr:hover) {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: var(--k-row-hover) !important;
 }
 
 /* Section Titles */
@@ -500,7 +500,7 @@ const closeDialog = () => {
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
 }
 

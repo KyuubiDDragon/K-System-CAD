@@ -423,7 +423,7 @@ const websiteSettings = reactive({
     selected_scheme: 'Blue Ocean',
     useCustomColors: false,
     customColors: {
-        primary: '#3b82f6',
+        primary: 'var(--k-accent)',
         secondary: '#60a5fa',
         accent: '#93c5fd',
         background: '#ffffff',
@@ -445,16 +445,16 @@ const presetColorSchemes = [
     // ===== WHITE MODE DESIGNS (Row 1) =====
     {
         name: 'Blue Ocean',
-        primary: '#3b82f6',
+        primary: 'var(--k-accent)',
         secondary: '#60a5fa',
         accent: '#93c5fd',
         background: '#ffffff',
         text: '#111827',
         bannerBackground: '#1e3a8a',
         bannerText: '#ffffff',
-        heroBackground: '#3b82f6',
+        heroBackground: 'var(--k-accent)',
         heroText: '#ffffff',
-        buttonBackground: '#3b82f6',
+        buttonBackground: 'var(--k-accent)',
         buttonText: '#ffffff',
     },
     {
@@ -517,7 +517,7 @@ const presetColorSchemes = [
     // ===== DARK MODE DESIGNS (Row 2) =====
     {
         name: 'Dark Blue',
-        primary: '#3b82f6',
+        primary: 'var(--k-accent)',
         secondary: '#60a5fa',
         accent: '#93c5fd',
         background: '#111827',
@@ -526,7 +526,7 @@ const presetColorSchemes = [
         bannerText: '#f9fafb',
         heroBackground: '#1e3a8a',
         heroText: '#f9fafb',
-        buttonBackground: '#3b82f6',
+        buttonBackground: 'var(--k-accent)',
         buttonText: '#ffffff',
     },
     {
@@ -1585,8 +1585,8 @@ watch(selectedWebsiteId, (newId) => {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
-    background-color: #2d3748;
-    border-bottom: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
     gap: 1rem;
     flex-wrap: wrap;
     min-height: 70px;
@@ -1609,7 +1609,7 @@ watch(selectedWebsiteId, (newId) => {
 .website-selector select {
     padding: 0.5rem 1rem;
     border-radius: 4px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     background-color: #1e2327;
     color: #e5e7eb;
 }
@@ -1634,12 +1634,12 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-primary:disabled {
@@ -1648,17 +1648,17 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .btn-secondary {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 
 .btn-success {
     background-color: #10b981;
-    color: white;
+    color: var(--k-ink);
 }
 
 .btn-success:hover {
@@ -1681,9 +1681,9 @@ watch(selectedWebsiteId, (newId) => {
 .sidebar {
     width: 250px;
     min-height: 100%;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     padding: 1rem;
-    border-right: 1px solid #4a5568;
+    border-right: 1px solid var(--k-line);
 }
 
 .nav-menu {
@@ -1708,8 +1708,8 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .nav-menu li.active {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .content-area {
@@ -1737,8 +1737,8 @@ watch(selectedWebsiteId, (newId) => {
 
 .create-website-btn {
     padding: 0.75rem 1.5rem;
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -1747,7 +1747,7 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .create-website-btn:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .preview-mode {
@@ -1783,7 +1783,7 @@ watch(selectedWebsiteId, (newId) => {
 .howto-content h3 {
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
-    color: #3b82f6;
+    color: var(--k-accent);
 }
 
 .howto-content p {
@@ -1799,7 +1799,7 @@ watch(selectedWebsiteId, (newId) => {
     .sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #4a5568;
+        border-bottom: 1px solid var(--k-line);
     }
 
     .nav-menu {

@@ -556,7 +556,7 @@ onUnmounted(() => {
 /* Base Styles */
 .cheatsheet {
     min-height: 89vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -583,7 +583,7 @@ onUnmounted(() => {
 }
 
 .gradient-text {
-    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    background: linear-gradient(90deg, var(--k-accent), #60a5fa);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -610,7 +610,7 @@ onUnmounted(() => {
 /* Card Styles */
 .preview-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
     display: flex;
@@ -619,11 +619,11 @@ onUnmounted(() => {
 }
 
 .preview-card .v-toolbar {
-    color: white !important;
+    color: var(--k-ink) !important;
 }
 
 .preview-card .v-toolbar-title {
-    color: white !important;
+    color: var(--k-ink) !important;
 }
 
 .preview-card:hover {
@@ -777,12 +777,12 @@ onUnmounted(() => {
 }
 
 .preview-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--k-row-hover);
     border-radius: 4px;
 }
 
 .preview-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--k-row-hover);
 }
 
 /* Animation */

@@ -330,9 +330,9 @@ function handleBlockImageUpload(data: any) {
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     background-clip: padding-box;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
@@ -347,13 +347,13 @@ function handleBlockImageUpload(data: any) {
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .form-header h3 {
     margin: 0;
     font-size: 1.2rem;
-    color: white;
+    color: var(--k-ink);
 }
 
 .form-group {
@@ -370,7 +370,7 @@ function handleBlockImageUpload(data: any) {
 .form-control {
     width: 100%;
     padding: 10px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     background-color: #1e2327;
     color: #e5e7eb;
@@ -380,7 +380,7 @@ function handleBlockImageUpload(data: any) {
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -388,7 +388,7 @@ function handleBlockImageUpload(data: any) {
     display: block;
     margin-top: 4px;
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .checkbox-group {
@@ -416,7 +416,7 @@ function handleBlockImageUpload(data: any) {
     margin-bottom: 15px;
     padding: 15px;
     background-color: #1e2327;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
 }
 
@@ -425,7 +425,7 @@ function handleBlockImageUpload(data: any) {
 }
 
 .text-muted {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .small {
@@ -442,7 +442,7 @@ function handleBlockImageUpload(data: any) {
     justify-content: flex-end;
     gap: 10px;
     padding-top: 20px;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid var(--k-line);
 }
 
 .btn {
@@ -458,21 +458,21 @@ function handleBlockImageUpload(data: any) {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-secondary {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 
 .btn-sm {
@@ -483,7 +483,7 @@ function handleBlockImageUpload(data: any) {
 .btn-icon {
     background: transparent;
     border: none;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 4px;

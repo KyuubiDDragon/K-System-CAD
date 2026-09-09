@@ -1900,7 +1900,7 @@ onMounted(async () => {
 <style scoped>
 /* Base Styles */
 .mail-system-container {
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -1911,7 +1911,7 @@ onMounted(async () => {
 /* Sidebar Styles */
 .sidebar-drawer {
     background: rgba(15, 23, 42, 0.8) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--k-line);
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -1942,7 +1942,7 @@ onMounted(async () => {
 /* Card Styles */
 .main-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -1952,7 +1952,7 @@ onMounted(async () => {
 
 .card-toolbar {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Filter Toolbar */
@@ -1981,7 +1981,7 @@ onMounted(async () => {
 
 .message-table :deep(th),
 .folder-table :deep(th) {
-    color: #94a3b8 !important;
+    color: var(--k-ink-faint) !important;
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -2100,17 +2100,17 @@ onMounted(async () => {
 
 .dialog-card {
     background: rgba(15, 23, 42, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
 }
 
 .dialog-header {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
 }
 
 /* Message Editor */
 .message-editor {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
     min-height: 250px;
@@ -2156,7 +2156,7 @@ onMounted(async () => {
 }
 
 .message-body {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     padding: 16px;
     background-color: rgba(30, 41, 59, 0.3);
@@ -2192,7 +2192,7 @@ onMounted(async () => {
 /* Special Typography */
 .timestamp {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
 }
 
 .group-sender,
@@ -2248,7 +2248,7 @@ onMounted(async () => {
     }
 
     .message-body {
-        background-color: white !important;
+        background-color: var(--k-ink) !important;
         color: black !important;
         border: 1px solid #ddd;
     }

@@ -1058,8 +1058,8 @@ provide('windowContext', windowStore);
     min-width: 300px;
     min-height: 200px;
     outline: none;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.95);
+    border: 1px solid var(--k-line);
+    color: var(--k-ink);
     border-radius: 16px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1120,8 +1120,8 @@ provide('windowContext', windowStore);
     position: relative;
     z-index: 10;
     flex-shrink: 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid var(--k-line);
+    color: var(--k-ink);
     margin: 0;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1187,7 +1187,7 @@ provide('windowContext', windowStore);
 }
 
 .window.active .window-control {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--k-ink);
 }
 
 .window-control:hover {
@@ -1202,7 +1202,7 @@ provide('windowContext', windowStore);
 
 .window-control.close:hover {
     background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
+    color: var(--k-ink);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
 }
 
@@ -1282,7 +1282,7 @@ provide('windowContext', windowStore);
     height: 100%;
     background: rgba(15, 23, 42, 0.95);
     padding: 20px;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     text-align: center;
     border-bottom-left-radius: 16px;
     border-bottom-right-radius: 16px;
@@ -1325,11 +1325,11 @@ provide('windowContext', windowStore);
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--k-ink);
     padding: 32px;
     background: rgba(51, 65, 85, 0.5);
     border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
@@ -1397,7 +1397,7 @@ provide('windowContext', windowStore);
     position: absolute;
     width: 8px;
     height: 8px;
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--k-row-hover);
     border-radius: 2px;
     opacity: 0.5;
     transition: all 0.2s ease;

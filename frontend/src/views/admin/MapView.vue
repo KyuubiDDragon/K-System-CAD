@@ -598,7 +598,7 @@ onMounted(() => {
 /* Main Container */
 .map-category-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -648,12 +648,12 @@ onMounted(() => {
 /* Icon Display */
 .icon-avatar {
     background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .icon-preview {
     background: rgba(30, 41, 59, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
 }
 
 .icon-avatar img,
@@ -673,7 +673,7 @@ onMounted(() => {
     max-height: 350px;
     overflow-y: auto;
     background: rgba(15, 23, 42, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
@@ -682,7 +682,7 @@ onMounted(() => {
     margin: 2px;
     transition: all 0.2s ease;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .icon-btn:hover {
@@ -721,15 +721,15 @@ onMounted(() => {
 
 /* Dialog Styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

@@ -97,10 +97,10 @@ defineExpose({ refresh: loadVacations })
 
 .vacation-item {
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--k-row-hover);
 }
 
 .no-data {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

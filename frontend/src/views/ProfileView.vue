@@ -873,7 +873,7 @@ onMounted(() => {
 <style scoped>
 .account-settings-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -895,7 +895,7 @@ onMounted(() => {
 /* Tab Styles */
 .settings-tabs {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .settings-tabs :deep(.v-tab) {
@@ -911,7 +911,7 @@ onMounted(() => {
 /* Card Styles */
 .v-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 8px;
     overflow: hidden;

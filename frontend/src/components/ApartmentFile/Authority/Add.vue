@@ -396,7 +396,7 @@ onMounted(fetchPersons);
 	align-items: center;
 	color: #e2e8f0;
 	padding-bottom: 8px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid var(--k-line);
   }
   
   /* Form Field Styling */
@@ -443,7 +443,7 @@ onMounted(fetchPersons);
   }
   
   .add-button {
-	background: linear-gradient(to right, #3b82f6, #60a5fa);
+	background: linear-gradient(to right, var(--k-accent), #60a5fa);
   }
   
   .add-button:hover {

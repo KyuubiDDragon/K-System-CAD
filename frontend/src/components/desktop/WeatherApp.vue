@@ -234,13 +234,13 @@ onUnmounted(() => {
 }
 
 .light-theme {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--k-ink);
   color: #333;
 }
 
 .dark-theme {
   background-color: rgba(33, 33, 33, 0.9);
-  color: #fff;
+  color: var(--k-ink);
 }
 
 .current-weather {
@@ -322,7 +322,7 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--k-line);
   padding-bottom: 8px;
 }
 
@@ -370,7 +370,7 @@ onUnmounted(() => {
   flex-direction: column;
   gap: 8px;
   margin-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--k-line);
   padding-top: 10px;
 }
 

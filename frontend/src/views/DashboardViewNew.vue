@@ -639,7 +639,7 @@ async function handleImportFromHash() {
 
 .dashboard-toolbar {
   flex-shrink: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .dashboard-content {
@@ -660,7 +660,7 @@ async function handleImportFromHash() {
   height: 100%;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--k-line);
 
   &:hover {
     border-color: rgba(var(--v-theme-primary), 0.5);
@@ -674,7 +674,7 @@ async function handleImportFromHash() {
   height: 100%;
   cursor: pointer;
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--k-line);
 
   &:hover {
     border-color: rgba(var(--v-theme-primary), 0.5);

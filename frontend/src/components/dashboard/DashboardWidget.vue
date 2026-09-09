@@ -288,11 +288,11 @@ watch(
   flex-direction: column;
   overflow: hidden;
   background: rgba(var(--v-theme-surface));
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--k-line);
   transition: all 0.3s ease;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--k-ink);
   }
 
   &.edit-mode {
@@ -372,15 +372,15 @@ watch(
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-row-hover);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--k-row-hover);
     border-radius: 3px;
 
     &:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background: var(--k-row-hover);
     }
   }
 }

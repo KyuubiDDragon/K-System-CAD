@@ -919,8 +919,8 @@ onBeforeUnmount(() => {
 }
 
 .manager-card.dark-mode {
-  background-color: #1E1E1E;
-  color: #fff;
+  background-color: var(--k-surface);
+  color: var(--k-ink);
 }
 
 .tab-content {

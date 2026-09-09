@@ -362,7 +362,7 @@
     align-items: center;
     padding: 6px 12px;
     background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     position: relative;
     z-index: 3;
   }
@@ -447,13 +447,13 @@
   
   .employee-rank {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     margin-bottom: 4px;
   }
   
   .employee-department {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -486,7 +486,7 @@
     display: flex;
     align-items: center;
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--k-ink-muted);
   }
   
   /* Responsive Adjustments */
