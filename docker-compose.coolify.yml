@@ -1,0 +1,97 @@
+# Coolify deployment compose for K-System CAD.
+#
+# Difference to docker-compose.yml: no manual Traefik labels and no external
+# `web` network. Coolify owns routing and TLS -- it generates the Traefik
+# labels from the domains configured per service and attaches the containers
+# to its own proxy network. Domains configured in Coolify:
+#   frontend       https://system.kyuubisoft.com
+#   backend        https://system.kyuubisoft.com/api, .../uploads
+#   socket-server  https://system.kyuubisoft.com/socket.io
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    ports:
+      - "${DB_HOST_PORT:-20313}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD must be set}
+      MYSQL_DATABASE: ${DB_DATABASE:-ksystems}
+      MYSQL_USER: ${DB_USERNAME:-ksystems}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/database.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/var/www/html/uploads
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-ksystems}
+      DB_USERNAME: ${DB_USERNAME:-ksystems}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      APP_ENV: ${APP_ENV:-production}
+      NODE_ENV: ${NODE_ENV:-production}
+      SOCKET_SERVER_URL: http://socket-server:3001
+      SOCKET_API_KEY: ${SOCKET_API_KEY:?SOCKET_API_KEY must be set}
+      APP_URL_PROD: https://${DOMAIN}/api
+      FRONTEND_URL_PROD: https://${DOMAIN}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
+      COOKIE_DOMAIN: ${DOMAIN}
+      COOKIE_SECURE: "true"
+      COOKIE_SAMESITE: "Lax"
+      UPLOAD_BASE_DIR: /var/www/html/uploads
+      PUBLIC_UPLOAD_URL: https://${DOMAIN}/uploads
+      DOCUMENT_IMAGE_STORAGE_PATH: /var/www/html/uploads/documents
+      DOCUMENT_IMAGE_PUBLIC_URL: https://${DOMAIN}/uploads/documents
+
+  socket-server:
+    build:
+      context: ./socket-server
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      PORT: 3001
+      NODE_ENV: ${NODE_ENV:-production}
+      API_KEY: ${SOCKET_API_KEY:?SOCKET_API_KEY must be set}
+      JWT_SECRET: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
+      CORS_ORIGIN: https://${DOMAIN}
+      PHP_API_URL: http://backend:80
+      DEBUG: "false"
+      LOG_LEVEL: info
+    command: ["node", "server.js"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: https://${DOMAIN}/api
+        VITE_SOCKET_URL: wss://${DOMAIN}/socket.io
+        VITE_REDIRECT_URL: https://${DOMAIN}
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    healthcheck:
+      disable: true
+
+volumes:
+  db_data:
+  uploads_data:
