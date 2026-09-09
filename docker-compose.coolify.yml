@@ -12,8 +12,8 @@ services:
   db:
     image: mariadb:10.11
     restart: unless-stopped
-    ports:
-      - "${DB_HOST_PORT:-20313}:3306"
+    # Kein Port-Mapping: die DB ist nur im Compose-Netz erreichbar.
+    # Externer Zugriff bei Bedarf per SSH-Tunnel statt offenem Port.
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD must be set}
       MYSQL_DATABASE: ${DB_DATABASE:-ksystems}
