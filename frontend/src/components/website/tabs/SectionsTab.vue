@@ -250,7 +250,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .sections-tab > p {
     margin-bottom: 1.5rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 /* Template Notice */
@@ -292,9 +292,9 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .filter-select {
     padding: 0.5rem 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     color: #e5e7eb;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 0.875rem;
     cursor: pointer;
@@ -302,7 +302,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .filter-select:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
 }
 
 .checkbox-label {
@@ -335,12 +335,12 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-icon {
@@ -349,7 +349,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     padding: 0;
     border: none;
     background-color: transparent;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -365,7 +365,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .btn-icon.danger:hover {
     background-color: #dc2626;
-    color: white;
+    color: var(--k-ink);
 }
 
 /* Sections List */
@@ -375,8 +375,8 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .section-card {
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     padding: 1.5rem;
     cursor: grab;
@@ -413,7 +413,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .drag-handle {
     font-size: 1.5rem;
-    color: #6b7280;
+    color: var(--k-ink-muted);
     cursor: grab;
 }
 
@@ -422,8 +422,8 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 600;
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .type-hero {
@@ -435,7 +435,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .type-services {
-    background-color: #3b82f6;
+    background-color: var(--k-accent);
 }
 
 .type-portfolio {
@@ -467,7 +467,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .type-custom {
-    background-color: #6b7280;
+    background-color: var(--k-ink-muted);
 }
 
 .inactive-badge {
@@ -475,8 +475,8 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 600;
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
@@ -495,7 +495,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .section-preview {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     line-height: 1.5;
     margin-bottom: 1rem;
 }
@@ -505,7 +505,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     justify-content: space-between;
     align-items: center;
     padding-top: 1rem;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid var(--k-line);
     font-size: 0.875rem;
 }
 
@@ -513,19 +513,19 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 /* Empty State */
 .empty-state {
     text-align: center;
     padding: 4rem 2rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .empty-icon {
     font-size: 4rem;
-    color: #4b5563;
+    color: var(--k-ink-muted);
     margin-bottom: 1rem;
 }
 

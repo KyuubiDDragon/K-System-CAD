@@ -74,6 +74,6 @@ defineExpose({ refresh: loadUsers })
 }
 
 .no-data {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

@@ -250,7 +250,6 @@ onMounted(() => {
                 <v-card 
                     hover 
                     class="position-card elevation-4 fill-height d-flex flex-column"
-                    theme="dark"
                 >
                     <v-toolbar density="compact" flat color="transparent" class="card-toolbar">
                         <v-spacer></v-spacer>
@@ -564,12 +563,12 @@ onMounted(() => {
     background: rgba(15, 23, 42, 0.4) !important;
     border-radius: 8px;
     padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
 }
 
 .draggable-item {
     background: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     border-radius: 6px;
     transition: all 0.2s ease;
 }
@@ -584,12 +583,12 @@ onMounted(() => {
     cursor: move;
     opacity: 0.6;
     transition: opacity 0.2s ease-in-out;
-    color: #64748b;
+    color: var(--k-ink-muted);
 }
 
 .draggable-item:hover .drag-handle {
     opacity: 1;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
 }
 
 .ghost-item {
@@ -600,15 +599,15 @@ onMounted(() => {
 
 /* Dialog Styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

@@ -315,7 +315,7 @@ const handleEdit = (employee: any, rank: Rank) => {
 
 .rank-table-section {
     background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
     backdrop-filter: blur(10px);
@@ -344,7 +344,7 @@ const handleEdit = (employee: any, rank: Rank) => {
 
 .employee-data-table :deep(th) {
     background-color: rgba(30, 41, 59, 0.5) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: var(--k-ink) !important;
     font-weight: 600 !important;
     font-size: 0.8rem !important;
     text-transform: uppercase;
@@ -356,7 +356,7 @@ const handleEdit = (employee: any, rank: Rank) => {
 }
 
 .employee-data-table :deep(td) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    border-bottom: 1px solid var(--k-line) !important;
     padding: 18px 12px !important;
 }
 
@@ -374,7 +374,7 @@ const handleEdit = (employee: any, rank: Rank) => {
     flex-shrink: 0;
     box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
     border-radius: 8px !important;
-    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+    background: linear-gradient(135deg, #1e3a8a, var(--k-accent));
 }
 
 .employee-details {

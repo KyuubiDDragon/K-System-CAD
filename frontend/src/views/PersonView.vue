@@ -378,7 +378,6 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
         <v-card
             v-if="!addPersonDialog && !editPersonDialog && !viewPersonDialog"
             class="main-card elevation-4"
-            theme="dark"
         >
             <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                 <v-toolbar-title class="text-h6">
@@ -513,7 +512,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
             persistent
             class="confirmation-dialog"
         >
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title class="text-h5 dialog-title">
                     <v-icon color="error" class="mr-2">mdi-delete-alert</v-icon>
                     Person löschen
@@ -646,8 +645,8 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

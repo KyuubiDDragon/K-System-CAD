@@ -345,7 +345,7 @@ defineExpose({
   background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.9));
   backdrop-filter: blur(25px) saturate(180%);
   -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--k-line);
   border-radius: 20px;
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.3),
@@ -398,7 +398,7 @@ defineExpose({
   justify-content: space-between;
   padding: 14px 16px;
   background: linear-gradient(135deg, rgba(51, 65, 85, 0.5), rgba(71, 85, 105, 0.4));
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid var(--k-line);
   cursor: move;
   user-select: none;
   backdrop-filter: blur(10px);
@@ -429,7 +429,7 @@ defineExpose({
 .widget-title {
   font-size: 14px;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--k-ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -450,7 +450,7 @@ defineExpose({
 
   &:hover {
     opacity: 1;
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--k-row-hover);
     transform: scale(1.1);
   }
 

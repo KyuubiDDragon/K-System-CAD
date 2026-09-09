@@ -25,7 +25,7 @@
                     >
                         <div
                             class="menu-app-icon"
-                            :style="{ backgroundColor: app.color || '#3b82f6' }"
+                            :style="{ backgroundColor: app.color || 'var(--k-accent)' }"
                         >
                             <v-icon size="22" color="white">{{ app.icon }}</v-icon>
                         </div>
@@ -46,7 +46,7 @@
                     >
                         <div
                             class="menu-app-icon"
-                            :style="{ backgroundColor: app.color || '#3b82f6' }"
+                            :style="{ backgroundColor: app.color || 'var(--k-accent)' }"
                         >
                             <v-icon size="22" color="white">{{ app.icon }}</v-icon>
                         </div>
@@ -67,7 +67,7 @@
                     >
                         <div
                             class="list-app-icon"
-                            :style="{ backgroundColor: app.color || '#3b82f6' }"
+                            :style="{ backgroundColor: app.color || 'var(--k-accent)' }"
                         >
                             <v-icon size="16" color="white">{{ app.icon }}</v-icon>
                         </div>
@@ -228,7 +228,7 @@ const switchToSidebar = async () => {
     overflow-y: auto;
     border-radius: 16px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--k-line);
     z-index: 1001;
     animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-origin: bottom left;
@@ -300,7 +300,7 @@ const switchToSidebar = async () => {
     align-items: center;
     padding: 20px;
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid var(--k-line);
     position: relative;
 }
 
@@ -309,7 +309,7 @@ const switchToSidebar = async () => {
     height: 48px;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid #3b82f6;
+    border: 3px solid var(--k-accent);
     margin-right: 16px;
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     transition: all 0.3s ease;
@@ -329,14 +329,14 @@ const switchToSidebar = async () => {
 .user-name {
     font-size: 16px;
     font-weight: 700;
-    color: white;
+    color: var(--k-ink);
     margin-bottom: 4px;
     letter-spacing: 0.3px;
 }
 
 .user-status {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--k-ink-muted);
     display: flex;
     align-items: center;
     font-weight: 500;
@@ -367,7 +367,7 @@ const switchToSidebar = async () => {
 .section-title {
     font-size: 13px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--k-ink);
     margin-bottom: 16px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -382,7 +382,7 @@ const switchToSidebar = async () => {
     left: 0;
     width: 30px;
     height: 2px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(90deg, var(--k-accent), #8b5cf6);
     border-radius: 1px;
 }
 
@@ -404,7 +404,7 @@ const switchToSidebar = async () => {
 
 .menu-app:hover {
     transform: translateY(-4px) scale(1.05);
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .menu-app-icon {
@@ -425,7 +425,7 @@ const switchToSidebar = async () => {
 
 .menu-app-title {
     font-size: 12px;
-    color: white;
+    color: var(--k-ink);
     text-align: center;
     max-width: 80px;
     white-space: nowrap;
@@ -449,7 +449,7 @@ const switchToSidebar = async () => {
     max-height: 200px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+    scrollbar-color: var(--k-ink-faint) rgba(0, 0, 0, 0.2);
 }
 
 .apps-list::-webkit-scrollbar {
@@ -462,7 +462,7 @@ const switchToSidebar = async () => {
 }
 
 .apps-list::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--k-ink-faint);
     border-radius: 8px;
 }
 
@@ -476,7 +476,7 @@ const switchToSidebar = async () => {
 }
 
 .list-app:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .list-app-icon {
@@ -491,7 +491,7 @@ const switchToSidebar = async () => {
 
 .list-app-title {
     font-size: 13px;
-    color: white;
+    color: var(--k-ink);
 }
 
 .menu-actions {
@@ -500,7 +500,7 @@ const switchToSidebar = async () => {
     gap: 16px;
     padding: 16px 20px;
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid var(--k-line);
     border-radius: 0 0 16px 16px;
 }
 
@@ -509,22 +509,22 @@ const switchToSidebar = async () => {
     align-items: center;
     padding: 10px 16px;
     border-radius: 10px;
-    color: white;
+    color: var(--k-ink);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     min-width: 100px;
     justify-content: center;
 }
 
 .action-button:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--k-row-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--k-line);
 }
 
 .switch-button:hover {

@@ -1311,31 +1311,31 @@
     z-index: 2000;
     border-radius: 0;
     border: none;
-    background-color: #1e293b !important; /* Match editor background color */
+    background-color: var(--k-sunken) !important; /* Match editor background color */
   }
 
   .tiptap-editor-wrapper.is-fullscreen .toc-sidebar {
     height: 100vh;
-    background-color: #1e293b !important;
+    background-color: var(--k-sunken) !important;
   }
 
   .tiptap-editor-wrapper.is-fullscreen .editor-area {
     height: 100vh;
-    background-color: #1e293b !important;
+    background-color: var(--k-sunken) !important;
   }
 
   .tiptap-editor-wrapper.is-fullscreen .tiptap-editor-container {
     height: calc(100vh - 144px);
     max-height: calc(100vh - 190px);
     min-height: calc(100vh - 150px);
-    background-color: #1e293b !important;
+    background-color: var(--k-sunken) !important;
     overflow-y: auto !important; /* Allow scrolling for long content */
     margin-top: 18px;
   }
 
   /* Ensure all nested elements in fullscreen have correct background */
   .tiptap-editor-wrapper.is-fullscreen .toolbar-area {
-    background-color: #1e293b !important;
+    background-color: var(--k-sunken) !important;
     flex-wrap: wrap !important; /* Force toolbar to wrap to multiple lines */
     position: fixed;
     top: 0;
@@ -2028,7 +2028,7 @@
     flex: 1;
     overflow: auto;
     border-radius: 8px;
-    background: #1e293b;
+    background: var(--k-sunken);
     border: 1px solid rgba(var(--v-border-color), 0.15);
     min-height: 0;
     height: 100%;
@@ -2145,7 +2145,7 @@
 
   /* Vuetify dark theme support */
   .v-theme--dark .source-code-view {
-    background: #1e293b;
+    background: var(--k-sunken);
   }
 
   .v-theme--light .source-code-view {

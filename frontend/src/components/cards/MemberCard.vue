@@ -366,7 +366,6 @@ async function addVacation(member: Employee) {
     <v-col cols="12" sm="6" md="4" lg="4" xl="3">
         <v-card
             class="employee-card elevation-4"
-            theme="dark"
             :class="{
                 'terminated-employee': member.is_terminated == true && !showIsTerminated,
                 'vacation-employee': currentVacation,
@@ -742,7 +741,7 @@ async function addVacation(member: Employee) {
 
     <!-- Beförderungsverlauf Dialog -->
     <v-dialog v-model="promotionDialog" max-width="700" class="promotion-dialog">
-        <v-card theme="dark" class="dialog-card">
+        <v-card class="dialog-card">
             <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">
                     <v-icon start size="18" class="mr-2">mdi-medal</v-icon>
@@ -788,7 +787,7 @@ async function addVacation(member: Employee) {
 
     <!-- Urlaubsverlauf Dialog -->
     <v-dialog v-model="vacationDialog" max-width="800" class="vacation-dialog">
-        <v-card theme="dark" class="dialog-card">
+        <v-card class="dialog-card">
             <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">
                     <v-icon start size="18" class="mr-2">mdi-calendar-check</v-icon>
@@ -842,7 +841,7 @@ async function addVacation(member: Employee) {
 
     <!-- Neuer Urlaub Dialog -->
     <v-dialog v-model="newVacationDialog" max-width="700" persistent class="new-vacation-dialog">
-        <v-card theme="dark" class="dialog-card">
+        <v-card class="dialog-card">
             <v-toolbar density="compact" color="primary" class="card-toolbar">
                 <v-toolbar-title class="text-subtitle-1">
                     <v-icon start size="18" class="mr-2">mdi-calendar-plus</v-icon>
@@ -1028,7 +1027,7 @@ async function addVacation(member: Employee) {
     align-items: center;
     padding: 6px 12px;
     background: rgba(0, 0, 0, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     position: relative;
     z-index: 3;
 }
@@ -1102,13 +1101,13 @@ async function addVacation(member: Employee) {
 
 .employee-rank {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     margin-bottom: 4px;
 }
 
 .employee-department {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
 }
 
 .department-item {
@@ -1129,7 +1128,7 @@ async function addVacation(member: Employee) {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--k-line);
     padding: 12px 16px;
     position: relative;
     z-index: 2;
@@ -1163,7 +1162,7 @@ async function addVacation(member: Employee) {
 
 /* Expanded Content */
 .expanded-content {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid var(--k-line);
     position: relative;
     z-index: 1;
 }
@@ -1186,7 +1185,7 @@ async function addVacation(member: Employee) {
     font-weight: 500;
     margin-bottom: 12px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -1202,14 +1201,14 @@ async function addVacation(member: Employee) {
 
 .detail-label {
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     margin-bottom: 4px;
     font-weight: 500;
 }
 
 .detail-value {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--k-ink);
 }
 
 .text-error {
@@ -1229,7 +1228,7 @@ async function addVacation(member: Employee) {
 
 .license-category-title {
     font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--k-ink-muted);
     margin-bottom: 6px;
     font-weight: 500;
 }
@@ -1242,7 +1241,7 @@ async function addVacation(member: Employee) {
 
 .no-licenses {
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
     font-style: italic;
 }
 
@@ -1260,8 +1259,8 @@ async function addVacation(member: Employee) {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 
@@ -1272,7 +1271,7 @@ async function addVacation(member: Employee) {
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
 }
 
@@ -1339,7 +1338,7 @@ async function addVacation(member: Employee) {
 .promotion-table :deep(th),
 .vacation-table :deep(th) {
     background-color: rgba(30, 41, 59, 0.5) !important;
-    color: rgba(255, 255, 255, 0.9) !important;
+    color: var(--k-ink) !important;
     font-weight: 500;
 }
 

@@ -145,7 +145,7 @@ const closeDialog = () => {
         transition="dialog-transition"
     >
         <!-- Fahrzeugdetails anzeigen -->
-        <v-card v-if="vehicle" class="vehicle-card elevation-4" theme="dark">
+        <v-card v-if="vehicle" class="vehicle-card elevation-4">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-car</v-icon>
@@ -482,7 +482,7 @@ const closeDialog = () => {
 }
 
 .person-table :deep(tr:hover) {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: var(--k-row-hover) !important;
 }
 
 /* Section Titles */
@@ -500,7 +500,7 @@ const closeDialog = () => {
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
 }
 

@@ -221,7 +221,7 @@ watch(
 
 <template>
     <!-- Firma Details Card -->
-    <v-card v-if="viewCompanyDialog && !selectedReport" class="company-detail-card" theme="dark">
+    <v-card v-if="viewCompanyDialog && !selectedReport" class="company-detail-card">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-domain</v-icon>
@@ -739,7 +739,7 @@ watch(
     </v-card>
 
     <!-- Bericht Details Ansicht -->
-    <v-card v-else-if="selectedReport" class="report-detail-card" theme="dark">
+    <v-card v-else-if="selectedReport" class="report-detail-card">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-file-document-outline</v-icon>
@@ -794,7 +794,7 @@ watch(
 /* Tabs Styling */
 .detail-tabs {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .tab-item {
@@ -820,7 +820,7 @@ watch(
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -836,7 +836,7 @@ watch(
 
 /* Editor Container */
 .editor-container {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
     min-height: 300px;
@@ -845,7 +845,7 @@ watch(
 /* Report Panels */
 .report-panel {
     background: rgba(30, 41, 59, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
     border-radius: 8px !important;
     overflow: hidden;
     transition: all var(--transition-timing);
@@ -869,7 +869,7 @@ watch(
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
     min-height: 200px;
 }
@@ -936,7 +936,7 @@ watch(
 
 .dialog-title {
     background: linear-gradient(90deg, #991b1b, #dc2626);
-    color: white;
+    color: var(--k-ink);
     padding: 16px;
 }
 

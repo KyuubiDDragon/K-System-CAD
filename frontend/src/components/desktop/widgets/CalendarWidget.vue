@@ -78,7 +78,7 @@
 
               <div 
                 class="event-color" 
-                :style="{ backgroundColor: event.color || '#3b82f6' }"
+                :style="{ backgroundColor: event.color || 'var(--k-accent)' }"
               />
             </div>
 
@@ -200,7 +200,7 @@ const fetchEvents = async () => {
         end: event.end || event.datetime || event.date,
         allDay: event.allDay || event.all_day || false,
         location: event.location || '',
-        color: event.color || '#3b82f6',
+        color: event.color || 'var(--k-accent)',
         description: event.description || ''
       }));
       
@@ -230,7 +230,7 @@ const fetchEvents = async () => {
         end: new Date(Date.now() + 3600000).toISOString(),
         allDay: false,
         location: 'Conference Room A',
-        color: '#3b82f6'
+        color: 'var(--k-accent)'
       },
       {
         id: 2,

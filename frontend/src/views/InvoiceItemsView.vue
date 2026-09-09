@@ -157,7 +157,7 @@ onMounted(fetchItems);
 <template>
   <ErrorSnackbar v-model="errorSnackbar" />
   <v-container fluid class="invoice-items-container pa-4">
-    <v-card class="main-card elevation-4" theme="dark">
+    <v-card class="main-card elevation-4">
       <v-toolbar flat density="comfortable" color="transparent" class="card-toolbar px-4 py-2">
         <v-toolbar-title class="text-h6">
           <v-icon start size="20" class="mr-2">mdi-view-list-outline</v-icon>
@@ -257,7 +257,7 @@ onMounted(fetchItems);
 
     <!-- Add/Edit Dialog -->
     <v-dialog v-model="addEditDialog" persistent max-width="700" class="item-dialog">
-      <v-card class="dialog-card" theme="dark">
+      <v-card class="dialog-card">
         <v-toolbar flat density="compact" color="primary" class="dialog-toolbar">
           <v-toolbar-title class="text-subtitle-1">
             <v-icon start size="18" class="mr-2">{{ isEditing ? 'mdi-pencil' : 'mdi-plus-circle' }}</v-icon>
@@ -354,7 +354,7 @@ onMounted(fetchItems);
 
     <!-- Delete Confirmation Dialog -->
     <v-dialog v-model="deleteItemDialog" persistent max-width="500" class="delete-dialog">
-      <v-card class="dialog-card" theme="dark">
+      <v-card class="dialog-card">
         <v-card-title class="text-h5 dialog-title">
           <v-icon color="error" class="mr-2">mdi-delete-alert</v-icon>
           {{ t('invoiceItemsView.dialog.deleteTitle') }}
@@ -391,7 +391,7 @@ onMounted(fetchItems);
 
 .invoice-items-container {
   min-height: 89vh;
-  background-color: #111723;
+  background-color: var(--k-ink);
   background-image:
     radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
     radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -438,7 +438,7 @@ onMounted(fetchItems);
 }
 
 .description-text {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   font-size: 0.9rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -494,7 +494,7 @@ onMounted(fetchItems);
 
 .dialog-title {
   background: linear-gradient(90deg, #991b1b, #dc2626);
-  color: white;
+  color: var(--k-ink);
   padding: 16px;
 }
 

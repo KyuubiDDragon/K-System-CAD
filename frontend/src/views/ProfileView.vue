@@ -379,7 +379,7 @@ onMounted(() => {
             </v-row>
 
             <!-- Tabs für bessere Organisation -->
-            <v-card class="mb-6" variant="outlined" theme="dark">
+            <v-card class="mb-6" variant="outlined">
                 <v-tabs
                     v-model="activeTab"
                     color="primary"
@@ -408,7 +408,7 @@ onMounted(() => {
                 <v-window-item value="personal">
                     <v-row>
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-tune</v-icon>
                                     Allgemeine Einstellungen
@@ -450,7 +450,7 @@ onMounted(() => {
                     <v-row>
                         <!-- Normale Template Bilder -->
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-image-outline</v-icon>
                                     Organisationsbranding
@@ -537,7 +537,7 @@ onMounted(() => {
 
                         <!-- Neutrale Template Bilder -->
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-image-filter</v-icon>
                                     Neutrale Vorlagen
@@ -624,7 +624,7 @@ onMounted(() => {
 
                         <!-- Unterschrift -->
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-draw</v-icon>
                                     Unterschrift
@@ -688,7 +688,7 @@ onMounted(() => {
                 <v-window-item value="security">
                     <v-row>
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4" variant="outlined" theme="dark">
+                            <v-card class="mb-4" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-lock</v-icon>
                                     Passwort ändern
@@ -769,7 +769,7 @@ onMounted(() => {
                         </v-col>
 
                         <v-col cols="12" md="6">
-                            <v-card class="mb-4 security-tips" variant="outlined" theme="dark">
+                            <v-card class="mb-4 security-tips" variant="outlined">
                                 <v-card-title class="d-flex align-center">
                                     <v-icon start class="mr-2">mdi-shield-check</v-icon>
                                     Sicherheitshinweise
@@ -873,7 +873,7 @@ onMounted(() => {
 <style scoped>
 .account-settings-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -895,7 +895,7 @@ onMounted(() => {
 /* Tab Styles */
 .settings-tabs {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .settings-tabs :deep(.v-tab) {
@@ -911,7 +911,7 @@ onMounted(() => {
 /* Card Styles */
 .v-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 8px;
     overflow: hidden;

@@ -63,7 +63,7 @@ onMounted(async () => {
 
 <template>
     <!-- Neue Firma hinzufügen Formular -->
-    <v-card v-if="newCompanyDialog" class="company-add-card" theme="dark">
+    <v-card v-if="newCompanyDialog" class="company-add-card">
         <v-toolbar density="compact" color="success" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-domain-plus</v-icon>
@@ -321,7 +321,7 @@ onMounted(async () => {
 /* Tabs Styling */
 .add-tabs {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .tab-item {
@@ -347,7 +347,7 @@ onMounted(async () => {
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-success);
 }
 
@@ -364,7 +364,7 @@ onMounted(async () => {
 
 /* Editor Container */
 .editor-container {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
     min-height: 300px;

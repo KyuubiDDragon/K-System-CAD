@@ -124,7 +124,7 @@ onMounted(() => {
       <!-- Filter-Leiste -->
       <v-row class="filter-section mb-5">
         <v-col cols="12" md="8" lg="9">
-          <v-card class="filter-card elevation-2" theme="dark">
+          <v-card class="filter-card elevation-2">
             <v-card-text class="py-2">
               <v-btn-toggle 
                 v-model="activeFilter" 
@@ -221,7 +221,7 @@ onMounted(() => {
 
   .vacation-container {
     min-height: 89vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
       radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
       radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -230,7 +230,7 @@ onMounted(() => {
   .page-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
   }
   
   .filter-section {

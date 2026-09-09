@@ -248,7 +248,7 @@ onMounted(() => {
         </v-row>
 
         <!-- Tabelle -->
-        <v-card class="main-card" elevation="4" theme="dark">
+        <v-card class="main-card" elevation="4">
             <v-data-table
                 :headers="templateHeaders"
                 :items="tableItems"
@@ -452,7 +452,7 @@ onMounted(() => {
 
 .main-container {
     min-height: 89vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -463,7 +463,7 @@ onMounted(() => {
 .page-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Action Button */
@@ -543,13 +543,13 @@ onMounted(() => {
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
 /* Editor */
 .editor-container {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
     min-height: 300px;
@@ -579,8 +579,8 @@ onMounted(() => {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent));
+    color: var(--k-ink);
     padding: 16px;
 }
 

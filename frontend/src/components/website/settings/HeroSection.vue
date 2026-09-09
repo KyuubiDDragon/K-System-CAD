@@ -163,14 +163,14 @@ function triggerFileInput(inputId: string) {
 .form-control {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -178,7 +178,7 @@ function triggerFileInput(inputId: string) {
     border: 2px dashed #ddd;
     border-radius: 8px;
     padding: 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
 }
 
 .selected-media {
@@ -220,17 +220,17 @@ function triggerFileInput(inputId: string) {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-danger {
     background-color: #ef4444;
-    color: white;
+    color: var(--k-ink);
 }
 
 .btn-danger:hover {

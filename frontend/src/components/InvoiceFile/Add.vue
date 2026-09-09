@@ -171,7 +171,7 @@ onMounted(() => {
 
 ```vue
 <template>
-    <v-card class="invoice-card elevation-4" theme="dark">
+    <v-card class="invoice-card elevation-4">
         <v-toolbar flat density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-file-document-plus</v-icon>
@@ -594,7 +594,7 @@ onMounted(() => {
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -630,7 +630,7 @@ onMounted(() => {
     padding: 32px;
     background: rgba(30, 41, 59, 0.3);
     border-radius: 8px;
-    color: #64748b;
+    color: var(--k-ink-muted);
 }
 
 /* Invoice Items */
@@ -638,7 +638,7 @@ onMounted(() => {
     background-color: rgba(30, 41, 59, 0.3);
     border-radius: 8px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
     transition: all var(--transition-timing);
 }
 
@@ -662,7 +662,7 @@ onMounted(() => {
     height: 24px;
     border-radius: 50%;
     background: var(--v-theme-primary);
-    color: white;
+    color: var(--k-ink);
     font-size: 12px;
     font-weight: bold;
 }

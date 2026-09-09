@@ -370,7 +370,7 @@ onMounted(() => {
 
         <v-row>
             <v-col cols="12" md="4">
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
                     <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                         <v-toolbar-title class="text-h6 d-flex align-center">
                             <v-icon start size="20" class="mr-2">mdi-domain</v-icon>
@@ -481,7 +481,7 @@ onMounted(() => {
             </v-col>
 
             <v-col cols="12" md="4">
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
                     <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                         <v-toolbar-title class="text-h6 d-flex align-center">
                             <v-icon start size="20" class="mr-2">mdi-office-building</v-icon>
@@ -593,7 +593,7 @@ onMounted(() => {
 
             <!-- New Job Roles Section -->
             <v-col cols="12" md="4">
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
                     <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                         <v-toolbar-title class="text-h6 d-flex align-center">
                             <v-icon start size="20" class="mr-2">mdi-account-tie</v-icon>
@@ -818,7 +818,7 @@ onMounted(() => {
 /* Main Container */
 .employee-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -897,15 +897,15 @@ onMounted(() => {
 
 /* Dialog Styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

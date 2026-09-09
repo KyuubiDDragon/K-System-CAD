@@ -147,7 +147,7 @@ export default {
   width: 280px;
   padding: 20px;
   border-radius: 8px;
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -157,11 +157,11 @@ export default {
   border-radius: 50%;
   margin: 0 auto 15px;
   overflow: hidden;
-  background-color: var(--primary-color, #3b82f6);
+  background-color: var(--primary-color, var(--k-accent));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--k-ink);
   font-size: 2.5rem;
 }
 
@@ -205,7 +205,7 @@ export default {
 }
 
 .column h3 {
-  color: var(--primary-color, #3b82f6);
+  color: var(--primary-color, var(--k-accent));
   margin-bottom: 15px;
 }
 
@@ -222,7 +222,7 @@ export default {
   min-width: 280px;
   padding: 20px;
   border-radius: 8px;
-  background-color: #f8f9fa;
+  background-color: var(--k-sunken);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -249,11 +249,11 @@ export default {
   border-radius: 50%;
   margin-right: 15px;
   overflow: hidden;
-  background-color: var(--primary-color, #3b82f6);
+  background-color: var(--primary-color, var(--k-accent));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--k-ink);
 }
 
 .author-info h3 {

@@ -761,7 +761,7 @@ onMounted(async () => {
             <v-row>
                 <!-- Linke Spalte: Ordner und Listen -->
                 <v-col cols="12" md="4" lg="3">
-                    <v-card class="list-card" elevation="3" theme="dark">
+                    <v-card class="list-card" elevation="3">
                         <v-toolbar density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-subtitle-1">
                                 <v-icon icon="mdi-folder-multiple" size="18" class="mr-2"></v-icon>
@@ -894,7 +894,6 @@ onMounted(async () => {
                         :disabled="!selectedList"
                         :loading="loadingTodos"
                         elevation="3"
-                        theme="dark"
                     >
                         <v-toolbar density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-subtitle-1">
@@ -1115,7 +1114,6 @@ onMounted(async () => {
                         :disabled="!selectedTodo"
                         :loading="loadingTodoDetails || savingTodoDetails"
                         elevation="3"
-                        theme="dark"
                     >
                         <v-toolbar density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-subtitle-1">
@@ -1586,7 +1584,7 @@ onMounted(async () => {
 <style scoped>
 .todo-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 80% 70%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1596,7 +1594,7 @@ onMounted(async () => {
 .list-card {
     position: relative;
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     height: calc(90vh - 100px);
     display: flex;
@@ -1606,7 +1604,7 @@ onMounted(async () => {
 
 .card-toolbar {
     background: linear-gradient(90deg, rgba(30, 58, 138, 0.2), rgba(30, 64, 175, 0.1)) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .list-scroll-area {
@@ -1635,7 +1633,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     font-size: 14px;
     height: 100%;
 }
@@ -1646,7 +1644,7 @@ onMounted(async () => {
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
 }
 
@@ -1654,11 +1652,11 @@ onMounted(async () => {
     background: rgba(30, 41, 59, 0.3);
     border-radius: 4px;
     margin: 4px 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
 }
 
 .top-level-list {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .sub-list-item {
@@ -1696,7 +1694,7 @@ onMounted(async () => {
     background: rgba(15, 23, 42, 0.3);
     border-radius: 8px;
     padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
 }
 
 .subtasks-list {
@@ -1742,13 +1740,13 @@ onMounted(async () => {
 
 /* Dialog styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

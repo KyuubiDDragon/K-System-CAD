@@ -163,14 +163,14 @@ function updateSocialLinks() {
 .form-control {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -199,7 +199,7 @@ function updateSocialLinks() {
     padding: 0;
     border: none;
     background-color: #ef4444;
-    color: white;
+    color: var(--k-ink);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -231,12 +231,12 @@ function updateSocialLinks() {
 }
 
 .btn-secondary {
-    background-color: #9ca3af;
-    color: white;
+    background-color: var(--k-ink-faint);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 
 .mt-2 {

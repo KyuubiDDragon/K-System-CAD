@@ -220,7 +220,7 @@ onMounted(fetchCrews);
         </div>
         
         <!-- Datentabelle -->
-        <v-card class="main-table-card" elevation="3" theme="dark">
+        <v-card class="main-table-card" elevation="3">
           <v-data-table
             :headers="headers"
             :items="crews"
@@ -444,7 +444,7 @@ onMounted(fetchCrews);
   <style scoped>
   .crew-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image: 
       radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
       radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -457,12 +457,12 @@ onMounted(fetchCrews);
     justify-content: space-between;
     padding-bottom: 16px;
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
   }
   
   .main-table-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -484,7 +484,7 @@ onMounted(fetchCrews);
     align-items: center;
     justify-content: center;
     padding: 40px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
   }
   
@@ -499,13 +499,13 @@ onMounted(fetchCrews);
   
   /* Dialog styling */
   .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
   }
   
   .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
   }
   

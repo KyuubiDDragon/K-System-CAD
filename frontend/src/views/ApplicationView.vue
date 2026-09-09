@@ -429,7 +429,7 @@ watch(filteredQuestions, newQuestions => {
                             </v-btn>
                         </template>
 
-                        <v-card class="filter-menu" theme="dark">
+                        <v-card class="filter-menu">
                             <v-list density="compact" subheader>
                                 <v-list-subheader>NACH POSITION FILTERN</v-list-subheader>
                                 <v-list-item v-if="loadingJobTypes" class="text-center">
@@ -606,7 +606,6 @@ watch(filteredQuestions, newQuestions => {
                     <v-card
                         class="applicant-card flex-grow-1"
                         elevation="2"
-                        theme="dark"
                         @click="openEditDialog(applicant)"
                         :style="{ '--index': index }"
                         height="100%"
@@ -977,7 +976,7 @@ watch(filteredQuestions, newQuestions => {
 <style scoped>
 .application-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -990,7 +989,7 @@ watch(filteredQuestions, newQuestions => {
     flex-direction: column;
     padding-bottom: 16px;
     margin-bottom: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .header-actions {
@@ -1019,7 +1018,7 @@ watch(filteredQuestions, newQuestions => {
 /* Filter Menu */
 .filter-menu {
     background: rgba(15, 23, 42, 0.9) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
@@ -1035,7 +1034,7 @@ watch(filteredQuestions, newQuestions => {
 /* Empty State */
 .empty-state-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
 }
@@ -1051,7 +1050,7 @@ watch(filteredQuestions, newQuestions => {
     overflow: hidden;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
     border-radius: 10px !important;
     background: rgba(15, 23, 42, 0.6) !important;
     backdrop-filter: blur(5px);
@@ -1062,7 +1061,7 @@ watch(filteredQuestions, newQuestions => {
 .applicant-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.08);
+    border-color: var(--k-line);
 }
 
 .applicant-card:active {
@@ -1099,7 +1098,7 @@ watch(filteredQuestions, newQuestions => {
 .applicant-avatar {
     margin-right: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
 }
 
 .applicant-title {
@@ -1157,13 +1156,13 @@ watch(filteredQuestions, newQuestions => {
 
 /* Dialog Styling */
 .dialog-card {
-    background: #0f172a !important;
+    background: var(--k-canvas) !important;
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-toolbar {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
 }
 
 .dialog-content {
@@ -1206,7 +1205,7 @@ watch(filteredQuestions, newQuestions => {
 
 .question-card {
     background: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -1229,7 +1228,7 @@ watch(filteredQuestions, newQuestions => {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
 }
 
 /* Buttons */

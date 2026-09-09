@@ -295,7 +295,7 @@ export default defineComponent({
   flex-direction: column;
   height: 100%;
   width: 100%;
-  background-color: #1e293b;
+  background-color: var(--k-sunken);
   border-radius: 8px;
   overflow: hidden;
   font-family: monospace;
@@ -306,13 +306,13 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #0f172a;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+  background-color: var(--k-ink);
+  border-bottom: 1px solid var(--k-line);
+  color: var(--k-ink);
 }
 
 .mine-counter, .timer {
-  background-color: #1e293b;
+  background-color: var(--k-sunken);
   padding: 6px 10px;
   border-radius: 4px;
   font-size: 16px;
@@ -321,7 +321,7 @@ export default defineComponent({
 }
 
 .reset-button {
-  background-color: #3b82f6;
+  background-color: var(--k-accent);
   border: none;
   border-radius: 4px;
   width: 40px;
@@ -332,14 +332,14 @@ export default defineComponent({
 }
 
 .reset-button:hover {
-  background-color: #2563eb;
+  background-color: var(--k-accent-hover);
 }
 
 .minesweeper-grid {
   flex: 1;
   display: grid;
   gap: 2px;
-  background-color: #0f172a;
+  background-color: var(--k-ink);
   padding: 12px;
   overflow: auto;
 }
@@ -356,7 +356,7 @@ export default defineComponent({
 }
 
 .unrevealed {
-  background-color: #3b82f6;
+  background-color: var(--k-accent);
   border-top: 4px solid #60a5fa;
   border-left: 4px solid #60a5fa;
   border-right: 4px solid #1d4ed8;
@@ -370,7 +370,7 @@ export default defineComponent({
 }
 
 .flagged {
-  background-color: #3b82f6;
+  background-color: var(--k-accent);
   border-top: 4px solid #60a5fa;
   border-left: 4px solid #60a5fa;
   border-right: 4px solid #1d4ed8;
@@ -378,9 +378,9 @@ export default defineComponent({
 }
 
 .revealed {
-  background-color: #1e293b;
+  background-color: var(--k-sunken);
   border: 1px solid #0f172a;
-  color: white;
+  color: var(--k-ink);
 }
 
 .mine {
@@ -389,7 +389,7 @@ export default defineComponent({
   font-size: 22px; /* Größere Enten */
 }
 
-.adjacent-1 { color: #3b82f6; }
+.adjacent-1 { color: var(--k-accent); }
 .adjacent-2 { color: #10b981; }
 .adjacent-3 { color: #ef4444; }
 .adjacent-4 { color: #8b5cf6; }

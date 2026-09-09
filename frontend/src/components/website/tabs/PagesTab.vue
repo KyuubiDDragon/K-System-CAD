@@ -174,7 +174,7 @@ defineEmits<{
 
 .pages-tab > p {
     margin-bottom: 1.5rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .tabs-container {
@@ -191,8 +191,8 @@ defineEmits<{
 .tab {
     padding: 10px 20px;
     cursor: pointer;
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-bottom: none;
     border-radius: 4px 4px 0 0;
     color: #e5e7eb;
@@ -204,9 +204,9 @@ defineEmits<{
 }
 
 .tab.active {
-    background-color: #3b82f6;
-    color: white;
-    border-color: #3b82f6;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
+    border-color: var(--k-accent);
 }
 
 .tab i {
@@ -235,7 +235,7 @@ defineEmits<{
 }
 
 .data-table thead th {
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     color: #e5e7eb;
     padding: 12px;
     text-align: left;
@@ -243,7 +243,7 @@ defineEmits<{
 }
 
 .data-table tbody tr {
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     transition: background-color 0.3s ease;
 }
 
@@ -253,7 +253,7 @@ defineEmits<{
 
 .data-table tbody td {
     padding: 12px;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .data-table tbody td.actions {
@@ -274,18 +274,18 @@ defineEmits<{
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-icon {
     background: transparent;
     border: none;
-    color: #3b82f6;
+    color: var(--k-accent);
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 4px;
@@ -299,7 +299,7 @@ defineEmits<{
 .empty-state {
     text-align: center;
     padding: 40px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .empty-state p {

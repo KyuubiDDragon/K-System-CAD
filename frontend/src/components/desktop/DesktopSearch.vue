@@ -516,7 +516,7 @@ watch(searchQuery, () => {
     0 20px 60px rgba(0, 0, 0, 0.5),
     0 8px 24px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--k-line);
   padding: 20px;
   z-index: 9999;
   opacity: 0;
@@ -561,19 +561,19 @@ watch(searchQuery, () => {
   position: relative;
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--k-row-hover);
   border-radius: 10px;
   padding: 0 16px;
   transition: all 0.2s ease;
 }
 
 .search-input-wrapper:focus-within {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--k-row-hover);
   box-shadow: 0 0 0 2px rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.3);
 }
 
 .search-icon {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
   margin-right: 8px;
 }
 
@@ -588,7 +588,7 @@ watch(searchQuery, () => {
 }
 
 .search-input::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--k-ink-faint);
 }
 
 .search-clear {
@@ -599,13 +599,13 @@ watch(searchQuery, () => {
   justify-content: center;
   border-radius: 50%;
   cursor: pointer;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--k-ink-faint);
   transition: all 0.2s ease;
 }
 
 .search-clear:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  background-color: var(--k-ink);
+  color: var(--k-ink-muted);
 }
 
 .search-close {
@@ -615,13 +615,13 @@ watch(searchQuery, () => {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--k-row-hover);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .search-close:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
 }
 
 /* Filter Styling */
@@ -638,8 +638,8 @@ watch(searchQuery, () => {
   gap: 6px;
   padding: 8px 16px;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--k-row-hover);
+  border: 1px solid var(--k-line);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -650,8 +650,8 @@ watch(searchQuery, () => {
 }
 
 .filter-chip:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
+  border-color: var(--k-line);
   color: var(--desktop-text, rgba(255, 255, 255, 0.95));
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -696,7 +696,7 @@ watch(searchQuery, () => {
   align-items: center;
   gap: 8px;
   padding: 12px 12px 10px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -734,8 +734,8 @@ watch(searchQuery, () => {
 }
 
 .result-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--k-row-hover);
+  border-color: var(--k-line);
   transform: translateX(4px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
@@ -813,7 +813,7 @@ watch(searchQuery, () => {
   justify-content: center;
   font-size: 13px;
   font-weight: 500;
-  color: var(--desktop-accent-blue, #3b82f6);
+  color: var(--desktop-accent-blue, var(--k-accent));
   cursor: pointer;
   border-radius: 10px;
   transition: all 0.2s ease;
@@ -836,7 +836,7 @@ watch(searchQuery, () => {
   justify-content: space-between;
   align-items: center;
   padding: 12px 12px 10px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -846,7 +846,7 @@ watch(searchQuery, () => {
 .clear-history {
   font-size: 11px;
   font-weight: 600;
-  color: var(--desktop-accent-blue, #3b82f6);
+  color: var(--desktop-accent-blue, var(--k-accent));
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 6px;
@@ -870,8 +870,8 @@ watch(searchQuery, () => {
 }
 
 .suggestion-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
+  background: var(--k-row-hover);
+  border-color: var(--k-line);
   transform: translateX(4px);
 }
 
@@ -900,7 +900,7 @@ watch(searchQuery, () => {
   padding: 20px 12px;
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   backdrop-filter: blur(10px);
@@ -909,7 +909,7 @@ watch(searchQuery, () => {
 
 .quick-access-item:hover {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--k-line);
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
@@ -942,7 +942,7 @@ watch(searchQuery, () => {
   justify-content: center;
   gap: 16px;
   padding: 14px 0 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--k-line);
   margin-top: 8px;
 }
 
@@ -956,7 +956,7 @@ watch(searchQuery, () => {
   padding: 6px 10px;
   border-radius: 6px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--k-line);
   font-size: 11px;
   font-weight: 600;
   color: var(--desktop-text, rgba(255, 255, 255, 0.9));

@@ -1,6 +1,5 @@
 <template>
     <v-container fluid class="fill-height login-container pa-0">
-        <div class="geometric-background"></div>
         <v-row align="center" justify="center" no-gutters>
             <v-col cols="12" sm="8" md="6" lg="4" xl="3">
                 <div class="logo-container text-center mb-8">
@@ -50,7 +49,7 @@
                     </v-card-text>
                 </v-card>
 
-                <v-card class="login-card rounded-xl overflow-hidden" theme="dark" :style="dynamicCardStyle">
+                <v-card class="login-card rounded-xl overflow-hidden" :style="dynamicCardStyle">
                     <v-card-text class="px-8 py-8 position-relative">
                         <h2 class="text-h5 font-weight-medium mb-8 text-center">
                             {{ $t('login.welcomeBack') }}
@@ -520,7 +519,7 @@ const validateUrlSite = async (siteName: string) => {
             // Set authority branding
             selectedAuthorityBranding.value = {
                 logo_url: authorityData.logo_url,
-                primary_color: authorityData.primary_color || '#3B82F6',
+                primary_color: authorityData.primary_color || 'var(--k-accent)',
                 secondary_color: authorityData.secondary_color || '#6B7280',
                 app_title: authorityData.app_title || authorityData.display_name,
                 default_background: authorityData.default_background
@@ -578,7 +577,7 @@ const onAuthorityChange = (selectedAuth: any) => {
     if (selectedAuth) {
         selectedAuthorityBranding.value = {
             logo_url: selectedAuth.logo_url,
-            primary_color: selectedAuth.primary_color || '#3B82F6',
+            primary_color: selectedAuth.primary_color || 'var(--k-accent)',
             secondary_color: selectedAuth.secondary_color || '#6B7280',
             app_title: selectedAuth.app_title || selectedAuth.display_name,
             default_background: selectedAuth.default_background
@@ -610,8 +609,8 @@ const resetBrandingStyles = () => {
 const authorityCardStyle = computed(() => {
     if (!urlAuthority.value) return {};
     return {
-        borderColor: urlAuthority.value.primary_color || '#3B82F6',
-        background: `linear-gradient(135deg, ${urlAuthority.value.primary_color || '#3B82F6'}15, ${urlAuthority.value.secondary_color || '#6B7280'}10)`
+        borderColor: urlAuthority.value.primary_color || 'var(--k-accent)',
+        background: `linear-gradient(135deg, ${urlAuthority.value.primary_color || 'var(--k-accent)'}15, ${urlAuthority.value.secondary_color || '#6B7280'}10)`
     };
 });
 
@@ -773,7 +772,7 @@ const submitLogin = async () => {
                     }
 
                     const processedSettings: ProcessedSettings = {
-                        primaryColor: themeSettings.primaryColor || '#3B82F6',
+                        primaryColor: themeSettings.primaryColor || 'var(--k-accent)',
                         secondaryColor: themeSettings.secondaryColor || '#343541',
                         accentColor: themeSettings.accentColor || '#10B981',
                         backgroundColor: themeSettings.backgroundColor || '#111723',
@@ -873,74 +872,10 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
     justify-content: center;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+    background: var(--k-canvas, #0f1216);
 }
 
-.geometric-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.05;
-    background-image:
-        linear-gradient(
-            30deg,
-            #ffffff 12%,
-            transparent 12.5%,
-            transparent 87%,
-            #ffffff 87.5%,
-            #ffffff
-        ),
-        linear-gradient(
-            150deg,
-            #ffffff 12%,
-            transparent 12.5%,
-            transparent 87%,
-            #ffffff 87.5%,
-            #ffffff
-        ),
-        linear-gradient(
-            30deg,
-            #ffffff 12%,
-            transparent 12.5%,
-            transparent 87%,
-            #ffffff 87.5%,
-            #ffffff
-        ),
-        linear-gradient(
-            150deg,
-            #ffffff 12%,
-            transparent 12.5%,
-            transparent 87%,
-            #ffffff 87.5%,
-            #ffffff
-        );
-    background-size: 80px 140px;
-    background-position:
-        0 0,
-        0 0,
-        40px 70px,
-        40px 70px;
-    animation: movePattern 60s linear infinite;
-}
 
-@keyframes movePattern {
-    0% {
-        background-position:
-            0 0,
-            0 0,
-            40px 70px,
-            40px 70px;
-    }
-    100% {
-        background-position:
-            1000px 1000px,
-            1000px 1000px,
-            1040px 1070px,
-            1040px 1070px;
-    }
-}
 
 .logo-container {
     margin-bottom: 3rem;
@@ -975,7 +910,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 .logo-text {
     font-size: 1.3rem;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--k-ink, rgba(255, 255, 255, 0.85));
     letter-spacing: 0.25em;
     text-transform: uppercase;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -985,8 +920,8 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 .login-card {
     backdrop-filter: blur(30px) saturate(180%);
     -webkit-backdrop-filter: blur(30px) saturate(180%);
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.9));
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--k-surface, #161a20);
+    border: 1px solid var(--k-line, rgba(255, 255, 255, 0.12));
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.5),
         0 8px 24px rgba(0, 0, 0, 0.3),
@@ -1054,19 +989,19 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .login-field :deep(.v-field) {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--k-surface, rgba(255, 255, 255, 0.05));
+    border: 1px solid var(--k-line-strong, rgba(255, 255, 255, 0.1));
     transition: all 0.3s ease;
 }
 
 .login-field :deep(.v-field:hover) {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: var(--k-row-hover, rgba(255, 255, 255, 0.08));
+    border-color: var(--k-accent-line, rgba(255, 255, 255, 0.15));
 }
 
 .login-field :deep(.v-field--focused) {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--authority-primary, #3b82f6);
+    background: var(--k-row-hover);
+    border-color: var(--authority-primary, var(--k-accent));
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
@@ -1147,7 +1082,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 .forgot-link {
     position: relative;
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--k-ink-faint, rgba(255, 255, 255, 0.65));
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.75rem;
@@ -1155,7 +1090,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .forgot-link:hover {
-    color: var(--authority-primary, #3b82f6);
+    color: var(--authority-primary, var(--k-accent));
     transform: translateX(2px);
 }
 
@@ -1166,7 +1101,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
     height: 2px;
     bottom: -2px;
     left: 0;
-    background: linear-gradient(90deg, var(--authority-primary, #3b82f6), transparent);
+    background: linear-gradient(90deg, var(--authority-primary, var(--k-accent)), transparent);
     transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1181,14 +1116,14 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .login-field :deep(.v-checkbox .v-label) {
-    color: rgba(255, 255, 255, 0.75);
+    color: var(--k-ink-muted, rgba(255, 255, 255, 0.75));
     font-weight: 500;
     font-size: 0.875rem;
 }
 
 .system-selector {
     background-color: rgba(26, 32, 44, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     padding: 12px;
     position: relative;
@@ -1202,7 +1137,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
     max-height: 200px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    scrollbar-color: var(--k-line-strong) transparent;
 }
 
 .system-options::-webkit-scrollbar {
@@ -1214,7 +1149,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .system-options::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--k-row-hover);
     border-radius: 3px;
 }
 
@@ -1235,12 +1170,12 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 .recent-system-chip {
     cursor: pointer;
     transition: all 0.2s ease;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .recent-system-chip:hover {
     transform: translateY(-2px);
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .gap-2 {
@@ -1248,7 +1183,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .selected-system {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted, rgba(255, 255, 255, 0.7));
 }
 
 .recent-item {
@@ -1257,7 +1192,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .recent-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 /* Authority Branding Styles */
@@ -1293,7 +1228,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .authority-item:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--k-row-hover);
     transform: translateX(4px);
 }
 
@@ -1305,7 +1240,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 .login-field :deep(.v-list) {
     background: rgba(30, 41, 59, 0.95);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 12px;
 }
 
@@ -1316,12 +1251,12 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .login-field :deep(.v-list-item:hover) {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--k-row-hover);
     transform: translateX(4px);
 }
 
 .login-field :deep(.v-list-subheader) {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
     font-weight: 700;
     font-size: 0.7rem;
     text-transform: uppercase;
@@ -1330,7 +1265,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 /* Dynamic Authority Branding Variables */
 :root {
-    --authority-primary: #3B82F6;
+    --authority-primary: var(--k-accent);
     --authority-secondary: #6B7280;
 }
 
@@ -1364,7 +1299,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 /* Footer Text Styling */
 .text-caption.text-medium-emphasis {
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
     font-size: 0.75rem;
     font-weight: 500;
     animation: fadeIn 1s ease-out;
@@ -1374,9 +1309,8 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 /* Welcome Back Title */
 .login-card .text-h5 {
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--k-ink, rgba(255, 255, 255, 0.95));
     font-weight: 600;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     letter-spacing: 0.5px;
 }
 </style>

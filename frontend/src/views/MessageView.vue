@@ -907,7 +907,7 @@ onMounted(async () => {
 <template>
     <v-container fluid class="mail-system-container pa-0">
         <!-- Seitenleiste -->
-        <v-navigation-drawer app rail permanent class="sidebar-drawer" theme="dark">
+        <v-navigation-drawer app rail permanent class="sidebar-drawer">
             <v-list density="compact" nav class="sidebar-list">
                 <v-tooltip :text="$t('messageView.inbox')" location="end">
                     <template v-slot:activator="{ props }">
@@ -1048,7 +1048,7 @@ onMounted(async () => {
                     </v-row>
 
                     <!-- Nachrichten oder Ordner Tabelle -->
-                    <v-card v-if="view !== 'folders' && !isReadingMessage" class="main-card elevation-4" theme="dark">
+                    <v-card v-if="view !== 'folders' && !isReadingMessage" class="main-card elevation-4">
                         <v-toolbar flat density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-h6">{{
                                 currentViewTitle
@@ -1336,7 +1336,7 @@ onMounted(async () => {
                     </v-card>
 
                     <!-- Nachricht lesen Ansicht -->
-                    <v-card v-if="isReadingMessage" class="main-card elevation-4" theme="dark">
+                    <v-card v-if="isReadingMessage" class="main-card elevation-4">
                         <v-toolbar color="primary" class="dialog-header">
                             <v-btn icon @click="closeReadMessageDialog" class="mr-2">
                                 <v-icon>mdi-arrow-left</v-icon>
@@ -1558,7 +1558,7 @@ onMounted(async () => {
                     </v-card>
 
                     <!-- Ordneransicht -->
-                    <v-card v-if="view === 'folders'" class="main-card elevation-4" theme="dark">
+                    <v-card v-if="view === 'folders'" class="main-card elevation-4">
                         <v-toolbar flat density="compact" class="card-toolbar">
                             <v-toolbar-title class="text-h6">{{
                                 currentViewTitle
@@ -1660,7 +1660,7 @@ onMounted(async () => {
 
         <!-- Neue Nachricht Dialog -->
         <v-dialog v-model="newMessageDialog" max-width="70%" class="custom-dialog">
-            <v-card theme="dark" class="dialog-card">
+            <v-card class="dialog-card">
                 <v-toolbar color="primary" class="dialog-header">
                     <v-toolbar-title class="text-h5">{{ t('messageView.newMessage') }}</v-toolbar-title>
                     <v-spacer></v-spacer>
@@ -1754,7 +1754,7 @@ onMounted(async () => {
             persistent
             class="custom-dialog"
         >
-            <v-card theme="dark" class="dialog-card">
+            <v-card class="dialog-card">
                 <v-toolbar :color="deleteConfirmationColor" class="dialog-header">
                     <v-icon start class="mr-2">
                         {{
@@ -1805,7 +1805,7 @@ onMounted(async () => {
 
         <!-- Folder Dialog -->
         <v-dialog v-model="folderDialog" max-width="600" persistent class="custom-dialog">
-            <v-card theme="dark" class="dialog-card">
+            <v-card class="dialog-card">
                 <v-toolbar color="info" class="dialog-header">
                     <v-icon start class="mr-2">
                         {{ isEditingFolder ? 'mdi-folder-edit' : 'mdi-folder-plus' }}
@@ -1900,7 +1900,7 @@ onMounted(async () => {
 <style scoped>
 /* Base Styles */
 .mail-system-container {
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -1911,7 +1911,7 @@ onMounted(async () => {
 /* Sidebar Styles */
 .sidebar-drawer {
     background: rgba(15, 23, 42, 0.8) !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid var(--k-line);
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -1942,7 +1942,7 @@ onMounted(async () => {
 /* Card Styles */
 .main-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     overflow: hidden;
@@ -1952,7 +1952,7 @@ onMounted(async () => {
 
 .card-toolbar {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Filter Toolbar */
@@ -1981,7 +1981,7 @@ onMounted(async () => {
 
 .message-table :deep(th),
 .folder-table :deep(th) {
-    color: #94a3b8 !important;
+    color: var(--k-ink-faint) !important;
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -2100,17 +2100,17 @@ onMounted(async () => {
 
 .dialog-card {
     background: rgba(15, 23, 42, 0.95) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
 }
 
 .dialog-header {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
 }
 
 /* Message Editor */
 .message-editor {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
     min-height: 250px;
@@ -2156,7 +2156,7 @@ onMounted(async () => {
 }
 
 .message-body {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     padding: 16px;
     background-color: rgba(30, 41, 59, 0.3);
@@ -2192,7 +2192,7 @@ onMounted(async () => {
 /* Special Typography */
 .timestamp {
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: var(--k-ink-faint);
 }
 
 .group-sender,
@@ -2248,7 +2248,7 @@ onMounted(async () => {
     }
 
     .message-body {
-        background-color: white !important;
+        background-color: var(--k-ink) !important;
         color: black !important;
         border: 1px solid #ddd;
     }

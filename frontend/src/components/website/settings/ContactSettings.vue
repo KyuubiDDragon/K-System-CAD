@@ -148,14 +148,14 @@ function emitChange() {
 .form-control {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -163,7 +163,7 @@ function emitChange() {
     display: block;
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .checkbox-label {
@@ -187,9 +187,9 @@ function emitChange() {
 .contact-form-config {
     margin-top: 2rem;
     padding: 1.5rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     border-radius: 8px;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
 }
 
 .contact-form-config h4 {
@@ -203,7 +203,7 @@ function emitChange() {
 }
 
 .text-muted {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 0.875rem;
 }
 

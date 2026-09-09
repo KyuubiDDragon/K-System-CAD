@@ -352,7 +352,7 @@ defineExpose({
 .vacation-item {
   border-left: 3px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--k-row-hover);
   transition: all 0.2s;
 
   &.active-vacation {
@@ -361,12 +361,12 @@ defineExpose({
   }
 
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-row-hover);
   }
 }
 
 .vacation-dates {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--k-ink-muted);
 }
 
 .vacation-note {
@@ -375,6 +375,6 @@ defineExpose({
 
 .no-data,
 .error-state {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

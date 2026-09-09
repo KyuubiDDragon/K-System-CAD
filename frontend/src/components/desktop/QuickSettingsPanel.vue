@@ -206,7 +206,7 @@ const quickAccessApps = [
   -webkit-backdrop-filter: blur(15px);
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   padding: 16px;
   transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
   transform: translateY(20px);
@@ -265,13 +265,13 @@ const quickAccessApps = [
 }
 
 .close-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
 }
 
 .settings-section {
   margin-bottom: 20px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .settings-section:last-child {
@@ -301,12 +301,12 @@ const quickAccessApps = [
   gap: 12px;
   padding: 10px;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--k-row-hover);
   transition: background-color 0.2s ease;
 }
 
 .settings-item:hover {
-  background-color: rgba(255, 255, 255, 0.08);
+  background-color: var(--k-row-hover);
 }
 
 .item-icon {
@@ -319,7 +319,7 @@ const quickAccessApps = [
   background: linear-gradient(135deg, 
     rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.15),
     rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.05));
-  color: var(--desktop-accent-blue, #3b82f6);
+  color: var(--desktop-accent-blue, var(--k-accent));
 }
 
 .item-content {
@@ -345,7 +345,7 @@ const quickAccessApps = [
   appearance: none;
   width: 100%;
   height: 4px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--k-row-hover);
   border-radius: 2px;
   outline: none;
 }
@@ -356,7 +356,7 @@ const quickAccessApps = [
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--desktop-accent-blue, #3b82f6);
+  background: var(--desktop-accent-blue, var(--k-accent));
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -378,14 +378,14 @@ const quickAccessApps = [
   position: relative;
   width: 42px;
   height: 22px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
   border-radius: 11px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .toggle.active {
-  background-color: var(--desktop-accent-blue, #3b82f6);
+  background-color: var(--desktop-accent-blue, var(--k-accent));
 }
 
 .toggle-button {
@@ -394,7 +394,7 @@ const quickAccessApps = [
   left: 3px;
   width: 16px;
   height: 16px;
-  background-color: white;
+  background-color: var(--k-ink);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -413,7 +413,7 @@ const quickAccessApps = [
 .position-buttons button {
   padding: 6px;
   border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   border: none;
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
   font-size: 12px;
@@ -422,13 +422,13 @@ const quickAccessApps = [
 }
 
 .position-buttons button:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: var(--k-row-hover);
   color: var(--desktop-text, rgba(255, 255, 255, 0.95));
 }
 
 .position-buttons button.active {
-  background-color: var(--desktop-accent-blue, #3b82f6);
-  color: white;
+  background-color: var(--desktop-accent-blue, var(--k-accent));
+  color: var(--k-ink);
 }
 
 /* Schnellzugriff-Apps */
@@ -444,13 +444,13 @@ const quickAccessApps = [
   align-items: center;
   padding: 12px 8px;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--k-row-hover);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .quick-access-app:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   transform: translateY(-3px);
 }
 
@@ -462,7 +462,7 @@ const quickAccessApps = [
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
 }
 
 .app-name {

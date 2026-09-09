@@ -90,11 +90,11 @@ defineExpose({ refresh: loadLogs })
 
 .log-item {
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--k-row-hover);
   font-size: 11px;
 }
 
 .no-data {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

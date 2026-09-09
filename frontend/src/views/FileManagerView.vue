@@ -355,7 +355,7 @@ onMounted(() => {
 			</div>
 
 			<!-- Aktionsleiste mit Navigation und Datei-Upload -->
-			<v-card class="action-bar mb-5" variant="outlined" theme="dark">
+			<v-card class="action-bar mb-5" variant="outlined">
 				<v-card-text class="py-3 px-4">
 					<!-- Navigation und aktuelle Position -->
 					<div class="path-navigator d-flex align-center flex-wrap">
@@ -463,7 +463,7 @@ onMounted(() => {
 				</v-fade-transition>
 
 				<!-- Haupt-Content-Bereich -->
-				<v-card variant="outlined" class="content-area" theme="dark">
+				<v-card variant="outlined" class="content-area">
 					<!-- Leerstandsanzeige -->
 					<v-card-text
 						v-if="!filteredFolders.length && !filteredFiles.length"
@@ -531,7 +531,6 @@ onMounted(() => {
 											v-bind="props"
 											class="folder-card flex-grow-1"
 											@click="navigateToFolder(folder.id)"
-											theme="dark"
 											:elevation="isHovering ? 8 : 1"
 										>
 											<div
@@ -634,7 +633,6 @@ onMounted(() => {
 										<v-card
 											v-bind="props"
 											class="file-card flex-grow-1"
-											theme="dark"
 											:elevation="isHovering ? 8 : 1"
 										>
 											<div
@@ -770,7 +768,6 @@ onMounted(() => {
 							<!-- List View -->
 							<v-card
 								v-else
-								theme="dark"
 								variant="flat"
 								class="file-list-container"
 							>
@@ -932,7 +929,7 @@ onMounted(() => {
 <style scoped>
 .file-manager-container {
 	min-height: 90vh;
-	background-color: #111723;
+	background-color: var(--k-ink);
 	background-image: radial-gradient(
 			circle at 10% 20%,
 			rgba(30, 64, 175, 0.05) 0%,
@@ -951,7 +948,7 @@ onMounted(() => {
 	display: flex;
 	align-items: center;
 	padding-bottom: 20px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid var(--k-line);
 }
 
 .header-title {
@@ -978,7 +975,7 @@ onMounted(() => {
 /* Action Bar */
 .action-bar {
 	background: rgba(15, 23, 42, 0.6) !important;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid var(--k-line);
 	backdrop-filter: blur(8px);
 	border-radius: 12px;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -1030,7 +1027,7 @@ onMounted(() => {
 /* Content Area */
 .content-area {
 	background: rgba(15, 23, 42, 0.6) !important;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid var(--k-line);
 	backdrop-filter: blur(8px);
 	border-radius: 12px;
 	min-height: 400px;
@@ -1040,10 +1037,10 @@ onMounted(() => {
 
 .section-title,
 .section-title-with-options {
-	color: rgba(255, 255, 255, 0.7);
+	color: var(--k-ink-muted);
 	margin: 8px 8px 12px;
 	padding-bottom: 8px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid var(--k-line);
 }
 
 .view-toggle {
@@ -1054,7 +1051,7 @@ onMounted(() => {
 .folder-card {
 	position: relative;
 	cursor: pointer;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid var(--k-line);
 	border-radius: 12px;
 	background: rgba(30, 41, 59, 0.4) !important;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1080,7 +1077,7 @@ onMounted(() => {
 }
 
 .folder-card:hover .folder-name {
-	color: #3b82f6;
+	color: var(--k-accent);
 }
 
 .folder-icon {
@@ -1102,7 +1099,7 @@ onMounted(() => {
 }
 
 .folder-hover-icon {
-	color: #3b82f6;
+	color: var(--k-accent);
 	font-size: 18px;
 	animation: pulse 1.5s infinite;
 }
@@ -1111,7 +1108,7 @@ onMounted(() => {
 .file-card {
 	position: relative;
 	cursor: pointer;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid var(--k-line);
 	border-radius: 12px;
 	background: rgba(30, 41, 59, 0.4) !important;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1224,13 +1221,13 @@ onMounted(() => {
 /* List View Styles */
 .file-list-container {
 	background: transparent !important;
-	border: 1px solid rgba(255, 255, 255, 0.08);
+	border: 1px solid var(--k-line);
 	border-radius: 12px;
 	overflow: hidden;
 }
 
 .file-list-item {
-	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	border-bottom: 1px solid var(--k-line);
 	transition: background-color 0.2s ease;
 }
 
@@ -1256,7 +1253,7 @@ onMounted(() => {
 }
 
 .list-icon-container.file-doc {
-	background: linear-gradient(135deg, #3b82f6, #2563eb);
+	background: linear-gradient(135deg, var(--k-accent), var(--k-accent-hover));
 }
 
 .list-icon-container.file-xls {
@@ -1278,13 +1275,13 @@ onMounted(() => {
 
 /* Dialog Styling */
 .dialog-card {
-	background: #0f172a !important;
+	background: var(--k-canvas) !important;
 	border-radius: 12px;
 	overflow: hidden;
 }
 
 .dialog-toolbar {
-	background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
+	background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
 }
 
 /* Empty State */

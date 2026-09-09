@@ -145,12 +145,12 @@ defineExpose({ refresh: loadMessages })
 
 .message-item {
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--k-row-hover);
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--k-row-hover);
   }
 }
 
@@ -168,6 +168,6 @@ defineExpose({ refresh: loadMessages })
 
 .no-data,
 .error-state {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

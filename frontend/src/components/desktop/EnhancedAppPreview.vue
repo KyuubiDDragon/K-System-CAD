@@ -361,7 +361,7 @@ onBeforeUnmount(() => {
   -webkit-backdrop-filter: blur(12px);
   border-radius: 14px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   overflow: hidden;
   z-index: 1050;
   opacity: 0;
@@ -397,7 +397,7 @@ onBeforeUnmount(() => {
   align-items: center;
   padding: 12px 14px;
   background: rgba(0, 0, 0, 0.15);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .app-info {
@@ -452,18 +452,18 @@ onBeforeUnmount(() => {
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
 }
 
 .action-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
   color: var(--desktop-text, rgba(255, 255, 255, 0.95));
 }
 
 .action-button.close:hover {
   background-color: rgba(239, 68, 68, 0.8);
-  color: white;
+  color: var(--k-ink);
 }
 
 /* Hauptinhalt Styling */
@@ -487,7 +487,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
   width: 80px;
   height: 80px;
   border-radius: 16px;
@@ -555,12 +555,12 @@ onBeforeUnmount(() => {
 }
 
 .window-preview-item:hover .window-preview-container {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--k-line);
   transform: translateY(-3px);
 }
 
 .window-preview-item.active .window-preview-container {
-  border-color: var(--desktop-accent-blue, #3b82f6);
+  border-color: var(--desktop-accent-blue, var(--k-accent));
   box-shadow: 0 0 0 2px rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.3);
 }
 
@@ -568,7 +568,7 @@ onBeforeUnmount(() => {
   height: 90px;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--k-line);
   transition: all 0.2s ease;
 }
 
@@ -585,7 +585,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
   gap: 8px;
   padding: 8px;
 }
@@ -614,7 +614,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   color: var(--desktop-text, rgba(255, 255, 255, 0.9));
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--k-line);
 }
 
 .window-preview-title {
@@ -638,7 +638,7 @@ onBeforeUnmount(() => {
 .preview-footer {
   padding: 12px 14px;
   background: rgba(0, 0, 0, 0.15);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--k-line);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -651,7 +651,7 @@ onBeforeUnmount(() => {
 }
 
 .notification-indicator {
-  color: var(--desktop-accent-blue, #3b82f6);
+  color: var(--desktop-accent-blue, var(--k-accent));
   font-weight: 500;
 }
 
@@ -666,7 +666,7 @@ onBeforeUnmount(() => {
   gap: 4px;
   padding: 4px 10px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
   font-size: 11px;
   cursor: pointer;
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
@@ -674,7 +674,7 @@ onBeforeUnmount(() => {
 }
 
 .action-chip:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
   color: var(--desktop-text, rgba(255, 255, 255, 0.95));
 }
 
@@ -691,17 +691,17 @@ onBeforeUnmount(() => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--k-row-hover);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .window-dot:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--k-row-hover);
 }
 
 .window-dot.active {
-  background: var(--desktop-accent-blue, #3b82f6);
+  background: var(--desktop-accent-blue, var(--k-accent));
   width: 10px;
   height: 10px;
 }

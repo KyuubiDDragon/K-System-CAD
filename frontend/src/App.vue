@@ -1151,7 +1151,7 @@ watch(
     transition: all 0.2s ease;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: var(--k-row-hover);
     }
 
     &.v-list-item--active {
@@ -1293,14 +1293,14 @@ watch(
     text-transform: none;
     letter-spacing: normal;
     font-weight: normal;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
     border-radius: 50px;
     padding: 0 16px 0 4px;
     height: 40px;
     position: relative;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--k-ink);
 
         .user-avatar {
             transform: scale(1.05);
@@ -1426,12 +1426,12 @@ watch(
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 0.8rem;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
     cursor: pointer;
     transition: all 0.2s;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--k-ink);
     }
 
     &.active {
@@ -1497,7 +1497,7 @@ watch(
     transition: background-color 0.2s;
 
     &:hover {
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: var(--k-row-hover);
 
         .notification-close {
             opacity: 1;
@@ -1680,7 +1680,7 @@ watch(
 
 // CKEditor styles
 .ck-content pre {
-    color: #fff;
+    color: var(--k-ink);
     direction: ltr;
     font-style: normal;
     -moz-tab-size: 4;
@@ -1690,7 +1690,7 @@ watch(
 }
 
 .language-plaintext {
-    color: white;
+    color: var(--k-ink);
 }
 
 // Responsive adjustments
@@ -1914,15 +1914,15 @@ watch(
 .v-theme--dark .Vue-Toastification__toast {
     background-color: var(--surface-light) !important;
     color: var(--text) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .v-theme--dark .Vue-Toastification__close-button {
-    color: rgba(255, 255, 255, 0.7) !important;
+    color: var(--k-ink-muted) !important;
 }
 
 .v-theme--dark .Vue-Toastification__progress-bar {
-    background-color: rgba(255, 255, 255, 0.3) !important;
+    background-color: var(--k-ink-faint) !important;
 }
 
 /* Debug Overlays ausblenden */

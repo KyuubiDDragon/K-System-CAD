@@ -690,7 +690,7 @@ watch(
 </script>
 
 <template>
-    <v-card v-if="reportToEdit" class="report-card" elevation="4" theme="dark">
+    <v-card v-if="reportToEdit" class="report-card" elevation="4">
         <v-overlay
             :model-value="isDataLoading"
             class="align-center justify-center"
@@ -1265,7 +1265,7 @@ watch(
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -1277,7 +1277,7 @@ watch(
 
 /* Editor */
 .editor-container {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -1324,7 +1324,7 @@ watch(
     padding: 32px;
     background: rgba(30, 41, 59, 0.3);
     border-radius: 8px;
-    color: #64748b;
+    color: var(--k-ink-muted);
 }
 
 /* Totals section */

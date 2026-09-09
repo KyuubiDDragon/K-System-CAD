@@ -150,6 +150,6 @@ defineExpose({ refresh: loadTodos })
 
 .no-data,
 .error-state {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

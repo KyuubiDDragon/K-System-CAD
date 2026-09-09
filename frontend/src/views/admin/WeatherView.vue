@@ -294,7 +294,7 @@ onMounted(() => {
             </v-col>
         </v-row>
 
-        <v-card class="main-card elevation-4 weather-card" theme="dark">
+        <v-card class="main-card elevation-4 weather-card">
             <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                 <v-toolbar-title class="text-h6">
                     <v-icon start size="20" class="mr-2">mdi-calendar-clock</v-icon>
@@ -747,7 +747,7 @@ onMounted(() => {
 /* Main Container */
 .weather-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -824,7 +824,7 @@ onMounted(() => {
     background: rgba(30, 41, 59, 0.4);
     border-radius: 8px;
     padding: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .weather-icon-label {
@@ -853,7 +853,7 @@ onMounted(() => {
 /* Delete Preview */
 .delete-weather-preview {
     background: rgba(30, 41, 59, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 /* Action Icons */
@@ -886,15 +886,15 @@ onMounted(() => {
 
 /* Dialog Styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 

@@ -143,7 +143,7 @@ const isImagePath = (icon: string): boolean => {
   -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--k-line);
   overflow: hidden;
   z-index: 1050;
   opacity: 0;
@@ -164,7 +164,7 @@ const isImagePath = (icon: string): boolean => {
   align-items: center;
   padding: 10px 12px;
   background: rgba(0, 0, 0, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .app-title {
@@ -199,11 +199,11 @@ const isImagePath = (icon: string): boolean => {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
 }
 
 .action-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
 }
 
 .action-button.close:hover {
@@ -247,7 +247,7 @@ const isImagePath = (icon: string): boolean => {
 .preview-footer {
   padding: 10px 12px;
   background: rgba(0, 0, 0, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--k-line);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -269,7 +269,7 @@ const isImagePath = (icon: string): boolean => {
   gap: 4px;
   padding: 6px 10px;
   border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   font-size: 11px;
   cursor: pointer;
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));

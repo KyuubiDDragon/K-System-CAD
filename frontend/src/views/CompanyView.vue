@@ -396,7 +396,7 @@ onMounted(async () => {
             </v-row>
             
             <!-- Detail View Content -->
-            <v-card class="detail-card elevation-4" theme="dark">
+            <v-card class="detail-card elevation-4">
                 <v-card-text class="pa-6">
                     <v-row>
                         <v-col cols="12" md="6">
@@ -553,7 +553,7 @@ onMounted(async () => {
             <!-- Aktionsleiste -->
             <v-row class="action-section mb-4 align-center">
                 <v-col cols="12" md="4" lg="3" v-if="isFireAuthority">
-                    <v-card class="extinguisher-card elevation-2" theme="dark">
+                    <v-card class="extinguisher-card elevation-2">
                         <v-card-text class="py-2 px-4">
                             <v-text-field
                                 :append-inner-icon="canEdit ? 'mdi-content-save' : undefined"
@@ -590,7 +590,7 @@ onMounted(async () => {
             </v-row>
 
             <!-- Haupttabelle -->
-            <v-card class="main-card elevation-4" theme="dark">
+            <v-card class="main-card elevation-4">
                 <v-card-text class="pa-0">
                     <!-- Filterleiste -->
                     <v-toolbar
@@ -858,7 +858,7 @@ onMounted(async () => {
 
 .company-container {
     min-height: 89vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -868,7 +868,7 @@ onMounted(async () => {
 .page-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Action Section */
@@ -944,7 +944,7 @@ onMounted(async () => {
 
 .company-name-link {
     cursor: pointer;
-    color: #3b82f6;
+    color: var(--k-accent);
     transition: all 0.2s ease;
     display: inline-block;
 }
@@ -1026,7 +1026,7 @@ onMounted(async () => {
 
 .dialog-title {
     background: linear-gradient(90deg, #991b1b, #dc2626);
-    color: white;
+    color: var(--k-ink);
     padding: 16px;
 }
 

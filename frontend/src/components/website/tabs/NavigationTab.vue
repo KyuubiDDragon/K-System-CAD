@@ -316,8 +316,8 @@ function getIndent(item: NavigationItem): string {
 }
 
 .navigation-item {
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     margin-bottom: 10px;
     transition: all 0.3s ease;
@@ -337,7 +337,7 @@ function getIndent(item: NavigationItem): string {
 
 .drag-handle {
     cursor: grab;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 20px;
 }
 
@@ -363,7 +363,7 @@ function getIndent(item: NavigationItem): string {
     display: flex;
     gap: 15px;
     font-size: 13px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .detail {
@@ -385,13 +385,13 @@ function getIndent(item: NavigationItem): string {
 }
 
 .badge-blog {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .badge-inactive {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .item-actions {
@@ -412,27 +412,27 @@ function getIndent(item: NavigationItem): string {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-secondary {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 
 .btn-icon {
     background: transparent;
     border: none;
-    color: #3b82f6;
+    color: var(--k-accent);
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 4px;
@@ -454,12 +454,12 @@ function getIndent(item: NavigationItem): string {
 .empty-state {
     text-align: center;
     padding: 60px 20px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .empty-state i {
     font-size: 64px;
-    color: #4b5563;
+    color: var(--k-ink-muted);
     margin-bottom: 20px;
 }
 
@@ -510,7 +510,7 @@ function getIndent(item: NavigationItem): string {
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .modal-header h3 {
@@ -523,7 +523,7 @@ function getIndent(item: NavigationItem): string {
 .btn-close {
     background: transparent;
     border: none;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     cursor: pointer;
     font-size: 24px;
     padding: 0;
@@ -559,8 +559,8 @@ function getIndent(item: NavigationItem): string {
 .form-control {
     width: 100%;
     padding: 10px 12px;
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     color: #e5e7eb;
     font-size: 14px;
@@ -569,12 +569,12 @@ function getIndent(item: NavigationItem): string {
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     background-color: #374151;
 }
 
 .form-control::placeholder {
-    color: #6b7280;
+    color: var(--k-ink-muted);
 }
 
 .checkbox-group {
@@ -582,8 +582,8 @@ function getIndent(item: NavigationItem): string {
     flex-direction: column;
     gap: 8px;
     padding: 10px;
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     max-height: 200px;
     overflow-y: auto;
@@ -605,7 +605,7 @@ function getIndent(item: NavigationItem): string {
 .form-group small {
     display: block;
     margin-top: 5px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 12px;
 }
 

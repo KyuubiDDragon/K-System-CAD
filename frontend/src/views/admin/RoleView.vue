@@ -675,7 +675,7 @@ onMounted(fetchAllInitialData);
                 </v-row>
 
                 <!-- Haupttabelle -->
-                <v-card class="main-card elevation-4" theme="dark">
+                <v-card class="main-card elevation-4">
             <v-toolbar flat density="compact" color="transparent" class="card-toolbar px-4 py-2">
                 <v-toolbar-title class="text-h6">
                     <v-icon start size="20" class="mr-2">mdi-shield-account</v-icon>
@@ -1538,20 +1538,20 @@ onMounted(fetchAllInitialData);
 
 /* Dialog Styling */
 .dialog-card {
-    background-color: #0f172a !important;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink) !important;
+    border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    color: var(--k-ink);
     padding: 16px;
 }
 
 .role-dialog-content {
-    background: #0f172a;
+    background: var(--k-canvas);
 }
 
 /* Permission Tables */
@@ -1627,7 +1627,7 @@ onMounted(fetchAllInitialData);
 .permission-group {
     margin-bottom: 8px;
     background: rgba(30, 41, 59, 0.3) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--k-line);
 }
 
 .permission-group :deep(.v-expansion-panel-title) {
@@ -1654,7 +1654,7 @@ onMounted(fetchAllInitialData);
 }
 
 .permission-item {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .permission-item:last-child {
@@ -1662,7 +1662,7 @@ onMounted(fetchAllInitialData);
 }
 
 .permission-item:hover {
-    background: rgba(255, 255, 255, 0.02) !important;
+    background: var(--k-row-hover) !important;
 }
 
 /* Fullscreen dialog adjustments */

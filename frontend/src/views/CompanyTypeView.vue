@@ -209,7 +209,7 @@ onMounted(fetchCompanyTypes);
         </v-row>
 
         <!-- Haupttabelle -->
-        <v-card class="main-card elevation-4" theme="dark">
+        <v-card class="main-card elevation-4">
             <v-data-table
                 :headers="typeHeaders"
                 :items="companyTypes"
@@ -403,7 +403,7 @@ onMounted(fetchCompanyTypes);
 
 .company-type-container {
     min-height: 89vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -413,7 +413,7 @@ onMounted(fetchCompanyTypes);
 .page-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Action Button */
@@ -451,7 +451,7 @@ onMounted(fetchCompanyTypes);
 
 .type-description {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
 }
 
 /* Action Icons */
@@ -502,7 +502,7 @@ onMounted(fetchCompanyTypes);
 
 .dialog-title {
     background: linear-gradient(90deg, #991b1b, #dc2626);
-    color: white;
+    color: var(--k-ink);
     padding: 16px;
 }
 

@@ -55,10 +55,9 @@
                     class="board-entry"
                     :prepend-icon="entry.pinned ? 'mdi-pin' : undefined"
                     elevation="4"
-                    theme="dark"
                     :class="{'pinned-entry': entry.pinned}"
                 >
-                    <div class="entry-color-bar" :style="`background-color: ${entry.color || '#3b82f6'}`"></div>
+                    <div class="entry-color-bar" :style="`background-color: ${entry.color || 'var(--k-accent)'}`"></div>
                     
                     <template v-slot:title>
                         <div class="d-flex align-center">
@@ -179,7 +178,7 @@
         <!-- Add/Edit Form - Shown instead of entries list -->
         <v-row v-if="showDetailView">
             <v-col cols="12">
-                <v-card :loading="savingEntry" theme="dark" class="editor-card">
+                <v-card :loading="savingEntry" class="editor-card">
                     <v-toolbar color="primary" flat>
                         <v-btn icon="mdi-arrow-left" @click="closeAddEditDialog"></v-btn>
                         <v-toolbar-title class="text-h6">{{
@@ -243,7 +242,7 @@
                                         mode="hexa"
                                         width="100%"
                                         class="color-picker"
-                                        style="background-color: #0f172a !important;"
+                                        style="background-color: var(--k-ink) !important;"
                                     ></v-color-picker>
                                 </v-col>
                                 <v-col cols="12" sm="4" class="d-flex flex-column justify-center options-container">
@@ -289,7 +288,7 @@
 
         <!-- Delete Confirmation Dialog -->
         <v-dialog v-model="deleteConfirmationDialog" max-width="500px" persistent>
-            <v-card theme="dark" class="confirmation-dialog">
+            <v-card class="confirmation-dialog">
                 <v-card-title class="text-h6">
                     <v-icon color="error" class="mr-2">mdi-delete-alert</v-icon>
                     {{ t('blackboardView.deleteTitle') }}
@@ -1076,7 +1075,7 @@ onMounted(async () => {
 .editor-card {
     border-radius: 12px;
     overflow: hidden;
-    background-color: #0f172a !important;
+    background-color: var(--k-ink) !important;
     border: 1px solid var(--card-border);
 }
 
@@ -1086,7 +1085,7 @@ onMounted(async () => {
 }
 
 .color-picker :deep(.v-color-picker__controls) {
-    background-color: #0f172a !important;
+    background-color: var(--k-ink) !important;
     border-radius: 8px;
 }
 

@@ -522,7 +522,7 @@ canvas {
 .pause-menu {
   min-width: 300px;
   background: rgba(30, 41, 59, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--k-line);
 }
 
 /* Game Over */
@@ -538,14 +538,14 @@ canvas {
 .gameover-card {
   min-width: 400px;
   background: rgba(30, 41, 59, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--k-line);
 }
 
 .score-display {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--k-line);
 }
 
 /* Instructions */

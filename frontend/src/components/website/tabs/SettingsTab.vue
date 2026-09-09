@@ -292,7 +292,7 @@ function handleSelectScheme(schemeName: string) {
 
 .settings-tab > p {
     font-size: 1rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     margin-bottom: 2rem;
 }
 </style>

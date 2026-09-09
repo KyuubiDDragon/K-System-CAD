@@ -231,7 +231,7 @@ defineExpose({
 
 .entry-header {
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .entry-title {
@@ -240,7 +240,7 @@ defineExpose({
 }
 
 .entry-content {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   line-height: 1.5;
   max-height: 100px;
   overflow: hidden;
@@ -248,15 +248,15 @@ defineExpose({
 
 .entry-footer {
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--k-line);
 }
 
 .author-info {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--k-ink-muted);
 }
 
 .no-data,
 .error-state {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

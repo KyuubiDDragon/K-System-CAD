@@ -280,7 +280,7 @@ onUnmounted(() => {
     background: linear-gradient(145deg, rgba(30, 41, 59, 0.5), rgba(51, 65, 85, 0.45));
     backdrop-filter: blur(12px) saturate(150%);
     -webkit-backdrop-filter: blur(12px) saturate(150%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -292,7 +292,7 @@ onUnmounted(() => {
         0 8px 20px rgba(0, 0, 0, 0.25),
         0 4px 8px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--k-line);
     transform: translateY(-4px) scale(1.02);
 }
 
@@ -397,7 +397,7 @@ onUnmounted(() => {
     white-space: nowrap;
     font-size: 12px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.95);
+    color: var(--k-ink);
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
     line-height: 1.4;
     padding: 5px 8px;
@@ -406,14 +406,14 @@ onUnmounted(() => {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .desktop-icon:hover .icon-title {
     background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4));
     transform: translateY(2px) scale(1.02);
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: var(--k-line);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -444,13 +444,13 @@ onUnmounted(() => {
 }
 
 :deep(.theme-light) .desktop-icon {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--k-ink-faint);
     border-color: rgba(0, 0, 0, 0.1);
 }
 
 :deep(.theme-light) .desktop-icon:hover,
 :deep(.theme-light) .desktop-icon.selected {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: var(--k-ink-faint);
 }
 
 /* Puls-Animation beim Ziehen */

@@ -170,14 +170,14 @@ function removeMedia(mediaType: keyof MediaSettings) {
     display: block;
     margin-top: 0.5rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .media-upload-container {
     border: 2px dashed #e5e7eb;
     border-radius: 8px;
     padding: 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
 }
 
 .media-preview {
@@ -209,7 +209,7 @@ function removeMedia(mediaType: keyof MediaSettings) {
     padding: 0;
     border: none;
     background-color: #ef4444;
-    color: white;
+    color: var(--k-ink);
     border-radius: 50%;
     cursor: pointer;
     display: flex;
@@ -236,13 +236,13 @@ function removeMedia(mediaType: keyof MediaSettings) {
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: #3b82f6;
+    color: var(--k-accent);
     font-weight: 500;
     transition: color 0.2s;
 }
 
 .media-upload-label:hover {
-    color: #2563eb;
+    color: var(--k-accent-hover);
 }
 
 .media-upload-label i {

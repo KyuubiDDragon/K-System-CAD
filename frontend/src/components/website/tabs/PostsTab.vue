@@ -215,7 +215,7 @@ function formatDate(dateString?: string): string {
 
 .posts-tab > p {
     margin-bottom: 1.5rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .posts-header {
@@ -257,14 +257,14 @@ function formatDate(dateString?: string): string {
 }
 
 .data-table thead {
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
 }
 
 .data-table th,
 .data-table td {
     padding: 12px 16px;
     text-align: left;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .data-table th {
@@ -273,7 +273,7 @@ function formatDate(dateString?: string): string {
 }
 
 .data-table tbody tr {
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     transition: background-color 0.3s ease;
 }
 
@@ -283,7 +283,7 @@ function formatDate(dateString?: string): string {
 
 .drag-handle {
     cursor: move;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     display: inline-flex;
     align-items: center;
 }
@@ -298,7 +298,7 @@ function formatDate(dateString?: string): string {
 }
 
 .chosen-item {
-    background: #3b82f6;
+    background: var(--k-accent);
 }
 
 .post-title-cell {
@@ -315,7 +315,7 @@ function formatDate(dateString?: string): string {
     display: flex;
     gap: 0.5rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .has-image {
@@ -331,12 +331,12 @@ function formatDate(dateString?: string): string {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     font-size: 0.875rem;
-    color: white;
+    color: var(--k-ink);
     margin-right: 0.25rem;
 }
 
 .no-category {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-style: italic;
 }
 
@@ -354,7 +354,7 @@ function formatDate(dateString?: string): string {
     border: none;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
-    color: #3b82f6;
+    color: var(--k-accent);
     transition: all 0.3s ease;
     border-radius: 4px;
 }
@@ -371,7 +371,7 @@ function formatDate(dateString?: string): string {
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .btn {
@@ -387,12 +387,12 @@ function formatDate(dateString?: string): string {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .form-control {
@@ -400,15 +400,15 @@ function formatDate(dateString?: string): string {
     font-size: 1rem;
     line-height: 1.5;
     color: #e5e7eb;
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     background-color: #374151;
 }
 

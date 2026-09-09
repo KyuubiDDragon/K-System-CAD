@@ -386,7 +386,7 @@ function handleCancel() {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .modal-header h3 {
@@ -400,7 +400,7 @@ function handleCancel() {
     border: none;
     cursor: pointer;
     padding: 0.5rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     font-size: 1.25rem;
     transition: all 0.3s ease;
     border-radius: 4px;
@@ -434,15 +434,15 @@ function handleCancel() {
     font-size: 1rem;
     line-height: 1.5;
     color: #e5e7eb;
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     transition: all 0.3s ease;
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     background-color: #374151;
 }
 
@@ -450,7 +450,7 @@ function handleCancel() {
     display: block;
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 textarea.form-control {
@@ -460,7 +460,7 @@ textarea.form-control {
 .reading-time {
     margin-top: 0.5rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     display: flex;
     align-items: center;
     gap: 0.25rem;
@@ -491,10 +491,10 @@ textarea.form-control {
 
 .empty-categories {
     padding: 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     border-radius: 4px;
     text-align: center;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .empty-categories p {
@@ -505,7 +505,7 @@ textarea.form-control {
     border: 2px dashed #4a5568;
     border-radius: 8px;
     padding: 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
 }
 
 .media-preview {
@@ -529,7 +529,7 @@ textarea.form-control {
     top: -8px;
     right: -8px;
     background-color: #dc3545;
-    color: white;
+    color: var(--k-ink);
     border: none;
     border-radius: 50%;
     width: 24px;
@@ -557,12 +557,12 @@ textarea.form-control {
     gap: 0.5rem;
     padding: 2rem;
     cursor: pointer;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     transition: color 0.3s ease;
 }
 
 .media-upload-label:hover {
-    color: #3b82f6;
+    color: var(--k-accent);
 }
 
 .media-upload-label i {
@@ -596,7 +596,7 @@ textarea.form-control {
     gap: 1rem;
     margin-top: 2rem;
     padding-top: 1.5rem;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid var(--k-line);
 }
 
 .btn {
@@ -610,20 +610,20 @@ textarea.form-control {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-secondary {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 </style>

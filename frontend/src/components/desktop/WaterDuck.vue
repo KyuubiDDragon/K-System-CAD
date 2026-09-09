@@ -514,7 +514,7 @@ function updateTabLogo(logo) {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: white;
+    background-color: var(--k-ink);
     border-radius: 8px;
     overflow: hidden;
     font-family:
@@ -528,7 +528,7 @@ function updateTabLogo(logo) {
 /* Dark mode styles */
 .waterduck-browser[class*='dark-mode'],
 .waterduck-browser[class*='dark-mode'] .browser-content {
-    background-color: #1a1a1a;
+    background-color: var(--k-surface);
     color: #e0e0e0;
 }
 
@@ -545,7 +545,7 @@ function updateTabLogo(logo) {
 }
 
 .waterduck-browser[class*='dark-mode'] .browser-tab.active {
-    background-color: #1a1a1a;
+    background-color: var(--k-surface);
 }
 
 .waterduck-browser[class*='dark-mode'] .address-bar {
@@ -636,7 +636,7 @@ function updateTabLogo(logo) {
     flex: 1;
     display: flex;
     align-items: center;
-    background-color: white;
+    background-color: var(--k-ink);
     border-radius: 24px;
     padding: 6px 12px;
     border: 1px solid #ddd;
@@ -689,7 +689,7 @@ function updateTabLogo(logo) {
 
 .search-button {
     background-color: #1976d2;
-    color: white;
+    color: var(--k-ink);
     border: none;
     border-radius: 0 4px 4px 0;
     padding: 0 12px;
@@ -700,7 +700,7 @@ function updateTabLogo(logo) {
     position: absolute;
     top: 56px;
     right: 16px;
-    background-color: white;
+    background-color: var(--k-ink);
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -750,7 +750,7 @@ function updateTabLogo(logo) {
 }
 
 .browser-tab.active {
-    background-color: white;
+    background-color: var(--k-ink);
     z-index: 1;
 }
 
@@ -821,7 +821,7 @@ function updateTabLogo(logo) {
     flex: 1;
     overflow: auto;
     position: relative;
-    background-color: white;
+    background-color: var(--k-ink);
 }
 
 .browser-home {
@@ -869,7 +869,7 @@ function updateTabLogo(logo) {
 
 .home-search-button {
     background-color: #1976d2;
-    color: white;
+    color: var(--k-ink);
     border: none;
     border-radius: 0 24px 24px 0;
     padding: 0 24px;
@@ -953,7 +953,7 @@ function updateTabLogo(logo) {
     margin-top: 16px;
     padding: 8px 16px;
     background-color: #1976d2;
-    color: white;
+    color: var(--k-ink);
     border: none;
     border-radius: 4px;
     cursor: pointer;

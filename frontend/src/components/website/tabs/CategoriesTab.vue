@@ -206,7 +206,7 @@ function truncateText(text: string, maxLength: number): string {
 
 .categories-tab p {
     margin-bottom: 1.5rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .btn {
@@ -223,21 +223,21 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-secondary {
-    background-color: #6b7280;
-    color: white;
+    background-color: var(--k-ink-muted);
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
 }
 
 .btn-icon {
@@ -246,7 +246,7 @@ function truncateText(text: string, maxLength: number): string {
     padding: 0;
     border: none;
     background-color: transparent;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -261,11 +261,11 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .category-form {
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     padding: 1.5rem;
     border-radius: 8px;
     margin-bottom: 2rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
 }
 
 .form-header {
@@ -294,7 +294,7 @@ function truncateText(text: string, maxLength: number): string {
 .form-control {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
     background-color: #1e2327;
@@ -303,7 +303,7 @@ function truncateText(text: string, maxLength: number): string {
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -311,7 +311,7 @@ function truncateText(text: string, maxLength: number): string {
     display: block;
     margin-top: 0.25rem;
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .color-picker-container {
@@ -347,7 +347,7 @@ function truncateText(text: string, maxLength: number): string {
 .data-table {
     width: 100%;
     border-collapse: collapse;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -367,7 +367,7 @@ function truncateText(text: string, maxLength: number): string {
 .data-table td {
     padding: 1rem;
     color: #e5e7eb;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .data-table tbody tr:hover {
@@ -393,7 +393,7 @@ function truncateText(text: string, maxLength: number): string {
 
 .drag-handle {
     cursor: move;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .drag-handle:hover {
@@ -405,12 +405,12 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .chosen-item {
-    background-color: #4a5568;
+    background-color: var(--k-ink-muted);
 }
 
 .empty-state {
     text-align: center;
     padding: 3rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 </style>

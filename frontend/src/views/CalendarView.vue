@@ -525,7 +525,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
                     </v-row>
 
                     <!-- Kalender Container -->
-                    <v-card class="calendar-card" elevation="4" theme="dark">
+                    <v-card class="calendar-card" elevation="4">
                         <!-- Kalender -->
                         <vue-cal
                             ref="calendar"
@@ -1197,7 +1197,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 /* Main container */
 .main-container {
   min-height: 89vh;
-  background-color: #111723;
+  background-color: var(--k-ink);
   background-image:
       radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
       radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -1208,7 +1208,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 .page-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Action Button */
@@ -1285,7 +1285,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 :deep(.vuecal__event) {
-    color: #fff;
+    color: var(--k-ink);
     background-color: rgba(30, 30, 30, 0.8);
     position: relative;
     box-sizing: border-box;
@@ -1387,7 +1387,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -1416,8 +1416,8 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, #3b82f6);
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent));
+    color: var(--k-ink);
     padding: 16px;
 }
 

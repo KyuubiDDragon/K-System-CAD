@@ -338,7 +338,7 @@ function getRoleColor(role: any) {
 
 <template>
     <!-- Person View Card -->
-    <v-card v-if="personToView && isVisible" class="person-card elevation-4" theme="dark">
+    <v-card v-if="personToView && isVisible" class="person-card elevation-4">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-btn icon variant="text" @click="closeDialog" class="mr-2">
                 <v-icon>mdi-arrow-left</v-icon>
@@ -1048,7 +1048,7 @@ function getRoleColor(role: any) {
     align-items: center;
     color: #e2e8f0;
     padding-bottom: 8px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Form Field Styling */
@@ -1075,7 +1075,7 @@ function getRoleColor(role: any) {
 
 .vehicle-table :deep(tr:hover),
 .apartment-table :deep(tr:hover) {
-    background-color: rgba(255, 255, 255, 0.05) !important;
+    background-color: var(--k-row-hover) !important;
 }
 
 /* Empty States */
@@ -1086,7 +1086,7 @@ function getRoleColor(role: any) {
     align-items: center;
     justify-content: center;
     padding: 32px 16px;
-    color: #64748b;
+    color: var(--k-ink-muted);
     text-align: center;
 }
 

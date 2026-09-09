@@ -160,7 +160,6 @@ const genderOptions = computed(() => [
 	<v-card 
 	  v-if="personToEdit" 
 	  class="person-edit-card elevation-4"
-	  theme="dark"
 	>
 	  <v-toolbar density="compact" color="primary" class="card-toolbar">
 		<v-toolbar-title class="text-subtitle-1">
@@ -589,7 +588,7 @@ const genderOptions = computed(() => [
 	align-items: center;
 	color: #e2e8f0;
 	padding-bottom: 8px;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	border-bottom: 1px solid var(--k-line);
   }
   
   /* Form Field Styling */

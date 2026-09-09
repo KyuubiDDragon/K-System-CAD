@@ -33,8 +33,8 @@ function toggleDesktopMode() {
 
 <style scoped>
 .desktop-container {
-  background-color: #1e293b;
-  color: white;
+  background-color: var(--k-sunken);
+  color: var(--k-ink);
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;
@@ -49,8 +49,8 @@ function toggleDesktopMode() {
 }
 
 button {
-  background-color: #3b82f6;
-  color: white;
+  background-color: var(--k-accent);
+  color: var(--k-ink);
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
@@ -58,6 +58,6 @@ button {
 }
 
 button:hover {
-  background-color: #2563eb;
+  background-color: var(--k-accent-hover);
 }
 </style> 

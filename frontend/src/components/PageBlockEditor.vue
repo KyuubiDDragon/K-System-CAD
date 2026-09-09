@@ -1985,12 +1985,12 @@ const props = withDefaults(defineProps<Props>(), {
     modelValue: () => [],
     pages: () => [],
     colorScheme: () => ({
-        primary: '#3b82f6',
+        primary: 'var(--k-accent)',
         secondary: '#60a5fa',
         accent: '#93c5fd',
         background: '#ffffff',
         text: '#111827',
-        bannerBackground: '#3b82f6',
+        bannerBackground: 'var(--k-accent)',
         bannerText: '#ffffff',
         heroBackground: 'rgba(96, 165, 250, 0.8)',
         heroText: '#ffffff',
@@ -2055,12 +2055,12 @@ function addBlock(type) {
 function getDefaultContent(type) {
     // Verwende das übergebene colorScheme oder definiere Standardwerte
     const scheme = props.colorScheme || {
-        primary: '#3b82f6',
+        primary: 'var(--k-accent)',
         secondary: '#60a5fa',
         accent: '#93c5fd',
         background: '#ffffff',
         text: '#111827',
-        bannerBackground: '#3b82f6',
+        bannerBackground: 'var(--k-accent)',
         bannerText: '#ffffff',
         heroBackground: 'rgba(96, 165, 250, 0.8)',
         heroText: '#ffffff',
@@ -2074,7 +2074,7 @@ function getDefaultContent(type) {
                 title: t('website.defaultHeroTitle'),
                 subtitle: t('website.defaultHeroSubtitle'),
                 bgImage: null,
-                bgColor: scheme.heroBackground || scheme.primary || '#2563eb',
+                bgColor: scheme.heroBackground || scheme.primary || 'var(--k-accent-hover)',
                 parallax: true,
                 buttonText: '',
                 buttonTarget: '',
@@ -2141,7 +2141,7 @@ function getDefaultContent(type) {
                 buttonText: 'Jetzt starten',
                 buttonTarget: '',
                 bgImage: null,
-                bgColor: scheme.primary || '#2563eb',
+                bgColor: scheme.primary || 'var(--k-accent-hover)',
                 textColor: scheme.bannerText || '#ffffff',
                 style: 'standard',
             };
@@ -2151,7 +2151,7 @@ function getDefaultContent(type) {
                 introduction: 'Hier finden Sie Antworten auf die am häufigsten gestellten Fragen.',
                 bgColor: scheme.background || '#f8fafc',
                 textColor: scheme.text || '#111827',
-                titleColor: scheme.primary || '#3b82f6',
+                titleColor: scheme.primary || 'var(--k-accent)',
                 introductionColor: scheme.text || '#4b5563',
                 questionBgColor: scheme.accent || '#e5e7eb',
                 questionColor: scheme.text || '#111827',
@@ -2179,7 +2179,7 @@ function getDefaultContent(type) {
                 subtitle: 'Wählen Sie das passende Paket für Ihre Bedürfnisse',
                 bgColor: scheme.background || '#f8fafc',
                 textColor: scheme.text || '#111827',
-                titleColor: scheme.primary || '#3b82f6',
+                titleColor: scheme.primary || 'var(--k-accent)',
                 subtitleColor: scheme.text || '#4b5563',
                 style: 'cards', // cards, table
                 comparison: false,
@@ -2207,7 +2207,7 @@ function getDefaultContent(type) {
                         buttonText: 'Jetzt auswählen',
                         buttonUrl: '',
                         highlighted: true,
-                        bgColor: scheme.primary || '#3b82f6',
+                        bgColor: scheme.primary || 'var(--k-accent)',
                         textColor: scheme.bannerText || '#ffffff',
                     },
                     {
@@ -2229,7 +2229,7 @@ function getDefaultContent(type) {
                 subtitle: 'Die folgenden Statistiken zeigen unsere Erfolge',
                 bgColor: scheme.background || '#f8fafc',
                 textColor: scheme.text || '#111827',
-                titleColor: scheme.primary || '#3b82f6',
+                titleColor: scheme.primary || 'var(--k-accent)',
                 subtitleColor: scheme.text || '#4b5563',
                 layout: 'grid', // 'grid' oder 'row'
                 items: [
@@ -2237,7 +2237,7 @@ function getDefaultContent(type) {
                         value: '500+',
                         label: 'Kunden',
                         icon: 'mdi-account-group',
-                        iconColor: scheme.primary || '#3b82f6',
+                        iconColor: scheme.primary || 'var(--k-accent)',
                     },
                     {
                         value: '1000+',
@@ -2265,7 +2265,7 @@ function getDefaultContent(type) {
                 subtitle: 'Entdecken Sie, was wir für Sie tun können',
                 bgColor: scheme.background || '#f8fafc',
                 textColor: scheme.text || '#111827',
-                titleColor: scheme.primary || '#3b82f6',
+                titleColor: scheme.primary || 'var(--k-accent)',
                 subtitleColor: scheme.text || '#4b5563',
                 layout: 'grid', // 'grid', 'list', oder 'cards'
                 columnsPerRow: 3,
@@ -2275,7 +2275,7 @@ function getDefaultContent(type) {
                         description:
                             'Beschreibungstext für dieses Feature. Erklären Sie, welchen Nutzen es bietet.',
                         icon: 'mdi-rocket-launch',
-                        iconColor: scheme.primary || '#3b82f6',
+                        iconColor: scheme.primary || 'var(--k-accent)',
                         image: null,
                     },
                     {
@@ -2321,7 +2321,7 @@ function getDefaultContent(type) {
                 style: 'standard', // 'standard', 'minimal', 'detailed'
                 buttonText: 'Mehr erfahren',
                 buttonUrl: '',
-                timerColor: scheme.primary || '#3b82f6',
+                timerColor: scheme.primary || 'var(--k-accent)',
                 labelColor: scheme.text || '#4b5563',
             };
         default:
@@ -2542,10 +2542,10 @@ function addPricingPlan(blockIndex) {
         bgColor: '#ffffff',
         textColor: '#000000',
         nameColor: blocks.value[blockIndex].content.nameColor || '#111827',
-        priceColor: blocks.value[blockIndex].content.priceColor || '#3b82f6',
+        priceColor: blocks.value[blockIndex].content.priceColor || 'var(--k-accent)',
         descriptionColor: blocks.value[blockIndex].content.descriptionColor || '#4b5563',
         featureColor: blocks.value[blockIndex].content.featureColor || '#333333',
-        buttonBgColor: blocks.value[blockIndex].content.buttonBgColor || '#3b82f6',
+        buttonBgColor: blocks.value[blockIndex].content.buttonBgColor || 'var(--k-accent)',
         buttonTextColor: blocks.value[blockIndex].content.buttonTextColor || '#ffffff',
     });
     onChange();
@@ -2585,7 +2585,7 @@ function addStatItem(blockIndex) {
         value: '100+',
         label: 'Neue Statistik',
         icon: 'mdi-star',
-        iconColor: '#3b82f6',
+        iconColor: 'var(--k-accent)',
         valueColor: blocks.value[blockIndex].content.valueColor || '#111827',
         labelColor: blocks.value[blockIndex].content.labelColor || '#4b5563',
         bgColor: blocks.value[blockIndex].content.itemBgColor || '#ffffff',
@@ -2606,7 +2606,7 @@ function addFeatureItem(blockIndex) {
         title: 'Neues Feature',
         description: 'Beschreibung des Features',
         icon: 'mdi-star',
-        iconColor: '#3b82f6',
+        iconColor: 'var(--k-accent)',
         image: null,
         titleColor: blocks.value[blockIndex].content.titleColor || '#111827',
         descriptionColor: blocks.value[blockIndex].content.descriptionColor || '#4b5563',
@@ -2674,9 +2674,9 @@ function scanWebsite(blockIndex) {
 <style scoped>
 .page-block-editor {
     margin-top: 20px;
-    border: 1px solid #374151;
+    border: 1px solid var(--k-line);
     border-radius: 6px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
     padding: 20px;
 }
 
@@ -2688,7 +2688,7 @@ function scanWebsite(blockIndex) {
     margin-bottom: 10px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     overflow: hidden;
 }
 
@@ -2703,7 +2703,7 @@ function scanWebsite(blockIndex) {
 .block-handle {
     margin-right: 10px;
     cursor: move;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .block-title {
@@ -2722,7 +2722,7 @@ function scanWebsite(blockIndex) {
 .btn-icon {
     background: none;
     border: none;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 4px;
@@ -2731,7 +2731,7 @@ function scanWebsite(blockIndex) {
 
 .btn-icon:hover {
     color: #f3f4f6;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .block-content {
@@ -2760,7 +2760,7 @@ function scanWebsite(blockIndex) {
     padding: 8px 12px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #111827;
+    background-color: var(--k-surface);
     color: #e5e7eb;
 }
 
@@ -2777,7 +2777,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .column-header {
@@ -2797,7 +2797,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .member-header,
@@ -2823,7 +2823,7 @@ function scanWebsite(blockIndex) {
     width: 200px;
     margin-top: 5px;
     padding: 10px 0;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
     border: 1px solid #4b5563;
     border-radius: 4px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -2890,7 +2890,7 @@ function scanWebsite(blockIndex) {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
     transition: 0.4s;
     border-radius: 20px;
 }
@@ -2902,13 +2902,13 @@ function scanWebsite(blockIndex) {
     width: 16px;
     left: 2px;
     bottom: 2px;
-    background-color: white;
+    background-color: var(--k-ink);
     transition: 0.4s;
     border-radius: 50%;
 }
 
 .toggle-switch input:checked + label {
-    background-color: #3b82f6;
+    background-color: var(--k-accent);
 }
 
 .toggle-switch input:checked + label:before {
@@ -2935,7 +2935,7 @@ function scanWebsite(blockIndex) {
     border: 1px solid #4b5563;
     border-radius: 4px;
     padding: 15px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .gallery-item-header {
@@ -2964,7 +2964,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .faq-item-header {
@@ -2991,7 +2991,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .pricing-plan-header {
@@ -3033,7 +3033,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .stat-item-header {
@@ -3055,7 +3055,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .feature-item-header {
@@ -3073,7 +3073,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px dashed #4b5563;
     border-radius: 4px;
-    background-color: #1f2937;
+    background-color: var(--k-surface);
 }
 
 .countdown-container {
@@ -3148,11 +3148,11 @@ function scanWebsite(blockIndex) {
 }
 
 .color-scheme-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .color-scheme-item.selected {
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     background-color: rgba(59, 130, 246, 0.1);
 }
 
@@ -3186,7 +3186,7 @@ function scanWebsite(blockIndex) {
 .form-text {
     margin-top: 5px;
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .custom-colors-section {
@@ -3194,7 +3194,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 /* Optimizer Styles */
@@ -3213,7 +3213,7 @@ function scanWebsite(blockIndex) {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #3b82f6;
+    background: var(--k-accent);
     border-radius: 50%;
     cursor: pointer;
 }
@@ -3221,7 +3221,7 @@ function scanWebsite(blockIndex) {
 .range-slider::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #3b82f6;
+    background: var(--k-accent);
     border-radius: 50%;
     cursor: pointer;
 }
@@ -3231,7 +3231,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px solid #4b5563;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .optimizer-status {
@@ -3239,7 +3239,7 @@ function scanWebsite(blockIndex) {
     padding: 15px;
     border: 1px dashed #4b5563;
     border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
 }
 
 .status-item {
@@ -3259,7 +3259,7 @@ function scanWebsite(blockIndex) {
 }
 
 .status-value {
-    color: #3b82f6;
+    color: var(--k-accent);
     font-weight: 500;
 }
 

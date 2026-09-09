@@ -232,7 +232,7 @@ function formatDate(dateString: string): string {
 
 .news-tab > p {
     margin-bottom: 1.5rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 /* Toolbar */
@@ -251,9 +251,9 @@ function formatDate(dateString: string): string {
 
 .filter-select {
     padding: 0.5rem 1rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     color: #e5e7eb;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 0.875rem;
     cursor: pointer;
@@ -261,7 +261,7 @@ function formatDate(dateString: string): string {
 
 .filter-select:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
 }
 
 /* Buttons */
@@ -279,12 +279,12 @@ function formatDate(dateString: string): string {
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-icon {
@@ -293,7 +293,7 @@ function formatDate(dateString: string): string {
     padding: 0;
     border: none;
     background-color: transparent;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -309,7 +309,7 @@ function formatDate(dateString: string): string {
 
 .btn-icon.danger:hover {
     background-color: #dc2626;
-    color: white;
+    color: var(--k-ink);
 }
 
 /* News List */
@@ -319,8 +319,8 @@ function formatDate(dateString: string): string {
 }
 
 .news-card {
-    background-color: #2d3748;
-    border: 1px solid #4a5568;
+    background-color: var(--k-sunken);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     padding: 1.5rem;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -362,11 +362,11 @@ function formatDate(dateString: string): string {
 
 .news-category {
     background-color: #1e40af;
-    color: white;
+    color: var(--k-ink);
 }
 
 .category-announcement {
-    background-color: #3b82f6;
+    background-color: var(--k-accent);
 }
 
 .category-update {
@@ -388,17 +388,17 @@ function formatDate(dateString: string): string {
 
 .priority-high {
     background-color: #f59e0b;
-    color: white;
+    color: var(--k-ink);
 }
 
 .priority-urgent {
     background-color: #dc2626;
-    color: white;
+    color: var(--k-ink);
 }
 
 .draft-badge {
     background-color: #f59e0b;
-    color: white;
+    color: var(--k-ink);
 }
 
 .news-actions {
@@ -414,7 +414,7 @@ function formatDate(dateString: string): string {
 }
 
 .news-excerpt {
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     line-height: 1.5;
     margin-bottom: 1rem;
 }
@@ -424,7 +424,7 @@ function formatDate(dateString: string): string {
     justify-content: space-between;
     align-items: center;
     padding-top: 1rem;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid var(--k-line);
     font-size: 0.875rem;
 }
 
@@ -432,7 +432,7 @@ function formatDate(dateString: string): string {
     display: flex;
     gap: 1.5rem;
     flex-wrap: wrap;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .news-info span {
@@ -448,7 +448,7 @@ function formatDate(dateString: string): string {
 .news-stats {
     display: flex;
     gap: 1rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .stat {
@@ -461,12 +461,12 @@ function formatDate(dateString: string): string {
 .empty-state {
     text-align: center;
     padding: 4rem 2rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .empty-icon {
     font-size: 4rem;
-    color: #4b5563;
+    color: var(--k-ink-muted);
     margin-bottom: 1rem;
 }
 

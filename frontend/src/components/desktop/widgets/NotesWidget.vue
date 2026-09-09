@@ -350,7 +350,7 @@ watch(() => noteContent.value, () => {
 .v-theme--dark {
   .notes-textarea {
     :deep(.v-field) {
-      background: rgba(255, 255, 255, 0.02);
+      background: var(--k-row-hover);
     }
   }
 }

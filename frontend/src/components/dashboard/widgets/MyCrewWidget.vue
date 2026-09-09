@@ -246,11 +246,11 @@ defineExpose({
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-row-hover);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--k-row-hover);
     border-radius: 2px;
   }
 }
@@ -259,14 +259,14 @@ defineExpose({
   display: flex;
   padding: 8px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--k-row-hover);
+  border: 1px solid var(--k-line);
   transition: all 0.2s ease;
   cursor: pointer;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: var(--k-row-hover);
+    border-color: var(--k-line);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
@@ -325,6 +325,6 @@ defineExpose({
 
 .no-data,
 .error-state {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--k-ink-faint);
 }
 </style>

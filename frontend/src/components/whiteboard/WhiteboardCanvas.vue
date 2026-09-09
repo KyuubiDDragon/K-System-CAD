@@ -1032,8 +1032,8 @@ export default {
 }
 
 .whiteboard-canvas.dark-mode {
-  background-color: #1E1E1E;
-  color: #fff;
+  background-color: var(--k-surface);
+  color: var(--k-ink);
 }
 
 .whiteboard-toolbar {
@@ -1041,14 +1041,14 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  background-color: white;
+  background-color: var(--k-ink);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
 
 .dark-mode .whiteboard-toolbar {
   background-color: #2D2D2D;
-  color: #fff;
+  color: var(--k-ink);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -1074,14 +1074,14 @@ export default {
 
 canvas {
   display: block;
-  background-color: white;
+  background-color: var(--k-ink);
   touch-action: none;
   width: 100%;
   height: 100%;
 }
 
 .dark-mode canvas {
-  background-color: #1E1E1E;
+  background-color: var(--k-surface);
 }
 
 .color-preview {

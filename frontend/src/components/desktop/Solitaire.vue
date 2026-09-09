@@ -692,7 +692,7 @@
     background-image: linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
                       linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
-    color: #fff;
+    color: var(--k-ink);
     padding: 1rem;
     border-radius: 8px;
     width: 100%;
@@ -739,7 +739,7 @@
   
   .score-display {
     font-size: 1rem;
-    color: #fff;
+    color: var(--k-ink);
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   }
@@ -783,7 +783,7 @@
     width: 100px;
     height: 140px;
     border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Change from center to flex-start to align at top */
@@ -802,8 +802,8 @@
     width: 90px;
     height: 130px;
     border-radius: 6px;
-    background-color: white;
-    color: #0f172a;
+    background-color: var(--k-ink);
+    color: var(--k-ink);
     padding: 0.5rem;
     display: flex;
     flex-direction: column;
@@ -829,11 +829,11 @@
   }
   
   .card-back {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
     background-image: repeating-linear-gradient(
       45deg,
-      #2563eb,
-      #2563eb 10px,
+      var(--k-accent-hover),
+      var(--k-accent-hover) 10px,
       #1d4ed8 10px,
       #1d4ed8 20px
     );
@@ -857,7 +857,7 @@
   }
   
   .card-spades, .card-clubs {
-    color: #0f172a;
+    color: var(--k-ink);
   }
   
   .selectable { /* Hover effect for cards */
@@ -884,7 +884,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: rgba(255, 255, 255, 0.5);
+    color: var(--k-ink-faint);
     font-size: 2rem;
     background-color: rgba(0, 0, 0, 0.1);
   }
@@ -894,7 +894,7 @@
   }
   
   .stock-pile .card-placeholder:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--k-row-hover);
   }
   
   .suit-placeholder {
@@ -903,7 +903,7 @@
   }
   
   .drop-target { /* Original Drop Target Highlighting */
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: var(--k-row-hover);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   }
   
@@ -950,7 +950,7 @@
   /* Add a victory animation when game is won */
   @keyframes victory-flash {
     0%, 100% { 
-      background-color: rgba(255, 255, 255, 0.15);
+      background-color: var(--k-row-hover);
       box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); 
     }
     50% { 

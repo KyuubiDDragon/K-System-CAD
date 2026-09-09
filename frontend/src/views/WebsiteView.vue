@@ -996,7 +996,7 @@ const websiteStyles = computed(() => {
         : getSelectedSchemeColors();
         
     // Set CSS variables for colors
-    styles['--primary-color'] = colorSource.primary || website.value.primary_color || '#3b82f6';
+    styles['--primary-color'] = colorSource.primary || website.value.primary_color || 'var(--k-accent)';
     styles['--secondary-color'] = colorSource.secondary || website.value.secondary_color || '#1e3a8a';
     styles['--accent-color'] = colorSource.accent || website.value.accent_color || '#60a5fa';
     styles['--background-color'] = colorSource.background || website.value.background_color || '#ffffff';
@@ -1208,12 +1208,12 @@ function getSelectedSchemeColors() {
     const presetColorSchemes = [
         {
             name: 'Blau-Weiß',
-            primary: '#3b82f6',
+            primary: 'var(--k-accent)',
             secondary: '#60a5fa',
             accent: '#93c5fd',
             background: '#ffffff',
             text: '#111827',
-            bannerBackground: '#3b82f6',
+            bannerBackground: 'var(--k-accent)',
             bannerText: '#ffffff',
             heroBackground: 'rgba(96, 165, 250, 0.8)',
             heroText: '#ffffff',
@@ -1290,7 +1290,7 @@ function getBannerStyles() {
             schemeColors.bannerBackground ||
             schemeColors.primary ||
             website.value.primary_color ||
-            '#3b82f6';
+            'var(--k-accent)';
         styles['color'] =
             schemeColors.bannerText ||
             (isDarkColor(styles['background-color']) ? '#ffffff' : '#333333');
@@ -2919,7 +2919,7 @@ function handleCountdownButtonClick(content) {
 .spinner {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     animation: spin 1s linear infinite;
 }
 
@@ -2970,7 +2970,7 @@ function handleCountdownButtonClick(content) {
     max-width: 600px;
     padding: 30px;
     margin: auto;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    background-color: var(--k-ink-muted); /* Semi-transparent background */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     color: #333;
@@ -2995,8 +2995,8 @@ function handleCountdownButtonClick(content) {
 
 /* Header */
 .site-header {
-    background-color: var(--primary-color, #3b82f6);
-    color: white;
+    background-color: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     padding: 2.5rem 1.5rem;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -3004,7 +3004,7 @@ function handleCountdownButtonClick(content) {
     z-index: 10; /* Ensure header is above content */
     background-image: linear-gradient(
         135deg,
-        var(--primary-color, #3b82f6),
+        var(--primary-color, var(--k-accent)),
         var(--secondary-color, #1e3a8a)
     ); /* Default gradient */
 }
@@ -3050,7 +3050,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .site-nav a {
-    color: white;
+    color: var(--k-ink);
     text-decoration: none;
     padding: 0.7rem 1.2rem;
     border-radius: 25px;
@@ -3058,12 +3058,12 @@ function handleCountdownButtonClick(content) {
     font-weight: 500;
     display: inline-block;
     letter-spacing: 0.3px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
 }
 
 .site-nav a:hover,
 .site-nav a.active {
-    background-color: rgba(255, 255, 255, 0.25);
+    background-color: var(--k-row-hover);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -3078,7 +3078,7 @@ function handleCountdownButtonClick(content) {
     top: 100%;
     left: 0;
     min-width: 220px;
-    background-color: white; /* Submenu background */
+    background-color: var(--k-ink); /* Submenu background */
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     display: none;
@@ -3121,11 +3121,11 @@ function handleCountdownButtonClick(content) {
 
 .site-nav .submenu a:hover {
     background-color: rgba(0, 0, 0, 0.05); /* Submenu link hover background */
-    color: var(--primary-color, #3b82f6); /* Submenu link hover color */
+    color: var(--primary-color, var(--k-accent)); /* Submenu link hover color */
 }
 
 .no-navigation-message {
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     font-style: italic;
     padding: 10px;
 }
@@ -3146,7 +3146,7 @@ function handleCountdownButtonClick(content) {
     margin-bottom: 3rem;
     border-radius: 16px;
     background-color: var(--secondary-color, #1e3a8a);
-    color: white;
+    color: var(--k-ink);
     position: relative;
     overflow: hidden;
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
@@ -3195,8 +3195,8 @@ function handleCountdownButtonClick(content) {
     font-size: 1.1rem;
     padding: 12px 30px;
     border-radius: 50px; /* Rounder buttons */
-    background-color: var(--primary-color, #3b82f6);
-    color: white;
+    background-color: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -3207,13 +3207,13 @@ function handleCountdownButtonClick(content) {
 .hero-cta .cta-button:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-    background-color: var(--darker-primary, #2563eb); /* Slightly darker on hover */
+    background-color: var(--darker-primary, var(--k-accent-hover)); /* Slightly darker on hover */
 }
 
 /* General CTA Button Style (used elsewhere if not in hero) */
 .cta-button {
     background-color: var(--accent-color, #60a5fa);
-    color: white;
+    color: var(--k-ink);
     border: none;
     padding: 12px 24px;
     border-radius: 4px;
@@ -3231,7 +3231,7 @@ function handleCountdownButtonClick(content) {
     padding: 2.5rem;
     max-width: 1000px;
     margin: 0 auto;
-    background-color: white; /* Default white background for general content */
+    background-color: var(--k-ink); /* Default white background for general content */
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     color: #333; /* Default text color for general content */
@@ -3241,7 +3241,7 @@ function handleCountdownButtonClick(content) {
 .dynamic-content h1 {
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     font-weight: 700;
 }
 
@@ -3263,14 +3263,14 @@ function handleCountdownButtonClick(content) {
 }
 
 .dynamic-content a {
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     text-decoration: none;
     border-bottom: 1px solid rgba(59, 130, 246, 0.3);
     transition: all 0.2s ease;
 }
 
 .dynamic-content a:hover {
-    border-bottom-color: var(--primary-color, #3b82f6);
+    border-bottom-color: var(--primary-color, var(--k-accent));
 }
 
 .empty-content {
@@ -3285,7 +3285,7 @@ function handleCountdownButtonClick(content) {
 .empty-content h2 {
     font-size: 2rem;
     margin-bottom: 1.5rem;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     font-weight: 700;
 }
 
@@ -3297,7 +3297,7 @@ function handleCountdownButtonClick(content) {
         var(--secondary-color, #1e3a8a),
         #152352
     ); /* Default gradient */
-    color: white;
+    color: var(--k-ink);
     padding: 1.5rem;
     text-align: center;
     margin-top: auto; /* Pushes footer to the bottom */
@@ -3392,11 +3392,11 @@ function handleCountdownButtonClick(content) {
     border-radius: 50%;
     margin: 0 auto 15px;
     overflow: hidden;
-    background-color: var(--primary-color, #3b82f6);
+    background-color: var(--primary-color, var(--k-accent));
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--k-ink);
     font-size: 2.5rem;
 }
 
@@ -3532,11 +3532,11 @@ function handleCountdownButtonClick(content) {
     border-radius: 50%;
     margin-right: 15px;
     overflow: hidden;
-    background-color: var(--primary-color, #3b82f6);
+    background-color: var(--primary-color, var(--k-accent));
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: var(--k-ink);
 }
 
 .author-image img {
@@ -3700,7 +3700,7 @@ function handleCountdownButtonClick(content) {
     right: 0;
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: var(--k-ink);
     font-size: 0.9rem;
 }
 
@@ -3712,8 +3712,8 @@ function handleCountdownButtonClick(content) {
 .cta-container {
     padding: 3rem 2rem;
     border-radius: 12px;
-    background-color: var(--primary-color, #3b82f6);
-    color: white;
+    background-color: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -3750,8 +3750,8 @@ function handleCountdownButtonClick(content) {
 }
 
 .primary-button {
-    background-color: white;
-    color: var(--primary-color, #3b82f6);
+    background-color: var(--k-ink);
+    color: var(--primary-color, var(--k-accent));
 }
 
 .primary-button:hover {
@@ -3762,11 +3762,11 @@ function handleCountdownButtonClick(content) {
 .secondary-button {
     background-color: transparent;
     border: 2px solid white;
-    color: white;
+    color: var(--k-ink);
 }
 
 .secondary-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--k-ink);
     transform: translateY(-3px);
 }
 
@@ -3842,7 +3842,7 @@ function handleCountdownButtonClick(content) {
 .blog-header h1 {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
 }
 
 .blog-description {
@@ -3883,7 +3883,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .card-image-placeholder {
-    background-color: var(--primary-color, #3b82f6);
+    background-color: var(--primary-color, var(--k-accent));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3891,7 +3891,7 @@ function handleCountdownButtonClick(content) {
 
 .card-image-placeholder i {
     font-size: 3rem;
-    color: white;
+    color: var(--k-ink);
 }
 
 .card-content {
@@ -3925,7 +3925,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .category-tag {
-    color: white;
+    color: var(--k-ink);
     padding: 3px 8px;
     border-radius: 4px;
     font-size: 0.8rem;
@@ -3935,7 +3935,7 @@ function handleCountdownButtonClick(content) {
 .card-title {
     font-size: 1.4rem;
     margin-bottom: 15px;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     line-height: 1.3;
 }
 
@@ -3948,8 +3948,8 @@ function handleCountdownButtonClick(content) {
 }
 
 .read-more {
-    background-color: var(--primary-color, #3b82f6);
-    color: white;
+    background-color: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     padding: 8px 16px;
     border-radius: 20px;
     text-decoration: none;
@@ -3965,7 +3965,7 @@ function handleCountdownButtonClick(content) {
     transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     text-decoration: none;
-    color: white;
+    color: var(--k-ink);
 }
 
 @media (max-width: 768px) {
@@ -3992,7 +3992,7 @@ function handleCountdownButtonClick(content) {
 .post-title {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     line-height: 1.2;
 }
 
@@ -4077,8 +4077,8 @@ function handleCountdownButtonClick(content) {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--primary-color, #3b82f6);
-    color: white;
+    background-color: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     padding: 10px 20px;
     border-radius: 30px;
     text-decoration: none;
@@ -4087,11 +4087,11 @@ function handleCountdownButtonClick(content) {
 }
 
 .back-button:hover {
-    background-color: var(--darker-primary, #2563eb); /* Slightly darker on hover */
+    background-color: var(--darker-primary, var(--k-accent-hover)); /* Slightly darker on hover */
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-decoration: none;
-    color: white;
+    color: var(--k-ink);
 }
 
 /* Contact Form Styles */
@@ -4110,7 +4110,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .contact-form-container h2 {
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     margin-bottom: 10px;
 }
 
@@ -4203,11 +4203,11 @@ textarea.form-control {
     .site-nav .submenu a {
         padding: 8px 20px;
         border-radius: 0;
-        color: white; /* Submenu links in mobile */
+        color: var(--k-ink); /* Submenu links in mobile */
     }
 
     .site-nav .submenu a:hover {
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: var(--k-ink);
     }
 
     .columns-container {
@@ -4569,7 +4569,7 @@ textarea.form-control {
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--primary-color);
-    color: white;
+    color: var(--k-ink);
     padding: 5px 15px;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -4659,7 +4659,7 @@ li:not(.feature-included) {
     display: inline-block;
     padding: 12px 30px;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--k-ink);
     text-decoration: none;
     border-radius: 30px;
     font-weight: 600;
@@ -4741,7 +4741,7 @@ li:not(.feature-included) {
     display: inline-block;
     padding: 12px 30px;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--k-ink);
     text-decoration: none;
     border-radius: 30px;
     font-weight: 600;
@@ -4808,7 +4808,7 @@ li:not(.feature-included) {
 }
 
 .form-success-message h3 {
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     margin-bottom: 10px;
 }
 
@@ -4828,7 +4828,7 @@ li:not(.feature-included) {
     top: 10px;
     right: 10px;
     background: rgba(0, 0, 0, 0.7);
-    color: white;
+    color: var(--k-ink);
     padding: 10px;
     border-radius: 4px;
     z-index: 9999;
@@ -4867,8 +4867,8 @@ li:not(.feature-included) {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--primary-color, #3b82f6);
-    color: white;
+    background-color: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     padding: 10px 20px;
     border-radius: 30px;
     text-decoration: none;
@@ -4877,11 +4877,11 @@ li:not(.feature-included) {
 }
 
 .blog-post-nav a:hover {
-    background-color: var(--darker-primary, #2563eb); /* Slightly darker on hover */
+    background-color: var(--darker-primary, var(--k-accent-hover)); /* Slightly darker on hover */
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-decoration: none;
-    color: white;
+    color: var(--k-ink);
 }
 
 .blog-post-featured-image {
@@ -4904,7 +4904,7 @@ li:not(.feature-included) {
 .blog-post-title {
     font-size: 2.5rem;
     margin-bottom: 15px;
-    color: var(--primary-color, #3b82f6);
+    color: var(--primary-color, var(--k-accent));
     line-height: 1.2;
 }
 
@@ -4931,8 +4931,8 @@ li:not(.feature-included) {
 }
 
 .post-tag {
-    background: var(--primary-color, #3b82f6);
-    color: white;
+    background: var(--primary-color, var(--k-accent));
+    color: var(--k-ink);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 0.8rem;

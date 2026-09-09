@@ -764,8 +764,8 @@ onBeforeUnmount(() => {
   }
   
   .editor-toolbar {
-    background: linear-gradient(90deg, #1e3a8a, #2563eb) !important;
-    color: white;
+    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
+    color: var(--k-ink);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -773,7 +773,7 @@ onBeforeUnmount(() => {
   
   .document-settings-card {
     background: rgba(30, 41, 59, 0.4) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
   }
   
   .editor-container {
@@ -812,7 +812,7 @@ onBeforeUnmount(() => {
 
   .view-toggle-label {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     margin-bottom: 4px;
   }
 
@@ -822,10 +822,10 @@ onBeforeUnmount(() => {
   }
 
   .document-editor {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
-    background-color: #1e293b;
+    background-color: var(--k-sunken);
   }
   
   /* Make the editor fill available space */
@@ -836,9 +836,9 @@ onBeforeUnmount(() => {
   }
   
   .preview-container {
-    background-color: #1e293b;
+    background-color: var(--k-sunken);
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     padding: 20px;
     height: 100%;
     display: flex;
@@ -868,7 +868,7 @@ onBeforeUnmount(() => {
     overflow: auto;
     min-height: 800px; /* Double the default height from 500px to 800px */
     padding: 30px;
-    background-color: #1e293b !important;
+    background-color: var(--k-sunken) !important;
     color: #e2e8f0 !important;
     width: 100% !important; /* Ensure full width */
   }
@@ -951,7 +951,7 @@ onBeforeUnmount(() => {
     max-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--k-surface);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
@@ -961,7 +961,7 @@ onBeforeUnmount(() => {
     align-items: center;
     padding: 16px 24px;
     background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--k-line);
     flex-shrink: 0;
   }
 
@@ -983,7 +983,7 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-preview-actions .v-btn {
-    color: #64748b;
+    color: var(--k-ink-muted);
   }
 
   .fullscreen-preview-actions .v-btn:hover {
@@ -995,7 +995,7 @@ onBeforeUnmount(() => {
     flex: 1;
     overflow-y: auto;
     padding: 40px;
-    background: #ffffff;
+    background: var(--k-surface);
   }
 
   .fullscreen-document-view {
@@ -1013,7 +1013,7 @@ onBeforeUnmount(() => {
   .fullscreen-document-view h5,
   .fullscreen-document-view h6 {
     font-family: 'Arial', sans-serif;
-    color: #0f172a;
+    color: var(--k-ink);
     margin-top: 1.5em;
     margin-bottom: 0.5em;
     line-height: 1.3;
@@ -1027,7 +1027,7 @@ onBeforeUnmount(() => {
 
   .fullscreen-document-view h2 {
     font-size: 1.5em;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--k-line);
     padding-bottom: 0.2em;
   }
 
@@ -1079,7 +1079,7 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-document-view blockquote {
-    border-left: 4px solid #3b82f6;
+    border-left: 4px solid var(--k-accent);
     margin: 1em 0;
     padding: 0.5em 1em;
     background: #f1f5f9;
@@ -1088,7 +1088,7 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-document-view pre {
-    background: #1e293b;
+    background: var(--k-sunken);
     color: #e2e8f0;
     padding: 1em;
     border-radius: 8px;
@@ -1110,7 +1110,7 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-document-view a {
-    color: #3b82f6;
+    color: var(--k-accent);
     text-decoration: none;
   }
 
@@ -1120,7 +1120,7 @@ onBeforeUnmount(() => {
 
   .fullscreen-document-view hr {
     border: none;
-    border-top: 1px solid #e2e8f0;
+    border-top: 1px solid var(--k-line);
     margin: 2em 0;
   }
 

@@ -61,7 +61,7 @@ onMounted(async () => {
 
 <template>
     <!-- Firma bearbeiten Formular -->
-    <v-card v-if="editCompanyDialog" class="company-edit-card" theme="dark">
+    <v-card v-if="editCompanyDialog" class="company-edit-card">
         <v-toolbar density="compact" color="primary" class="card-toolbar">
             <v-toolbar-title class="text-subtitle-1">
                 <v-icon start size="18" class="mr-2">mdi-domain-edit</v-icon>
@@ -321,7 +321,7 @@ onMounted(async () => {
 /* Tabs Styling */
 .edit-tabs {
     background-color: rgba(30, 41, 59, 0.3) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .tab-item {
@@ -347,7 +347,7 @@ onMounted(async () => {
     font-weight: 500;
     margin-bottom: 16px;
     padding-bottom: 6px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
     color: var(--v-theme-primary);
 }
 
@@ -364,7 +364,7 @@ onMounted(async () => {
 
 /* Editor Container */
 .editor-container {
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
     min-height: 300px;

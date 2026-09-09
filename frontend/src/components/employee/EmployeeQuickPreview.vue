@@ -420,7 +420,7 @@ const currentVacation = computed(() => {
 }
 
 .preview-toolbar {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .preview-content {
@@ -472,7 +472,7 @@ const currentVacation = computed(() => {
 
 .info-label {
     font-size: 0.75rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--k-ink-muted);
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -480,13 +480,13 @@ const currentVacation = computed(() => {
 
 .info-value {
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--k-ink);
     font-weight: 500;
 }
 
 .license-category-title {
     font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--k-ink-muted);
     margin-bottom: 8px;
     font-weight: 500;
 }
@@ -511,15 +511,15 @@ const currentVacation = computed(() => {
 }
 
 .preview-content::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--k-row-hover);
 }
 
 .preview-content::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
+    background: var(--k-row-hover);
     border-radius: 4px;
 }
 
 .preview-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--k-row-hover);
 }
 </style>

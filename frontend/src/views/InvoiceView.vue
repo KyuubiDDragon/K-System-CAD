@@ -329,7 +329,6 @@ onMounted(async () => {
         <v-card
             v-if="!showAddInvoice && !editInvoiceDialog && !viewInvoiceDialog"
             class="main-card elevation-4"
-            theme="dark"
         >
             <v-card-text class="pa-0">
                 <!-- Filterleiste -->
@@ -582,7 +581,7 @@ onMounted(async () => {
 
 .invoice-container {
     min-height: 89vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -592,7 +591,7 @@ onMounted(async () => {
 .page-header {
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--k-line);
 }
 
 /* Action Button */
@@ -643,7 +642,7 @@ onMounted(async () => {
 }
 
 .invoice-customer {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--k-ink-muted);
 }
 
 .status-chip {
@@ -657,7 +656,7 @@ onMounted(async () => {
 }
 
 .status-pending {
-    color: rgba(255, 255, 255, 0.4);
+    color: var(--k-ink-faint);
     font-style: italic;
 }
 
@@ -709,7 +708,7 @@ onMounted(async () => {
 
 .dialog-title {
     background: linear-gradient(90deg, #991b1b, #dc2626);
-    color: white;
+    color: var(--k-ink);
     padding: 16px;
 }
 

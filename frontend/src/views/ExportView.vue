@@ -41,7 +41,7 @@
             <v-row v-else>
                 <!-- Left Column: Available Columns -->
                 <v-col cols="12" md="5">
-                    <v-card class="config-card" variant="outlined" theme="dark">
+                    <v-card class="config-card" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-view-column" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.availableColumns') }}
@@ -252,7 +252,7 @@
 
                 <!-- Right Column: Selected Columns & Options -->
                 <v-col cols="12" md="7">
-                    <v-card class="config-card mb-4" variant="outlined" theme="dark">
+                    <v-card class="config-card mb-4" variant="outlined">
                         <v-card-title class="text-subtitle-1 d-flex align-center">
                             <v-icon icon="mdi-format-list-checks" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.selectedColumns') }}
@@ -358,7 +358,7 @@
                     </v-card>
 
                     <!-- Export Options -->
-                    <v-card class="config-card mb-4" variant="outlined" theme="dark">
+                    <v-card class="config-card mb-4" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-cog" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.options') }}
@@ -459,7 +459,7 @@
                     </v-card>
 
                     <!-- Preview -->
-                    <v-card v-if="selectedColumns.length > 0" class="config-card mb-4" variant="outlined" theme="dark">
+                    <v-card v-if="selectedColumns.length > 0" class="config-card mb-4" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-eye" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.preview') }}
@@ -526,7 +526,7 @@
                     </v-card>
 
                     <!-- Export -->
-                    <v-card class="config-card" variant="outlined" theme="dark">
+                    <v-card class="config-card" variant="outlined">
                         <v-card-title class="text-subtitle-1">
                             <v-icon icon="mdi-export" size="small" class="mr-2"></v-icon>
                             {{ t('exportView.export') }}
@@ -569,7 +569,7 @@
 
         <!-- Save Preset Dialog -->
         <v-dialog v-model="showSavePresetDialog" max-width="450">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title>{{ t('exportView.savePresetTitle') }}</v-card-title>
                 <v-card-text>
                     <v-text-field
@@ -600,7 +600,7 @@
 
         <!-- Load Preset Dialog -->
         <v-dialog v-model="showLoadPresetDialog" max-width="550">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title>{{ t('exportView.loadPresetTitle') }}</v-card-title>
                 <v-card-text>
                     <div v-if="loadingPresets" class="d-flex justify-center pa-4">
@@ -650,7 +650,7 @@
 
         <!-- Rename Column Dialog -->
         <v-dialog v-model="showRenameDialog" max-width="400">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title>{{ t('exportView.renameColumnTitle') }}</v-card-title>
                 <v-card-text>
                     <v-text-field
@@ -675,7 +675,7 @@
 
         <!-- Google Sheets Help Dialog -->
         <v-dialog v-model="showGoogleSheetsHelp" max-width="700">
-            <v-card theme="dark">
+            <v-card>
                 <v-card-title class="d-flex align-center">
                     <v-icon icon="mdi-google-spreadsheet" color="green" class="mr-2"></v-icon>
                     {{ t('exportView.googleSheetsHelpTitle') }}
@@ -734,7 +734,7 @@ const toast = useToast();
 
 // --- Category Colors ---
 const categoryColors = [
-    '#3b82f6', // blue
+    'var(--k-accent)', // blue
     '#10b981', // emerald
     '#f59e0b', // amber
     '#ef4444', // red
@@ -1890,7 +1890,7 @@ onMounted(async () => {
 <style scoped>
 .export-container {
     min-height: 90vh;
-    background-color: #111723;
+    background-color: var(--k-ink);
     background-image:
         radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1906,7 +1906,7 @@ onMounted(async () => {
 
 .config-card {
     background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     border-radius: 12px;
 }
@@ -1929,7 +1929,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
     cursor: grab;
     transition: background-color 0.2s;
 }
@@ -1940,7 +1940,7 @@ onMounted(async () => {
 
 .draggable-column-item.drag-over {
     background-color: rgba(59, 130, 246, 0.3);
-    border-top: 2px solid #3b82f6;
+    border-top: 2px solid var(--k-accent);
 }
 
 .draggable-column-item:active {
@@ -1999,7 +1999,7 @@ onMounted(async () => {
     position: sticky;
     top: 0;
     z-index: 1;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--k-line);
 }
 
 .preview-table th.category-header {
@@ -2010,9 +2010,9 @@ onMounted(async () => {
 
 .preview-table td {
     padding: 6px 12px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid var(--k-line);
     white-space: nowrap;
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--k-ink-muted);
 }
 
 .preview-table tr:hover td {

@@ -393,7 +393,7 @@ onMounted(async () => {
 		  </div>
 		  
 		  <!-- Detail View Content -->
-		  <v-card class="detail-card" elevation="3" theme="dark">
+		  <v-card class="detail-card" elevation="3">
 			<v-card-text class="pa-6">
 			  <v-row>
 				<v-col cols="12" md="6">
@@ -549,7 +549,7 @@ onMounted(async () => {
 		  </div>
 		
 		<!-- Datentabelle -->
-		<v-card class="main-table-card" elevation="3" theme="dark">
+		<v-card class="main-table-card" elevation="3">
 		  <v-data-table
 			:headers="headers"
 			:items="vehicles"

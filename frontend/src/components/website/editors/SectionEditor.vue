@@ -647,7 +647,7 @@ const formData = ref<Section>({
         dividerFlip: false,
         dividerHeight: 80,
         dividerColorMode: 'primary',
-        dividerColor: '#3b82f6'
+        dividerColor: 'var(--k-accent)'
     },
     is_active: true,
 });
@@ -691,7 +691,7 @@ watch(() => props.section, (section) => {
                 dividerFlip: section.settings?.dividerFlip || false,
                 dividerHeight: section.settings?.dividerHeight || 80,
                 dividerColorMode: section.settings?.dividerColorMode || 'primary',
-                dividerColor: section.settings?.dividerColor || '#3b82f6'
+                dividerColor: section.settings?.dividerColor || 'var(--k-accent)'
             },
             sort_order: section.sort_order,
             is_active: section.is_active ?? true,
@@ -737,7 +737,7 @@ watch(() => props.section, (section) => {
                 dividerFlip: false,
                 dividerHeight: 80,
                 dividerColorMode: 'primary',
-                dividerColor: '#3b82f6'
+                dividerColor: 'var(--k-accent)'
             },
             is_active: true,
         };
@@ -825,7 +825,7 @@ function handleSubmit() {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
-    border-bottom: 1px solid #4a5568;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .modal-header h2 {
@@ -841,7 +841,7 @@ function handleSubmit() {
     padding: 0;
     border: none;
     background-color: transparent;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -877,9 +877,9 @@ function handleSubmit() {
 .form-control {
     width: 100%;
     padding: 0.75rem;
-    background-color: #2d3748;
+    background-color: var(--k-sunken);
     color: #e5e7eb;
-    border: 1px solid #4a5568;
+    border: 1px solid var(--k-line);
     border-radius: 6px;
     font-size: 0.875rem;
     transition: border-color 0.2s;
@@ -887,7 +887,7 @@ function handleSubmit() {
 
 .form-control:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--k-accent);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -920,7 +920,7 @@ textarea.form-control {
     display: block;
     margin-top: 0.25rem;
     font-size: 0.75rem;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
 }
 
 .checkbox-label {
@@ -956,10 +956,10 @@ textarea.form-control {
 .settings-subheading {
     font-size: 1rem;
     font-weight: 600;
-    color: #9ca3af;
+    color: var(--k-ink-faint);
     margin: 1.5rem 0 1rem 0;
     padding-top: 1rem;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid var(--k-line);
 }
 
 .modal-footer {
@@ -967,7 +967,7 @@ textarea.form-control {
     justify-content: flex-end;
     gap: 0.75rem;
     padding: 1.5rem;
-    border-top: 1px solid #4a5568;
+    border-top: 1px solid var(--k-line);
 }
 
 .btn {
@@ -981,21 +981,21 @@ textarea.form-control {
 }
 
 .btn-secondary {
-    background-color: #4b5563;
+    background-color: var(--k-ink-muted);
     color: #e5e7eb;
 }
 
 .btn-secondary:hover {
-    background-color: #6b7280;
+    background-color: var(--k-ink-muted);
 }
 
 .btn-primary {
-    background-color: #3b82f6;
-    color: white;
+    background-color: var(--k-accent);
+    color: var(--k-ink);
 }
 
 .btn-primary:hover:not(:disabled) {
-    background-color: #2563eb;
+    background-color: var(--k-accent-hover);
 }
 
 .btn-primary:disabled {

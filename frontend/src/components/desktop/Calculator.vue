@@ -142,7 +142,7 @@ onMounted(() => {
 
 .calculator-display {
   background-color: #212121;
-  color: white;
+  color: var(--k-ink);
   padding: 20px;
   text-align: right;
   flex: 0 0 auto;
@@ -160,7 +160,7 @@ onMounted(() => {
 
 .display-input {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--k-ink-muted);
   min-height: 1rem;
   word-break: break-all;
 }
@@ -197,7 +197,7 @@ onMounted(() => {
 
 .equals-button {
   background-color: #2196f3;
-  color: white;
+  color: var(--k-ink);
   flex: 2;
 }
 

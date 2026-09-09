@@ -358,7 +358,7 @@ watch(() => props.show, (newVal) => {
   -webkit-backdrop-filter: blur(15px);
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--k-line);
   z-index: 9999;
   opacity: 0;
   pointer-events: none;
@@ -379,7 +379,7 @@ watch(() => props.show, (newVal) => {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .customizer-title {
@@ -400,7 +400,7 @@ watch(() => props.show, (newVal) => {
 }
 
 .customizer-close:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
 }
 
 .customizer-content {
@@ -422,12 +422,12 @@ watch(() => props.show, (newVal) => {
 }
 
 .customizer-content::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--k-ink);
   border-radius: 3px;
 }
 
 .customizer-content::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
 }
 
 .customizer-section {
@@ -435,7 +435,7 @@ watch(() => props.show, (newVal) => {
   flex-direction: column;
   gap: 12px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--k-line);
 }
 
 .customizer-section:last-child {
@@ -453,7 +453,7 @@ watch(() => props.show, (newVal) => {
 }
 
 .section-icon {
-  color: var(--desktop-accent-blue, #3b82f6);
+  color: var(--desktop-accent-blue, var(--k-accent));
 }
 
 /* Position controls */
@@ -471,13 +471,13 @@ watch(() => props.show, (newVal) => {
   gap: 8px;
   padding: 12px 8px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .position-option:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
 }
 
 .position-option.active {
@@ -485,7 +485,7 @@ watch(() => props.show, (newVal) => {
 }
 
 .position-icon {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -495,8 +495,8 @@ watch(() => props.show, (newVal) => {
 }
 
 .position-option.active .position-icon {
-  background-color: var(--desktop-accent-blue, #3b82f6);
-  color: white;
+  background-color: var(--desktop-accent-blue, var(--k-accent));
+  color: var(--k-ink);
 }
 
 .position-label {
@@ -512,7 +512,7 @@ watch(() => props.show, (newVal) => {
   gap: 16px;
   padding: 12px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--k-row-hover);
 }
 
 .setting-label {
@@ -543,14 +543,14 @@ watch(() => props.show, (newVal) => {
   position: relative;
   width: 44px;
   height: 24px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: var(--k-row-hover);
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .toggle-switch.active {
-  background-color: var(--desktop-accent-blue, #3b82f6);
+  background-color: var(--desktop-accent-blue, var(--k-accent));
 }
 
 .toggle-slider {
@@ -559,7 +559,7 @@ watch(() => props.show, (newVal) => {
   left: 2px;
   width: 20px;
   height: 20px;
-  background-color: white;
+  background-color: var(--k-ink);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -577,7 +577,7 @@ watch(() => props.show, (newVal) => {
 .size-option {
   padding: 6px 12px;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
   font-size: 12px;
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
   cursor: pointer;
@@ -585,12 +585,12 @@ watch(() => props.show, (newVal) => {
 }
 
 .size-option:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
 }
 
 .size-option.active {
-  background-color: var(--desktop-accent-blue, #3b82f6);
-  color: white;
+  background-color: var(--desktop-accent-blue, var(--k-accent));
+  color: var(--k-ink);
 }
 
 /* Slider control */
@@ -606,7 +606,7 @@ watch(() => props.show, (newVal) => {
   -webkit-appearance: none;
   height: 4px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--k-row-hover);
   outline: none;
 }
 
@@ -616,7 +616,7 @@ watch(() => props.show, (newVal) => {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--desktop-accent-blue, #3b82f6);
+  background: var(--desktop-accent-blue, var(--k-accent));
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -653,17 +653,17 @@ watch(() => props.show, (newVal) => {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
   transition: all 0.2s ease;
 }
 
 .icon-preview:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
 }
 
 .icon-style-option.active .icon-preview {
   background-color: rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.3);
-  color: var(--desktop-accent-blue, #3b82f6);
+  color: var(--desktop-accent-blue, var(--k-accent));
 }
 
 .icon-style-label {
@@ -678,7 +678,7 @@ watch(() => props.show, (newVal) => {
   padding: 8px 12px;
   background: rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.1);
   border-radius: 6px;
-  border-left: 3px solid var(--desktop-accent-blue, #3b82f6);
+  border-left: 3px solid var(--desktop-accent-blue, var(--k-accent));
 }
 
 .pinned-apps-list {
@@ -692,14 +692,14 @@ watch(() => props.show, (newVal) => {
   align-items: center;
   gap: 10px;
   padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--k-row-hover);
   border-radius: 8px;
   margin-bottom: 8px;
   transition: all 0.2s ease;
 }
 
 .pinned-app-item:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--k-row-hover);
 }
 
 .app-drag-handle {
@@ -736,7 +736,7 @@ watch(() => props.show, (newVal) => {
 }
 
 .app-remove:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
   color: #ef4444;
 }
 
@@ -765,17 +765,17 @@ watch(() => props.show, (newVal) => {
 }
 
 .action-button.cancel {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--k-row-hover);
   color: var(--desktop-text, rgba(255, 255, 255, 0.95));
 }
 
 .action-button.cancel:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--k-row-hover);
 }
 
 .action-button.apply {
-  background-color: var(--desktop-accent-blue, #3b82f6);
-  color: white;
+  background-color: var(--desktop-accent-blue, var(--k-accent));
+  color: var(--k-ink);
 }
 
 .action-button.apply:hover {
