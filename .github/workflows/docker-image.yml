@@ -1,96 +1,63 @@
-version: '3.8'
+# .github/workflows/docker-image.yml
+# Baut alle drei Service-Images, um Dockerfile- und Dependency-Fehler
+# zu finden, bevor sie beim Deployment auf dem Server auftreten.
+#
+# Bewusst NICHT "Docker Build and Push" genannt: deploy-staging.yml und
+# deploy-production.yml haengen per workflow_run an diesem Namen und wuerden
+# sonst ein SSH-Deployment ausloesen. Dieser Workflow pusht keine Images
+# und deployt nichts.
 
-services:
-  # MySQL Datenbank
-  db:
-    image: mysql:8.0
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD must be set}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-ksystems}
-      MYSQL_USER: ${MYSQL_USER:-ksystems}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - app-network
+name: Docker Build Check
 
-  # PHP Backend mit Apache
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    depends_on:
-      - db
-    volumes:
-      - uploads_data:/var/www/html/uploads
-    environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_DATABASE: ${MYSQL_DATABASE:-ksystems}
-      DB_USERNAME: ${MYSQL_USER:-ksystems}
-      DB_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD must be set}
-      APP_ENV: ${APP_ENV:-production}
-      NODE_ENV: ${NODE_ENV:-production}
-      SOCKET_SERVER_URL: http://socket-server:3001
-      SOCKET_API_KEY: ${SOCKET_API_KEY:?SOCKET_API_KEY must be set}
-      APP_URL_PROD: https://${DOMAIN:-localhost}/api
-      FRONTEND_URL_PROD: https://${DOMAIN:-localhost}
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
-    ports:
-      - "${BACKEND_HOST_PORT:-9080}:80"
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "[ -f /var/www/html/index.php ] || exit 1"]
-      start_period: 30s
+on:
+  push:
+    branches: [master, main, develop]
+  pull_request:
+  workflow_dispatch:
 
-  # Node.js Socket Server
-  socket-server:
-    build:
-      context: ./socket-server
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    depends_on:
-      - backend
-    environment:
-      PORT: 3001
-      NODE_ENV: ${NODE_ENV:-production}
-      API_KEY: ${SOCKET_API_KEY:?SOCKET_API_KEY must be set}
-      JWT_SECRET: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set}
-      CORS_ORIGIN: https://${DOMAIN:-localhost}
-      PHP_API_URL: http://backend:80
-    ports:
-      - "${SOCKET_HOST_PORT:-9001}:3001"
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "lsof -i :3001 || exit 1"]
-      start_period: 10s
+permissions:
+  contents: read
 
-  # Vue.js/Vite Frontend mit Nginx
-  frontend:
-    # Einfache NGINX-Konfiguration statt komplexem Build
-    image: nginx:stable-alpine
-    restart: unless-stopped
-    volumes:
-      - ./frontend/config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./frontend/dist:/usr/share/nginx/html:ro
-    ports:
-      - "${FRONTEND_HOST_PORT:-9173}:80"
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD-SHELL", "[ -d /usr/share/nginx/html ] || exit 1"]
-      start_period: 10s
+concurrency:
+  group: docker-build-check-${{ github.ref }}
+  cancel-in-progress: true
 
-networks:
-  app-network:
-    driver: bridge
+jobs:
+  build:
+    name: Build ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - service: backend
+            context: ./backend
+            build-args: ""
+          - service: socket-server
+            context: ./socket-server
+            build-args: ""
+          - service: frontend
+            context: ./frontend
+            # Platzhalter-URLs: der Build soll nur validiert werden,
+            # das Image wird nicht veroeffentlicht.
+            build-args: |
+              VITE_API_URL=https://build-check.invalid/api
+              VITE_SOCKET_URL=wss://build-check.invalid/socket.io
+              VITE_REDIRECT_URL=https://build-check.invalid
 
-volumes:
-  db_data:
-    driver: local
-  uploads_data:
-    driver: local
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build ${{ matrix.service }} image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.context }}/Dockerfile
+          build-args: ${{ matrix.build-args }}
+          push: false
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
