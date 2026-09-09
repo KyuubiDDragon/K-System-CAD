@@ -3,7 +3,8 @@
  */
 
 import { ref } from 'vue';
-import { updateVuetifyTheme } from '@/plugins/vuetify';
+import { updateVuetifyTheme, setVuetifyTheme, applyAuthorityAccent } from '@/plugins/vuetify';
+import { tokensFor, tokensToCssVars } from '@/theme/tokens';
 
 // Flag to track if we need to force a theme refresh
 export const forceRefreshTheme = ref(false);
@@ -275,7 +276,8 @@ export function applyThemeToDOM(settings?: ThemeSettings): void {
   const accentColor = themeSettings.accentColor || defaultColors.accent;
   const accentColorRGB = hexToRgb(accentColor, 'string') as string;
   
-  const backgroundColor = themeSettings.backgroundColor || defaultColors.background;
+  // Auch die Grundfläche folgt dem Modus, nicht der Behörden-Einstellung.
+  const backgroundColor = tokensFor(themeSettings.darkMode !== false).canvas;
   const backgroundColorRGB = hexToRgb(backgroundColor, 'string') as string;
   
   const errorColor = themeSettings.errorColor || defaultColors.error;
@@ -320,11 +322,18 @@ export function applyThemeToDOM(settings?: ThemeSettings): void {
   }
   
   // Map ThemeSettings properties to defaultColors properties
-  const containerColor = themeSettings.containerColor || defaultColors.container;
-  const borderColor = themeSettings.borderColor || defaultColors.border;
-  const textColor = themeSettings.textColor || defaultColors.text;
-  const textMutedColor = themeSettings.textMuted || defaultColors.textMuted;
-  const inputBackground = themeSettings.inputBackground || defaultColors.inputBg;
+  // Flächen- und Textfarben stammen immer aus den Design-Tokens des aktiven
+  // Modus, nicht aus den Behörden-Einstellungen. Andernfalls bliebe der helle
+  // Modus dunkel, weil die gespeicherten Werte (#111723, #1E1E1E …) für den
+  // dunklen Modus gedacht sind und keinen hellen Gegenpart haben.
+  // Die Marke einer Behörde steckt im Akzent (primary/secondary/accent), nicht
+  // in den Flächen — siehe theme/tokens.ts.
+  const uiTokens = tokensFor(themeSettings.darkMode !== false);
+  const containerColor = uiTokens.surface;
+  const borderColor = uiTokens.line;
+  const textColor = uiTokens.ink;
+  const textMutedColor = uiTokens.inkMuted;
+  const inputBackground = uiTokens.surface;
   const shadowStrength = themeSettings.shadowStrength || defaultColors.shadowStrength;
   
   // Set all necessary CSS variables with !important to override any existing styles
@@ -406,10 +415,46 @@ export function applyThemeToDOM(settings?: ThemeSettings): void {
     checkAppliedColors(primaryColor, secondaryColor, backgroundColor, true);
   }, 100);
   
+  // --- Modusabhängige Design-Tokens ---
+  // Diese bestimmen Flächen, Linien und Text. Sie stammen aus theme/tokens.ts
+  // und sind der Grund, warum der Umschalter überhaupt etwas bewirkt: vorher
+  // gab es nur einen modusunabhängigen Farbsatz.
+  const isDark = themeSettings.darkMode !== false;
+  const tokens = tokensFor(isDark);
+  for (const [name, value] of Object.entries(tokensToCssVars(tokens))) {
+    html.style.setProperty(name, value);
+  }
+
+  // Die gewachsenen Variablen aus main.scss sind statisch aus SCSS erzeugt und
+  // damit modusunabhängig. Sie werden hier auf die Tokens des aktiven Modus
+  // gezogen, sonst bleiben Karten und Flächen im hellen Modus dunkel.
+  const legacyFromTokens: Record<string, string> = {
+    '--surface': tokens.surface,
+    '--card-bg': tokens.surface,
+    '--panel-bg': tokens.surface,
+    '--dialog-bg': tokens.raised,
+    '--menu-bg': tokens.raised,
+    '--hover-bg': tokens.rowHover,
+    '--divider-color': tokens.line,
+    '--on-surface': tokens.ink,
+    '--on-background': tokens.ink,
+  };
+  for (const [name, value] of Object.entries(legacyFromTokens)) {
+    html.style.setProperty(name, value);
+  }
+
+  // Kennzeichnet den Modus für CSS-Regeln, die sich daran hängen wollen.
+  html.setAttribute('data-color-scheme', isDark ? 'dark' : 'light');
+  // Damit Browser-Bedienelemente (Scrollbalken, Auswahlfelder) mitziehen.
+  html.style.setProperty('color-scheme', isDark ? 'dark' : 'light');
+
   // Update Vuetify theme if available
   try {
-    updateVuetifyTheme();
-    console.log('Updated Vuetify theme');
+    setVuetifyTheme(isDark);
+    // Die Akzentfarbe der Behörde überschreibt nur den Akzent, nicht die
+    // Flächen — sonst wäre der helle Modus wieder dunkel.
+    applyAuthorityAccent(primaryColor);
+    console.log('Updated Vuetify theme:', isDark ? 'dark' : 'light');
   } catch (e) {
     console.warn('Could not update Vuetify theme:', e);
   }
