@@ -1208,14 +1208,14 @@ export function useMenuItems() {
    */
   function faerbeNachBereich(items: MenuItem[]): MenuItem[] {
     const bereichsFarben: Record<string, string> = {
-      'section-dispatch': 'var(--k-critical, #e5675c)',
-      'section-akten': 'var(--k-accent, #558ee0)',
-      'section-organization': 'var(--k-success, #4fbf89)',
-      'section-admin': 'var(--k-neutral, #8b96a4)',
-      'section-misc': 'var(--k-neutral, #8b96a4)',
+      'section-dispatch': '#D9534F',
+      'section-akten': '#3D7DD8',
+      'section-organization': '#2FA36B',
+      'section-admin': '#6B7684',
+      'section-misc': '#6B7684',
     };
 
-    let aktuelleFarbe = 'var(--k-accent, #558ee0)';
+    let aktuelleFarbe = '#3D7DD8';
 
     const faerbe = (item: MenuItem): MenuItem => ({
       ...item,
@@ -1236,7 +1236,56 @@ export function useMenuItems() {
    * Get flat menu for desktop (no hierarchy)
    */
   function getDesktopMenu(): MenuItem[] {
-    return menuItems.value.filter(item => !item.hideOnDesktop);
+    return menuItems.value
+      .filter(item => !item.hideOnDesktop)
+      .map(faerbeNachGruppe);
+  }
+
+  /**
+   * Bereichsfarben der Arbeitsflaeche.
+   *
+   * Vuetify erwartet bei :color einen Hex-Wert oder Farbnamen - CSS-Variablen
+   * funktionieren dort nicht. Deshalb feste Werte, die auf hellem wie dunklem
+   * Grund tragen; die Symbole liegen ohnehin auf einem Hintergrundbild.
+   */
+  const BEREICHSFARBEN: Record<string, string> = {
+    einsatz: '#D9534F',
+    akten: '#3D7DD8',
+    organisation: '#2FA36B',
+    verwaltung: '#6B7684',
+  };
+
+  /** Welcher Punkt gehoert zu welchem Bereich - nach Gruppen- bzw. Punkt-ID. */
+  const BEREICH_JE_ID: Record<string, keyof typeof BEREICHSFARBEN> = {
+    'dispatch-group': 'einsatz',
+    'blackboard-group': 'einsatz',
+    'authorities-group': 'einsatz',
+    map: 'einsatz',
+    'akten-group': 'akten',
+    'employee-group': 'akten',
+    'company-group': 'akten',
+    'invoice-group': 'akten',
+    'report-group': 'akten',
+    'document-group': 'akten',
+    'organisation-group': 'organisation',
+    filemanager: 'organisation',
+    'training-group': 'organisation',
+    templates: 'verwaltung',
+    companywebsite: 'verwaltung',
+    admin: 'verwaltung',
+    profile: 'verwaltung',
+  };
+
+  function faerbeNachGruppe(item: MenuItem): MenuItem {
+    const bereich = BEREICH_JE_ID[item.id];
+    if (!bereich) return item;
+    const farbe = BEREICHSFARBEN[bereich];
+    const setze = (i: MenuItem): MenuItem => ({
+      ...i,
+      color: farbe,
+      children: i.children?.map(setze),
+    });
+    return setze(item);
   }
 
   /**
