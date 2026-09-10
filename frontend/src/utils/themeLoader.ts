@@ -11,7 +11,7 @@ export const forceRefreshTheme = ref(false);
 
 // Standardfarben (gleich wie in SettingsView)
 const defaultColors = {
-    primary: '#3B82F6', // Blue
+    primary: '#2B62C4', // Akzent — geprüft auf 5.76:1 gegen Weiß, siehe theme/tokens.ts
     secondary: '#343541',
     accent: '#10B981', // Green
     background: '#111723',

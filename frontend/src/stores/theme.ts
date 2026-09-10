@@ -28,7 +28,7 @@ export const useThemeStore = defineStore('theme', {
     getGlobalSettings: (state) => state.globalSettings,
     getSiteName: (state) => state.globalSettings.siteName || 'K-Systems',
     getSiteLogo: (state) => state.globalSettings.siteLogo || '/img/logo.png',
-    getPrimaryColor: (state) => state.themeSettings.primaryColor || '#3B82F6',
+    getPrimaryColor: (state) => state.themeSettings.primaryColor || '#2B62C4',
     getBackgroundColor: (state) => state.themeSettings.backgroundColor || '#111723',
     isDark: (state) => state.isDarkTheme
   },
