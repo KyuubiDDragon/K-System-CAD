@@ -234,7 +234,7 @@ onUnmounted(() => {
 }
 
 .light-theme {
-  background-color: var(--k-ink);
+  background-color: var(--k-surface);
   color: #333;
 }
 

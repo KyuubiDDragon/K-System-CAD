@@ -357,7 +357,7 @@ function downloadAttachment(attachment: MailAttachment) {
 .mail-detail-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--k-ink);
+  background-color: var(--k-surface);
   overflow: hidden;
 }
 

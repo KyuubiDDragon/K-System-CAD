@@ -929,7 +929,7 @@ onMounted(() => {
 <style scoped>
 .file-manager-container {
 	min-height: 90vh;
-	background-color: var(--k-ink);
+	background-color: var(--k-canvas);
 	background-image: radial-gradient(
 			circle at 10% 20%,
 			rgba(30, 64, 175, 0.05) 0%,

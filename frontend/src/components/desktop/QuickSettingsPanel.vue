@@ -265,7 +265,7 @@ const quickAccessApps = [
 }
 
 .close-button:hover {
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
 }
 
 .settings-section {
@@ -394,7 +394,7 @@ const quickAccessApps = [
   left: 3px;
   width: 16px;
   height: 16px;
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -413,7 +413,7 @@ const quickAccessApps = [
 .position-buttons button {
   padding: 6px;
   border-radius: 6px;
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   border: none;
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
   font-size: 12px;
@@ -450,7 +450,7 @@ const quickAccessApps = [
 }
 
 .quick-access-app:hover {
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   transform: translateY(-3px);
 }
 

@@ -1013,7 +1013,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 <style scoped>
 .question-catalog-container {
     min-height: 90vh;
-    background-color: var(--k-ink);
+    background-color: var(--k-canvas);
     background-image:
         radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1193,7 +1193,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 
 /* Dialog Styles */
 .dialog-card {
-    background-color: var(--k-ink) !important;
+    background-color: var(--k-canvas) !important;
     border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;

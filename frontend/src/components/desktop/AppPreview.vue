@@ -199,7 +199,7 @@ const isImagePath = (icon: string): boolean => {
   justify-content: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
 }
 
 .action-button:hover {
@@ -269,7 +269,7 @@ const isImagePath = (icon: string): boolean => {
   gap: 4px;
   padding: 6px 10px;
   border-radius: 6px;
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   font-size: 11px;
   cursor: pointer;
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));

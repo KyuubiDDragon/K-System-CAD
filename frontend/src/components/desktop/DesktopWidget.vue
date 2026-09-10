@@ -282,7 +282,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 
 .widget-label-badge {
   font-size: 11px;
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   padding: 2px 8px;
   border-radius: 10px;
   margin-right: 10px;
@@ -504,7 +504,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 }
 
 .activity-item:hover {
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   transform: translateX(3px);
 }
 

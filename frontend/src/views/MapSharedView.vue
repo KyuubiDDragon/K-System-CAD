@@ -312,7 +312,7 @@ onMounted(() => {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: var(--k-ink);
+    background-color: var(--k-canvas);
 }
 
 .map-content {

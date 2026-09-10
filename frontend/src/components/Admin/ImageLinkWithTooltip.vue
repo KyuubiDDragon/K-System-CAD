@@ -91,7 +91,7 @@ const copyLink = async () => {
     color: rgb(var(--v-theme-primary-darken-1));
 }
 .tooltip-image {
-    background-color: var(--k-ink); /* Light background for image */
+    background-color: var(--k-surface); /* Light background for image */
     border-radius: 4px;
 }
 </style>

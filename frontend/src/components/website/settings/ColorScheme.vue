@@ -379,7 +379,7 @@ a:hover {
     padding: 0.6rem 1.2rem;
     border-radius: 4px;
     transition: all 0.3s ease;
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }`;
 
     localSettings.value.custom_css = cssTemplate;
@@ -547,7 +547,7 @@ a:hover {
     width: 18px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--k-ink);
+    background-color: #fff;
     transition: 0.4s;
     border-radius: 50%;
 }
@@ -639,12 +639,12 @@ a:hover {
 }
 
 .btn-secondary {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .code-editor {

@@ -599,7 +599,7 @@ onMounted(() => {
 
 /* Dialog Styling */
 .dialog-card {
-    background-color: var(--k-ink) !important;
+    background-color: var(--k-canvas) !important;
     border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;

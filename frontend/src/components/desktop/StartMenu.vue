@@ -462,7 +462,7 @@ const switchToSidebar = async () => {
 }
 
 .apps-list::-webkit-scrollbar-thumb {
-    background-color: var(--k-ink-faint);
+    background-color: var(--k-line-strong);
     border-radius: 8px;
 }
 
@@ -476,7 +476,7 @@ const switchToSidebar = async () => {
 }
 
 .list-app:hover {
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .list-app-icon {

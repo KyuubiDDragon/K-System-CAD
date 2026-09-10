@@ -298,6 +298,11 @@ export default {
 };
 </script>
 <style scoped>
+/* Bewusst weiss und nicht aus den Merkern: das hier ist Inhalt, keine
+   Bedienoberflaeche. Eine vorschau der Behoerden-Website, ein Whiteboard-Blatt,
+   eine Spielkarte oder ein Mailtext folgen nicht dem Modus der Verwaltung -
+   sie sehen aus, wie sie beim Empfaenger aussehen. */
+
 .website-preview {
   position: relative;
   height: 100vh;
@@ -426,7 +431,7 @@ export default {
 }
 
 .site-nav a.active {
-  background-color: var(--k-ink-faint);
+  background-color: var(--k-line-strong);
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -549,7 +554,7 @@ export default {
 }
 
 .feature-card {
-  background-color: var(--k-ink);
+  background-color: #fff;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -729,7 +734,7 @@ export default {
 }
 
 .post-item {
-  background-color: var(--k-ink);
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
@@ -949,7 +954,7 @@ export default {
 
 .hero-button {
   display: inline-block;
-  background-color: var(--k-ink);
+  background-color: #fff;
   color: var(--primary-color);
   padding: 15px 40px;
   border-radius: 50px;
@@ -995,7 +1000,7 @@ export default {
 
 /* Services Section Styles */
 .section-services {
-  background-color: var(--k-ink);
+  background-color: #fff;
   text-align: center;
 }
 
@@ -1083,7 +1088,7 @@ export default {
 
 /* Generic Section Styles */
 .section-generic {
-  background-color: var(--k-ink);
+  background-color: #fff;
   text-align: center;
 }
 
@@ -1096,7 +1101,7 @@ export default {
 /* Alternating background colors for sections */
 .onepager-section:nth-child(even) .section-generic,
 .onepager-section:nth-child(even) .section-about {
-  background-color: var(--k-ink);
+  background-color: #fff;
 }
 
 .onepager-section:nth-child(odd) .section-generic,

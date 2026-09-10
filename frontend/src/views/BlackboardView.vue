@@ -242,7 +242,7 @@
                                         mode="hexa"
                                         width="100%"
                                         class="color-picker"
-                                        style="background-color: var(--k-ink) !important;"
+                                        style="background-color: var(--k-canvas) !important;"
                                     ></v-color-picker>
                                 </v-col>
                                 <v-col cols="12" sm="4" class="d-flex flex-column justify-center options-container">
@@ -1085,7 +1085,7 @@ onMounted(async () => {
 .editor-card {
     border-radius: 12px;
     overflow: hidden;
-    background-color: var(--k-ink) !important;
+    background-color: var(--k-canvas) !important;
     border: 1px solid var(--card-border);
 }
 
@@ -1095,7 +1095,7 @@ onMounted(async () => {
 }
 
 .color-picker :deep(.v-color-picker__controls) {
-    background-color: var(--k-ink) !important;
+    background-color: var(--k-canvas) !important;
     border-radius: 8px;
 }
 

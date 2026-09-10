@@ -452,7 +452,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
 }
 

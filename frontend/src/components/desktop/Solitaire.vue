@@ -686,6 +686,11 @@
   </script>
   
   <style scoped>
+/* Bewusst weiss und nicht aus den Merkern: das hier ist Inhalt, keine
+   Bedienoberflaeche. Eine vorschau der Behoerden-Website, ein Whiteboard-Blatt,
+   eine Spielkarte oder ein Mailtext folgen nicht dem Modus der Verwaltung -
+   sie sehen aus, wie sie beim Empfaenger aussehen. */
+
   /* --- Exaktes Original-CSS --- */
   .solitaire-game {
     background-color: #0b5c2d; /* Green felt background */
@@ -802,7 +807,7 @@
     width: 90px;
     height: 130px;
     border-radius: 6px;
-    background-color: var(--k-ink);
+    background-color: #fff;
     color: var(--k-ink);
     padding: 0.5rem;
     display: flex;

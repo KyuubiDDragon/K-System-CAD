@@ -1967,7 +1967,7 @@ const kFilters = useTableFilters(
 <style scoped>
 /* Base Styles */
 .mail-system-container {
-    background-color: var(--k-ink);
+    background-color: var(--k-canvas);
     background-image:
         radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
@@ -2315,7 +2315,7 @@ const kFilters = useTableFilters(
     }
 
     .message-body {
-        background-color: var(--k-ink) !important;
+        background-color: #fff !important;
         color: black !important;
         border: 1px solid #ddd;
     }

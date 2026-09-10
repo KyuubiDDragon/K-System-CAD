@@ -363,12 +363,12 @@ textarea.form-control {
 }
 
 .btn-secondary {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     color: #e5e7eb;
 }
 
 .btn-secondary:hover {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .btn-primary {

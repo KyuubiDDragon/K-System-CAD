@@ -306,7 +306,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: var(--k-ink);
+  background-color: var(--k-canvas);
   border-bottom: 1px solid var(--k-line);
   color: var(--k-ink);
 }
@@ -339,7 +339,7 @@ export default defineComponent({
   flex: 1;
   display: grid;
   gap: 2px;
-  background-color: var(--k-ink);
+  background-color: var(--k-canvas);
   padding: 12px;
   overflow: auto;
 }

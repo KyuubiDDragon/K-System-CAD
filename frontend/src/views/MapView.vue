@@ -1429,7 +1429,7 @@ watch([markers, categories], () => {
     min-height: calc(100vh - 64px);
     height: calc(100vh - 64px);
     width: 100%;
-    background-color: var(--k-ink);
+    background-color: var(--k-canvas);
     background-image:
         radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
         radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
@@ -1601,7 +1601,7 @@ watch([markers, categories], () => {
 }
 
 .dialog-card {
-    background-color: var(--k-ink) !important;
+    background-color: var(--k-canvas) !important;
     border: 1px solid var(--k-line);
 }
 

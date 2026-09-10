@@ -390,7 +390,7 @@ function getIndent(item: NavigationItem): string {
 }
 
 .badge-inactive {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     color: var(--k-ink);
 }
 
@@ -421,12 +421,12 @@ function getIndent(item: NavigationItem): string {
 }
 
 .btn-secondary {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .btn-icon {

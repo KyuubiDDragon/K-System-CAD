@@ -778,7 +778,7 @@ watch(() => props.apps, () => {
 .menu-app:hover,
 .menu-app.active {
     transform: translateY(-4px) scale(1.05);
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .menu-app-icon {
@@ -845,7 +845,7 @@ watch(() => props.apps, () => {
 }
 
 .apps-list::-webkit-scrollbar-thumb {
-    background-color: var(--k-ink-faint);
+    background-color: var(--k-line-strong);
     border-radius: 8px;
 }
 
@@ -973,7 +973,7 @@ watch(() => props.apps, () => {
 }
 
 .power-option:hover {
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .power-option.danger:hover {
@@ -1015,7 +1015,7 @@ watch(() => props.apps, () => {
 }
 
 .context-menu-item:hover {
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .context-menu-item span {

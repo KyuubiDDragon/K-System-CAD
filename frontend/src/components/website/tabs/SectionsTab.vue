@@ -467,7 +467,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .type-custom {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .inactive-badge {
@@ -475,7 +475,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     border-radius: 4px;
     font-size: 0.75rem;
     font-weight: 600;
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     color: var(--k-ink);
     display: inline-flex;
     align-items: center;

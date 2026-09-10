@@ -97,7 +97,7 @@ onMounted(() => {
   text-align: center;
   padding: 40px;
   border-radius: 8px;
-  background-color: var(--k-ink);
+  background-color: var(--k-surface);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 

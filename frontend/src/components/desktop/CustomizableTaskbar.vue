@@ -422,7 +422,7 @@ watch(() => props.show, (newVal) => {
 }
 
 .customizer-content::-webkit-scrollbar-thumb {
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   border-radius: 3px;
 }
 
@@ -559,7 +559,7 @@ watch(() => props.show, (newVal) => {
   left: 2px;
   width: 20px;
   height: 20px;
-  background-color: var(--k-ink);
+  background-color: #fff;
   border-radius: 50%;
   transition: all 0.3s ease;
 }

@@ -113,7 +113,7 @@ export default {
 .toast-notification {
   min-width: 300px;
   max-width: 450px;
-  background-color: var(--k-ink);
+  background-color: var(--k-surface);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   overflow: hidden;

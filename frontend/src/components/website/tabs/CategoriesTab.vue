@@ -232,12 +232,12 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .btn-secondary {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .btn-icon {
@@ -405,7 +405,7 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .chosen-item {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .empty-state {

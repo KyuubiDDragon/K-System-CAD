@@ -2731,7 +2731,7 @@ function scanWebsite(blockIndex) {
 
 .btn-icon:hover {
     color: #f3f4f6;
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .block-content {
@@ -2890,7 +2890,7 @@ function scanWebsite(blockIndex) {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
     transition: 0.4s;
     border-radius: 20px;
 }
@@ -2902,7 +2902,7 @@ function scanWebsite(blockIndex) {
     width: 16px;
     left: 2px;
     bottom: 2px;
-    background-color: var(--k-ink);
+    background-color: #fff;
     transition: 0.4s;
     border-radius: 50%;
 }

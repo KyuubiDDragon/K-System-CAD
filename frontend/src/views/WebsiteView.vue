@@ -2970,7 +2970,7 @@ function handleCountdownButtonClick(content) {
     max-width: 600px;
     padding: 30px;
     margin: auto;
-    background-color: var(--k-ink-muted); /* Semi-transparent background */
+    background-color: var(--k-line-strong); /* Semi-transparent background */
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     color: #333;
@@ -3058,7 +3058,7 @@ function handleCountdownButtonClick(content) {
     font-weight: 500;
     display: inline-block;
     letter-spacing: 0.3px;
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .site-nav a:hover,
@@ -3078,7 +3078,7 @@ function handleCountdownButtonClick(content) {
     top: 100%;
     left: 0;
     min-width: 220px;
-    background-color: var(--k-ink); /* Submenu background */
+    background-color: var(--k-row-hover); /* Submenu background */
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     display: none;
@@ -3231,7 +3231,7 @@ function handleCountdownButtonClick(content) {
     padding: 2.5rem;
     max-width: 1000px;
     margin: 0 auto;
-    background-color: var(--k-ink); /* Default white background for general content */
+    background-color: var(--k-row-hover); /* Default white background for general content */
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     color: #333; /* Default text color for general content */
@@ -3750,7 +3750,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .primary-button {
-    background-color: var(--k-ink);
+    background-color: #fff;
     color: var(--primary-color, var(--k-accent));
 }
 
@@ -3766,7 +3766,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .secondary-button:hover {
-    background-color: var(--k-ink);
+    background-color: #fff;
     transform: translateY(-3px);
 }
 
@@ -4207,7 +4207,7 @@ textarea.form-control {
     }
 
     .site-nav .submenu a:hover {
-        background-color: var(--k-ink);
+        background-color: #fff;
     }
 
     .columns-container {

@@ -1022,6 +1022,11 @@ export default {
 </script>
 
 <style scoped>
+/* Bewusst weiss und nicht aus den Merkern: das hier ist Inhalt, keine
+   Bedienoberflaeche. Eine vorschau der Behoerden-Website, ein Whiteboard-Blatt,
+   eine Spielkarte oder ein Mailtext folgen nicht dem Modus der Verwaltung -
+   sie sehen aus, wie sie beim Empfaenger aussehen. */
+
 .whiteboard-canvas {
   display: flex;
   flex-direction: column;
@@ -1041,7 +1046,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
-  background-color: var(--k-ink);
+  background-color: var(--k-surface);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
@@ -1074,7 +1079,7 @@ export default {
 
 canvas {
   display: block;
-  background-color: var(--k-ink);
+  background-color: #fff;
   touch-action: none;
   width: 100%;
   height: 100%;

@@ -604,7 +604,7 @@ watch(searchQuery, () => {
 }
 
 .search-clear:hover {
-  background-color: var(--k-ink);
+  background-color: var(--k-row-hover);
   color: var(--k-ink-muted);
 }
 

@@ -1189,7 +1189,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 .recent-system-chip:hover {
     transform: translateY(-2px);
-    background-color: var(--k-ink);
+    background-color: var(--k-row-hover);
 }
 
 .gap-2 {

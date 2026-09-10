@@ -501,6 +501,11 @@ function updateTabLogo(logo) {
 </script>
 
 <style scoped>
+/* Bewusst weiss und nicht aus den Merkern: das hier ist Inhalt, keine
+   Bedienoberflaeche. Eine vorschau der Behoerden-Website, ein Whiteboard-Blatt,
+   eine Spielkarte oder ein Mailtext folgen nicht dem Modus der Verwaltung -
+   sie sehen aus, wie sie beim Empfaenger aussehen. */
+
 
 .main-container {
     height: 100% !important;
@@ -514,7 +519,7 @@ function updateTabLogo(logo) {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: var(--k-ink);
+    background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
     font-family:
@@ -636,7 +641,7 @@ function updateTabLogo(logo) {
     flex: 1;
     display: flex;
     align-items: center;
-    background-color: var(--k-ink);
+    background-color: #fff;
     border-radius: 24px;
     padding: 6px 12px;
     border: 1px solid #ddd;
@@ -700,7 +705,7 @@ function updateTabLogo(logo) {
     position: absolute;
     top: 56px;
     right: 16px;
-    background-color: var(--k-ink);
+    background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -750,7 +755,7 @@ function updateTabLogo(logo) {
 }
 
 .browser-tab.active {
-    background-color: var(--k-ink);
+    background-color: #fff;
     z-index: 1;
 }
 
@@ -821,7 +826,7 @@ function updateTabLogo(logo) {
     flex: 1;
     overflow: auto;
     position: relative;
-    background-color: var(--k-ink);
+    background-color: #fff;
 }
 
 .browser-home {

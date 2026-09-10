@@ -1300,7 +1300,7 @@ watch(
     position: relative;
 
     &:hover {
-        background-color: var(--k-ink);
+        background-color: var(--k-row-hover);
 
         .user-avatar {
             transform: scale(1.05);
@@ -1431,7 +1431,7 @@ watch(
     transition: all 0.2s;
 
     &:hover {
-        background-color: var(--k-ink);
+        background-color: var(--k-row-hover);
     }
 
     &.active {
@@ -1922,7 +1922,7 @@ watch(
 }
 
 .v-theme--dark .Vue-Toastification__progress-bar {
-    background-color: var(--k-ink-faint) !important;
+    background-color: var(--k-line-strong) !important;
 }
 
 /* Debug Overlays ausblenden */

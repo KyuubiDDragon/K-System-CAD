@@ -231,12 +231,12 @@ function updateSocialLinks() {
 }
 
 .btn-secondary {
-    background-color: var(--k-ink-faint);
+    background-color: var(--k-neutral);
     color: var(--k-ink);
 }
 
 .btn-secondary:hover {
-    background-color: var(--k-ink-muted);
+    background-color: var(--k-neutral);
 }
 
 .mt-2 {

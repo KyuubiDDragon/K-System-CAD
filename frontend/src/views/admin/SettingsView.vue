@@ -1819,7 +1819,7 @@ onMounted(() => {
 
 .preview-content {
     padding: 24px;
-    background-color: var(--k-ink);
+    background-color: var(--k-canvas);
 }
 
 .preview-container {
