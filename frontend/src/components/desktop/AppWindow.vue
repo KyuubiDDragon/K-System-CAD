@@ -1151,7 +1151,8 @@ provide('windowContext', windowStore);
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
     position: relative;
-    z-index: 10;
+    /* Ueber den Griffen: die Bedienpunkte muessen den Klick bekommen. */
+    z-index: 20;
     flex-shrink: 0;
     border-bottom: 1px solid var(--k-line);
     color: var(--k-ink-muted);
@@ -1394,6 +1395,14 @@ provide('windowContext', windowStore);
 }
 
 /* --- Resize Handle Styles --- */
+/*
+   Die Griffe zum Groessenaendern liegen auf dem Rand, nicht darin.
+
+   Der Eckgriff oben rechts sass als 20x20-Feld im Fenster - und damit genau
+   ueber dem X. Er traegt dieselbe Stapelhoehe wie die Titelleiste, steht im
+   Markup aber danach und gewann deshalb jeden Klick. Wer schliessen wollte,
+   fasste den Griff.
+*/
 .resize-handle {
     position: absolute;
     background-color: transparent;
@@ -1411,34 +1420,38 @@ provide('windowContext', windowStore);
 
 /* Corner handles - only visible on hover */
 .resize-handle-se {
-    bottom: 0;
-    right: 0;
-    width: 20px;
-    height: 20px;
+
+    bottom: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
     cursor: se-resize;
 }
 
 .resize-handle-sw {
-    bottom: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
+
+    bottom: -4px;
+    left: -4px;
+    width: 14px;
+    height: 14px;
     cursor: sw-resize;
 }
 
 .resize-handle-ne {
-    top: 0;
-    right: 0;
-    width: 20px;
-    height: 20px;
+
+    top: -4px;
+    right: -4px;
+    width: 14px;
+    height: 14px;
     cursor: ne-resize;
 }
 
 .resize-handle-nw {
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
+
+    top: -4px;
+    left: -4px;
+    width: 14px;
+    height: 14px;
     cursor: nw-resize;
 }
 
