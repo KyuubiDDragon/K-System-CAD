@@ -315,7 +315,11 @@
         position: absolute;
         top: auto !important;
         bottom: calc(100% + 3px);
-        inset-inline-start: 10px !important;
+        /* Buendig mit der linken Kante des Feldes. Vuetify setzt hier je nach
+           Zustand 6 oder 16 px Aussenabstand - nebeneinander stehende Felder
+           bekamen dadurch unterschiedlich eingerueckte Beschriftungen. */
+        inset-inline-start: 0 !important;
+        margin-inline: 0 !important;
         transform: none !important;
         transition: none !important;
         opacity: 1 !important;
