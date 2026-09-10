@@ -6,7 +6,7 @@ import router from './router';
 import vuetify from './plugins/vuetify';
 import i18n from './plugins/i18n';
 import axios from 'axios';
-import Toast from 'vue-toastification';
+import Toast, { useToast } from 'vue-toastification';
 // Import the CSS for vue-toastification
 import 'vue-toastification/dist/index.css';
 import { loadFonts } from './plugins/webfontloader';
@@ -149,6 +149,19 @@ app.use(router);
 app.use(vuetify);
 // app.use(CKEditor); // <<< ENTFERNT
 
+/**
+ * Offene Meldungen und wie oft sie aufgeschlagen sind.
+ *
+ * Der Schluessel ist die Kennung der zuerst gezeigten Meldung; solange sie auf
+ * dem Bildschirm steht, erhoeht jede gleichlautende Folgemeldung nur den
+ * Zaehler, statt sich darunter zu stapeln.
+ */
+type ToastOptionsAndContent = { id?: string | number; content?: unknown };
+const offeneMeldungen = new Map<
+    string,
+    { id: string | number; text: string; anzahl: number }
+>();
+
 // 🟢 Vue-Toastification einbinden
 app.use(Toast, {
     position: 'bottom-right',
@@ -168,12 +181,43 @@ app.use(Toast, {
     // Hoechstens sechs Meldungen gleichzeitig, damit sie nicht den halben
     // Bildschirm verdecken.
     maxToasts: 6,
-    // Gleichlautende Meldungen werden nicht mehrfach angezeigt. Beim Ablauf
-    // einer Sitzung schlug bisher jede laufende Anfrage einzeln auf - fuenf
-    // identische Meldungen uebereinander, obwohl es eine Ursache war.
-    filterBeforeCreate: (toast: { content: unknown }, toasts: Array<{ content: unknown }>) => {
-        const schonDa = toasts.some((t) => t.content === toast.content);
-        return schonDa ? false : toast;
+    // Gleichartige Meldungen werden zu einer mit Zaehler zusammengefasst.
+    //
+    // Beim Ablauf einer Sitzung schlug bisher jede laufende Anfrage einzeln
+    // auf - fuenf identische Meldungen uebereinander, obwohl es eine Ursache
+    // war. Sie einfach zu unterdruecken waere die halbe Loesung: dann sieht
+    // man nicht mehr, dass es fuenf waren. Der Entwurf zeigt deshalb eine
+    // Meldung mit einem "5x" daneben.
+    filterBeforeCreate: (toast: ToastOptionsAndContent, toasts: ToastOptionsAndContent[]) => {
+        const text = typeof toast.content === 'string' ? toast.content.trim() : '';
+        if (!text) return toast;
+
+        // Was nicht mehr auf dem Bildschirm steht, wird vergessen - sonst
+        // zaehlt eine Meldung von vor zwei Stunden weiter hoch.
+        const sichtbar = new Set(toasts.map((t) => String(t.id)));
+        for (const [id] of [...offeneMeldungen]) {
+            if (!sichtbar.has(id)) offeneMeldungen.delete(id);
+        }
+
+        const treffer = [...offeneMeldungen.values()].find((m) => m.text === text);
+        if (!treffer) {
+            if (toast.id !== undefined) {
+                offeneMeldungen.set(String(toast.id), { id: toast.id, text, anzahl: 1 });
+            }
+            return toast;
+        }
+
+        treffer.anzahl += 1;
+        try {
+            useToast().update(
+                treffer.id,
+                { content: `${treffer.text}  ${treffer.anzahl}\u00d7` },
+                false,
+            );
+        } catch {
+            /* Die Meldung ist inzwischen weg - dann gibt es nichts zu zaehlen. */
+        }
+        return false;
     },
 });
 

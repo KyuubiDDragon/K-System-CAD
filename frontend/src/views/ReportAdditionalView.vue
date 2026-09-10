@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import KTableToolbar from '@/components/table/KTableToolbar.vue';
 import { useTableColumns } from '@/composables/useTableColumns';
+import { formatAmount } from '@/utils/datetime';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { ReportAdditional } from '@/types/Report'; // Adjust path if needed
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
@@ -231,10 +232,9 @@ const confirmDeleteAdditional = async () => {
 };
 
 // --- Utility Functions ---
-const formatCurrency = (value: number | null | undefined) => {
-    if (value === null || value === undefined) return '-';
-    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'USD' }).format(value); // Adjust currency as needed
-};
+/* Fest auf de-DE verdrahtet: englische Nutzer bekamen deutsche Trennzeichen.
+   Die gemeinsame Fassung richtet sich nach der aktiven Sprache. */
+const formatCurrency = (value: number | null | undefined) => formatAmount(value);
 
 // --- Lifecycle Hooks ---
 onMounted(() => {

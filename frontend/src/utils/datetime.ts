@@ -102,3 +102,54 @@ export function formatRelative(value: string | number | Date | null | undefined)
 
     return sameDay ? formatTime(d) : formatDate(d);
 }
+
+/**
+ * Laufzeit als mm:ss oder h:mm:ss — „04:11" statt „251 Sekunden".
+ *
+ * Eine Zahl in Sekunden muss man im Kopf umrechnen, um sie einzuordnen. Die
+ * Angabe gehört rechtsbündig und in Festbreite, damit Laufzeiten untereinander
+ * vergleichbar bleiben.
+ */
+export function formatDuration(seconds: number | null | undefined): string {
+    if (seconds === null || seconds === undefined || Number.isNaN(Number(seconds))) return '—';
+
+    const total = Math.max(0, Math.floor(Number(seconds)));
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    const zwei = (n: number) => String(n).padStart(2, '0');
+
+    return h > 0 ? `${h}:${zwei(m)}:${zwei(s)}` : `${zwei(m)}:${zwei(s)}`;
+}
+
+/**
+ * Betrag mit Tausenderpunkt, Komma und Währung — „12.480,00 $".
+ *
+ * Die Rollenspielwährung ist der Dollar, die Oberfläche aber deutsch: die
+ * Trennzeichen richten sich nach der Sprache, das Zeichen nach der Währung.
+ * Beträge stehen rechtsbündig, damit die Kommas auf einer Achse liegen.
+ */
+export function formatAmount(
+    value: number | string | null | undefined,
+    currency = 'USD',
+): string {
+    if (value === null || value === undefined || value === '') return '—';
+
+    const n = typeof value === 'number' ? value : Number(String(value).replace(',', '.'));
+    if (Number.isNaN(n)) return String(value);
+
+    return n.toLocaleString(currentLocale(), {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}
+
+/** Zahl mit Tausenderpunkt, ohne Währung — „12.480". */
+export function formatNumber(value: number | string | null | undefined): string {
+    if (value === null || value === undefined || value === '') return '—';
+    const n = typeof value === 'number' ? value : Number(value);
+    if (Number.isNaN(n)) return String(value);
+    return n.toLocaleString(currentLocale());
+}

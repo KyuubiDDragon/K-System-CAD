@@ -2,6 +2,7 @@
 import { defineComponent, ref, computed, type PropType } from 'vue';
 import type { Company } from '@/types/Company';
 
+import { formatAmount } from '@/utils/datetime';
 interface Props {
   modelValue?: boolean
   invoiceToView?: Record<string, any>
@@ -126,9 +127,9 @@ Rechnungsbetrag: ${total}
     }
 };
 
-const formatCurrency = value => {
-    return `$ ${Number(value).toFixed(2)}`;
-};
+/* Vorher: `$ ${Number(value).toFixed(2)}` - also "$ 12480.00", mit Punkt als
+   Dezimaltrenner und ohne Tausenderpunkt. Der Entwurf will "12.480,00 $". */
+const formatCurrency = (value: number | string | null | undefined) => formatAmount(value);
 
 const getFileIcon = path => {
     const extension = path.split('.').pop()?.toLowerCase() || '';

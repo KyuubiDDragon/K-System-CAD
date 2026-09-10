@@ -163,6 +163,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { formatAmount } from '@/utils/datetime';
 // Der Import wird auskommentiert, um Linter-Fehler zu vermeiden, die Funktionalität bleibt aber erhalten
 // import { useAuthStore } from '@/stores/auth';
 
@@ -316,13 +317,9 @@ const formatDate = (dateString: string | undefined): string => {
   }
 };
 
-const formatCurrency = (value: number | undefined | null): string => {
-  if (value === null || value === undefined) return '-';
-  return new Intl.NumberFormat('de-DE', { 
-    style: 'currency', 
-    currency: 'EUR' 
-  }).format(value);
-};
+/* Fest auf de-DE verdrahtet: englische Nutzer bekamen deutsche Trennzeichen.
+   Die gemeinsame Fassung richtet sich nach der aktiven Sprache. */
+const formatCurrency = (value: number | null | undefined) => formatAmount(value);
 
 const formatCustomFieldValue = (value: any): string => {
   if (value === null || value === undefined) return '-';
