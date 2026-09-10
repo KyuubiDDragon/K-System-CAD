@@ -48,13 +48,20 @@ $relativeImageBaseDir = rtrim($relativeImageBaseDir, '/') . '/';
 echo "Starting document image processing...\n";
 
 try {
-    // 1. Get all distinct, valid authorities
-    // Adjust table/column if needed, filter out invalid ones
-    $allowedAuthorities = ["fire", "police", "medic", "justice", "statepark", "casa", "test", "fireguard"];
-    $placeholders = rtrim(str_repeat('?,', count($allowedAuthorities)), ',');
-    $sqlAuthorities = "SELECT DISTINCT authority FROM `kdd_reports` AS WHERE authority_id = ? authority IN ({$placeholders})";
-    $stmtAuth = $pdo->prepare($sqlAuthorities);
-    $stmtAuth->execute($allowedAuthorities);
+    // 1. Die vorkommenden Behoerden aus den Daten holen.
+    //
+    // Hier stand eine fest verdrahtete Liste, gegen die gefiltert wurde - mit
+    // Kennungen, die es so nicht mehr gibt. Die Abfrage selbst war ausserdem
+    // nicht lauffaehig: "FROM `kdd_reports` AS WHERE authority_id = ? authority
+    // IN (...)" ist kein gueltiges SQL (ein "AS" ohne Alias, ein fehlendes
+    // "AND"), und gebunden wurden nur die Listenwerte, obwohl die Abfrage einen
+    // Platzhalter mehr trug. Das Skript waere beim ersten Lauf gestorben.
+    //
+    // Welche Behoerden es gibt, sagen die Daten - genau danach wird jetzt
+    // gefragt.
+    $sqlAuthorities = "SELECT DISTINCT authority FROM `kdd_reports` "
+                    . "WHERE authority IS NOT NULL AND authority <> ''";
+    $stmtAuth = $pdo->query($sqlAuthorities);
     $authoritiesToProcess = $stmtAuth->fetchAll(PDO::FETCH_COLUMN, 0);
 
     if (empty($authoritiesToProcess)) {

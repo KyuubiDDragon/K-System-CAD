@@ -36,10 +36,17 @@ $authorityId = $decoded_jwt->authority_id ?? null; // Extract authority ID from 
 if ($userId === null || !is_int($userId) || $authority === null || !is_string($authority) || $authorityId === null) {
     http_response_code(400); echo json_encode(["error" => "Invalid token payload."]); exit();
 }
-$allowedAuthorities = ["fire", "police", "medic", "justice", "statepark", "casa", "test", "fireguard"];
-if (!in_array($authority, $allowedAuthorities)) {
-    http_response_code(403); echo json_encode(["error" => "Invalid authority context."]); exit();
-}
+// Frueher stand hier eine fest verdrahtete Liste erlaubter Behoerden:
+//   ["fire", "police", "medic", "justice", "statepark", "casa", "test", "fireguard"]
+// Die Behoerden stehen aber in kdd_authorities, und ihre Kennungen haben sich
+// seitdem geaendert - das Fire Department heisst im Token "firedepartment",
+// nicht "fire". Jeder Nutzer dieser Behoerde bekam deshalb hier ein 403 mit
+// "Invalid authority context.", obwohl alles in Ordnung war.
+//
+// Die Liste bringt auch keine Sicherheit: das Token ist signiert, die
+// Behoerdenkennung darin also bereits vertrauenswuerdig, und jede Abfrage
+// weiter unten filtert ohnehin auf $authorityId. Alle uebrigen Endpunkte
+// pruefen nur, ob die Nutzlast vollstaendig ist - genau das passiert oben.
 
 // --- Authorization & Action Routing ---
 $action = $_REQUEST['action'] ?? '';
