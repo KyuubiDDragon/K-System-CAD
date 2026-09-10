@@ -20,7 +20,7 @@
     >
         <div class="window-titlebar" @mousedown="startDrag" @dblclick.stop.prevent="toggleMaximize">
             <div class="window-titlebar-left">
-                <v-icon size="18" class="window-icon" :color="getIconColor">{{
+                <v-icon size="14" class="window-icon" :color="getIconColor">{{
                     window.icon
                 }}</v-icon>
                 <span class="window-title">{{ currentTitle }}</span>
@@ -34,7 +34,7 @@
                     @click.stop.prevent="reloadWindow"
                     :title="t('layout.reload')"
                 >
-                    <v-icon size="16">mdi-refresh</v-icon>
+                    <v-icon size="13">mdi-refresh</v-icon>
                 </button>
                 <button
                     class="window-control minimize"
@@ -42,7 +42,7 @@
                     @click.stop.prevent="minimizeWindow"
                     :title="t('layout.minimize')"
                 >
-                    <v-icon size="16">mdi-minus</v-icon>
+                    <v-icon size="13">mdi-minus</v-icon>
                 </button>
                 <button
                     v-if="!window.maximized"
@@ -51,7 +51,7 @@
                     @click.stop.prevent="maximizeWindow"
                     :title="t('layout.maximize')"
                 >
-                    <v-icon size="16">mdi-window-maximize</v-icon>
+                    <v-icon size="13">mdi-window-maximize</v-icon>
                 </button>
                 <button
                     v-else
@@ -60,7 +60,7 @@
                     @click.stop.prevent="restoreWindow"
                     :title="t('layout.restore')"
                 >
-                    <v-icon size="16">mdi-window-restore</v-icon>
+                    <v-icon size="13">mdi-window-restore</v-icon>
                 </button>
                 <button
                     class="window-control close"
@@ -68,7 +68,7 @@
                     @click.stop.prevent="closeWindow"
                     :title="t('layout.close')"
                 >
-                    <v-icon size="16">mdi-close</v-icon>
+                    <v-icon size="13">mdi-close</v-icon>
                 </button>
             </div>
         </div>
@@ -1053,9 +1053,7 @@ provide('windowContext', windowStore);
 */
 .window {
     background: var(--k-surface);
-    box-shadow:
-        0 4px 12px rgba(16, 22, 32, 0.08),
-        0 1px 3px rgba(16, 22, 32, 0.05);
+    box-shadow: none;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -1079,9 +1077,7 @@ provide('windowContext', windowStore);
 */
 .window.active {
     z-index: 100;
-    box-shadow:
-        0 16px 40px rgba(16, 22, 32, 0.16),
-        0 2px 8px rgba(16, 22, 32, 0.08);
+    box-shadow: none;
     border-color: var(--k-accent-line);
 }
 
@@ -1202,8 +1198,18 @@ provide('windowContext', windowStore);
     outline: none;
 }
 
+/*
+   Die Steuerknoepfe tragen dieselbe Schriftfarbe wie die Titelleiste, in der
+   sie sitzen - im aktiven Fenster also die Akzentfarbe, sonst gedimmt. Vorher
+   stand hier fest --k-ink, wodurch sie im aktiven Fenster aus der Farbe der
+   Leiste fielen.
+*/
+.window .window-control {
+    color: var(--k-ink-muted);
+}
+
 .window.active .window-control {
-    color: var(--k-ink);
+    color: var(--k-accent);
 }
 
 .window-control:hover {
@@ -1279,14 +1285,14 @@ provide('windowContext', windowStore);
 }
 
 .dynamic-component-container .dynamic-component::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.15));
+    background: var(--k-row-hover);
     border-radius: 5px;
     border: 2px solid transparent;
     background-clip: padding-box;
 }
 
 .dynamic-component-container .dynamic-component::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.25));
+    background: var(--k-row-hover);
 }
 
 /* Fallback Placeholder Styles */
@@ -1344,7 +1350,7 @@ provide('windowContext', windowStore);
     color: var(--k-ink);
     padding: 32px;
     background: rgba(51, 65, 85, 0.5);
-    border-radius: 16px;
+    border-radius: 6px;
     border: 1px solid var(--k-line);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }

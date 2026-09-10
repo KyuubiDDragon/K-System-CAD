@@ -354,9 +354,7 @@ watch(() => props.show, (newVal) => {
   max-width: 95vw;
   max-height: 90vh;
   background: rgba(var(--desktop-bg-dark-1, 17, 24, 39), 0.95);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 12px;
+  border-radius: 6px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--k-line);
   z-index: 9999;
@@ -544,7 +542,7 @@ watch(() => props.show, (newVal) => {
   width: 44px;
   height: 24px;
   background-color: var(--k-row-hover);
-  border-radius: 12px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
 }

@@ -139,9 +139,7 @@ const isImagePath = (icon: string): boolean => {
   position: absolute;
   width: 320px;
   background: rgba(var(--desktop-bg-dark-1, 17, 24, 39), 0.9);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
+  border-radius: 6px;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   border: 1px solid var(--k-line);
   overflow: hidden;

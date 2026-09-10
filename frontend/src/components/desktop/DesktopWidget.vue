@@ -155,7 +155,6 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 .desktop-widget {
   background-color: rgba(var(--desktop-bg-dark-1), calc(var(--glass-bg-opacity) + 0.05));
   border-radius: var(--border-radius-md);
-  backdrop-filter: blur(calc(var(--glass-blur) + 3px));
   box-shadow: var(--shadow-medium);
   overflow: hidden;
   width: var(--desktop-widget-width);
@@ -193,7 +192,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 }
 
 .widget-weather-stormy:hover {
-  box-shadow: 0 10px 30px rgba(147, 51, 234, 0.2), 0 0 15px rgba(147, 51, 234, 0.15);
+  box-shadow: none;
 }
 
 .widget-weather-rainy {
@@ -284,7 +283,7 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
   font-size: 11px;
   background-color: var(--k-row-hover);
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 6px;
   margin-right: 10px;
 }
 
@@ -401,7 +400,6 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
   border-radius: var(--border-radius-sm);
   width: 100%;
   margin-top: 5px;
-  backdrop-filter: blur(2px);
   transition: all 0.3s ease;
 }
 

@@ -210,7 +210,6 @@ const uploadBackground = (event: Event) => {
 
 .selector-toggle {
     background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(var(--glass-blur));
     border: 1px solid var(--k-line);
 }
 
@@ -220,7 +219,6 @@ const uploadBackground = (event: Event) => {
     left: 0;
     width: 320px;
     background: rgba(var(--desktop-bg-dark-1), var(--glass-bg-opacity));
-    backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--border-radius-md);
     box-shadow: var(--shadow-large);
     border: 1px solid var(--desktop-border);
@@ -300,7 +298,7 @@ const uploadBackground = (event: Event) => {
 }
 
 .option-name.is-default {
-    background: linear-gradient(90deg, rgba(255, 193, 7, 0.8), rgba(255, 152, 0, 0.8));
+    background: var(--k-surface);
     color: #000;
     font-weight: 600;
 }

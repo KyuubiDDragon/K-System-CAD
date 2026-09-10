@@ -202,9 +202,7 @@ const quickAccessApps = [
   right: 15px;
   width: 380px;
   background: rgba(var(--desktop-bg-dark-1, 17, 24, 39), 0.85);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 16px;
+  border-radius: 6px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--k-line);
   padding: 16px;
@@ -300,7 +298,7 @@ const quickAccessApps = [
   align-items: flex-start;
   gap: 12px;
   padding: 10px;
-  border-radius: 12px;
+  border-radius: 6px;
   background-color: var(--k-row-hover);
   transition: background-color 0.2s ease;
 }
@@ -315,7 +313,7 @@ const quickAccessApps = [
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 6px;
   background: linear-gradient(135deg, 
     rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.15),
     rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.05));
@@ -379,7 +377,7 @@ const quickAccessApps = [
   width: 42px;
   height: 22px;
   background-color: var(--k-row-hover);
-  border-radius: 11px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -443,7 +441,7 @@ const quickAccessApps = [
   flex-direction: column;
   align-items: center;
   padding: 12px 8px;
-  border-radius: 12px;
+  border-radius: 6px;
   background-color: var(--k-row-hover);
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
@@ -461,7 +459,7 @@ const quickAccessApps = [
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 6px;
   background: var(--k-row-hover);
 }
 

@@ -734,7 +734,7 @@ const handleClickOutside = (event: MouseEvent) => {
     bottom: calc(100% + 10px);
     left: 0;
     background-color: rgba(var(--desktop-bg-dark-1), 0.95);
-    border-radius: 14px;
+    border-radius: 6px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     padding: 12px;
     display: flex;
@@ -746,15 +746,13 @@ const handleClickOutside = (event: MouseEvent) => {
     animation: fade-in 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     max-height: 80vh;
     overflow-y: auto;
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
 }
 
 .group-app-item {
     display: flex;
     align-items: center;
     padding: 10px 12px;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
     position: relative;
@@ -815,7 +813,7 @@ const handleClickOutside = (event: MouseEvent) => {
     position: absolute;
     bottom: -5px;
     right: -5px;
-    background: linear-gradient(45deg, var(--desktop-accent-blue), var(--desktop-accent-purple, #8b5cf6));
+    background: var(--k-accent-weak);
     color: var(--k-ink);
     border-radius: 50%;
     font-size: 10px;
@@ -941,7 +939,7 @@ const handleClickOutside = (event: MouseEvent) => {
     left: 50%;
     transform: translateX(-50%);
     background-color: rgba(var(--desktop-bg-dark-1), 0.95);
-    border-radius: 12px;
+    border-radius: 6px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
     padding: 12px;
     border: 1px solid var(--k-line);
@@ -1059,7 +1057,7 @@ const handleClickOutside = (event: MouseEvent) => {
     align-items: center;
     padding: 0 18px;
     height: 44px;
-    border-radius: 14px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.75));
@@ -1068,8 +1066,6 @@ const handleClickOutside = (event: MouseEvent) => {
         rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.15),
         rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.08));
     border: 1px solid rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -1102,20 +1098,18 @@ const handleClickOutside = (event: MouseEvent) => {
     justify-content: center;
     width: 44px;
     height: 44px;
-    border-radius: 14px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.75));
     margin-right: 12px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    background: var(--k-row-hover);
     border: 1px solid var(--k-line);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .search-button:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    background: var(--k-row-hover);
     transform: translateY(-3px) scale(1.08);
     box-shadow:
         0 8px 20px rgba(0, 0, 0, 0.25),
@@ -1149,17 +1143,15 @@ const handleClickOutside = (event: MouseEvent) => {
     align-items: center;
     height: 44px;
     padding: 0 16px;
-    border-radius: 14px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.75));
     white-space: nowrap;
     position: relative;
     overflow: hidden;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    background: var(--k-row-hover);
     border: 1px solid var(--k-line);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
 .taskbar-app::before {
@@ -1185,12 +1177,10 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 .taskbar-app.active {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.15));
+    background: var(--k-accent-weak);
     color: var(--desktop-text, rgba(255, 255, 255, 0.95));
     border-color: rgba(59, 130, 246, 0.3);
-    box-shadow:
-        inset 0 0 0 1px rgba(59, 130, 246, 0.2),
-        0 4px 12px rgba(59, 130, 246, 0.15);
+    box-shadow: none;
 }
 
 .taskbar-app.active::before {
@@ -1199,7 +1189,7 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 .taskbar-app:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
+    background: var(--k-row-hover);
     transform: translateY(-3px) scale(1.02);
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.25),
@@ -1243,18 +1233,16 @@ const handleClickOutside = (event: MouseEvent) => {
     align-items: center;
     justify-content: center;
     padding: 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    background: var(--k-row-hover);
     border: 1px solid var(--k-line);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
 .tray-item:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+    background: var(--k-row-hover);
     transform: translateY(-3px) scale(1.05);
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.25),
@@ -1276,16 +1264,14 @@ const handleClickOutside = (event: MouseEvent) => {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.8));
     padding: 8px 14px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    border-radius: 6px;
+    background: var(--k-row-hover);
     border: 1px solid var(--k-line);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
 }
 
 .clock:hover {
     color: var(--desktop-text, rgba(255, 255, 255, 0.95));
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+    background: var(--k-row-hover);
     transform: translateY(-3px) scale(1.02);
     box-shadow:
         0 6px 18px rgba(0, 0, 0, 0.25),
@@ -1315,7 +1301,7 @@ const handleClickOutside = (event: MouseEvent) => {
     position: absolute;
     top: -6px;
     right: -6px;
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+    background: var(--k-surface);
     color: var(--k-ink);
     border-radius: 50%;
     font-size: 10px;
@@ -1419,7 +1405,7 @@ const handleClickOutside = (event: MouseEvent) => {
     align-items: center;
     transition: all var(--animation-duration-fast, 0.2s) var(--animation-easing, ease);
     cursor: pointer;
-    border-radius: 12px;
+    border-radius: 6px;
 }
 
 .taskbar-app.pinned::after {
@@ -1467,14 +1453,12 @@ const handleClickOutside = (event: MouseEvent) => {
     bottom: calc(100% + 10px);
     right: 0;
     background-color: rgba(var(--desktop-bg-dark-1), 0.95);
-    border-radius: 12px;
+    border-radius: 6px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
     padding: 8px;
     min-width: 180px;
     z-index: 1001;
     border: 1px solid var(--k-line);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     animation: fade-in 0.2s ease;
 }
 
@@ -1529,5 +1513,76 @@ const handleClickOutside = (event: MouseEvent) => {
     bottom: auto;
     right: calc(100% + 10px);
     left: auto;
+}
+
+/* ============================================================
+   MASSE DER LEISTE
+
+   Die Leiste ist 34 px hoch, ihre Elemente 22 px. Die Symbole
+   standen auf 20-24 px und ragten damit ueber ihren eigenen
+   Knopf hinaus. Hier stehen sie einmal zentral, statt an
+   einem Dutzend size="..."-Angaben im Markup.
+   ============================================================ */
+.taskbar .v-icon {
+    font-size: 15px !important;
+    width: 15px;
+    height: 15px;
+}
+
+.taskbar .taskbar-app-image {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+}
+
+/* Start, Suche und die angehefteten Programme tragen dieselbe Hoehe wie eine
+   laufende Aufgabe - sonst sitzt die Leiste unruhig. */
+.taskbar .start-button,
+.taskbar .search-button,
+.taskbar .taskbar-app,
+.taskbar .system-tray > * {
+    height: 22px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    color: var(--k-ink-muted);
+    cursor: pointer;
+}
+
+.taskbar .start-button:hover,
+.taskbar .search-button:hover,
+.taskbar .taskbar-app:hover {
+    background: var(--k-row-hover);
+    color: var(--k-ink);
+}
+
+.taskbar .start-text {
+    font-size: 11.5px;
+    font-weight: 550;
+}
+
+/* Die Zaehlmarke einer Gruppe: klein genug, um im 22-px-Knopf zu bleiben. */
+.taskbar .app-count {
+    bottom: -3px;
+    right: -3px;
+    min-width: 12px;
+    height: 12px;
+    font-size: 8px;
+    border: 0;
+    box-shadow: none;
+    background: var(--k-accent);
+    color: var(--k-on-fill);
+}
+
+/* Die Uhr rechts steht in Festbreite, damit sie beim Ticken nicht springt. */
+.taskbar .clock,
+.taskbar .taskbar-clock {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--k-ink-muted);
 }
 </style>

@@ -212,42 +212,52 @@ const switchToSidebar = async () => {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(var(--black-rgb), 0.5);
+    /* Derselbe Vorhang wie hinter jedem Dialog. */
+    background-color: rgba(10, 14, 20, 0.45);
     z-index: 1000;
 }
 
 .start-menu {
     position: fixed;
-    bottom: 60px;
+    bottom: 38px;   /* ueber der 34-px-Leiste */
     left: 12px;
     width: 500px;
     max-width: 90vw;
     max-height: 80vh;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
-    backdrop-filter: blur(20px);
+    /*
+       Das Startmenue ist ein Menue - es liegt also auf der gehobenen Flaeche
+       und wirft den Schatten, den im System alles wirft, was schwebt.
+       Vorher: ein fest verdrahteter Verlauf mit 20 px Weichzeichner, 16 px
+       Radius und zwei uebereinandergelegten Schatten, im hellen Modus eine
+       dunkle Platte.
+    */
+    background: var(--k-raised);
     overflow-y: auto;
-    border-radius: 16px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--k-line);
+    border-radius: 7px;
+    box-shadow: none;
+    border: 1px solid var(--k-line-strong);
     z-index: 1001;
-    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: slideUp 150ms cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: bottom left;
 }
 
 .start-menu-header {
-    padding: 16px;
-    background-color: rgba(var(--desktop-bg-dark-2), 0.7);
-    border-bottom: 1px solid rgba(var(--white-rgb), 0.1);
+    padding: 10px 12px;
+    background-color: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .search-input {
     width: 100%;
-    background-color: rgba(var(--desktop-bg-dark-1), 0.8);
-    border: 2px solid var(--desktop-accent-blue);
-    border-radius: 8px;
-    color: var(--desktop-text);
-    padding: 8px 16px;
-    font-size: 16px;
+    /* Ein Eingabefeld wie jedes andere: 30 px, 1 px Rand, Radius 5.
+       Ein 2-px-Rahmen in Akzentfarbe sieht aus wie ein Fehlerzustand. */
+    background-color: var(--k-surface);
+    border: 1px solid var(--k-line-strong);
+    border-radius: 5px;
+    color: var(--k-ink);
+    padding: 0 9px;
+    height: 30px;
+    font-size: 13px;
     outline: none;
     transition: all 0.2s;
 }
@@ -299,7 +309,7 @@ const switchToSidebar = async () => {
     display: flex;
     align-items: center;
     padding: 20px;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    background: var(--k-accent-weak);
     border-bottom: 1px solid var(--k-line);
     position: relative;
 }
@@ -311,13 +321,13 @@ const switchToSidebar = async () => {
     overflow: hidden;
     border: 3px solid var(--k-accent);
     margin-right: 16px;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: none;
     transition: all 0.3s ease;
 }
 
 .user-avatar:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+    box-shadow: none;
 }
 
 .user-avatar img {
@@ -348,16 +358,16 @@ const switchToSidebar = async () => {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #10b981;
+    background-color: var(--k-success);
     margin-right: 8px;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    box-shadow: none;
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
-    50% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.8); }
-    100% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
+    0% { box-shadow: none; }
+    50% { box-shadow: none; }
+    100% { box-shadow: none; }
 }
 
 .menu-apps-section {
@@ -382,7 +392,9 @@ const switchToSidebar = async () => {
     left: 0;
     width: 30px;
     height: 2px;
-    background: linear-gradient(90deg, var(--k-accent), #8b5cf6);
+    /* Ein Strich unter der Ueberschrift, keine Verlaufsspielerei -
+       das Violett kommt in der Palette gar nicht vor. */
+    background: var(--k-accent);
     border-radius: 1px;
 }
 
@@ -399,7 +411,7 @@ const switchToSidebar = async () => {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     padding: 8px;
-    border-radius: 12px;
+    border-radius: 6px;
 }
 
 .menu-app:hover {
@@ -410,7 +422,7 @@ const switchToSidebar = async () => {
 .menu-app-icon {
     width: 52px;
     height: 52px;
-    border-radius: 14px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -498,24 +510,25 @@ const switchToSidebar = async () => {
     display: flex;
     justify-content: center;
     gap: 16px;
-    padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+    padding: 10px 12px;
+    background: var(--k-sunken);
     border-top: 1px solid var(--k-line);
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 6px 6px;
 }
 
 .action-button {
     display: flex;
     align-items: center;
-    padding: 10px 16px;
-    border-radius: 10px;
+    padding: 0 13px;
+    height: 30px;
+    border-radius: 5px;
     color: var(--k-ink);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid var(--k-line);
-    backdrop-filter: blur(10px);
+    transition: background-color 120ms ease;
+    border: 1px solid var(--k-line-strong);
+    background: var(--k-surface);
     min-width: 100px;
     justify-content: center;
 }

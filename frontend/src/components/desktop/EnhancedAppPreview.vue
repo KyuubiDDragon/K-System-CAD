@@ -357,9 +357,7 @@ onBeforeUnmount(() => {
   position: absolute;
   width: 350px;
   background: rgba(var(--desktop-bg-dark-1, 17, 24, 39), 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
+  border-radius: 6px;
   box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4), 0 0 12px rgba(0, 0, 0, 0.2);
   border: 1px solid var(--k-line);
   overflow: hidden;
@@ -490,7 +488,7 @@ onBeforeUnmount(() => {
   background: var(--k-row-hover);
   width: 80px;
   height: 80px;
-  border-radius: 16px;
+  border-radius: 6px;
 }
 
 .app-logo {
@@ -608,7 +606,6 @@ onBeforeUnmount(() => {
   height: 18px;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
   font-size: 10px;
   display: flex;
   align-items: center;

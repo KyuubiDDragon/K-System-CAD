@@ -3754,9 +3754,7 @@ const testOpenFirstDocArea = () => {
     background: var(--k-raised);
     border: 1px solid var(--k-line-strong);
     border-radius: 6px;
-    box-shadow:
-        0 16px 40px rgba(16, 22, 32, 0.16),
-        0 2px 8px rgba(16, 22, 32, 0.08);
+    box-shadow: none;
 }
 
 .desk-menu__label {
@@ -3802,11 +3800,9 @@ const testOpenFirstDocArea = () => {
     position: fixed;
     width: var(--folder-width);
     max-height: 70vh;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(51, 65, 85, 0.9));
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    background: var(--k-raised);
     border: 1px solid var(--k-line);
-    border-radius: 20px;
+    border-radius: 6px;
     box-shadow:
         0 20px 60px rgba(0, 0, 0, 0.5),
         0 8px 24px rgba(0, 0, 0, 0.3),
@@ -3832,14 +3828,12 @@ const testOpenFirstDocArea = () => {
     display: flex;
     align-items: center;
     padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(51, 65, 85, 0.6), rgba(71, 85, 105, 0.5));
+    background: var(--k-raised);
     border-bottom: 1px solid var(--k-line);
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.3px;
-    border-radius: 20px 20px 0 0;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    border-radius: 6px 20px 0 0;
 }
 
 .folder-items {
@@ -3859,14 +3853,14 @@ const testOpenFirstDocArea = () => {
 }
 
 .folder-items::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+    background: var(--k-row-hover);
     border-radius: 4px;
     border: 2px solid transparent;
     background-clip: padding-box;
 }
 
 .folder-items::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.2));
+    background: var(--k-row-hover);
 }
 
 .folder-item {
@@ -3874,16 +3868,16 @@ const testOpenFirstDocArea = () => {
     align-items: center;
     padding: 12px 16px;
     margin-bottom: 4px;
-    border-radius: 12px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+    background: var(--k-row-hover);
     border: 1px solid var(--k-line);
     font-weight: 500;
 }
 
 .folder-item:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.06));
+    background: var(--k-row-hover);
     transform: translateX(4px) scale(1.01);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
     border-color: var(--k-line);
@@ -3960,7 +3954,6 @@ const testOpenFirstDocArea = () => {
     width: 320px;
     max-height: calc(80vh - var(--taskbar-height));
     background-color: rgba(var(--desktop-bg-dark-1), var(--glass-bg-opacity));
-    backdrop-filter: blur(var(--glass-blur));
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-large);
     border: 1px solid var(--desktop-border);
@@ -4138,7 +4131,6 @@ const testOpenFirstDocArea = () => {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 20px;
     border-radius: var(--border-radius-md);
-    backdrop-filter: blur(5px);
     z-index: 5;
 }
 
@@ -4154,7 +4146,6 @@ const testOpenFirstDocArea = () => {
     display: flex;
     justify-content: center;
     align-items: center;
-    backdrop-filter: blur(5px);
 }
 
 .desktop-loading-content {

@@ -270,7 +270,7 @@ onUnmounted(() => {
     flex-direction: column;
     align-items: center;
     padding: 12px;
-    border-radius: 16px;
+    border-radius: 6px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     user-select: none;
@@ -288,7 +288,7 @@ onUnmounted(() => {
 }
 
 .desktop-icon:hover {
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.65), rgba(51, 65, 85, 0.6));
+    background: var(--k-raised);
     box-shadow:
         0 8px 20px rgba(0, 0, 0, 0.25),
         0 4px 8px rgba(0, 0, 0, 0.15),
@@ -298,13 +298,9 @@ onUnmounted(() => {
 }
 
 .desktop-icon.selected {
-    background: linear-gradient(145deg, rgba(59, 130, 246, 0.35), rgba(37, 99, 235, 0.3));
+    background: var(--k-accent-weak);
     border: 1px solid rgba(59, 130, 246, 0.6);
-    box-shadow:
-        0 0 0 3px rgba(59, 130, 246, 0.25),
-        0 8px 24px rgba(59, 130, 246, 0.3),
-        0 4px 12px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    box-shadow: none;
 }
 
 .desktop-icon.is-dragging {
@@ -315,7 +311,7 @@ onUnmounted(() => {
         0 12px 20px rgba(0, 0, 0, 0.25),
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
     cursor: grabbing;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.75), rgba(51, 65, 85, 0.7));
+    background: var(--k-raised);
     border: 1px solid rgba(59, 130, 246, 0.4);
     z-index: 10 !important;
 }
@@ -442,7 +438,7 @@ onUnmounted(() => {
     height: 12px;
     background-color: rgba(59, 130, 246, 0.8);
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    box-shadow: none;
     border: 1px solid rgba(255, 255, 255, 0.8);
 }
 

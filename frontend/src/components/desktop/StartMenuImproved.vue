@@ -570,10 +570,9 @@ watch(() => props.apps, () => {
     width: 520px;
     max-width: 90vw;
     max-height: 85vh;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
-    backdrop-filter: blur(20px);
+    background: var(--k-raised);
     overflow-y: auto;
-    border-radius: 16px;
+    border-radius: 6px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--k-line);
     z-index: 1001;
@@ -606,7 +605,7 @@ watch(() => props.apps, () => {
     display: flex;
     align-items: center;
     background: var(--k-row-hover);
-    border-radius: 10px;
+    border-radius: 6px;
     padding: 10px 12px;
     transition: all 0.3s ease;
     border: 2px solid transparent;
@@ -615,7 +614,7 @@ watch(() => props.apps, () => {
 .search-input-wrapper:focus-within {
     background: var(--k-row-hover);
     border-color: var(--k-accent);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: none;
 }
 
 .search-icon {
@@ -652,7 +651,7 @@ watch(() => props.apps, () => {
     display: flex;
     align-items: center;
     padding: 16px 20px;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+    background: var(--k-accent-weak);
     border-bottom: 1px solid var(--k-line);
 }
 
@@ -663,13 +662,13 @@ watch(() => props.apps, () => {
     overflow: hidden;
     border: 3px solid var(--k-accent);
     margin-right: 16px;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: none;
     transition: all 0.3s ease;
 }
 
 .user-avatar:hover {
     transform: scale(1.05);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+    box-shadow: none;
 }
 
 .user-avatar img {
@@ -702,13 +701,13 @@ watch(() => props.apps, () => {
     border-radius: 50%;
     background-color: #10b981;
     margin-right: 8px;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    box-shadow: none;
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
-    50% { box-shadow: 0 0 12px rgba(16, 185, 129, 0.8); }
+    0%, 100% { box-shadow: none; }
+    50% { box-shadow: none; }
 }
 
 /* Collapsible Sections */
@@ -771,7 +770,7 @@ watch(() => props.apps, () => {
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     padding: 8px;
-    border-radius: 12px;
+    border-radius: 6px;
     position: relative;
 }
 
@@ -784,7 +783,7 @@ watch(() => props.apps, () => {
 .menu-app-icon {
     width: 52px;
     height: 52px;
-    border-radius: 14px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -902,7 +901,7 @@ watch(() => props.apps, () => {
     justify-content: center;
     gap: 12px;
     padding: 12px 20px;
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+    background: var(--k-raised);
     border-top: 1px solid var(--k-line);
     border-radius: 0 0 16px 16px;
     margin-top: auto;
@@ -912,14 +911,13 @@ watch(() => props.apps, () => {
     display: flex;
     align-items: center;
     padding: 10px 16px;
-    border-radius: 10px;
+    border-radius: 6px;
     color: var(--k-ink);
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid var(--k-line);
-    backdrop-filter: blur(10px);
     flex: 1;
     justify-content: center;
     position: relative;
@@ -951,9 +949,8 @@ watch(() => props.apps, () => {
     bottom: 100%;
     right: 0;
     margin-bottom: 8px;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
-    backdrop-filter: blur(20px);
-    border-radius: 12px;
+    background: var(--k-raised);
+    border-radius: 6px;
     border: 1px solid var(--k-line);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     overflow: hidden;
@@ -988,8 +985,7 @@ watch(() => props.apps, () => {
 /* Context Menu */
 .context-menu {
     position: fixed;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
-    backdrop-filter: blur(20px);
+    background: var(--k-raised);
     border-radius: 8px;
     border: 1px solid var(--k-line);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);

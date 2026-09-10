@@ -321,7 +321,6 @@ watch(() => props.note, (newNote) => {
 .note-widget {
   border-radius: var(--border-radius-md);
   overflow: hidden;
-  backdrop-filter: blur(calc(var(--glass-blur) + 3px));
   width: var(--desktop-widget-width);
   box-shadow: var(--shadow-medium);
   border: 1px solid var(--k-line);
@@ -407,7 +406,7 @@ watch(() => props.note, (newNote) => {
 .tag-chip {
   font-size: 11px;
   padding: 2px 8px;
-  border-radius: 12px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   gap: 4px;

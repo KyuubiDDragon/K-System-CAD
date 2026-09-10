@@ -508,10 +508,8 @@ watch(searchQuery, () => {
   transform: translate(-50%, -50%) scale(0.92);
   width: 720px;
   max-width: 90vw;
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.98), rgba(51, 65, 85, 0.95));
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  border-radius: 20px;
+  background: var(--k-raised);
+  border-radius: 6px;
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.5),
     0 8px 24px rgba(0, 0, 0, 0.3),
@@ -562,7 +560,7 @@ watch(searchQuery, () => {
   display: flex;
   align-items: center;
   background: var(--k-row-hover);
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 0 16px;
   transition: all 0.2s ease;
 }
@@ -637,7 +635,7 @@ watch(searchQuery, () => {
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  border-radius: 24px;
+  border-radius: 6px;
   background: var(--k-row-hover);
   border: 1px solid var(--k-line);
   font-size: 13px;
@@ -645,8 +643,6 @@ watch(searchQuery, () => {
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.6));
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .filter-chip:hover {
@@ -658,10 +654,10 @@ watch(searchQuery, () => {
 }
 
 .filter-chip.active {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.25));
+  background: var(--k-accent-weak);
   border-color: rgba(59, 130, 246, 0.4);
   color: #60a5fa;
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
+  box-shadow: none;
 }
 
 .filter-icon {
@@ -712,7 +708,7 @@ watch(searchQuery, () => {
   align-items: center;
   gap: 14px;
   padding: 12px 12px;
-  border-radius: 12px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
@@ -723,8 +719,8 @@ watch(searchQuery, () => {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 12px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-radius: 6px;
+  background: var(--k-row-hover);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
@@ -743,7 +739,7 @@ watch(searchQuery, () => {
 .result-item.active {
   background: rgba(59, 130, 246, 0.15);
   border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+  box-shadow: none;
 }
 
 .result-icon-container {
@@ -752,7 +748,7 @@ watch(searchQuery, () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 6px;
   flex-shrink: 0;
   transition: all 0.25s ease;
 }
@@ -815,7 +811,7 @@ watch(searchQuery, () => {
   font-weight: 500;
   color: var(--desktop-accent-blue, var(--k-accent));
   cursor: pointer;
-  border-radius: 10px;
+  border-radius: 6px;
   transition: all 0.2s ease;
 }
 
@@ -863,7 +859,7 @@ watch(searchQuery, () => {
   align-items: center;
   gap: 12px;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid transparent;
@@ -898,17 +894,15 @@ watch(searchQuery, () => {
   align-items: center;
   justify-content: center;
   padding: 20px 12px;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+  border-radius: 6px;
+  background: var(--k-row-hover);
   border: 1px solid var(--k-line);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .quick-access-item:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
+  background: var(--k-row-hover);
   border-color: var(--k-line);
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
@@ -920,7 +914,7 @@ watch(searchQuery, () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: 6px;
   margin-bottom: 10px;
   transition: transform 0.3s ease;
 }
@@ -955,7 +949,7 @@ watch(searchQuery, () => {
 .shortcut-key {
   padding: 6px 10px;
   border-radius: 6px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
+  background: var(--k-row-hover);
   border: 1px solid var(--k-line);
   font-size: 11px;
   font-weight: 600;
@@ -1003,7 +997,7 @@ watch(searchQuery, () => {
 
 .search-results::-webkit-scrollbar-thumb,
 .search-suggestions::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+  background: var(--k-row-hover);
   border-radius: 4px;
   border: 2px solid transparent;
   background-clip: padding-box;
@@ -1012,6 +1006,6 @@ watch(searchQuery, () => {
 
 .search-results::-webkit-scrollbar-thumb:hover,
 .search-suggestions::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.2));
+  background: var(--k-row-hover);
 }
 </style> 
