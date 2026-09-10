@@ -256,7 +256,7 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 
@@ -297,7 +297,7 @@ function truncateText(text: string, maxLength: number): string {
     border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 1rem;
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     color: var(--k-ink);
 }
 
@@ -353,7 +353,7 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .data-table thead {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .data-table th {
@@ -371,7 +371,7 @@ function truncateText(text: string, maxLength: number): string {
 }
 
 .data-table tbody tr:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .data-table .actions {

@@ -259,7 +259,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background-color: #374151;
+    background-color: var(--k-sunken);
     border: 1px solid #4b5563;
     border-radius: 8px;
     margin-bottom: 1.5rem;
@@ -359,12 +359,12 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 
 .btn-icon.danger:hover {
-    background-color: #dc2626;
+    background-color: var(--k-critical);
     color: var(--k-ink);
 }
 
@@ -431,7 +431,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .type-about {
-    background-color: #10b981;
+    background-color: var(--k-success);
 }
 
 .type-services {
@@ -439,7 +439,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .type-portfolio {
-    background-color: #f59e0b;
+    background-color: var(--k-warning);
 }
 
 .type-team {
@@ -451,7 +451,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 }
 
 .type-contact {
-    background-color: #ef4444;
+    background-color: var(--k-critical);
 }
 
 .type-features {

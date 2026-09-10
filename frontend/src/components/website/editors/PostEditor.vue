@@ -372,7 +372,7 @@ function handleCancel() {
 }
 
 .modal-content {
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     color: var(--k-ink);
@@ -407,8 +407,8 @@ function handleCancel() {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
-    color: #ef4444;
+    background-color: var(--k-sunken);
+    color: var(--k-critical);
 }
 
 .modal-body {
@@ -443,7 +443,7 @@ function handleCancel() {
 .form-control:focus {
     outline: none;
     border-color: var(--k-accent);
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .form-text {
@@ -528,7 +528,7 @@ textarea.form-control {
     position: absolute;
     top: -8px;
     right: -8px;
-    background-color: #dc3545;
+    background-color: var(--k-critical);
     color: var(--k-ink);
     border: none;
     border-radius: 50%;

@@ -217,7 +217,7 @@ onMounted(() => {
 
 :deep(.theme-light) .loading-text h2,
 :deep(.theme-light) .loading-text p {
-    color: #1e293b;
+    color: var(--k-ink-muted);
 }
 
 :deep(.theme-light) .loading-logo {

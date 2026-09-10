@@ -699,7 +699,7 @@ watch(() => props.apps, () => {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #10b981;
+    background-color: var(--k-success);
     margin-right: 8px;
     box-shadow: none;
     animation: pulse 2s infinite;
@@ -801,7 +801,7 @@ watch(() => props.apps, () => {
     position: absolute;
     top: 2px;
     right: 2px;
-    color: #fbbf24;
+    color: var(--k-warning);
 }
 
 .menu-app-title {

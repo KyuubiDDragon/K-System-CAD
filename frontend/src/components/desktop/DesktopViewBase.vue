@@ -64,7 +64,7 @@ watch(() => props, (newProps) => {
   height: 100%;
   width: 100%;
   overflow: auto;
-  background-color: var(--v-surface-base, #f5f5f5);
+  background-color: var(--v-surface-base, var(--k-sunken));
   display: flex;
   flex-direction: column;
 }

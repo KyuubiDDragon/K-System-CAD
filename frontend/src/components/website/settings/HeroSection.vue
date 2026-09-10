@@ -229,12 +229,12 @@ function triggerFileInput(inputId: string) {
 }
 
 .btn-danger {
-    background-color: #ef4444;
+    background-color: var(--k-critical);
     color: var(--k-ink);
 }
 
 .btn-danger:hover {
-    background-color: #dc2626;
+    background-color: var(--k-critical);
 }
 
 .input-group {

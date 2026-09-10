@@ -303,12 +303,12 @@ function formatDate(dateString: string): string {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 
 .btn-icon.danger:hover {
-    background-color: #dc2626;
+    background-color: var(--k-critical);
     color: var(--k-ink);
 }
 
@@ -332,7 +332,7 @@ function formatDate(dateString: string): string {
 }
 
 .news-card.draft {
-    border-left: 4px solid #f59e0b;
+    border-left: 4px solid var(--k-warning);
 }
 
 .news-header {
@@ -370,7 +370,7 @@ function formatDate(dateString: string): string {
 }
 
 .category-update {
-    background-color: #10b981;
+    background-color: var(--k-success);
 }
 
 .category-download {
@@ -382,22 +382,22 @@ function formatDate(dateString: string): string {
 }
 
 .news-priority {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 
 .priority-high {
-    background-color: #f59e0b;
+    background-color: var(--k-warning);
     color: var(--k-ink);
 }
 
 .priority-urgent {
-    background-color: #dc2626;
+    background-color: var(--k-critical);
     color: var(--k-ink);
 }
 
 .draft-badge {
-    background-color: #f59e0b;
+    background-color: var(--k-warning);
     color: var(--k-ink);
 }
 
@@ -442,7 +442,7 @@ function formatDate(dateString: string): string {
 }
 
 .news-info .expires {
-    color: #f59e0b;
+    color: var(--k-warning);
 }
 
 .news-stats {

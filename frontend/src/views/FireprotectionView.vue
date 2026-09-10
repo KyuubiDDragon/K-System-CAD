@@ -724,7 +724,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
     display: flex;
     justify-content: center;
     padding: 20px;
-    background-color: #e0e0e0;
+    background-color: var(--k-sunken);
     overflow-y: auto;
     height: calc(100vh - 100px);
 }

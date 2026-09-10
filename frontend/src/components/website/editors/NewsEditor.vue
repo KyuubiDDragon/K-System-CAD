@@ -230,7 +230,7 @@ function formatDateTimeLocal(isoString: string): string {
 }
 
 .modal-container {
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     border-radius: 12px;
     width: 100%;
     max-width: 800px;
@@ -272,7 +272,7 @@ function formatDateTimeLocal(isoString: string): string {
 }
 
 .btn-close:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 

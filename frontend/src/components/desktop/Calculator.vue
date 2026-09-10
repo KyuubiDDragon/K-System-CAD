@@ -135,7 +135,7 @@ onMounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
+  background-color: var(--k-sunken);
   overflow: hidden;
   user-select: none;
 }
@@ -180,7 +180,7 @@ onMounted(() => {
   flex: 1;
   border: none;
   font-size: 1.5rem;
-  background-color: #e0e0e0;
+  background-color: var(--k-sunken);
   outline: none;
   cursor: pointer;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -192,11 +192,11 @@ onMounted(() => {
 }
 
 .operation-button {
-  background-color: #e0e0e0;
+  background-color: var(--k-sunken);
 }
 
 .equals-button {
-  background-color: #2196f3;
+  background-color: var(--k-accent);
   color: var(--k-ink);
   flex: 2;
 }
@@ -206,6 +206,6 @@ onMounted(() => {
 }
 
 .equals-button:hover {
-  background-color: #1976d2;
+  background-color: var(--k-accent);
 }
 </style> 

@@ -229,7 +229,7 @@ function updateSettings() {
 }
 
 .template-card {
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     border: 2px solid #4a5568;
     border-radius: 8px;
     padding: 1.5rem;
@@ -246,7 +246,7 @@ function updateSettings() {
 }
 
 .template-card.active {
-    border-color: #10b981;
+    border-color: var(--k-success);
     background-color: #1f2d28;
 }
 
@@ -317,7 +317,7 @@ function updateSettings() {
 }
 
 .template-features i {
-    color: #10b981;
+    color: var(--k-success);
     font-size: 0.875rem;
 }
 
@@ -325,7 +325,7 @@ function updateSettings() {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background-color: #10b981;
+    background-color: var(--k-success);
     color: var(--k-ink);
     padding: 0.25rem 0.75rem;
     border-radius: 4px;
@@ -361,7 +361,7 @@ function updateSettings() {
 }
 
 .template-settings {
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     padding: 1.5rem;
     border-radius: 8px;
     border: 1px solid var(--k-line);

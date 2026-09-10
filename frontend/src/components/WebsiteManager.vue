@@ -1576,7 +1576,7 @@ watch(selectedWebsiteId, (newId) => {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     color: var(--k-ink);
 }
 
@@ -1610,7 +1610,7 @@ watch(selectedWebsiteId, (newId) => {
     padding: 0.5rem 1rem;
     border-radius: 4px;
     border: 1px solid var(--k-line);
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     color: var(--k-ink);
 }
 
@@ -1657,12 +1657,12 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .btn-success {
-    background-color: #10b981;
+    background-color: var(--k-success);
     color: var(--k-ink);
 }
 
 .btn-success:hover {
-    background-color: #059669;
+    background-color: var(--k-success);
 }
 
 .app-content {
@@ -1704,7 +1704,7 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .nav-menu li:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .nav-menu li.active {

@@ -790,12 +790,11 @@ const kCols = useTableColumns('admin/WeatherView', () => unref(weatherHeaders) a
     overflow: hidden;
 }
 
+/* Die Wetterkarte lag auf einem Verlauf aus Dunkelblau in Blau - im hellen
+   Modus eine blaue Platte, und im dunklen die "blaue Tabelle". Eine Karte
+   traegt im System die Kartenflaeche, sonst nichts. */
 .weather-card {
-    background: linear-gradient(
-        to bottom right,
-        rgba(15, 23, 42, 0.8),
-        rgba(30, 64, 175, 0.1)
-    ) !important;
+    background: var(--k-surface) !important;
 }
 
 /* Card Toolbar */

@@ -414,7 +414,7 @@
   }
   
   .status-sick {
-    color: #f59e0b;
+    color: var(--k-warning);
   }
   
   /* Card Content */

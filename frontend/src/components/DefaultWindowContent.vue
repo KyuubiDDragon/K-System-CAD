@@ -104,7 +104,7 @@ onMounted(() => {
 .technical-info {
   margin-top: 20px;
   text-align: left;
-  background-color: #f5f5f5;
+  background-color: var(--k-sunken);
   padding: 12px;
   border-radius: 4px;
   font-family: monospace;

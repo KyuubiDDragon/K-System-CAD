@@ -645,13 +645,13 @@ function kExportSelection() {
 
 .person-name-link {
     cursor: pointer;
-    color: #1976d2;
+    color: var(--k-accent);
     transition: all 0.2s ease;
 }
 
 .person-name-link:hover {
     text-decoration: underline;
-    color: #2196f3;
+    color: var(--k-accent);
 }
 
 /* Action Icons */

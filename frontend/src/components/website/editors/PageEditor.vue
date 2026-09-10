@@ -372,7 +372,7 @@ function handleBlockImageUpload(data: any) {
     padding: 10px;
     border: 1px solid var(--k-line);
     border-radius: 4px;
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     color: var(--k-ink);
     font-size: 14px;
     transition: border-color 0.3s ease;
@@ -415,7 +415,7 @@ function handleBlockImageUpload(data: any) {
 .block-editor-toggle {
     margin-bottom: 15px;
     padding: 15px;
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     border: 1px solid var(--k-line);
     border-radius: 4px;
 }
@@ -491,7 +491,7 @@ function handleBlockImageUpload(data: any) {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 </style>

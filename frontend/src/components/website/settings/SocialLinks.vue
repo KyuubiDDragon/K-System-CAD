@@ -198,7 +198,7 @@ function updateSocialLinks() {
     height: 36px;
     padding: 0;
     border: none;
-    background-color: #ef4444;
+    background-color: var(--k-critical);
     color: var(--k-ink);
     border-radius: 4px;
     cursor: pointer;
@@ -209,7 +209,7 @@ function updateSocialLinks() {
 }
 
 .btn-icon:hover {
-    background-color: #dc2626;
+    background-color: var(--k-critical);
 }
 
 .btn {

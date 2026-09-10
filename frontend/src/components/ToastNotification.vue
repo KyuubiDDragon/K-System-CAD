@@ -123,19 +123,19 @@ export default {
 }
 
 .toast-notification.toast-info {
-  border-left: 4px solid #2196F3;
+  border-left: 4px solid var(--k-accent-line);
 }
 
 .toast-notification.toast-success {
-  border-left: 4px solid #4CAF50;
+  border-left: 4px solid var(--k-success);
 }
 
 .toast-notification.toast-warning {
-  border-left: 4px solid #FF9800;
+  border-left: 4px solid var(--k-warning);
 }
 
 .toast-notification.toast-error {
-  border-left: 4px solid #F44336;
+  border-left: 4px solid var(--k-critical);
 }
 
 .toast-notification.toast-message {
@@ -197,7 +197,7 @@ export default {
 
 .toast-link-button {
   background-color: transparent;
-  color: var(--primary-color, #1976D2);
+  color: var(--primary-color, var(--k-accent));
   border: none;
   padding: 6px 16px;
   border-radius: 4px;

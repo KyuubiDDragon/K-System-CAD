@@ -261,7 +261,7 @@ function getFileIcon(fileType: string): string {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--k-line);
 }
 
 .modal-header h3 {
@@ -284,7 +284,7 @@ function getFileIcon(fileType: string): string {
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
-    background: #007bff;
+    background: var(--k-accent);
     color: var(--k-ink);
     border-radius: 4px;
     cursor: pointer;
@@ -310,7 +310,7 @@ function getFileIcon(fileType: string): string {
 }
 
 .media-item {
-    border: 2px solid #e0e0e0;
+    border: 2px solid var(--k-line);
     border-radius: 8px;
     padding: 0.5rem;
     cursor: pointer;
@@ -318,12 +318,12 @@ function getFileIcon(fileType: string): string {
 }
 
 .media-item:hover {
-    border-color: #007bff;
+    border-color: var(--k-accent-line);
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
 }
 
 .media-item.selected {
-    border-color: #007bff;
+    border-color: var(--k-accent-line);
     background: #e7f3ff;
 }
 
@@ -336,7 +336,7 @@ function getFileIcon(fileType: string): string {
     position: relative;
     width: 100%;
     padding-bottom: 100%;
-    background: #f5f5f5;
+    background: var(--k-sunken);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -363,7 +363,7 @@ function getFileIcon(fileType: string): string {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
-    background: #007bff;
+    background: var(--k-accent);
     color: var(--k-ink);
     width: 2rem;
     height: 2rem;
@@ -396,7 +396,7 @@ function getFileIcon(fileType: string): string {
     justify-content: flex-end;
     gap: 1rem;
     padding: 1.5rem;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--k-line);
 }
 
 .btn-icon {

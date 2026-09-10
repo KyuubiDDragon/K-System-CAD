@@ -1062,7 +1062,7 @@ async function addVacation(member: Employee) {
 }
 
 .status-sick {
-    color: #f59e0b;
+    color: var(--k-warning);
 }
 
 .status-action {
@@ -1212,7 +1212,7 @@ async function addVacation(member: Employee) {
 }
 
 .text-error {
-    color: #ef4444;
+    color: var(--k-critical);
 }
 
 /* Licenses Section */

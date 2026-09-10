@@ -1706,7 +1706,7 @@
   :deep(.tiptap-editor-content .hljs-keyword), /*...*/
   :deep(.tiptap-editor-content .hljs-selector-tag) { color: #7b1fa2; } /* Lila */
   :deep(.tiptap-editor-content .hljs-function), /*...*/
-  :deep(.tiptap-editor-content .hljs-title) { color: #1976d2; } /* Blau */
+  :deep(.tiptap-editor-content .hljs-title) { color: var(--k-accent); } /* Blau */
   :deep(.tiptap-editor-content .hljs-built_in), /*...*/
   :deep(.tiptap-editor-content .hljs-class .hljs-title) { color: #388e3c; } /* Grün */
 
@@ -2110,12 +2110,12 @@
   /* Light theme support */
   @media (prefers-color-scheme: light) {
     .source-code-view {
-      background: #f8fafc;
+      background: var(--k-sunken);
       border-color: rgba(0, 0, 0, 0.1);
     }
 
     .source-code-pre {
-      color: #1e293b;
+      color: var(--k-ink-muted);
     }
 
     .source-code-pre .hljs-tag {
@@ -2149,12 +2149,12 @@
   }
 
   .v-theme--light .source-code-view {
-    background: #f8fafc;
+    background: var(--k-sunken);
     border-color: rgba(0, 0, 0, 0.1);
   }
 
   .v-theme--light .source-code-pre {
-    color: #1e293b;
+    color: var(--k-ink-muted);
   }
 
   .v-theme--light .source-code-pre .hljs-tag,

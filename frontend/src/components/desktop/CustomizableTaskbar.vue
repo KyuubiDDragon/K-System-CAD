@@ -735,7 +735,7 @@ watch(() => props.show, (newVal) => {
 
 .app-remove:hover {
   background: var(--k-row-hover);
-  color: #ef4444;
+  color: var(--k-critical);
 }
 
 /* Ghost class for dragging */

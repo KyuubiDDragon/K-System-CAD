@@ -15,6 +15,6 @@ const { t } = useI18n();
 .whiteboard-view {
   height: 100vh;
   width: 100%;
-  background-color: #f5f5f5;
+  background-color: var(--k-sunken);
 }
 </style> 

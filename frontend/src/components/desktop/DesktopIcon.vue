@@ -364,7 +364,7 @@ onUnmounted(() => {
 }
 
 .folder-icon {
-    color: var(--icon-color, #fbbf24) !important;
+    color: var(--icon-color, var(--k-warning)) !important;
     filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.5));
 }
 

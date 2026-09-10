@@ -989,12 +989,12 @@ watch(
 
 /* Status Colors (for BSB dates) */
 .expired-field {
-    color: #ef4444 !important;
+    color: var(--k-critical) !important;
     font-weight: 600;
 }
 
 .warning-field {
-    color: #f59e0b !important;
+    color: var(--k-warning) !important;
     font-weight: 500;
 }
 

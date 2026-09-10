@@ -251,7 +251,7 @@ function formatDate(dateString?: string): string {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px;
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -278,7 +278,7 @@ function formatDate(dateString?: string): string {
 }
 
 .data-table tbody tr:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .drag-handle {
@@ -294,7 +294,7 @@ function formatDate(dateString?: string): string {
 
 .ghost-item {
     opacity: 0.5;
-    background: #374151;
+    background: var(--k-sunken);
 }
 
 .chosen-item {
@@ -319,11 +319,11 @@ function formatDate(dateString?: string): string {
 }
 
 .has-image {
-    color: #10b981;
+    color: var(--k-success);
 }
 
 .is-featured {
-    color: #fbbf24;
+    color: var(--k-warning);
 }
 
 .category-badge {
@@ -360,12 +360,12 @@ function formatDate(dateString?: string): string {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-accent);
 }
 
 .btn-icon:hover i.mdi-delete {
-    color: #ef4444;
+    color: var(--k-critical);
 }
 
 .empty-state {
@@ -409,7 +409,7 @@ function formatDate(dateString?: string): string {
 .form-control:focus {
     outline: none;
     border-color: var(--k-accent);
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .d-flex {

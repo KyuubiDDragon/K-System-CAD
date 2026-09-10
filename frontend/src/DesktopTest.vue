@@ -42,7 +42,7 @@ function toggleDesktopMode() {
 
 .normal-container {
   background-color: var(--k-ink);
-  color: #334155;
+  color: var(--k-ink-muted);
   padding: 20px;
   border-radius: 8px;
   margin-top: 20px;

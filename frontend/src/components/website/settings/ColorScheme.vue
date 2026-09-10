@@ -424,7 +424,7 @@ a:hover {
 .form-control:focus {
     outline: none;
     border-color: var(--k-accent);
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .form-text {

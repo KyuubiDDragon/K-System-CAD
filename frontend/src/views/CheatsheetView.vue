@@ -649,7 +649,7 @@ onUnmounted(() => {
 
 .preview-data-table thead tr th {
     font-weight: 600;
-    background-color: #141c2e !important;
+    background-color: var(--k-surface) !important;
     color: var(--k-ink) !important;
     border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
@@ -717,7 +717,7 @@ onUnmounted(() => {
 
 .data-table-dense .v-table__wrapper > table > thead > tr > th {
     font-weight: 600;
-    background-color: #141c2e !important;
+    background-color: var(--k-surface) !important;
     color: var(--k-ink) !important;
     border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;

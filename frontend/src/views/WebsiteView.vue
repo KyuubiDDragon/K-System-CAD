@@ -2935,11 +2935,11 @@ function handleCountdownButtonClick(content) {
 .error-icon {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: #dc3545; /* Bootstrap danger color */
+    color: var(--k-critical); /* Bootstrap danger color */
 }
 
 .error-container h2 {
-    color: #dc3545;
+    color: var(--k-critical);
     margin-bottom: 10px;
 }
 
@@ -2979,7 +2979,7 @@ function handleCountdownButtonClick(content) {
 .maintenance-icon {
     font-size: 5rem;
     margin: 20px 0;
-    color: var(--primary-color, #ffc107); /* Use primary or a warning color */
+    color: var(--primary-color, var(--k-warning)); /* Use primary or a warning color */
 }
 
 .site-logo {
@@ -3248,13 +3248,13 @@ function handleCountdownButtonClick(content) {
 .dynamic-content h2 {
     font-size: 2rem;
     margin: 2rem 0 1rem;
-    color: var(--text-color, #2d3748);
+    color: var(--text-color, var(--k-ink-muted));
 }
 
 .dynamic-content h3 {
     font-size: 1.5rem;
     margin: 1.5rem 0 1rem;
-    color: var(--text-color, #2d3748);
+    color: var(--text-color, var(--k-ink-muted));
 }
 
 .dynamic-content p {
@@ -3380,7 +3380,7 @@ function handleCountdownButtonClick(content) {
     min-width: 250px;
     max-width: 300px;
     padding: 20px;
-    background: var(--background-color, #f5f5f5);
+    background: var(--background-color, var(--k-sunken));
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     color: var(--text-color);
@@ -3412,7 +3412,7 @@ function handleCountdownButtonClick(content) {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent-color, #e0e0e0); /* Use accent for placeholder */
+    background: var(--accent-color, var(--k-sunken)); /* Use accent for placeholder */
     color: var(--text-color);
     font-size: 2.5rem;
     font-weight: bold;

@@ -2696,7 +2696,7 @@ function scanWebsite(blockIndex) {
     display: flex;
     align-items: center;
     padding: 10px 15px;
-    background-color: #374151;
+    background-color: var(--k-sunken);
     cursor: pointer;
 }
 
@@ -2836,7 +2836,7 @@ function scanWebsite(blockIndex) {
 }
 
 .block-type:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .block-type i {
@@ -3202,7 +3202,7 @@ function scanWebsite(blockIndex) {
     -webkit-appearance: none;
     width: 100%;
     height: 8px;
-    background: #374151;
+    background: var(--k-sunken);
     outline: none;
     border-radius: 4px;
     cursor: pointer;

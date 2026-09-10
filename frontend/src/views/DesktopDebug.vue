@@ -96,7 +96,7 @@ onMounted(() => {
   margin-left: 8px;
 }
 pre {
-  background-color: #f5f5f5;
+  background-color: var(--k-sunken);
   padding: 8px;
   border-radius: 4px;
   overflow-x: auto;

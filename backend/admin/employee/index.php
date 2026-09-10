@@ -61,6 +61,9 @@ $permissions_map = [
     'getCompanies'      => 'ADMIN_READ_EMPLOYEE', // Assume reading companies/depts requires reading employee data
     'getDepartments'    => 'ADMIN_READ_EMPLOYEE',
     'getEmployees'      => 'ADMIN_READ_EMPLOYEE', // Added getEmployees permission
+    'getJobRoles'      => ['module' => 'employee', 'action' => 'read'],
+    'saveJobRole'      => ['module' => 'employee', 'action' => 'admin'],
+    'deleteJobRole'    => ['module' => 'employee', 'action' => 'admin'],
     'saveCompany'       => 'ADMIN_WRITE_EMPLOYEE',
     'saveDepartment'    => 'ADMIN_WRITE_EMPLOYEE',
     'deleteCompany'     => 'ADMIN_WRITE_EMPLOYEE', // Original code used WRITE for delete actions here
@@ -97,6 +100,12 @@ if ($has_permission) {
         case 'saveDepartment':      if ($is_post_request) saveDepartment($pdo, $userId, $authority, $authorityId); else MethodNotAllowed(); break;
         case 'deleteCompany':       if ($is_post_request) deleteCompany($pdo, $userId, $authority, $authorityId); else MethodNotAllowed(); break; // Consider DELETE
         case 'deleteDepartment':    if ($is_post_request) deleteDepartment($pdo, $userId, $authority, $authorityId); else MethodNotAllowed(); break; // Consider DELETE
+        // Funktionen (kdd_jobroles). Die Ansicht ruft diese drei Aktionen seit
+        // jeher auf - im Verteiler fehlten sie, sodass jeder Aufruf mit
+        // "Invalid action specified." endete.
+        case 'getJobRoles':         if ($request_method === 'GET') getJobRoles($pdo, $authority, $authorityId); else MethodNotAllowed(); break;
+        case 'saveJobRole':         if ($is_post_request) saveJobRole($pdo, $userId, $authority, $authorityId); else MethodNotAllowed(); break;
+        case 'deleteJobRole':       if ($is_post_request) deleteJobRole($pdo, $userId, $authority, $authorityId); else MethodNotAllowed(); break;
 
         default: http_response_code(500); echo json_encode(['error' => 'Action routing error.']); break;
     }
@@ -362,3 +371,114 @@ function getEmployees(PDO $pdo, string $authority, int $authorityId): void {
 
 
 ?>
+
+/* ============================================================
+   FUNKTIONEN (kdd_jobroles)
+
+   Die Tabelle fuehrt nur id, name und authority_id - kein
+   sort_order und kein is_deleted. Geloescht wird deshalb
+   wirklich, und weil kdd_employee ueber jobrole_id darauf
+   zeigt, wird vorher geprueft, ob die Funktion noch benutzt
+   wird.
+   ============================================================ */
+
+function getJobRoles(PDO $pdo, string $authority, int $authorityId): void {
+    try {
+        $sql = "SELECT id, name, authority_id FROM kdd_jobroles WHERE authority_id = ? ORDER BY name";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$authorityId]);
+        http_response_code(200);
+        echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
+    } catch (\PDOException $e) {
+        error_log("DB error in getJobRoles [ADMIN] ($authority): " . $e->getMessage());
+        http_response_code(500); echo json_encode(["error" => "Could not retrieve job roles."]);
+    }
+}
+
+function saveJobRole(PDO $pdo, int $requestingUserId, string $authority, int $authorityId): void {
+    $data = getJsonRequestData();
+    if (!$data) return;
+
+    $id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
+    $name = trim((string)($data['name'] ?? ''));
+
+    if ($name === '') {
+        http_response_code(400);
+        echo json_encode(['error' => 'Der Name der Funktion fehlt.']);
+        return;
+    }
+
+    try {
+        if ($id) {
+            $stmt = $pdo->prepare("UPDATE kdd_jobroles SET name = ? WHERE authority_id = ? AND id = ?");
+            $stmt->execute([$name, $authorityId, $id]);
+            if ($stmt->rowCount() === 0) {
+                http_response_code(200);
+                echo json_encode(["success" => true, "message" => "Keine Aenderung.", "id" => $id]);
+                return;
+            }
+            logDatabaseChange($authorityId, $pdo, 'UPDATE', 'jobroles', $id, $requestingUserId,
+                [['column_name' => 'name', 'old_value' => null, 'new_value' => $name]]);
+            http_response_code(200);
+            echo json_encode(["success" => true, "message" => "Funktion gespeichert.", "id" => $id]);
+        } else {
+            $stmt = $pdo->prepare("INSERT INTO kdd_jobroles (authority_id, name) VALUES (?, ?)");
+            $stmt->execute([$authorityId, $name]);
+            $neu = (int)$pdo->lastInsertId();
+            logDatabaseChange($authorityId, $pdo, 'INSERT', 'jobroles', $neu, $requestingUserId,
+                [['column_name' => 'name', 'old_value' => null, 'new_value' => $name]]);
+            http_response_code(201);
+            echo json_encode(["success" => true, "message" => "Funktion angelegt.", "id" => $neu]);
+        }
+    } catch (\PDOException $e) {
+        if ($e->getCode() == '23000') {
+            http_response_code(409);
+            echo json_encode(["error" => "Diese Funktion gibt es bereits."]);
+            return;
+        }
+        error_log("DB error in saveJobRole [ADMIN] ($authority): " . $e->getMessage());
+        http_response_code(500); echo json_encode(["error" => "Could not save job role."]);
+    }
+}
+
+function deleteJobRole(PDO $pdo, int $requestingUserId, string $authority, int $authorityId): void {
+    $data = getJsonRequestData();
+    if (!$data) return;
+
+    $id = filter_var($data['id'] ?? null, FILTER_VALIDATE_INT);
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Ungueltige oder fehlende Kennung der Funktion.']);
+        return;
+    }
+
+    try {
+        // Die Tabelle kennt kein is_deleted, also wird wirklich geloescht.
+        // Vorher pruefen, ob noch jemand daran haengt - die Meldung nennt die
+        // Zahl, damit klar ist, was zu tun ist.
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM kdd_employee WHERE jobrole_id = ? AND authority_id = ?");
+        $stmt->execute([$id, $authorityId]);
+        $benutzt = (int)$stmt->fetchColumn();
+        if ($benutzt > 0) {
+            http_response_code(409);
+            echo json_encode(["error" => "Diese Funktion ist noch {$benutzt} Mitarbeitern zugewiesen und kann deshalb nicht geloescht werden."]);
+            return;
+        }
+
+        $stmt = $pdo->prepare("DELETE FROM kdd_jobroles WHERE authority_id = ? AND id = ?");
+        $stmt->execute([$authorityId, $id]);
+
+        if ($stmt->rowCount() > 0) {
+            logDatabaseChange($authorityId, $pdo, 'DELETE', 'jobroles', $id, $requestingUserId,
+                [['column_name' => 'id', 'old_value' => $id, 'new_value' => null]]);
+            http_response_code(200);
+            echo json_encode(["success" => true, "message" => "Funktion geloescht."]);
+        } else {
+            http_response_code(404);
+            echo json_encode(["error" => "Funktion nicht gefunden."]);
+        }
+    } catch (\PDOException $e) {
+        error_log("DB error in deleteJobRole (ID: $id, Auth: $authority): " . $e->getMessage());
+        http_response_code(500); echo json_encode(["error" => "Could not delete job role."]);
+    }
+}

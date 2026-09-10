@@ -324,7 +324,7 @@ function getIndent(item: NavigationItem): string {
 }
 
 .navigation-item:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     border-color: #5a6478;
 }
 
@@ -440,11 +440,11 @@ function getIndent(item: NavigationItem): string {
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .btn-icon.btn-danger {
-    color: #ef4444;
+    color: var(--k-critical);
 }
 
 .btn-icon.btn-danger:hover {
@@ -499,7 +499,7 @@ function getIndent(item: NavigationItem): string {
 }
 
 .modal-content {
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     color: var(--k-ink);
@@ -537,7 +537,7 @@ function getIndent(item: NavigationItem): string {
 }
 
 .btn-close:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
     color: var(--k-ink);
 }
 
@@ -570,7 +570,7 @@ function getIndent(item: NavigationItem): string {
 .form-control:focus {
     outline: none;
     border-color: var(--k-accent);
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .form-control::placeholder {

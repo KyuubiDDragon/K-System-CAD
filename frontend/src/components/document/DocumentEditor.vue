@@ -960,7 +960,7 @@ onBeforeUnmount(() => {
     justify-content: space-between;
     align-items: center;
     padding: 16px 24px;
-    background: #f8fafc;
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
     flex-shrink: 0;
   }
@@ -968,7 +968,7 @@ onBeforeUnmount(() => {
   .fullscreen-preview-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--k-ink-muted);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -987,7 +987,7 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-preview-actions .v-btn:hover {
-    color: #1e293b;
+    color: var(--k-ink-muted);
     background: rgba(0, 0, 0, 0.05);
   }
 
@@ -1000,7 +1000,7 @@ onBeforeUnmount(() => {
 
   .fullscreen-document-view {
     max-width: 100%;
-    color: #1e293b;
+    color: var(--k-ink-muted);
     font-family: 'Georgia', 'Times New Roman', serif;
     font-size: 16px;
     line-height: 1.8;
@@ -1060,12 +1060,12 @@ onBeforeUnmount(() => {
   }
 
   .fullscreen-document-view table th {
-    background: #f1f5f9;
+    background: var(--k-sunken);
     font-weight: 600;
   }
 
   .fullscreen-document-view table tr:nth-child(even) {
-    background: #f8fafc;
+    background: var(--k-sunken);
   }
 
   .fullscreen-document-view ul,
@@ -1082,7 +1082,7 @@ onBeforeUnmount(() => {
     border-left: 4px solid var(--k-accent);
     margin: 1em 0;
     padding: 0.5em 1em;
-    background: #f1f5f9;
+    background: var(--k-sunken);
     color: #475569;
     font-style: italic;
   }
@@ -1098,7 +1098,7 @@ onBeforeUnmount(() => {
 
   .fullscreen-document-view code {
     font-family: 'Consolas', 'Monaco', monospace;
-    background: #f1f5f9;
+    background: var(--k-sunken);
     padding: 0.2em 0.4em;
     border-radius: 4px;
     font-size: 0.9em;

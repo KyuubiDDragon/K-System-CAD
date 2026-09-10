@@ -910,13 +910,13 @@ function kExportSelection() {
   
   .vehicle-link {
 	cursor: pointer;
-	color: #1976D2;
+	color: var(--k-accent);
 	transition: all 0.2s ease;
   }
   
   .vehicle-link:hover {
 	text-decoration: underline;
-	color: #2196F3;
+	color: var(--k-accent);
   }
   
   /* Action Icons */

@@ -208,7 +208,7 @@ function removeMedia(mediaType: keyof MediaSettings) {
     height: 32px;
     padding: 0;
     border: none;
-    background-color: #ef4444;
+    background-color: var(--k-critical);
     color: var(--k-ink);
     border-radius: 50%;
     cursor: pointer;
@@ -220,7 +220,7 @@ function removeMedia(mediaType: keyof MediaSettings) {
 }
 
 .media-remove-btn:hover {
-    background-color: #dc2626;
+    background-color: var(--k-critical);
 }
 
 .media-upload {

@@ -1115,12 +1115,12 @@ const kFilters = useTableFilters(
 
 /* Text Colors for Expiry */
 .text-error {
-    color: #ef4444;
+    color: var(--k-critical);
     font-weight: 600;
 }
 
 .text-warning {
-    color: #f59e0b;
+    color: var(--k-warning);
     font-weight: 500;
 }
 

@@ -405,13 +405,13 @@ const isWeatherWarning = (icon: string, condition: string): boolean => {
 
 .weather-warning {
   background-color: rgba(220, 38, 38, 0.2);
-  border-left: 3px solid #dc2626;
+  border-left: 3px solid var(--k-critical);
   animation: weather-warning-pulse 2s ease-in-out infinite;
 }
 
 .weather-wildfire {
   background-color: rgba(239, 68, 68, 0.25);
-  border-left: 3px solid #ef4444;
+  border-left: 3px solid var(--k-critical);
   animation: weather-wildfire-pulse 1.5s ease-in-out infinite;
 }
 

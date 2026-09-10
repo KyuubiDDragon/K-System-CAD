@@ -200,7 +200,7 @@ defineEmits<{
 }
 
 .tab:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .tab.active {
@@ -230,7 +230,7 @@ defineEmits<{
     border-collapse: separate;
     border-spacing: 0 10px;
     margin-top: 20px;
-    background-color: #1e2327;
+    background-color: var(--k-surface);
     color: var(--k-ink);
 }
 
@@ -248,7 +248,7 @@ defineEmits<{
 }
 
 .data-table tbody tr:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .data-table tbody td {
@@ -293,7 +293,7 @@ defineEmits<{
 }
 
 .btn-icon:hover {
-    background-color: #374151;
+    background-color: var(--k-sunken);
 }
 
 .empty-state {

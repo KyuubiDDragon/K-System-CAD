@@ -362,7 +362,7 @@ function downloadAttachment(attachment: MailAttachment) {
 }
 
 .mail-detail-toolbar {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--k-line);
 }
 
 .mail-detail-content {
@@ -379,7 +379,7 @@ function downloadAttachment(attachment: MailAttachment) {
 }
 
 .mail-header-info {
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--k-line);
   padding-bottom: 16px;
 }
 
@@ -401,7 +401,7 @@ function downloadAttachment(attachment: MailAttachment) {
 }
 
 .mail-html-content :deep(a) {
-  color: #1976d2;
+  color: var(--k-accent);
   text-decoration: none;
 }
 
@@ -415,7 +415,7 @@ function downloadAttachment(attachment: MailAttachment) {
 }
 
 .mail-html-content :deep(blockquote) {
-  border-left: 3px solid #e0e0e0;
+  border-left: 3px solid var(--k-line);
   margin: 16px 0;
   padding-left: 16px;
   color: #757575;
@@ -429,16 +429,16 @@ function downloadAttachment(attachment: MailAttachment) {
 .mail-raw-html {
   font-family: monospace;
   font-size: 0.875rem;
-  background-color: #f5f5f5;
+  background-color: var(--k-sunken);
   padding: 16px;
   border-radius: 4px;
   overflow-x: auto;
 }
 
 .mail-detail-actions {
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid var(--k-line);
   padding: 16px 24px;
-  background-color: #fafafa;
+  background-color: var(--k-sunken);
 }
 
 /* Scrollbar styling */

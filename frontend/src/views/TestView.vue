@@ -1116,11 +1116,11 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 .text-success {
-    color: #4caf50 !important;
+    color: var(--k-success) !important;
 }
 
 .text-error {
-    color: #f44336 !important;
+    color: var(--k-critical) !important;
 }
 
 /* Generated Test Styles */
