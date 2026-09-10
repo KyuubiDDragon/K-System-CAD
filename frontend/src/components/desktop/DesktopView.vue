@@ -40,7 +40,10 @@
                 </div>
 
                 <!-- Background Selector -->
-                <background-selector @background-change="changeBackground" />
+                <background-selector
+                    v-model:open="hintergrundOffen"
+                    @background-change="changeBackground"
+                />
 
                 <!-- Desktop Widgets -->
                 <div class="desktop-widgets">
@@ -132,6 +135,9 @@
                             {{ t(sortModeLabels[mode]) }}
                         </button>
                         <hr class="desk-menu__rule" />
+                        <button type="button" class="desk-menu__item" @click="waehleHintergrund">
+                            {{ t('layout.chooseBackground') }}
+                        </button>
                         <button type="button" class="desk-menu__item" @click="resetDesktopLayout">
                             {{ t('desktop.resetLayout') }}
                         </button>
@@ -821,6 +827,7 @@ const iconSortMode = ref<'priority' | 'alphabetical' | 'category'>('priority');
  * Menue daran auf. Ein Kontextmenue, das immer an derselben Stelle aufgeht,
  * zwingt die Maus zurueck ueber den halben Bildschirm.
  */
+const hintergrundOffen = ref(false);
 const desktopMenuOpen = ref(false);
 const desktopMenuAt = ref<[number, number]>([0, 0]);
 
@@ -3414,6 +3421,12 @@ const changeBackground = (path: string) => {
 };
 
 // Icon auswählen
+/* Hintergrundwahl aus dem Kontextmenue heraus. */
+const waehleHintergrund = () => {
+    desktopMenuOpen.value = false;
+    hintergrundOffen.value = true;
+};
+
 const selectIcon = (appId: string) => {
     selectedIcon.value = appId;
 };

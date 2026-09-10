@@ -1,14 +1,5 @@
 <template>
     <div class="background-selector">
-        <v-btn
-            class="selector-toggle"
-            icon="mdi-image-outline"
-            variant="tonal"
-            size="small"
-            @click="isOpen = !isOpen"
-            :title="t('layout.chooseBackground')"
-        ></v-btn>
-
         <div class="background-panel" v-if="isOpen">
             <div class="panel-header">
                 <span>{{ t('layout.selectBackground') }}</span>
@@ -71,7 +62,13 @@ const { t } = useI18n();
 const authStore = useAuthStore();
 
 // States
-const isOpen = ref(false);
+/*
+   Die Auswahl haengt jetzt am Kontextmenue der Arbeitsflaeche, nicht mehr an
+   einem eigenen Knopf ueber der Leiste. Ein runder Knopf, der frei auf dem
+   Hintergrundbild schwebt, gehoert zu keiner Flaeche und stand im Entwurf
+   nirgends - das Bild wechselt man dort, wo man auch sortiert.
+*/
+const isOpen = defineModel<boolean>('open', { default: false });
 const currentBackground = ref('');
 const isLoading = ref(false);
 
@@ -206,11 +203,6 @@ const uploadBackground = (event: Event) => {
     bottom: calc(var(--taskbar-height) + var(--desktop-padding));
     left: var(--desktop-padding);
     z-index: 7;
-}
-
-.selector-toggle {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--k-line);
 }
 
 .background-panel {
