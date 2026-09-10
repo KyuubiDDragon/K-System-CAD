@@ -538,7 +538,9 @@
         "recent-logs": "System Logs",
         "weather": "Weather",
         "quick-dispatch": "Quick Dispatch",
-        "active-users": "Active Users"
+        "active-users": "Active Users",
+        "calendar-widget": "Calendar",
+        "weather-widget": "Weather"
       },
       "blackboard": {
         "noEntries": "No announcements available",

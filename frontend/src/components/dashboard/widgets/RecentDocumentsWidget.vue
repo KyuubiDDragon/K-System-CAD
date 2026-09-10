@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { apiClientAuth } from '@/api'
@@ -63,7 +64,7 @@ function getFileIcon(type: string): string {
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString()
+  return formatDate(dateString)
 }
 
 function openDocument(doc: any) {

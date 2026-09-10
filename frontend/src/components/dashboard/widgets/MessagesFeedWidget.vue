@@ -51,6 +51,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -110,7 +111,7 @@ function formatDate(dateString: string): string {
   if (diffHours < 1) return 'Just now'
   if (diffHours < 24) return `${diffHours}h ago`
   if (diffHours < 48) return 'Yesterday'
-  return date.toLocaleDateString()
+  return formatDate(date)
 }
 
 function getPreview(body: string): string {

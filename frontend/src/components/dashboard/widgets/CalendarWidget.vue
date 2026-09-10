@@ -28,6 +28,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateTime } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { apiClientAuth } from '@/api'
@@ -56,7 +57,7 @@ async function loadEvents() {
 }
 
 function formatDateTime(dateString: string): string {
-  return new Date(dateString).toLocaleString()
+  return formatDateTime(dateString)
 }
 
 function goToCalendar() {

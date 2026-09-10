@@ -62,6 +62,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiClientAuth } from '@/api'
@@ -127,7 +128,7 @@ async function addTodo() {
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString()
+  return formatDate(dateString)
 }
 
 onMounted(() => loadTodos())

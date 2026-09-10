@@ -538,7 +538,9 @@
         "recent-logs": "Systemlogs",
         "weather": "Wetter",
         "quick-dispatch": "Schnelleinsatz",
-        "active-users": "Aktive Nutzer"
+        "active-users": "Aktive Nutzer",
+        "calendar-widget": "Kalender",
+        "weather-widget": "Wetter"
       },
       "blackboard": {
         "noEntries": "Keine Ankündigungen vorhanden",
@@ -2330,7 +2332,7 @@
   },
   "blackboardAreasView": {
     "title": "Schwarzes Brett Bereiche",
-    "description": "Verwalten Sie Bereiche für das Schwarze Brett. Jeder Bereich kann eigene Berechtigungen haben.",
+    "description": "Beschreibung",
     "newAreaButton": "Neuer Bereich",
     "newArea": "Neuer Bereich",
     "editArea": "Bereich bearbeiten",
@@ -2339,7 +2341,6 @@
     "key": "Schlüssel",
     "keyLabel": "Eindeutiger Schlüssel",
     "keyHint": "Nur Kleinbuchstaben, Zahlen und Unterstriche (z.B. schichtubergabe)",
-    "description": "Beschreibung",
     "icon": "Symbol",
     "status": "Status",
     "active": "Aktiv",

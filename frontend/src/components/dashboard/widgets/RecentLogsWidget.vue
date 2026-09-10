@@ -24,6 +24,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDateTime } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { apiClientAuth } from '@/api'
 
@@ -70,7 +71,7 @@ function getLevelIcon(level: string): string {
 }
 
 function formatTime(timestamp: string): string {
-  return new Date(timestamp).toLocaleString()
+  return formatDateTime(timestamp)
 }
 
 onMounted(() => loadLogs())

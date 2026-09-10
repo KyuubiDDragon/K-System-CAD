@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { apiClientAuth } from '@/api'
 
@@ -60,7 +61,7 @@ function getInitials(name: string): string {
 }
 
 function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString()
+  return formatDate(dateString)
 }
 
 function getTypeIcon(type: string): string {

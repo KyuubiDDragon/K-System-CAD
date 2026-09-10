@@ -80,34 +80,17 @@ async function loadStats() {
 
   // Load stats from various endpoints
   // This is a simplified version - expand based on what stats you want to show
-  const statsToLoad = props.config.statsToShow || ['messages', 'todos', 'calendar']
 
   const loadedStats: Array<{ label: string; value: number | string }> = []
 
-  // Example stats - you can expand this
-  if (statsToLoad.includes('messages')) {
-    // Load unread message count
-    loadedStats.push({
-      label: t('dashboard.stats.messages'),
-      value: '—' // Placeholder
-    })
-  }
-
-  if (statsToLoad.includes('todos')) {
-    // Load open todos count
-    loadedStats.push({
-      label: t('dashboard.stats.todos'),
-      value: '—' // Placeholder
-    })
-  }
-
-  if (statsToLoad.includes('calendar')) {
-    // Load today's events count
-    loadedStats.push({
-      label: t('dashboard.stats.events'),
-      value: '—' // Placeholder
-    })
-  }
+  // Die drei Kennzahlen (Nachrichten, Aufgaben, Termine) waren nie
+  // implementiert: sie schoben durchgehend '—' als Platzhalter, belegten dabei
+  // aber die volle Kachelhoehe. Eine Kennzahl ohne Zahl ist keine Kennzahl,
+  // deshalb bleiben sie ausgeblendet, bis echte Werte geladen werden.
+  //
+  // Zum Aktivieren: den jeweiligen Zaehler aus der API holen und hier
+  // einhaengen, zum Beispiel
+  //   loadedStats.push({ label: t('dashboard.stats.messages'), value: unread })
 
   stats.value = loadedStats
 }
@@ -150,16 +133,16 @@ onMounted(() => {
 .quick-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1rem;
-  padding-top: 1rem;
+  gap: 8px;
+  padding-top: 10px;
   border-top: 1px solid var(--k-line);
 }
 
 .stat-item {
   text-align: center;
-  padding: 0.5rem;
+  padding: 6px 8px;
   background: var(--k-row-hover);
-  border-radius: 8px;
+  border-radius: 6px;
   transition: background 0.2s ease;
 
   &:hover {

@@ -70,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -156,7 +157,7 @@ function formatDate(dateString: string): string {
   } else if (diffDays < 7) {
     return t('dashboard.widget.blackboard.daysAgo', { days: diffDays })
   } else {
-    return date.toLocaleDateString()
+    return formatDate(date)
   }
 }
 

@@ -37,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatTime } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { apiClientAuth } from '@/api'
 
@@ -76,7 +77,7 @@ function getActivityIcon(type: string): string {
 }
 
 function formatTime(timestamp: string): string {
-  return new Date(timestamp).toLocaleTimeString()
+  return formatTime(timestamp)
 }
 
 onMounted(() => loadActivity())

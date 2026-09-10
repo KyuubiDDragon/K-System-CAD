@@ -150,6 +150,7 @@
 </template>
 
 <script setup lang="ts">
+import { formatDate } from '@/utils/datetime';
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiClientAuth } from '@/api'
@@ -281,7 +282,7 @@ function isActive(vacation: Vacation): boolean {
  */
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
-  return date.toLocaleDateString()
+  return formatDate(date)
 }
 
 /**

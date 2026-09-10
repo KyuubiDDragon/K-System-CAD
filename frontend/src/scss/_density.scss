@@ -1,0 +1,172 @@
+/**
+ * Dichte-System
+ *
+ * Vuetify liefert grosszuegige Standardmaße: Listenpunkt 48 px, Tabellenzeile
+ * 52 px, Eingabefeld 56 px. Fuer ein System mit 63 Ansichten, das ueber Stunden
+ * benutzt wird, kostet das die Uebersicht — auf einem Bildschirm stehen so rund
+ * 13 Zeilen statt 20.
+ *
+ * Die Werte hier stammen aus dem Design-Entwurf und liegen auf einem 4-px-
+ * Raster. Sie greifen global, damit nicht jede der 218 Komponenten einzeln
+ * angefasst werden muss.
+ *
+ * Ausgenommen bleiben bewusst: Dialoge (dort ist Ruhe wichtiger als Dichte)
+ * und die Editoren, die eigene Maße mitbringen.
+ */
+
+:root {
+    --k-row-height: 36px;
+    --k-row-height-compact: 30px;
+    --k-control-height: 32px;
+    --k-nav-item-height: 30px;
+    --k-bar-height: 44px;
+}
+
+/* ---------- Navigation ---------- */
+.v-navigation-drawer {
+    .v-list {
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+    /* Doppelte Klasse noetig: Vuetifys
+       .v-list-item--density-compact.v-list-item--one-line steht spaeter im
+       Stylesheet und gewinnt sonst den Gleichstand. */
+    .v-list-item.v-list-item--one-line,
+    .v-list-item.v-list-item--density-compact {
+        min-height: var(--k-nav-item-height);
+        padding-top: 0;
+        padding-bottom: 0;
+        border-radius: 4px;
+        margin-inline: 6px;
+    }
+
+    .v-list-item__prepend > .v-icon {
+        margin-inline-end: 10px;
+        font-size: 17px;
+    }
+
+    .v-list-item-title {
+        font-size: 12.5px;
+        line-height: 1.3;
+    }
+
+    /* Gruppenueberschriften: klein, gedimmt, gesperrt — sie ordnen, ohne mit
+       den Eintraegen zu konkurrieren. */
+    .v-list-subheader.v-list-subheader {
+        min-height: 22px;
+        padding-inline: 12px;
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        opacity: 0.75;
+    }
+}
+
+/* ---------- Tabellen ---------- */
+.v-data-table {
+    .v-data-table__td.v-data-table__td,
+    .v-data-table__th.v-data-table__th {
+        height: var(--k-row-height);
+        padding-inline: 12px;
+    }
+
+    .v-data-table__th.v-data-table__th {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .v-data-table__td {
+        font-size: 13px;
+    }
+
+    /* Zahlen stehen auf gleicher Achse — Abweichungen fallen dadurch auf,
+       ohne dass man liest. */
+    .text-end,
+    .v-data-table__td--align-end {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.v-data-table-footer {
+    padding-block: 4px;
+    font-size: 12px;
+}
+
+/* ---------- Bedienelemente ---------- */
+.v-input--density-compact {
+    .v-field__input {
+        min-height: var(--k-control-height);
+        padding-top: 2px;
+        padding-bottom: 2px;
+        font-size: 13px;
+    }
+}
+
+.v-btn.v-btn--size-default {
+    --v-btn-height: 32px;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+}
+
+.v-chip.v-chip--size-default {
+    --v-chip-height: 22px;
+    font-size: 11.5px;
+}
+
+/* ---------- Leisten ---------- */
+.v-app-bar .v-toolbar__content {
+    height: var(--k-bar-height) !important;
+}
+
+/* ---------- Karten und Kacheln ---------- */
+.v-card-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    padding-block: 8px;
+}
+
+.v-card-subtitle {
+    font-size: 12px;
+}
+
+.widget-header.widget-header {
+    min-height: 34px;
+    padding-block: 4px !important;
+}
+
+.widget-title.widget-title {
+    font-size: 13px !important;
+    font-weight: 600;
+}
+
+/* Leerzustaende: ein Leerzustand darf nicht mehr Platz beanspruchen als der
+   gefuellte Zustand — sonst ist der Bildschirm am leersten, wenn am meisten
+   los ist. */
+.widget-content {
+    .v-icon--size-x-large,
+    .v-icon--size-large {
+        font-size: 26px !important;
+        opacity: 0.5;
+    }
+}
+
+/* ---------- Ausnahmen ---------- */
+/* In Dialogen zaehlt Ruhe mehr als Dichte. */
+.v-dialog .v-list-item {
+    min-height: 36px;
+}
+
+/* Die Editoren bringen eigene Maße mit. */
+.tiptap,
+.ProseMirror,
+.univer-container {
+    .v-btn--size-default {
+        min-height: auto;
+    }
+}

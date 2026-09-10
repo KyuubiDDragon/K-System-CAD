@@ -193,10 +193,20 @@ const widgetDefinition = computed(() => {
 // Translated widget title
 const widgetTitle = computed(() => {
   const title = props.widgetConfig.title
-  // Check if title is an i18n key
-  if (te(title)) {
+
+  // Der Titel ist bereits ein i18n-Schluessel
+  if (title && te(title)) {
     return t(title)
   }
+
+  // Gespeicherte Layouts tragen den englischen Klartext aus der Registry
+  // ("My Crew", "Announcements" ...). Die deutschen Namen liegen unter
+  // dashboard.widget.names.<typ> bereits vor und werden hier benutzt.
+  const byType = `dashboard.widget.names.${props.widgetConfig.type}`
+  if (te(byType)) {
+    return t(byType)
+  }
+
   return title
 })
 
