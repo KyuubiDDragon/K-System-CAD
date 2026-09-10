@@ -1008,7 +1008,11 @@
     "saveOrder": "Reihenfolge speichern",
     "deleteCategoryTooltip": "Kategorie löschen (nur wenn leer)",
     "doubleClickToEdit": "Doppelklick zum Bearbeiten",
-    "noSearchResults": "Keine Dokumente für die Suche gefunden."
+    "noSearchResults": "Keine Dokumente für die Suche gefunden.",
+    "noun": "Dokumente",
+    "category": "Kategorie",
+    "creator": "Ersteller",
+    "withoutCreator": "Ohne Ersteller"
   },
   "documentEditor": {
     "newDocument": "Neues Dokument",
@@ -1210,7 +1214,11 @@
     "deleteSuccess": "Rechnung erfolgreich gelöscht.",
     "deleteError": "Fehler beim Löschen der Rechnung.",
     "invalidDate": "Ungültig",
-    "error": "Fehler"
+    "error": "Fehler",
+    "noun": "Rechnungen",
+    "filterOutgoing": "Ausgehend",
+    "filterOpen": "Offen",
+    "withoutCustomer": "Ohne Kunde"
   },
   "invoiceForm": {
     "addTitle": "Neue Rechnung hinzufügen",
@@ -1302,7 +1310,11 @@
     "toggleSuccess": "Besatzung \"{name}\" {state}.",
     "activated": "aktiviert",
     "deactivated": "deaktiviert",
-    "errorToggle": "Fehler beim Ändern des Aktivierungsstatus."
+    "errorToggle": "Fehler beim Ändern des Aktivierungsstatus.",
+    "noun": "Einheiten",
+    "filterActive": "Aktiv",
+    "status": "Funkstatus",
+    "withoutStatus": "Ohne Status"
   },
   "mapOnlyView": {
     "atlas": "Atlas",
@@ -1455,7 +1467,15 @@
     "reportUnpinned": "Bericht losgelöst",
     "reportPinError": "Fehler beim Anpinnen/Lösen des Berichts",
     "pdfDownloadError": "Fehler beim Herunterladen des PDFs",
-    "pleaseSelectCategory": "Bitte wählen Sie eine Kategorie aus"
+    "pleaseSelectCategory": "Bitte wählen Sie eine Kategorie aus",
+    "noun": "Berichte",
+    "category": "Kategorie",
+    "status": "Status",
+    "filterApproved": "Freigegeben",
+    "filterOpen": "Offen",
+    "withoutCategory": "Ohne Kategorie",
+    "withoutStatus": "Ohne Status",
+    "withoutCreator": "Ohne Ersteller"
   },
   "reportTemplateView": {
     "title": "Templates verwalten",
@@ -1882,7 +1902,10 @@
     "folderDeleteError": "Ordner konnte nicht gelöscht werden",
     "folderUpdated": "Ordner erfolgreich aktualisiert",
     "folderCreated": "Ordner erfolgreich erstellt",
-    "folderSaveError": "Ordner konnte nicht gespeichert werden"
+    "folderSaveError": "Ordner konnte nicht gespeichert werden",
+    "noun": "Nachrichten",
+    "withoutFolder": "Ohne Ordner",
+    "withoutSender": "Ohne Absender"
   },
   "defaultWindowContent": {
     "componentNotFound": "Komponente nicht gefunden",
@@ -2311,7 +2334,10 @@
     "deleted": "Wohnung erfolgreich gelöscht.",
     "loadError": "Fehler beim Laden der Wohnungen.",
     "deleteError": "Fehler beim Löschen der Wohnung.",
-    "viewError": "Fehler beim Anzeigen der Wohnungsdetails."
+    "viewError": "Fehler beim Anzeigen der Wohnungsdetails.",
+    "noun": "Wohnungen",
+    "location": "Ort",
+    "withoutLocation": "Ohne Ort"
   },
   "blackboardView": {
     "addEntry": "Beitrag hinzufügen",
@@ -2873,7 +2899,11 @@
       "damageDescription": "Schaden",
       "damageTime": "Gemeldet am",
       "actions": "Aktionen"
-    }
+    },
+    "noun": "Fahrzeuge",
+    "filterDamaged": "Beschädigt",
+    "filterAssigned": "Zugewiesen",
+    "withoutRank": "Ohne Rang"
   },
   "person": {
     "headers": {
@@ -3115,7 +3145,7 @@
     "status": "Status",
     "actions": "Aktionen",
     "employees": "Mitarbeiter",
-    "noEmployees": "Keine Mitarbeiter in diesem Rang",
+    "noEmployees": "Keine Mitarbeiter in dieser Auswahl.",
     "active": "Aktiv",
     "vacation": "Urlaub",
     "sick": "Krank",
@@ -3124,7 +3154,23 @@
     "countOf": "{n} von {total} Mitarbeitern",
     "filterActive": "Im Dienst",
     "filterAbsent": "Abwesend",
-    "filterLeaving": "Austritt geplant"
+    "filterLeaving": "Austritt geplant",
+    "noun": "Mitarbeiter",
+    "jobrole": "Funktion",
+    "withoutJobrole": "Ohne Funktion",
+    "phone": "Telefon",
+    "mail": "E-Mail",
+    "entrydate": "Eintritt",
+    "leavedate": "Austritt",
+    "birthdate": "Geburtsdatum",
+    "personalid": "Personalausweis",
+    "bankaccount": "Bankverbindung",
+    "leavingOn": "Austritt {date}",
+    "notes": "Notizen",
+    "addVacation": "Urlaub hinzufügen",
+    "stopVacation": "Urlaub beenden",
+    "edit": "Bearbeiten",
+    "exportSelection": "Exportieren"
   },
   "dispatch": {
     "title": "Leitstelle",
@@ -3136,5 +3182,25 @@
   },
   "employee": {
     "emptyRanks": "{n} Ränge unbesetzt"
+  },
+  "kTable": {
+    "columns": "Spalten",
+    "resetColumns": "Alle Spalten zeigen",
+    "noValues": "Keine Werte vorhanden",
+    "clearFacet": "Auswahl aufheben",
+    "clearAll": "Filter zurücksetzen",
+    "selected": "{n} ausgewählt",
+    "clearSelection": "Auswahl aufheben",
+    "countNoun": "{n} {noun}",
+    "countOf": "{n} von {total}",
+    "countOfNoun": "{n} von {total} {noun}",
+    "ofTotal": "{n} von {total}",
+    "exportSelection": "Exportieren"
+  },
+  "company": {
+    "noun": "Firmen",
+    "filterInspectionDue": "Prüfung fällig",
+    "type": "Art",
+    "withoutType": "Ohne Art"
   }
 }

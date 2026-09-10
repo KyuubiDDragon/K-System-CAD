@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useModulePermission } from '@/composables/useModulePermission';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // No route needed here based on original code
 
 // --- Store & Route ---
@@ -416,6 +418,13 @@ const copySolutionsWithoutUnicode = () => {
 onMounted(() => {
     fetchQuestionsAndAnswers(); // Fetch data when component mounts
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('TestView', () => unref(headers) as any);
 </script>
 
 <template>
@@ -494,13 +503,10 @@ onMounted(() => {
 
                 <v-divider></v-divider>
 
-                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                <div class="k-toolbar">
-                    <span class="k-toolbar__spacer"></span>
-                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (questionsAndAnswers || []).length }) }}</span>
-                </div>
+                <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                <KTableToolbar :columns="kCols" :shown="(questionsAndAnswers || []).length" />
                 <v-data-table
-                    :headers="headers"
+                    :headers="kCols.visible.value"
                     :items="questionsAndAnswers"
                     class="question-table"
                     item-value="id"

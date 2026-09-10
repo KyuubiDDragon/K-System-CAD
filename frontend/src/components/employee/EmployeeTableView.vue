@@ -1,7 +1,25 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+/**
+ * Personalübersicht als eine Tabelle.
+ *
+ * Der Entwurf zeigt hier das Kernstück des Systems: Filter als Chips über der
+ * Tabelle, Anzahl und Spaltenauswahl rechts daneben, eine Auswahlspalte vorn
+ * und die Massenaktionen in der Fußzeile — sichtbar erst, wenn etwas
+ * ausgewählt ist. Bedeutung steht links, Zahlen und Daten rechts.
+ *
+ * Drei Spalten führt `kdd_employee` zwar, sie gehören aber nicht in eine Liste,
+ * die den ganzen Tag offen steht: Bankverbindung, Geburtsdatum und
+ * Personalausweis sind Teil der Personalakte. Sie stehen deshalb im
+ * Spaltenmenü, aber nicht ab Werk in der Tabelle.
+ */
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import type { Rank, Company, Department, License } from '@/types/Members';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns, type KColumn } from '@/composables/useTableColumns';
+import { useTableFilters } from '@/composables/useTableFilters';
+import { exportRowsAsCsv } from '@/utils/tableExport';
 
 const { t } = useI18n();
 
@@ -38,53 +56,29 @@ const getImage = (path: string | null) => {
 
 // Format date helper
 function formatDate(date: any) {
-    if (!date) return '-';
-    const [datePart] = date.split(' ');
+    if (!date) return '—';
+    const [datePart] = String(date).split(' ');
     const [year, month, day] = datePart.split('-');
+    if (!year || !month || !day) return String(date);
     return `${day}.${month}.${year}`;
 }
 
-// Table headers
-const headers = [
-    { title: t('employeeTable.employee'), key: 'name', sortable: true, width: '250px' },
-    { title: t('employeeTable.serviceNumber'), key: 'servicenumber', sortable: true, width: '120px' },
-    { title: t('employeeTable.rank'), key: 'rank', sortable: true, width: '150px' },
-    { title: t('employeeTable.organization'), key: 'organization', sortable: false, width: '200px' },
-    { title: t('employeeTable.contact'), key: 'contact', sortable: false, width: '180px' },
-    { title: t('employeeTable.licenses'), key: 'licenses', sortable: false, width: '200px' },
-    { title: t('employeeTable.status'), key: 'status', sortable: true, width: '140px' },
-    { title: t('employeeTable.actions'), key: 'actions', sortable: false, width: '140px', align: 'center' as const },
-];
-
 /**
- * Alle Mitarbeiter aus allen Raengen in einer Liste. Der Rang wandert dabei
- * vom Ueberschrift-Dasein in eine Spalte, damit quer sortiert und gefiltert
+ * Alle Mitarbeiter aus allen Rängen in einer Liste. Der Rang wandert dabei
+ * vom Überschrift-Dasein in eine Spalte, damit quer sortiert und gefiltert
  * werden kann.
  */
 const alleMitarbeiter = computed(() =>
     (props.ranks ?? []).flatMap((rank: any) =>
-        (rank.employees ?? []).map((e: any) => ({ ...e, rankName: rank.name, rankImage: rank.rankImage })),
+        (rank.employees ?? []).map((e: any) => ({
+            ...e,
+            rankName: rank.name,
+            rankImage: rank.rankImage,
+            rankOrder: rank.sort_order ?? 999,
+            _rank: rank,
+        })),
     ),
 );
-
-/** Zuschaltbare Filter. Ohne Auswahl sind alle Mitarbeiter sichtbar. */
-const filter = ref([
-    { key: 'active', label: t('employeeTable.filterActive'), aktiv: false },
-    { key: 'absent', label: t('employeeTable.filterAbsent'), aktiv: false },
-    { key: 'leaving', label: t('employeeTable.filterLeaving'), aktiv: false },
-]);
-
-const sichtbareMitarbeiter = computed(() => {
-    const aktiv = filter.value.filter(f => f.aktiv).map(f => f.key);
-    if (!aktiv.length) return alleMitarbeiter.value;
-
-    return alleMitarbeiter.value.filter((e: any) => {
-        if (aktiv.includes('absent') && !e.is_absent) return false;
-        if (aktiv.includes('leaving') && !e.leavedate) return false;
-        if (aktiv.includes('active') && (e.is_absent || e.is_terminated)) return false;
-        return true;
-    });
-});
 
 // Get current vacation for employee
 const getCurrentVacation = (employee: any) => {
@@ -98,46 +92,174 @@ const getCurrentVacation = (employee: any) => {
     });
 };
 
+/* ------------------------------------------------------------------
+   Filter — die Chips über der Tabelle
+   ------------------------------------------------------------------ */
+
+/**
+ * „Aktiv" steht ab Werk an: ausgeschiedene Mitarbeiter stören in der Liste,
+ * die täglich offen ist. Wer sie sucht, schaltet den Filter ab — sie sind
+ * dann sofort wieder da, ohne dass man eine zweite Ansicht braucht.
+ */
+const filters = useTableFilters(
+    alleMitarbeiter,
+    [
+        {
+            key: 'active',
+            label: t('employeeTable.filterActive'),
+            on: true,
+            test: (e: any) => !e.is_terminated,
+        },
+        {
+            key: 'absent',
+            label: t('employeeTable.filterAbsent'),
+            test: (e: any) => !!getCurrentVacation(e),
+        },
+        {
+            key: 'leaving',
+            label: t('employeeTable.filterLeaving'),
+            test: (e: any) => !!e.leavedate,
+        },
+    ],
+    [
+        { field: 'rankName', label: t('employeeTable.rank') },
+        {
+            field: 'jobrole_name',
+            label: t('employeeTable.jobrole'),
+            emptyLabel: t('employeeTable.withoutJobrole'),
+        },
+    ],
+);
+
+const sichtbareMitarbeiter = computed(() =>
+    [...filters.filtered.value].sort(
+        (a: any, b: any) =>
+            (a.rankOrder ?? 999) - (b.rankOrder ?? 999) ||
+            String(a.name ?? '').localeCompare(String(b.name ?? ''), 'de'),
+    ),
+);
+
+/* ------------------------------------------------------------------
+   Spalten — was ab Werk steht und was sich zuschalten lässt
+   ------------------------------------------------------------------ */
+
+const allHeaders = computed<KColumn[]>(() => [
+    { title: t('employeeTable.employee'), key: 'name', sortable: true, width: '230px', locked: true },
+    { title: t('employeeTable.serviceNumber'), key: 'servicenumber', sortable: true, width: '86px' },
+    { title: t('employeeTable.rank'), key: 'rankName', sortable: true, width: '150px' },
+    { title: t('employeeTable.jobrole'), key: 'jobrole_name', sortable: true, width: '150px', optional: true },
+    { title: t('employeeTable.organization'), key: 'organization', sortable: false, width: '180px' },
+    { title: t('employeeTable.phone'), key: 'phonenumber', sortable: true, width: '120px' },
+    { title: t('employeeTable.mail'), key: 'mail', sortable: true, width: '190px', optional: true },
+    { title: t('employeeTable.entrydate'), key: 'entrydate', sortable: true, width: '104px', align: 'end' },
+    { title: t('employeeTable.leavedate'), key: 'leavedate', sortable: true, width: '104px', align: 'end', optional: true },
+    { title: t('employeeTable.licenses'), key: 'licenses', sortable: false, width: '180px', optional: true },
+    // Teil der Personalakte — zuschaltbar, aber nicht ab Werk sichtbar.
+    { title: t('employeeTable.birthdate'), key: 'birthdate', sortable: true, width: '104px', align: 'end', optional: true },
+    { title: t('employeeTable.personalid'), key: 'personalid', sortable: true, width: '120px', optional: true },
+    { title: t('employeeTable.bankaccount'), key: 'bankaccount', sortable: true, width: '150px', optional: true },
+    { title: t('employeeTable.status'), key: 'status', sortable: true, width: '134px' },
+    { title: t('employeeTable.actions'), key: 'actions', sortable: false, width: '134px', align: 'end', locked: true },
+]);
+
+const columns = useTableColumns('employees', allHeaders);
+
+/* ------------------------------------------------------------------
+   Auswahl und Massenaktionen
+   ------------------------------------------------------------------ */
+
+const selected = ref<any[]>([]);
+
+const selectedEmployees = computed(() =>
+    sichtbareMitarbeiter.value.filter((e: any) => selected.value.includes(e.id)),
+);
+
+function clearSelection() {
+    selected.value = [];
+}
+
 // Get status info
 const getStatusInfo = (employee: any) => {
     if (employee.is_terminated) {
         return {
             text: t('employeeTable.terminated'),
             color: 'error',
-            icon: 'mdi-account-cancel'
+            icon: 'mdi-account-cancel',
         };
     }
 
     const currentVacation = getCurrentVacation(employee);
     if (currentVacation) {
-        const isSick = currentVacation.reason.toLowerCase().includes('krank');
+        const isSick = currentVacation.reason?.toLowerCase().includes('krank');
         return {
             text: isSick ? t('employeeTable.sick') : t('employeeTable.vacation'),
             color: isSick ? 'warning' : 'info',
             icon: isSick ? 'mdi-medical-bag' : 'mdi-beach',
-            until: formatDate(currentVacation.end)
+            until: formatDate(currentVacation.end),
+        };
+    }
+
+    if (employee.leavedate) {
+        return {
+            text: t('employeeTable.leavingOn', { date: formatDate(employee.leavedate) }),
+            color: 'warning',
+            icon: 'mdi-calendar-alert',
         };
     }
 
     return {
         text: t('employeeTable.active'),
         color: 'success',
-        icon: 'mdi-check-circle'
+        icon: 'mdi-check-circle',
     };
 };
 
+/** Zellwert einer Spalte als reiner Text — für die Ausgabe. */
+function cellText(item: any, key: string): string {
+    switch (key) {
+        case 'organization':
+            return Object.values(item.companies ?? {})
+                .map((c: any) => c.name)
+                .join(' / ');
+        case 'licenses':
+            return Object.values(item.licenses ?? {})
+                .map((l: any) => l.name || l.license)
+                .join(' / ');
+        case 'status':
+            return getStatusInfo(item).text;
+        case 'entrydate':
+        case 'leavedate':
+        case 'birthdate':
+            return item[key] ? formatDate(item[key]) : '';
+        default:
+            return item[key] == null ? '' : String(item[key]);
+    }
+}
+
+/**
+ * Die Ausgabe folgt der Ansicht: genau die Spalten, die gerade sichtbar sind,
+ * in genau der Reihenfolge. Was man sieht, gibt man auch aus.
+ */
+function exportSelection() {
+    exportRowsAsCsv(
+        columns.visible.value,
+        selectedEmployees.value.length ? selectedEmployees.value : sichtbareMitarbeiter.value,
+        { name: 'mitarbeiter', cell: cellText },
+    );
+}
+
 // Filter licenses by type
-const filteredLicenses = (employee: any, filter: string) => {
+const filteredLicenses = (employee: any, type: string) => {
     if (!employee.licenses) return [];
     const licenses = Object.values(employee.licenses);
-    return licenses.filter((license: any) => license && license.type === filter);
+    return licenses.filter((license: any) => license && license.type === type);
 };
 
 // Handle edit employee
-const handleEdit = (employee: any, rank: Rank) => {
+const handleEdit = (employee: any) => {
     emit('edit', {
         employee,
-        rank
+        rank: employee._rank,
     });
 };
 </script>
@@ -151,85 +273,94 @@ const handleEdit = (employee: any, rank: Rank) => {
             sortieren noch quer filtern konnte.
         -->
         <div class="rank-table-section">
-            <!-- Filterleiste: Zustaende zuschalten, Anzahl rechts. -->
-            <div class="k-toolbar">
-                <v-chip
-                    v-for="f in filter"
-                    :key="f.key"
-                    size="small"
-                    variant="outlined"
-                    class="k-filter-chip"
-                    :class="{ 'is-active': f.aktiv }"
-                    @click="f.aktiv = !f.aktiv"
-                >
-                    {{ f.label }}
-                </v-chip>
+            <KTableToolbar
+                :filters="filters"
+                :columns="columns"
+                :shown="sichtbareMitarbeiter.length"
+                :total="alleMitarbeiter.length"
+                :noun="t('employeeTable.noun')"
+            />
 
-                <span class="k-toolbar__spacer"></span>
-
-                <span class="k-toolbar__count">
-                    {{ t('employeeTable.countOf', { n: sichtbareMitarbeiter.length, total: alleMitarbeiter.length }) }}
-                </span>
-            </div>
-
-            <!-- Data Table -->
             <v-data-table
-                :headers="headers"
+                v-model="selected"
+                :headers="columns.visible.value"
                 :items="sichtbareMitarbeiter"
+                item-value="id"
+                show-select
                 class="employee-data-table"
                 :items-per-page="25"
                 density="compact"
                 hover
+                hide-default-footer
             >
                 <!-- Employee Name Column -->
                 <template #item.name="{ item }">
                     <div class="employee-info-cell">
-                        <v-avatar size="40" class="employee-avatar" rounded="lg">
-                            <v-img :src="getImage(rank.rankImage)" />
+                        <v-avatar size="26" class="employee-avatar" rounded="sm">
+                            <v-img :src="getImage(item.rankImage)" />
                         </v-avatar>
-                        <div class="employee-details">
-                            <div class="employee-name-table">{{ item.name }}</div>
-                            <div class="employee-id-table">#{{ item.servicenumber }}</div>
-                        </div>
+                        <span class="employee-name-table">{{ item.name }}</span>
                     </div>
                 </template>
 
-                <!-- Service Number Column -->
+                <!-- Kennungen stehen in Festbreite: #05 und #29 sind untereinander
+                     sonst schwer zu unterscheiden. -->
                 <template #item.servicenumber="{ item }">
-                    <span class="text-caption">{{ item.servicenumber }}</span>
+                    <span class="k-mono">#{{ item.servicenumber }}</span>
                 </template>
 
-                <!-- Rank Column -->
-                <template #item.rank="{ item }">
-                    <span class="text-caption">{{ rank.name }}</span>
+                <template #item.rankName="{ item }">
+                    <span class="text-muted-cell">{{ item.rankName }}</span>
+                </template>
+
+                <template #item.jobrole_name="{ item }">
+                    <span class="text-muted-cell">{{ item.jobrole_name || '—' }}</span>
+                </template>
+
+                <template #item.phonenumber="{ item }">
+                    <span class="k-mono">{{ item.phonenumber || '—' }}</span>
+                </template>
+
+                <template #item.mail="{ item }">
+                    <span class="text-muted-cell text-truncate d-inline-block" style="max-width: 180px">
+                        {{ item.mail || '—' }}
+                    </span>
+                </template>
+
+                <template #item.entrydate="{ item }">
+                    <span class="k-mono">{{ formatDate(item.entrydate) }}</span>
+                </template>
+
+                <template #item.leavedate="{ item }">
+                    <span class="k-mono">{{ item.leavedate ? formatDate(item.leavedate) : '—' }}</span>
+                </template>
+
+                <template #item.birthdate="{ item }">
+                    <span class="k-mono">{{ item.birthdate ? formatDate(item.birthdate) : '—' }}</span>
+                </template>
+
+                <template #item.personalid="{ item }">
+                    <span class="k-mono">{{ item.personalid || '—' }}</span>
+                </template>
+
+                <template #item.bankaccount="{ item }">
+                    <span class="k-mono">{{ item.bankaccount || '—' }}</span>
                 </template>
 
                 <!-- Organization Column -->
                 <template #item.organization="{ item }">
                     <div class="organization-cell">
-                        <div v-if="item.companies" class="text-caption">
+                        <div v-if="item.companies" class="text-muted-cell">
                             <template v-for="(company, index) in Object.values(item.companies)" :key="index">
-                                {{ company.name }}<span v-if="index < Object.values(item.companies).length - 1">, </span>
+                                {{ company.name
+                                }}<span v-if="index < Object.values(item.companies).length - 1">, </span>
                             </template>
                         </div>
-                        <div v-if="item.departments" class="text-caption text-grey mt-1">
+                        <div v-if="item.departments" class="text-faint-cell">
                             <template v-for="(dept, index) in Object.values(item.departments)" :key="index">
-                                {{ dept.name }}<span v-if="index < Object.values(item.departments).length - 1">, </span>
+                                {{ dept.name
+                                }}<span v-if="index < Object.values(item.departments).length - 1">, </span>
                             </template>
-                        </div>
-                    </div>
-                </template>
-
-                <!-- Contact Column -->
-                <template #item.contact="{ item }">
-                    <div class="contact-cell">
-                        <div class="contact-item">
-                            <v-icon size="x-small" color="primary">mdi-phone</v-icon>
-                            <span class="text-caption">{{ item.phonenumber }}</span>
-                        </div>
-                        <div class="contact-item">
-                            <v-icon size="x-small" color="primary">mdi-email</v-icon>
-                            <span class="text-caption text-truncate" style="max-width: 140px;">{{ item.mail }}</span>
                         </div>
                     </div>
                 </template>
@@ -243,9 +374,8 @@ const handleEdit = (employee: any, rank: Rank) => {
                             size="x-small"
                             color="success"
                             variant="tonal"
-                            class="mr-1 mb-1"
                         >
-                            🚗 {{ license.name || license.license }}
+                            {{ license.name || license.license }}
                         </v-chip>
                         <v-chip
                             v-for="license in filteredLicenses(item, 'medic').slice(0, 2)"
@@ -253,15 +383,13 @@ const handleEdit = (employee: any, rank: Rank) => {
                             size="x-small"
                             color="error"
                             variant="tonal"
-                            class="mr-1 mb-1"
                         >
-                            🏥 {{ license.name || license.license }}
+                            {{ license.name || license.license }}
                         </v-chip>
                         <v-chip
                             v-if="Object.values(item.licenses || {}).length > 5"
                             size="x-small"
                             variant="outlined"
-                            class="mr-1 mb-1"
                         >
                             +{{ Object.values(item.licenses).length - 5 }}
                         </v-chip>
@@ -271,31 +399,25 @@ const handleEdit = (employee: any, rank: Rank) => {
                 <!-- Status Column -->
                 <template #item.status="{ item }">
                     <div class="status-cell">
-                        <v-chip
-                            :color="getStatusInfo(item).color"
-                            size="small"
-                            variant="tonal"
-                            :prepend-icon="getStatusInfo(item).icon"
-                        >
+                        <v-chip :color="getStatusInfo(item).color" size="small" variant="tonal">
                             {{ getStatusInfo(item).text }}
                         </v-chip>
-                        <div v-if="getStatusInfo(item).until" class="text-caption text-grey mt-1">
+                        <span v-if="getStatusInfo(item).until" class="text-faint-cell">
                             {{ t('employeeTable.until') }} {{ getStatusInfo(item).until }}
-                        </div>
+                        </span>
                     </div>
                 </template>
 
                 <!-- Actions Column -->
                 <template #item.actions="{ item }">
                     <div class="table-actions">
-                        <v-tooltip text="Notizen" location="top">
+                        <v-tooltip :text="t('employeeTable.notes')" location="top">
                             <template #activator="{ props: tooltipProps }">
                                 <v-btn
                                     v-bind="tooltipProps"
                                     icon
-                                    size="small"
+                                    size="x-small"
                                     variant="text"
-                                    color="primary"
                                     @click="emit('editNotes', item)"
                                 >
                                     <v-icon size="small">mdi-note-edit</v-icon>
@@ -304,7 +426,11 @@ const handleEdit = (employee: any, rank: Rank) => {
                         </v-tooltip>
 
                         <v-tooltip
-                            :text="getCurrentVacation(item) ? 'Urlaub beenden' : 'Urlaub hinzufügen'"
+                            :text="
+                                getCurrentVacation(item)
+                                    ? t('employeeTable.stopVacation')
+                                    : t('employeeTable.addVacation')
+                            "
                             location="top"
                         >
                             <template #activator="{ props: tooltipProps }">
@@ -312,28 +438,35 @@ const handleEdit = (employee: any, rank: Rank) => {
                                     v-if="canEdit"
                                     v-bind="tooltipProps"
                                     icon
-                                    size="small"
+                                    size="x-small"
                                     variant="text"
-                                    :color="getCurrentVacation(item) ? 'warning' : 'primary'"
-                                    @click="getCurrentVacation(item) ? emit('stopVacation', getCurrentVacation(item).id) : emit('addVacation', item)"
+                                    :color="getCurrentVacation(item) ? 'warning' : undefined"
+                                    @click="
+                                        getCurrentVacation(item)
+                                            ? emit('stopVacation', getCurrentVacation(item).id)
+                                            : emit('addVacation', item)
+                                    "
                                 >
                                     <v-icon size="small">
-                                        {{ getCurrentVacation(item) ? 'mdi-calendar-remove' : 'mdi-calendar-plus' }}
+                                        {{
+                                            getCurrentVacation(item)
+                                                ? 'mdi-calendar-remove'
+                                                : 'mdi-calendar-plus'
+                                        }}
                                     </v-icon>
                                 </v-btn>
                             </template>
                         </v-tooltip>
 
-                        <v-tooltip text="Bearbeiten" location="top">
+                        <v-tooltip :text="t('employeeTable.edit')" location="top">
                             <template #activator="{ props: tooltipProps }">
                                 <v-btn
                                     v-if="canEdit"
                                     v-bind="tooltipProps"
                                     icon
-                                    size="small"
+                                    size="x-small"
                                     variant="text"
-                                    color="primary"
-                                    @click="handleEdit(item, rank)"
+                                    @click="handleEdit(item)"
                                 >
                                     <v-icon size="small">mdi-pencil</v-icon>
                                 </v-btn>
@@ -341,14 +474,29 @@ const handleEdit = (employee: any, rank: Rank) => {
                         </v-tooltip>
                     </div>
                 </template>
+
                 <!-- Leerzustand innerhalb der Tabelle statt als eigene Karte -->
                 <template #no-data>
                     <div class="no-data">
-                        <v-icon size="20" color="grey">mdi-account-off</v-icon>
+                        <v-icon size="20">mdi-account-off</v-icon>
                         <p>{{ t('employeeTable.noEmployees') }}</p>
                     </div>
                 </template>
             </v-data-table>
+
+            <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+            <KBulkBar
+                :count="selectedEmployees.length"
+                :shown="sichtbareMitarbeiter.length"
+                :total="alleMitarbeiter.length"
+                @clear="clearSelection"
+            >
+                <template #actions>
+                    <v-btn variant="outlined" size="small" @click="exportSelection">
+                        {{ t('employeeTable.exportSelection') }}
+                    </v-btn>
+                </template>
+            </KBulkBar>
         </div>
     </div>
 </template>
@@ -358,103 +506,57 @@ const handleEdit = (employee: any, rank: Rank) => {
     width: 100%;
 }
 
+/*
+   Vorher stand hier ein fest verdrahtetes Dunkelblau (rgba(15,23,42,.6)) samt
+   Weichzeichner - im hellen Modus eine dunkle Platte mitten auf hellem Grund.
+   Jetzt tragen Flaeche und Linie dieselben Merker wie alles andere.
+*/
 .rank-table-section {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid var(--k-line);
-    border-radius: 12px;
+    background: var(--k-surface, #fff);
+    border: 1px solid var(--k-line, #e2e5ea);
+    border-radius: 6px;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-}
-
-.rank-table-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    background: rgba(30, 41, 59, 0.6);
-    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
-}
-
-.rank-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #e2e8f0;
-    display: flex;
-    align-items: center;
 }
 
 .employee-data-table {
     background: transparent !important;
 }
 
-.employee-data-table :deep(th) {
-    background-color: rgba(30, 41, 59, 0.5) !important;
-    color: var(--k-ink) !important;
-    font-weight: 600 !important;
-    font-size: 0.8rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.employee-data-table :deep(tr:hover) {
-    background-color: rgba(59, 130, 246, 0.08) !important;
-}
-
-.employee-data-table :deep(td) {
-    border-bottom: 1px solid var(--k-line) !important;
-    padding: 18px 12px !important;
-}
-
-.employee-data-table :deep(th) {
-    padding: 18px 12px !important;
-}
-
 .employee-info-cell {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 9px;
+    min-width: 0;
 }
 
 .employee-avatar {
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-    border-radius: 8px !important;
-    background: linear-gradient(135deg, #1e3a8a, var(--k-accent));
-}
-
-.employee-details {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+    border-radius: 4px !important;
 }
 
 .employee-name-table {
-    font-weight: 600;
-    font-size: 0.875rem;
-    color: #e2e8f0;
+    font-weight: 550;
+    font-size: 13px;
+    color: var(--k-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.employee-id-table {
-    font-size: 0.75rem;
-    color: rgb(var(--v-theme-primary));
-    font-weight: 500;
+.text-muted-cell {
+    font-size: 12.5px;
+    color: var(--k-ink-muted);
+}
+
+.text-faint-cell {
+    font-size: 11.5px;
+    color: var(--k-ink-faint);
 }
 
 .organization-cell {
-    line-height: 1.4;
-}
-
-.contact-cell {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    line-height: 1.35;
 }
 
 .license-pills {
@@ -466,21 +568,13 @@ const handleEdit = (employee: any, rank: Rank) => {
 .status-cell {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
+    align-items: flex-start;
 }
 
 .table-actions {
     display: flex;
-    gap: 4px;
-    justify-content: center;
-}
-
-/* Responsive */
-@media (max-width: 1200px) {
-    .employee-data-table :deep(th),
-    .employee-data-table :deep(td) {
-        font-size: 0.75rem !important;
-        padding: 8px !important;
-    }
+    gap: 2px;
+    justify-content: flex-end;
 }
 </style>

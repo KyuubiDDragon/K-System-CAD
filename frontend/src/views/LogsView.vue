@@ -113,13 +113,10 @@
             </v-col>
           </v-row>
 
-          <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-          <div class="k-toolbar">
-              <span class="k-toolbar__spacer"></span>
-              <span class="k-toolbar__count">{{ $t("common.entries", { n: (logs || []).length }) }}</span>
-          </div>
+          <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+          <KTableToolbar :columns="kCols" :shown="(logs || []).length" :total="totalLogs" />
           <v-data-table
-            :headers="headers"
+            :headers="kCols.visible.value"
             :items="logs"
             :loading="loading"
             class="elevation-1"
@@ -264,9 +261,12 @@ import { debounce } from 'lodash';
 import { formatDate } from '@/utils/dateFormatter';
 import { useI18n } from 'vue-i18n';
 import { useModulePermission } from '@/composables/useModulePermission';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 
 export default {
   name: 'LogsView',
+  components: { KTableToolbar },
   setup() {
     const store = useStore();
     const { t } = useI18n();
@@ -296,15 +296,24 @@ export default {
       sortDesc: [true]
     });
 
+    /*
+      Vuetify 3 liest `title` und `key`; die alten Namen `text` und `value`
+      stammen noch aus Vuetify 2. Deshalb standen die Spaltenkoepfe hier bisher
+      leer. Zeit und Kennung stehen rechts, Bedeutung links.
+    */
     const headers = [
-      { text: t('logsView.timestamp'), value: 'timestamp', width: '15%' },
-      { text: t('logsView.user'), value: 'username', width: '10%' },
-      { text: t('logsView.logType'), value: 'log_type', width: '10%' },
-      { text: t('logsView.message'), value: 'message', width: '30%' },
-      { text: t('logsView.table'), value: 'table_name', width: '15%' },
-      { text: t('logsView.recordId'), value: 'record_id', width: '10%' },
-      { text: t('logsView.details'), value: 'changed_data', width: '10%' }
+      { title: t('logsView.timestamp'), key: 'timestamp', width: '150px', align: 'end' },
+      { title: t('logsView.user'), key: 'username', width: '130px' },
+      { title: t('logsView.logType'), key: 'log_type', width: '120px' },
+      { title: t('logsView.message'), key: 'message' },
+      { title: t('logsView.table'), key: 'table_name', width: '150px', optional: true },
+      { title: t('logsView.recordId'), key: 'record_id', width: '90px', align: 'end', optional: true },
+      { title: t('logsView.details'), key: 'changed_data', width: '110px', align: 'end' }
     ];
+
+    /* Spaltenauswahl - eigener Schluessel, weil es unter admin/ eine zweite
+       Protokollansicht gibt. */
+    const kCols = useTableColumns('LogsView', () => headers);
 
     const { hasModulePermission } = useModulePermission();
 
@@ -465,6 +474,7 @@ export default {
       logTypes,
       users,
       headers,
+      kCols,
       options,
       searchTerm,
       startDate,

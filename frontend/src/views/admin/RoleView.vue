@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch, type Ref } from 'vue';
+import { ref, reactive, computed, onMounted, watch, type Ref, unref } from 'vue';
 import { useRoute } from 'vue-router'; // Import if permissions needed
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store (optional, if needed elsewhere)
@@ -10,6 +10,8 @@ import { useI18n } from 'vue-i18n';
 import { usePermissionGrouping } from '@/composables/usePermissionGrouping';
 import { usePermissionDependencies } from '@/composables/usePermissionDependencies';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // --- Interfaces & Types ---
 interface EditedRoleData {
     id?: number | null;
@@ -637,6 +639,13 @@ const confirmDeleteRole = async () => {
 
 // --- Lifecycle Hooks ---
 onMounted(fetchAllInitialData);
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any);
 </script>
 
 <template>
@@ -686,13 +695,10 @@ onMounted(fetchAllInitialData);
 
             <v-divider></v-divider>
 
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (roles || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(roles || []).length" />
             <v-data-table
-                :headers="roleHeaders"
+                :headers="kCols.visible.value"
                 :items="roles"
                 class="elevation-0"
                 item-value="id"

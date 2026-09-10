@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, defineAsyncComponent } from 'vue';
+import { ref, computed, onMounted, reactive, defineAsyncComponent, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store
@@ -7,6 +7,11 @@ import type { Company, CompanyType } from '@/types/Company'; // Adjust path if n
 import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 // --- Async Component Imports ---
 const AuthorityAddCompanyFile = defineAsyncComponent(
     () => import('@/components/CompanyFile/Authority/Add.vue')
@@ -98,8 +103,8 @@ const companyHeaders = computed(() => [
     { title: t('company.headers.controlCenter'), key: 'phonenumber', sortable: false },
     { title: t('company.headers.ceo'), key: 'ceo', sortable: true },
     { title: t('company.headers.fireExtinguishers'), key: 'extinguisher_count', sortable: true, align: 'end' },
-    { title: t('company.headers.lastInspection'), key: 'last_fire_protection_inspection', sortable: true },
-    { title: t('company.headers.nextInspection'), key: 'fire_protection_inspection_valid_until', sortable: true },
+    { title: t('company.headers.lastInspection'), key: 'last_fire_protection_inspection', sortable: true, optional: true, align: 'end' },
+    { title: t('company.headers.nextInspection'), key: 'fire_protection_inspection_valid_until', sortable: true, align: 'end' },
     { title: t('company.headers.actions'), key: 'actions', sortable: false, align: 'end' },
 ]);
 const groupByCategoryName = [{ key: 'type_name', order: 'asc' as const }];
@@ -369,6 +374,52 @@ onMounted(async () => {
         }
     }
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('CompanyView', () => unref(companyHeaders) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'firmen' });
+}
+
+/**
+ * Filter der Leiste. Schalter tragen eine feste Bedingung,
+ * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
+ * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
+ */
+const kFilters = useTableFilters(
+    () => (unref(filteredCompanies) as any[]) ?? [],
+    [
+        {
+            key: 'inspectionDue',
+            label: t('company.filterInspectionDue'),
+            test: (c: any) => {
+                const until = c.fire_protection_inspection_valid_until;
+                return !!until && new Date(until) < new Date();
+            },
+        },
+    ],
+    [
+        { field: 'type_name', label: t('company.type'), emptyLabel: t('company.withoutType') },
+    ],
+);
+
 </script>
 
 <template>
@@ -634,14 +685,17 @@ onMounted(async () => {
                     <v-divider></v-divider>
 
                     <!-- Datentabelle -->
-                    <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                    <div class="k-toolbar">
-                        <span class="k-toolbar__spacer"></span>
-                        <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredCompanies || []).length }) }}</span>
-                    </div>
+                    <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                    <KTableToolbar
+                :filters="kFilters"
+                :columns="kCols"
+                :shown="kFilters.filtered.value.length"
+                :total="(filteredCompanies || []).length"
+                :noun="t('company.noun')"
+            />
                     <v-data-table
-                        :headers="companyHeaders"
-                        :items="filteredCompanies"
+                        :headers="kCols.visible.value"
+                        :items="kFilters.filtered.value"
                         :search="search"
                         :items-per-page="50"
                         :group-by="groupBy"
@@ -651,6 +705,8 @@ onMounted(async () => {
                         density="comfortable"
                         show-group-by
                         class="company-table"
+                        v-model="kSelected"
+                        show-select
                     >
                         <template
                             v-if="!search"
@@ -793,6 +849,19 @@ onMounted(async () => {
                             </div>
                         </template>
                     </v-data-table>
+                    <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+                    <KBulkBar
+                        :count="kSelected.length"
+                        :shown="kFilters.filtered.value.length"
+                        :total="(filteredCompanies || []).length"
+                        @clear="kSelected = []"
+                    >
+                        <template #actions>
+                            <v-btn variant="outlined" size="small" @click="kExportSelection">
+                                {{ t('kTable.exportSelection') }}
+                            </v-btn>
+                        </template>
+                    </KBulkBar>
                 </v-card-text>
             </v-card>
         </template>

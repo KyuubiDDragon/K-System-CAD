@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, watch, nextTick } from 'vue';
+import { ref, computed, onMounted, reactive, watch, nextTick, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
@@ -8,6 +8,10 @@ import { useToast } from 'vue-toastification'; // Import toast
 import type { PersonFile } from '@/types/Person';
 import { useModulePermission } from '@/composables/useModulePermission';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
 // Import child components
 import AuthorityAddPersonFile from '@/components/PersonFile/Authority/Add.vue'; // Adjust path
 import AuthorityEditPersonFile from '@/components/PersonFile/Authority/Edit.vue'; // Adjust path
@@ -101,7 +105,7 @@ const toast = useToast();
 const personHeaders = computed(() => [
     { title: t('person.headers.name'), key: 'name', sortable: true },
     { title: t('person.headers.phoneNumber'), key: 'phonenumber', sortable: true },
-    { title: t('person.headers.birthdate'), key: 'birthday', sortable: true },
+    { title: t('person.headers.birthdate'), key: 'birthday', sortable: true, align: 'end' },
     { title: t('person.headers.email'), key: 'mail', sortable: false },
     { title: t('person.headers.actions'), key: 'actions', sortable: false, align: 'end' },
 ]);
@@ -340,6 +344,29 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
     else if (color === 'warning') toast.warning(message);
     else toast.info(message);
 }
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('PersonView', () => unref(personHeaders) as any);
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(filteredPersons) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'personen' });
+}
+
 </script>
 
 <template>
@@ -399,13 +426,10 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
             <v-divider></v-divider>
 
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredPersons || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(filteredPersons || []).length" />
             <v-data-table
-                :headers="personHeaders"
+                :headers="kCols.visible.value"
                 :items="filteredPersons"
                 class="elevation-0"
                 :search="search"
@@ -414,6 +438,8 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
                 :loading="loadingPersons"
                 hover
                 density="comfortable"
+                v-model="kSelected"
+                show-select
             >
                 <template v-slot:[`item.name`]="{ item }">
                     <span @click="openViewPersonDialog(item)" class="person-name-link">
@@ -479,6 +505,19 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
                     </div>
                 </template>
             </v-data-table>
+            <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+            <KBulkBar
+                :count="kSelected.length"
+                :shown="filteredPersons.length"
+                :total="filteredPersons.length"
+                @clear="kSelected = []"
+            >
+                <template #actions>
+                    <v-btn variant="outlined" size="small" @click="kExportSelection">
+                        {{ t('kTable.exportSelection') }}
+                    </v-btn>
+                </template>
+            </KBulkBar>
         </v-card>
 
         <!-- Add Person Dialog Component -->

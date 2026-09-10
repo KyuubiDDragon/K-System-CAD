@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { Invoice, InvoiceItem } from '@/types/Invoice'; // Adjust path and ensure types exist
 import { useToast } from 'vue-toastification'; // Import toast
@@ -69,9 +74,9 @@ const invoiceHeaders = computed(() => [
     { title: t('invoiceView.type'), key: 'outgoing', sortable: true, width: '120px' },
     { title: t('invoiceView.subject'), key: 'title', sortable: true },
     { title: t('invoiceView.customer'), key: 'customer', sortable: true },
-    { title: t('invoiceView.delivered'), key: 'is_delivered_date', sortable: true },
-    { title: t('invoiceView.sent'), key: 'is_sent_date', sortable: true },
-    { title: t('invoiceView.paid'), key: 'is_paid_date', sortable: true },
+    { title: t('invoiceView.delivered'), key: 'is_delivered_date', sortable: true, align: 'end' },
+    { title: t('invoiceView.sent'), key: 'is_sent_date', sortable: true, align: 'end' },
+    { title: t('invoiceView.paid'), key: 'is_paid_date', sortable: true, align: 'end' },
     { title: t('invoiceView.actions'), key: 'actions', sortable: false, align: 'end', width: '150px' },
 ] as const);
 
@@ -291,6 +296,54 @@ onMounted(async () => {
         }
     }
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('InvoiceView', () => unref(invoiceHeaders) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'rechnungen' });
+}
+
+/**
+ * Filter der Leiste. Schalter tragen eine feste Bedingung,
+ * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
+ * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
+ */
+const kFilters = useTableFilters(
+    () => (unref(filteredInvoices) as any[]) ?? [],
+    [
+        {
+            key: 'outgoing',
+            label: t('invoiceView.filterOutgoing'),
+            test: (i: any) => Number(i.outgoing) === 1,
+        },
+        {
+            key: 'open',
+            label: t('invoiceView.filterOpen'),
+            test: (i: any) => !i.is_paid_date,
+        },
+    ],
+    [
+        { field: 'customer', label: t('invoiceView.customer'), emptyLabel: t('invoiceView.withoutCustomer') },
+    ],
+);
+
 </script>
 
 <template>
@@ -361,14 +414,17 @@ onMounted(async () => {
                 <v-divider></v-divider>
 
                 <!-- Datentabelle -->
-                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                <div class="k-toolbar">
-                    <span class="k-toolbar__spacer"></span>
-                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredInvoices || []).length }) }}</span>
-                </div>
+                <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                <KTableToolbar
+                :filters="kFilters"
+                :columns="kCols"
+                :shown="kFilters.filtered.value.length"
+                :total="(filteredInvoices || []).length"
+                :noun="t('invoiceView.noun')"
+            />
                 <v-data-table
-                    :headers="invoiceHeaders"
-                    :items="filteredInvoices"
+                    :headers="kCols.visible.value"
+                    :items="kFilters.filtered.value"
                     :search="search"
                     :items-per-page="25"
                     item-value="id"
@@ -376,6 +432,8 @@ onMounted(async () => {
                     hover
                     density="comfortable"
                     class="invoice-table"
+                    v-model="kSelected"
+                    show-select
                 >
                     <template v-slot:[`item.outgoing`]="{ item }">
                         <v-chip
@@ -511,6 +569,19 @@ onMounted(async () => {
                         </div>
                     </template>
                 </v-data-table>
+                <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+                <KBulkBar
+                    :count="kSelected.length"
+                    :shown="kFilters.filtered.value.length"
+                    :total="(filteredInvoices || []).length"
+                    @clear="kSelected = []"
+                >
+                    <template #actions>
+                        <v-btn variant="outlined" size="small" @click="kExportSelection">
+                            {{ t('kTable.exportSelection') }}
+                        </v-btn>
+                    </template>
+                </KBulkBar>
             </v-card-text>
         </v-card>
 

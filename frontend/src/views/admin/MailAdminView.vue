@@ -191,13 +191,10 @@
             <!-- Accounts Table -->
             <v-card>
               <v-card-text>
-                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                <div class="k-toolbar">
-                    <span class="k-toolbar__spacer"></span>
-                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (accounts || []).length }) }}</span>
-                </div>
+                <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                <KTableToolbar :columns="kCols" :shown="(accounts || []).length" />
                 <v-data-table
-                  :headers="accountHeaders"
+                  :headers="kCols.visible.value"
                   :items="accounts"
                   :loading="loadingAccounts"
                   :items-per-page="50"
@@ -502,7 +499,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+
+import { ref, onMounted, computed, unref } from 'vue';
 import { useRoute } from 'vue-router'
 
 // Route
@@ -558,7 +558,7 @@ const accountHeaders = [
   { title: 'Typ', key: 'account_type', sortable: true },
   { title: 'Speicher', key: 'storage', sortable: false },
   { title: 'Aktivität', key: 'activity', sortable: false },
-  { title: 'Erstellt', key: 'created_at', sortable: true },
+  { title: 'Erstellt', key: 'created_at', sortable: true, align: 'end' },
   { title: 'Aktionen', key: 'actions', sortable: false, align: 'end' }
 ]
 
@@ -792,6 +792,13 @@ onMounted(async () => {
     activeTab.value = route.query.tab as string
   }
 })
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/MailAdminView', () => unref(accountHeaders) as any);
 </script>
 
 <style scoped>

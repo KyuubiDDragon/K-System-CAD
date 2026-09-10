@@ -1,11 +1,16 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { Vehicle } from '@/types/Vehicle'; // Adjust path if needed
 import { useToast } from 'vue-toastification'; // Import Toastification
 import { useI18n } from 'vue-i18n';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 // Define props for desktop window mode
 interface Props {
   meta?: Record<string, any>
@@ -85,13 +90,13 @@ const toast = useToast();
 
 // --- Table Headers ---
 const headers = computed(() => [
-    { title: t('vehicle.headers.sort'), key: 'sort_order', sortable: true, width: '80px' },
+    { title: t('vehicle.headers.sort'), key: 'sort_order', sortable: true, width: '80px', optional: true, align: 'end' },
     { title: t('vehicle.headers.title'), key: 'title', sortable: true },
     { title: t('vehicle.headers.numberplate'), key: 'numberplate', sortable: true },
     { title: t('vehicle.headers.rank'), key: 'rank', sortable: true },
-    { title: t('vehicle.headers.damageOfficer'), key: 'damage_officer', sortable: false }, // Damage Officer
-    { title: t('vehicle.headers.damageDescription'), key: 'damage_description', sortable: false }, // Damage Description
-    { title: t('vehicle.headers.damageTime'), key: 'damage_time', sortable: true }, // Damage Time
+    { title: t('vehicle.headers.damageOfficer'), key: 'damage_officer', sortable: false, optional: true }, // Damage Officer
+    { title: t('vehicle.headers.damageDescription'), key: 'damage_description', sortable: false, optional: true }, // Damage Description
+    { title: t('vehicle.headers.damageTime'), key: 'damage_time', sortable: true, align: 'end' }, // Damage Time
     { title: t('vehicle.headers.actions'), key: 'actions', sortable: false, align: 'end', width: '180px' },
 ]);
 
@@ -369,6 +374,54 @@ onMounted(async () => {
         }
     }
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('VehicleView', () => unref(headers) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'fahrzeuge' });
+}
+
+/**
+ * Filter der Leiste. Schalter tragen eine feste Bedingung,
+ * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
+ * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
+ */
+const kFilters = useTableFilters(
+    () => (unref(vehicles) as any[]) ?? [],
+    [
+        {
+            key: 'damaged',
+            label: t('vehicle.filterDamaged'),
+            test: (v: any) => Number(v.damage) === 1,
+        },
+        {
+            key: 'assigned',
+            label: t('vehicle.filterAssigned'),
+            test: (v: any) => v.dispatch_id !== null && v.dispatch_id !== undefined,
+        },
+    ],
+    [
+        { field: 'rank', label: t('vehicle.headers.rank'), emptyLabel: t('vehicle.withoutRank') },
+    ],
+);
+
 </script>
 
 <template>
@@ -550,19 +603,24 @@ onMounted(async () => {
 		
 		<!-- Datentabelle -->
 		<v-card class="main-table-card" elevation="3">
-		  <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-		  <div class="k-toolbar">
-		      <span class="k-toolbar__spacer"></span>
-		      <span class="k-toolbar__count">{{ $t("common.entries", { n: (vehicles || []).length }) }}</span>
-		  </div>
+		  <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+		  <KTableToolbar
+                :filters="kFilters"
+                :columns="kCols"
+                :shown="kFilters.filtered.value.length"
+                :total="(vehicles || []).length"
+                :noun="t('vehicle.noun')"
+            />
 		  <v-data-table
-			:headers="headers"
-			:items="vehicles"
+			:headers="kCols.visible.value"
+			:items="kFilters.filtered.value"
 			item-value="id"
 			:loading="loadingVehicles"
 			hover
 			density="comfortable"
 			class="vehicle-table"
+		      v-model="kSelected"
+		      show-select
 		  >
 			<template v-slot:loader>
 			  <div class="d-flex align-center justify-center pa-4">
@@ -700,6 +758,19 @@ onMounted(async () => {
 			  </div>
 			</template>
 		  </v-data-table>
+		  <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+		  <KBulkBar
+		      :count="kSelected.length"
+		      :shown="kFilters.filtered.value.length"
+		      :total="(vehicles || []).length"
+		      @clear="kSelected = []"
+		  >
+		      <template #actions>
+		          <v-btn variant="outlined" size="small" @click="kExportSelection">
+		              {{ t('kTable.exportSelection') }}
+		          </v-btn>
+		      </template>
+		  </KBulkBar>
 		</v-card>
 		</template>
 		

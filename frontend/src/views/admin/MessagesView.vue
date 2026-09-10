@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from 'vue';
+import { ref, onMounted, reactive, computed, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 import { useRoute } from 'vue-router'; // Import useRoute if permissions are needed
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { Group, User, GroupMember } from '@/types/AdminMessage'; // Adjust path if needed
@@ -177,6 +179,13 @@ onMounted(() => {
     fetchGroups();
     fetchUsers(); // Fetch users needed for the select dropdown
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/MessagesView', () => unref(groupHeaders) as any);
 </script>
 
 <template>
@@ -227,13 +236,10 @@ onMounted(() => {
 
             <v-divider></v-divider>
 
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (groups || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(groups || []).length" />
             <v-data-table
-                :headers="groupHeaders"
+                :headers="kCols.visible.value"
                 :items="groups"
                 item-value="id"
                 :loading="loadingGroups"

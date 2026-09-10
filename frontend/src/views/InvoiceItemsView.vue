@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from "vue-router";
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 import { apiClientAuth } from "@/api"; // Use configured Axios instance
 import type { InvoiceItem } from "@/types/Invoice"; // Adjust path and ensure type exists
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
@@ -153,6 +155,12 @@ const formatCurrency = (value: number | null | undefined) => {
 // --- Lifecycle Hooks ---
 onMounted(fetchItems);
 
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('InvoiceItemsView', () => unref(itemHeaders) as any);
 </script>
 <template>
   <ErrorSnackbar v-model="errorSnackbar" />
@@ -181,13 +189,10 @@ onMounted(fetchItems);
       
       <v-divider></v-divider>
       
-      <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-      <div class="k-toolbar">
-          <span class="k-toolbar__spacer"></span>
-          <span class="k-toolbar__count">{{ $t("common.entries", { n: (items || []).length }) }}</span>
-      </div>
+      <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+      <KTableToolbar :columns="kCols" :shown="(items || []).length" />
       <v-data-table
-        :headers="itemHeaders"
+        :headers="kCols.visible.value"
         :items="items"
         item-value="id"
         :loading="loadingItems"

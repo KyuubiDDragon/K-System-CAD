@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, type Ref, watch } from 'vue';
+import { ref, computed, onMounted, reactive, type Ref, watch, unref } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { User, Groups as Group } from '@/types/User'; // Adjust paths and names if needed
@@ -11,6 +11,10 @@ import LogoutUserButton from '@/components/Admin/LogoutUserButton.vue'; // Sessi
 import { useToast } from 'vue-toastification'; // Import toast
 import { useI18n } from 'vue-i18n';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
 // --- Router & Permissions ---
 const route = useRoute();
 const authStore = useAuthStore();
@@ -124,12 +128,12 @@ const headers = computed(() => [
     { title: t('adminUser.headers.employee'), key: 'name', sortable: true },
     { title: t('adminUser.headers.groups'), key: 'groups', sortable: false },
     { title: t('adminUser.headers.status'), key: 'banned', sortable: true },
-    { title: t('adminUser.headers.mailHeader'), key: 'mail_header', sortable: false },
-    { title: t('adminUser.headers.mailFooter'), key: 'mail_footer', sortable: false },
-    { title: t('adminUser.headers.mailHeaderNeutral'), key: 'mail_header_neutral', sortable: false },
-    { title: t('adminUser.headers.mailFooterNeutral'), key: 'mail_footer_neutral', sortable: false },
-    { title: t('adminUser.headers.signature'), key: 'signature', sortable: false },
-    { title: t('adminUser.headers.lastLogin'), key: 'last_login', sortable: true },
+    { title: t('adminUser.headers.mailHeader'), key: 'mail_header', sortable: false, optional: true },
+    { title: t('adminUser.headers.mailFooter'), key: 'mail_footer', sortable: false, optional: true },
+    { title: t('adminUser.headers.mailHeaderNeutral'), key: 'mail_header_neutral', sortable: false, optional: true },
+    { title: t('adminUser.headers.mailFooterNeutral'), key: 'mail_footer_neutral', sortable: false, optional: true },
+    { title: t('adminUser.headers.signature'), key: 'signature', sortable: false, optional: true },
+    { title: t('adminUser.headers.lastLogin'), key: 'last_login', sortable: true, align: 'end' },
     { title: t('adminUser.headers.actions'), key: 'actions', sortable: false, align: 'end', width: '160px' },
 ] as const);
 
@@ -490,6 +494,29 @@ const formatDate = (dateString?: string | null): string => {
 onMounted(() => {
     fetchAllInitialData();
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/UserView', () => unref(headers) as any);
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(filteredUsers) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'benutzer' });
+}
+
 </script>
 
 <template>
@@ -570,19 +597,18 @@ onMounted(() => {
 
             <!-- Users Table -->
             <v-card class="main-card elevation-4">
-                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                <div class="k-toolbar">
-                    <span class="k-toolbar__spacer"></span>
-                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredUsers || []).length }) }}</span>
-                </div>
+                <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                <KTableToolbar :columns="kCols" :shown="(filteredUsers || []).length" />
                 <v-data-table
-                    :headers="headers"
+                    :headers="kCols.visible.value"
                     :items="filteredUsers"
                     item-value="id"
                     :loading="loadingUsers"
                     density="comfortable"
                     hover
                     class="user-table"
+                    v-model="kSelected"
+                    show-select
                 >
                     <template v-slot:[`item.groups`]="{ item }">
                         <div class="group-chips">
@@ -754,6 +780,19 @@ onMounted(() => {
                         </div>
                     </template>
                 </v-data-table>
+                <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+                <KBulkBar
+                    :count="kSelected.length"
+                    :shown="filteredUsers.length"
+                    :total="filteredUsers.length"
+                    @clear="kSelected = []"
+                >
+                    <template #actions>
+                        <v-btn variant="outlined" size="small" @click="kExportSelection">
+                            {{ t('kTable.exportSelection') }}
+                        </v-btn>
+                    </template>
+                </KBulkBar>
             </v-card>
 
             <!-- New User Dialog -->

@@ -57,13 +57,10 @@
 
             <v-divider></v-divider>
 
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredAuthorities || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(filteredAuthorities || []).length" />
             <v-data-table
-                :headers="authorityHeaders"
+                :headers="kCols.visible.value"
                 :items="filteredAuthorities"
                 item-value="id"
                 class="elevation-0"
@@ -542,12 +539,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Your Axios instance
 import { useToast } from 'vue-toastification';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // --- Define Interfaces ---
 interface Authority {
     id: number | null;
@@ -1020,6 +1019,13 @@ onMounted(async () => {
     await fetchFeatures();
     console.log('Data loading completed.');
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/AuthorityView', () => unref(authorityHeaders) as any);
 </script>
 
 <style scoped>

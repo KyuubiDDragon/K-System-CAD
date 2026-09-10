@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from 'vue';
+import { ref, onMounted, reactive, computed, unref } from 'vue';
 import { useRoute } from 'vue-router'; // Import if permissions needed
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
 import { useI18n } from 'vue-i18n';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // --- Define Interfaces ---
 interface Weather {
     id: number;
@@ -122,7 +124,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 // --- Table Headers ---
 const weatherHeaders = ref([
-    { title: t('weatherView.date'), key: 'date', sortable: true },
+    { title: t('weatherView.date'), key: 'date', sortable: true, align: 'end' },
     { title: t('weatherView.day'), key: 'day', sortable: true },
     { title: t('weatherView.minTemp'), key: 'min_temp', sortable: true, align: 'end' },
     { title: t('weatherView.maxTemp'), key: 'max_temp', sortable: true, align: 'end' },
@@ -263,6 +265,13 @@ const getIconName = (iconValue: string | null): string => {
 onMounted(() => {
     fetchWeatherData();
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/WeatherView', () => unref(weatherHeaders) as any);
 </script>
 
 <template>
@@ -316,13 +325,10 @@ onMounted(() => {
 
             <v-divider></v-divider>
 
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (weatherData || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(weatherData || []).length" />
             <v-data-table
-                :headers="weatherHeaders"
+                :headers="kCols.visible.value"
                 :items="weatherData"
                 item-value="id"
                 :loading="loadingWeather"

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { ReportCode } from '@/types/Report'; // Adjust path if needed
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
@@ -201,6 +203,13 @@ const confirmDeleteCode = async () => {
 onMounted(() => {
     fetchCodes(); // Fetch data when component mounts
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('ReportCodeView', () => unref(codeHeaders) as any);
 </script>
 
 <template>
@@ -236,13 +245,10 @@ onMounted(() => {
   
 	  <!-- Tabelle -->
 	  <v-card class="main-card" elevation="4">
-		<!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-		<div class="k-toolbar">
-		    <span class="k-toolbar__spacer"></span>
-		    <span class="k-toolbar__count">{{ $t("common.entries", { n: (tableItems || []).length }) }}</span>
-		</div>
+		<!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+		<KTableToolbar :columns="kCols" :shown="(tableItems || []).length" />
 		<v-data-table
-		  :headers="codeHeaders"
+		  :headers="kCols.visible.value"
 		  :items="tableItems"
 		  :loading="loadingCodes"
 		  item-value="id"

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch, reactive } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, reactive, unref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
@@ -8,6 +8,11 @@ import { useModulePermission } from '@/composables/useModulePermission'; // Perm
 import type { User, Group, Message, Folder } from '@/types/Message'; // Adjust path if needed
 import TiptapEditor from '@/components/TiptapEditor.vue';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 // Define local interfaces
 interface SelectOption {
   id: string;
@@ -213,9 +218,9 @@ const messageHeaders = computed(() => [
     { title: 'Betreff', align: 'start', key: 'title' },
     // { title: "", key: "body", width: '1px' }, // Don't display body column
     { title: 'Absender', key: 'sender_name' },
-    { title: 'Empfänger', key: 'recipient_name' },
+    { title: 'Empfänger', key: 'recipient_name', optional: true },
     { title: 'Ordner', key: 'folder_name' },
-    { title: 'Datum/Uhrzeit', key: 'created_at', width: '160px' },
+    { title: 'Datum/Uhrzeit', key: 'created_at', width: '160px', align: 'end' },
     { title: 'Aktionen', key: 'actions', sortable: false, align: 'end', width: '150px' },
 ]);
 const folderHeaders = ref([
@@ -902,6 +907,44 @@ onMounted(async () => {
 
 // Watch for view changes to potentially trigger fetches (though covered by changeView)
 // watch(view, () => fetchDataForCurrentView());
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('MessageView', () => unref(messageHeaders) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'nachrichten' });
+}
+
+/**
+ * Filter der Leiste. Schalter tragen eine feste Bedingung,
+ * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
+ * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
+ */
+const kFilters = useTableFilters(
+    () => (unref(filteredMessages) as any[]) ?? [],
+    [],
+    [
+        { field: 'folder_name', label: t('messageView.folder'), emptyLabel: t('messageView.withoutFolder') },
+        { field: 'sender_name', label: t('messageView.sender'), emptyLabel: t('messageView.withoutSender') },
+    ],
+);
+
 </script>
 
 <template>
@@ -1081,21 +1124,27 @@ onMounted(async () => {
 
                         <v-divider></v-divider>
 
-                        <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                        <div class="k-toolbar">
-                            <span class="k-toolbar__spacer"></span>
-                            <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredMessages || []).length }) }}</span>
-                        </div>
+                        <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                        <KTableToolbar
+                :filters="kFilters"
+                :columns="kCols"
+                :shown="kFilters.filtered.value.length"
+                :total="(filteredMessages || []).length"
+                :noun="t('messageView.noun')"
+            />
                         <v-data-table
-                            :headers="messageHeaders"
-                            :items="filteredMessages"
+                            :headers="kCols.visible.value"
+                            :items="kFilters.filtered.value"
                             :search="search"
                             :items-per-page="25"
                             item-value="id"
                             :loading="loadingMessages"
                             hover
                             class="message-table"
-                         density="compact">
+                         density="compact"
+                            v-model="kSelected"
+                            show-select
+                        >
                             <template v-slot:[`item.status`]="{ item }">
                                 <div class="d-flex align-center">
                                     <v-icon
@@ -1338,6 +1387,19 @@ onMounted(async () => {
                                 </div>
                             </template>
                         </v-data-table>
+                        <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+                        <KBulkBar
+                            :count="kSelected.length"
+                            :shown="kFilters.filtered.value.length"
+                            :total="(filteredMessages || []).length"
+                            @clear="kSelected = []"
+                        >
+                            <template #actions>
+                                <v-btn variant="outlined" size="small" @click="kExportSelection">
+                                    {{ t('kTable.exportSelection') }}
+                                </v-btn>
+                            </template>
+                        </KBulkBar>
                     </v-card>
 
                     <!-- Nachricht lesen Ansicht -->

@@ -152,8 +152,8 @@ const promotionTableHeaders = [
 
 const vacationTableHeaders = [
     { title: 'Grund', key: 'reason' },
-    { title: 'Von', key: 'start' },
-    { title: 'Bis', key: 'end' },
+    { title: 'Von', key: 'start', align: 'end' },
+    { title: 'Bis', key: 'end', align: 'end' },
     { title: 'Gemeldet', key: 'reported' },
     { title: 'Sonstiges', key: 'other' },
     {
@@ -800,7 +800,7 @@ async function addVacation(member: Employee) {
                     :headers="vacationTableHeaders"
                     :items="vacationsArray"
                     class="vacation-table"
-                    :sort-by="[{ key: 'end', order: 'desc' }]"
+                    :sort-by="[{ key: 'end', order: 'desc', align: 'end' }]"
                     hover
                     density="comfortable"
                 >

@@ -1008,7 +1008,11 @@
     "saveOrder": "Save order",
     "deleteCategoryTooltip": "Delete category (only if empty)",
     "doubleClickToEdit": "Double click to edit",
-    "noSearchResults": "No documents found for your search."
+    "noSearchResults": "No documents found for your search.",
+    "noun": "documents",
+    "category": "Category",
+    "creator": "Created by",
+    "withoutCreator": "Without creator"
   },
   "documentEditor": {
     "newDocument": "New Document",
@@ -1210,7 +1214,11 @@
     "deleteSuccess": "Invoice deleted successfully.",
     "deleteError": "Error deleting invoice.",
     "invalidDate": "Invalid",
-    "error": "Error"
+    "error": "Error",
+    "noun": "invoices",
+    "filterOutgoing": "Outgoing",
+    "filterOpen": "Open",
+    "withoutCustomer": "Without customer"
   },
   "invoiceForm": {
     "addTitle": "Add Invoice",
@@ -1302,7 +1310,11 @@
     "toggleSuccess": "Crew \"{name}\" {state}.",
     "activated": "activated",
     "deactivated": "deactivated",
-    "errorToggle": "Error changing activation status."
+    "errorToggle": "Error changing activation status.",
+    "noun": "units",
+    "filterActive": "Active",
+    "status": "Radio status",
+    "withoutStatus": "Without status"
   },
   "mapOnlyView": {
     "atlas": "Atlas",
@@ -1423,7 +1435,7 @@
     "pending": "Pending",
     "searchPlaceholder": "Search (title, location, code)",
     "department": "Department",
-    "creator": "Creator",
+    "creator": "Created by",
     "customFields": "Custom Fields",
     "noData": "No reports found for the current filters.",
     "loading": "Loading reports...",
@@ -1455,7 +1467,15 @@
     "reportUnpinned": "Report unpinned",
     "reportPinError": "Error pinning/unpinning report",
     "pdfDownloadError": "Error downloading PDF",
-    "pleaseSelectCategory": "Please select a category"
+    "pleaseSelectCategory": "Please select a category",
+    "noun": "reports",
+    "category": "Category",
+    "status": "Status",
+    "filterApproved": "Approved",
+    "filterOpen": "Open",
+    "withoutCategory": "Without category",
+    "withoutStatus": "Without status",
+    "withoutCreator": "Without creator"
   },
   "reportTemplateView": {
     "title": "Manage Templates",
@@ -1881,7 +1901,10 @@
     "folderDeleteError": "Folder could not be deleted",
     "folderUpdated": "Folder successfully updated",
     "folderCreated": "Folder successfully created",
-    "folderSaveError": "Folder could not be saved"
+    "folderSaveError": "Folder could not be saved",
+    "noun": "messages",
+    "withoutFolder": "Without folder",
+    "withoutSender": "Without sender"
   },
   "defaultWindowContent": {
     "componentNotFound": "Component not found",
@@ -2310,7 +2333,10 @@
     "deleted": "Apartment deleted successfully.",
     "loadError": "Error loading apartments.",
     "deleteError": "Error deleting apartment.",
-    "viewError": "Error displaying apartment details."
+    "viewError": "Error displaying apartment details.",
+    "noun": "apartments",
+    "location": "Location",
+    "withoutLocation": "Without location"
   },
   "blackboardView": {
     "addEntry": "Add Post",
@@ -2861,7 +2887,11 @@
       "damageDescription": "Damage",
       "damageTime": "Reported on",
       "actions": "Actions"
-    }
+    },
+    "noun": "vehicles",
+    "filterDamaged": "Damaged",
+    "filterAssigned": "Assigned",
+    "withoutRank": "Without rank"
   },
   "person": {
     "headers": {
@@ -3103,7 +3133,7 @@
     "status": "Status",
     "actions": "Actions",
     "employees": "Employees",
-    "noEmployees": "No employees in this rank",
+    "noEmployees": "No employees in this selection.",
     "active": "Active",
     "vacation": "Vacation",
     "sick": "Sick",
@@ -3112,7 +3142,23 @@
     "countOf": "{n} of {total} employees",
     "filterActive": "On duty",
     "filterAbsent": "Absent",
-    "filterLeaving": "Leaving"
+    "filterLeaving": "Leaving",
+    "noun": "employees",
+    "jobrole": "Job role",
+    "withoutJobrole": "Without job role",
+    "phone": "Phone",
+    "mail": "E-mail",
+    "entrydate": "Joined",
+    "leavedate": "Leaving",
+    "birthdate": "Date of birth",
+    "personalid": "ID card",
+    "bankaccount": "Bank account",
+    "leavingOn": "Leaving {date}",
+    "notes": "Notes",
+    "addVacation": "Add leave",
+    "stopVacation": "End leave",
+    "edit": "Edit",
+    "exportSelection": "Export"
   },
   "dispatch": {
     "title": "Dispatch",
@@ -3124,5 +3170,25 @@
   },
   "employee": {
     "emptyRanks": "{n} ranks unoccupied"
+  },
+  "kTable": {
+    "columns": "Columns",
+    "resetColumns": "Show all columns",
+    "noValues": "No values available",
+    "clearFacet": "Clear selection",
+    "clearAll": "Reset filters",
+    "selected": "{n} selected",
+    "clearSelection": "Clear selection",
+    "countNoun": "{n} {noun}",
+    "countOf": "{n} of {total}",
+    "countOfNoun": "{n} of {total} {noun}",
+    "ofTotal": "{n} of {total}",
+    "exportSelection": "Export"
+  },
+  "company": {
+    "noun": "companies",
+    "filterInspectionDue": "Inspection due",
+    "type": "Type",
+    "withoutType": "Without type"
   }
 }

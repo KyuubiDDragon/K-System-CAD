@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed, type Ref } from 'vue';
+import { ref, onMounted, reactive, computed, type Ref, unref } from 'vue';
 import { useRoute } from 'vue-router'; // Import useRoute if permissions are needed
 import { useI18n } from 'vue-i18n'; // Import i18n for translations
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
@@ -10,6 +10,8 @@ import type { Training } from '@/types/Training';
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
 import AddShortcutButton from '@/components/shortcuts/AddShortcutButton.vue';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // Initialize i18n
 const { t } = useI18n();
 
@@ -128,7 +130,7 @@ const trainingHeaders = computed(() => [
     { title: t('adminTraining.headers.id'), key: 'id', align: 'start', sortable: true, width: '80px' },
     { title: t('adminTraining.headers.name'), key: 'name', sortable: true },
     { title: t('adminTraining.headers.category'), key: 'cat_short', align: 'start', sortable: true }, // Display category short name
-    { title: t('adminTraining.headers.sortOrder'), key: 'sort_order', sortable: true },
+    { title: t('adminTraining.headers.sortOrder'), key: 'sort_order', sortable: true, align: 'end' },
     { title: t('adminTraining.headers.actions'), key: 'actions', sortable: false, align: 'end', width: '120px' },
 ] as const);
 
@@ -136,7 +138,7 @@ const categoryHeaders = computed(() => [
     { title: t('adminTraining.headers.id'), key: 'id', align: 'start', sortable: true, width: '80px' },
     { title: t('adminTraining.headers.name'), key: 'name', sortable: true },
     { title: t('adminTraining.headers.abbreviation'), key: 'short', sortable: true },
-    { title: t('adminTraining.headers.sortOrder'), key: 'sort_order', sortable: true },
+    { title: t('adminTraining.headers.sortOrder'), key: 'sort_order', sortable: true, align: 'end' },
     { title: t('adminTraining.headers.actions'), key: 'actions', sortable: false, align: 'end', width: '120px' },
 ] as const);
 
@@ -285,6 +287,13 @@ const proceedWithDelete = async () => {
 onMounted(() => {
     fetchAllInitialData();
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/TrainingView', () => unref(trainingHeaders) as any);
 </script>
 
 <template>
@@ -336,13 +345,10 @@ onMounted(() => {
                     
                     <v-divider></v-divider>
                     
-                    <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                    <div class="k-toolbar">
-                        <span class="k-toolbar__spacer"></span>
-                        <span class="k-toolbar__count">{{ $t("common.entries", { n: (trainings || []).length }) }}</span>
-                    </div>
+                    <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                    <KTableToolbar :columns="kCols" :shown="(trainings || []).length" />
                     <v-data-table
-                        :headers="trainingHeaders"
+                        :headers="kCols.visible.value"
                         :items="trainings"
                         item-value="id"
                         class="elevation-0"

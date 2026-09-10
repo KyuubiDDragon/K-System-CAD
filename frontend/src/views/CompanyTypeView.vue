@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { CompanyType } from '@/types/Company'; // Adjust path if needed
 import { useToast } from 'vue-toastification';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // --- Interfaces ---
 // Interface for form data, making id optional
 interface CompanyTypeFormData {
@@ -71,7 +73,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 const typeHeaders = computed(() => [
     { title: t('companyType.headers.name'), key: 'name', sortable: true },
     { title: t('companyType.headers.description'), key: 'description', sortable: false },
-    // { title: t('companyType.headers.sortOrder'), key: 'sort_order', sortable: true }, // Uncomment if sort_order is used
+    // { title: t('companyType.headers.sortOrder'), key: 'sort_order', sortable: true, align: 'end' }, // Uncomment if sort_order is used
     { title: t('companyType.headers.actions'), key: 'actions', sortable: false, align: 'end', width: '120px' },
 ]);
 
@@ -176,6 +178,13 @@ const confirmDeleteType = async () => {
 
 // --- Lifecycle Hooks ---
 onMounted(fetchCompanyTypes);
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('CompanyTypeView', () => unref(typeHeaders) as any);
 </script>
 
 <template>
@@ -210,13 +219,10 @@ onMounted(fetchCompanyTypes);
 
         <!-- Haupttabelle -->
         <v-card class="main-card elevation-4">
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (companyTypes || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(companyTypes || []).length" />
             <v-data-table
-                :headers="typeHeaders"
+                :headers="kCols.visible.value"
                 :items="companyTypes"
                 item-value="id"
                 :loading="loadingTypes"

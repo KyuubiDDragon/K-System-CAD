@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, computed, reactive, nextTick } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, reactive, nextTick, unref } from 'vue';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store
 import { useI18n } from 'vue-i18n';
 import html2canvas from 'html2canvas';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 import { useToast } from 'vue-toastification'; // Import toast
 
 // --- Import Static Assets ---
@@ -377,6 +379,13 @@ onBeforeUnmount(() => {
     isMounted.value = false;
     console.log('FireprotectionView: Component unmounting, canceling any pending operations');
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHeaders) as any);
 </script>
 
 <template>
@@ -570,13 +579,10 @@ onBeforeUnmount(() => {
                         </v-toolbar-title>
                     </v-toolbar>
                     <v-divider></v-divider>
-                    <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                    <div class="k-toolbar">
-                        <span class="k-toolbar__spacer"></span>
-                        <span class="k-toolbar__count">{{ $t("common.entries", { n: (uploadedFiles || []).length }) }}</span>
-                    </div>
+                    <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                    <KTableToolbar :columns="kCols" :shown="(uploadedFiles || []).length" />
                     <v-data-table
-                        :headers="uploadedFilesHeaders"
+                        :headers="kCols.visible.value"
                         :items="uploadedFiles"
                         density="compact"
                         :items-per-page="5"

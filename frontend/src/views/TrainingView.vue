@@ -5,6 +5,7 @@ import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import auth store
 import { useI18n } from 'vue-i18n';
 import { useModulePermission } from '@/composables/useModulePermission';
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
 import type {
     Training,
     TrainingAssign,
@@ -1094,11 +1095,12 @@ onMounted(async () => {
                     
                     <v-expand-transition>
                         <v-card-text v-if="expandedCategories[index]" class="pa-0 category-content">
-                            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                            <div class="k-toolbar">
-                                <span class="k-toolbar__spacer"></span>
-                                <span class="k-toolbar__count">{{ $t("common.entries", { n: (category.employees || []).length }) }}</span>
-                            </div>
+                            <!--
+                                Ohne Spaltenauswahl: die Spalten sind hier die
+                                Schulungen der Kategorie, nicht Felder eines
+                                Datensatzes - abwaehlbar waeren sie sinnlos.
+                            -->
+                            <KTableToolbar :shown="(category.employees || []).length" />
                             <v-data-table
                                 :headers="category.headers"
                                 :items="category.employees"

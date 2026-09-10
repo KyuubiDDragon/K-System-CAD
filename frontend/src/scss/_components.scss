@@ -141,10 +141,31 @@
     font-variant-numeric: tabular-nums;
 }
 
+/* Die Auswahlspalte ist so schmal wie das Kaestchen darin - im Entwurf 34 px.
+   Vuetify gibt ihr sonst dieselbe Breite wie einer Inhaltsspalte. */
+.v-data-table .v-data-table__td--select-row,
+.v-data-table .v-data-table__th--select-row {
+    width: 34px;
+    padding-inline: 6px !important;
+}
+
+.v-data-table .v-selection-control {
+    justify-content: center;
+}
+
 /* Ein noch nicht gesetzter Filter ist gestrichelt - er laedt zum Zuschalten
    ein, ohne wie ein aktiver Zustand auszusehen. */
 .k-filter-chip {
     border-style: dashed !important;
+}
+
+/* Ein Facettenchip mit gesetztem Wert traegt den Wert im Text, nicht nur die
+   Farbe - man sieht ohne Aufklappen, wonach gefiltert wird. */
+.k-filter-chip .v-chip__content {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .k-filter-chip.is-active {

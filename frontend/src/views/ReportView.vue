@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, shallowRef, watch, defineAsyncComponent, type Ref,  } from 'vue';
+import { ref, computed, onMounted, reactive, shallowRef, watch, defineAsyncComponent, type Ref, unref } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useI18n } from 'vue-i18n';
@@ -20,6 +20,11 @@ import type { Company } from '@/types/Company'; // Define or import Company type
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
 import ReportService from '@/services/ReportService';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 // --- Dynamic Component Imports --- (Use defineAsyncComponent for better performance)
 const AuthorityAddReportDialog = defineAsyncComponent(
     () => import('@/components/Reports/Authority/Add.vue')
@@ -165,8 +170,8 @@ const reportHeaders = computed(() => [
     { title: 'Kategorie', key: 'cat_name', sortable: true },
     { title: 'Status', key: 'status_name', sortable: true },
     { title: 'Ersteller', key: 'emp_name', sortable: true },
-    { title: 'Erstellt am', key: 'created_at', sortable: true },
-    { title: 'Letzte Änderung', key: 'updated_at', sortable: true },
+    { title: 'Erstellt am', key: 'created_at', sortable: true, align: 'end' },
+    { title: 'Letzte Änderung', key: 'updated_at', sortable: true, optional: true, align: 'end' },
     { title: 'Aktionen', key: 'actions', sortable: false, align: 'end', width: '180px' },
 ]);
 
@@ -1045,6 +1050,70 @@ const closeSharedReportDialog = () => {
     sharedReportDialog.value = false;
     sharedReportToView.value = null;
 };
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('ReportView', () => unref(reportHeaders) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'berichte' });
+}
+
+/**
+ * Die Tabelle zeigt je nach Reiter eine andere Quelle. Damit Filter und
+ * Zaehler nicht viermal dieselbe Fallunterscheidung wiederholen, steht sie
+ * hier einmal.
+ */
+const kReportRows = computed<any[]>(() => {
+    switch (activeTab.value) {
+        case 'shared-with-me': return (sharedWithMeReports.value as any[]) ?? [];
+        case 'shared-by-me': return (sharedByMeReports.value as any[]) ?? [];
+        case 'all-shared': return (allSharedReports.value as any[]) ?? [];
+        default: return (formattedFilteredReports.value as any[]) ?? [];
+    }
+});
+
+/**
+ * Kategorie, Status und Ersteller sind gepflegte Stammdaten - genau die
+ * Felder, nach denen man einen Bericht sucht, wenn man seinen Titel nicht
+ * mehr weiss.
+ */
+const kFilters = useTableFilters(
+    () => kReportRows.value,
+    [
+        {
+            key: 'approved',
+            label: t('reportView.filterApproved'),
+            test: (r: any) => Number(r.approved) === 1,
+        },
+        {
+            key: 'open',
+            label: t('reportView.filterOpen'),
+            test: (r: any) => Number(r.approved) !== 1,
+        },
+    ],
+    [
+        { field: 'cat_name', label: t('reportView.category'), emptyLabel: t('reportView.withoutCategory') },
+        { field: 'status_name', label: t('reportView.status'), emptyLabel: t('reportView.withoutStatus') },
+        { field: 'emp_name', label: t('reportView.creator'), emptyLabel: t('reportView.withoutCreator') },
+    ],
+);
+
 </script>
 
 <template>
@@ -1268,20 +1337,17 @@ const closeSharedReportDialog = () => {
 
             <!-- Haupttabelle -->
             <v-card v-if="!isAddingOrEditing" class="main-card" elevation="4">
-                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                <div class="k-toolbar">
-                    <span class="k-toolbar__spacer"></span>
-                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (formattedFilteredReports || []).length }) }}</span>
-                </div>
+                <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                <KTableToolbar
+                    :filters="kFilters"
+                    :columns="kCols"
+                    :shown="kFilters.filtered.value.length"
+                    :total="kReportRows.length"
+                    :noun="t('reportView.noun')"
+                />
                 <v-data-table
-                    :headers="reportHeaders"
-                    :items="activeTab === 'all' 
-                        ? formattedFilteredReports 
-                        : (activeTab === 'shared-with-me' 
-                            ? sharedWithMeReports 
-                            : (activeTab === 'shared-by-me' 
-                                ? sharedByMeReports 
-                                : allSharedReports))"
+                    :headers="kCols.visible.value"
+                    :items="kFilters.filtered.value"
                     :search="search"
                     :items-per-page="25"
                     item-value="id"
@@ -1295,6 +1361,8 @@ const closeSharedReportDialog = () => {
                     hover
                     density="comfortable"
                     class="data-table"
+                    v-model="kSelected"
+                    show-select
                 >
                     <template v-slot:[`item.approved`]="{ item }">
                         <div class="d-flex align-center">
@@ -1493,6 +1561,19 @@ const closeSharedReportDialog = () => {
                         </div>
                     </template>
                 </v-data-table>
+                <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+                <KBulkBar
+                    :count="kSelected.length"
+                    :shown="kFilters.filtered.value.length"
+                    :total="kReportRows.length"
+                    @clear="kSelected = []"
+                >
+                    <template #actions>
+                        <v-btn variant="outlined" size="small" @click="kExportSelection">
+                            {{ t('kTable.exportSelection') }}
+                        </v-btn>
+                    </template>
+                </KBulkBar>
             </v-card>
 
             <!-- Kategorie Auswahl Dialog -->

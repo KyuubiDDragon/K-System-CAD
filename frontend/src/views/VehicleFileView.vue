@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, defineAsyncComponent } from 'vue';
+import { ref, computed, onMounted, defineAsyncComponent, unref } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { VehicleFile } from '@/types/Vehicle'; // Adjust path if needed
@@ -7,6 +7,10 @@ import type { PersonFile } from '@/types/Person';
 import { useToast } from 'vue-toastification'; // Import Toastification
 import { useI18n } from 'vue-i18n';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
 // --- Dynamic Component Imports ---
 // Using generic components as fallbacks, as in the original code.
 // Replace with specific imports if needed based on authority.
@@ -357,6 +361,29 @@ onMounted(async () => {
         console.log('ℹ️ No vehicle ID provided in route or props');
     }
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('VehicleFileView', () => unref(vehicleHeaders) as any);
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(filteredVehicles) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'fahrzeugakten' });
+}
+
 </script>
 
 <template>
@@ -416,13 +443,10 @@ onMounted(async () => {
 		
 		<v-divider></v-divider>
 		
-		<!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-		<div class="k-toolbar">
-		    <span class="k-toolbar__spacer"></span>
-		    <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredVehicles || []).length }) }}</span>
-		</div>
+		<!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+		<KTableToolbar :columns="kCols" :shown="(filteredVehicles || []).length" />
 		<v-data-table
-		  :headers="vehicleHeaders"
+		  :headers="kCols.visible.value"
 		  :items="filteredVehicles"
 		  class="elevation-0"
 		  :search="search"
@@ -431,6 +455,8 @@ onMounted(async () => {
 		  :loading="loadingVehicles"
 		  hover
 		  density="comfortable"
+		    v-model="kSelected"
+		    show-select
 		>
 		  <template v-slot:[`item.numberplate`]="{ item }">
 			<span
@@ -521,6 +547,19 @@ onMounted(async () => {
 			</div>
 		  </template>
 		</v-data-table>
+		<!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+		<KBulkBar
+		    :count="kSelected.length"
+		    :shown="filteredVehicles.length"
+		    :total="filteredVehicles.length"
+		    @clear="kSelected = []"
+		>
+		    <template #actions>
+		        <v-btn variant="outlined" size="small" @click="kExportSelection">
+		            {{ t('kTable.exportSelection') }}
+		        </v-btn>
+		    </template>
+		</KBulkBar>
 	  </v-card>
   
 	  <!-- Zurück-Button, wenn eine Detail-Ansicht geöffnet ist -->

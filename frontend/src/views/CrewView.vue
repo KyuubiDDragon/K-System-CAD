@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted, reactive, unref } from 'vue';
 import { useRoute } from "vue-router";
 import { apiClientAuth } from "@/api"; // Use configured Axios instance
 import type { Crew } from '@/types/Crew'; // Adjust path if needed
@@ -7,6 +7,11 @@ import { useToast } from 'vue-toastification';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 // --- Store, Router & Permissions ---
 const authStore = useAuthStore();
 const route = useRoute();
@@ -67,7 +72,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 const headers = computed(() => [
     { title: 'Name', key: 'name', sortable: true },
     { title: 'Status', key: 'status', sortable: false },
-    { title: 'Sortierung', key: 'sort_order', sortable: true },
+    { title: 'Sortierung', key: 'sort_order', sortable: true, align: 'end' },
     { title: 'Aktiv', key: 'active', sortable: true, align: 'center' }, // Added active status column
     { title: 'Aktionen', key: 'actions', sortable: false, align: 'end', width: '180px' }
 ]);
@@ -195,6 +200,49 @@ const toggleCrewActivation = async (crew: Crew) => {
 // --- Lifecycle Hooks ---
 onMounted(fetchCrews);
 
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('CrewView', () => unref(headers) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'einheiten' });
+}
+
+/**
+ * Filter der Leiste. Schalter tragen eine feste Bedingung,
+ * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
+ * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
+ */
+const kFilters = useTableFilters(
+    () => (unref(crews) as any[]) ?? [],
+    [
+        {
+            key: 'active',
+            label: t('crewView.filterActive'),
+            on: true,
+            test: (c: any) => Number(c.active) === 1,
+        },
+    ],
+    [
+        { field: 'status', label: t('crewView.status'), emptyLabel: t('crewView.withoutStatus') },
+    ],
+);
+
 </script>
 
 <template>
@@ -221,19 +269,24 @@ onMounted(fetchCrews);
         
         <!-- Datentabelle -->
         <v-card class="main-table-card" elevation="3">
-          <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-          <div class="k-toolbar">
-              <span class="k-toolbar__spacer"></span>
-              <span class="k-toolbar__count">{{ $t("common.entries", { n: (crews || []).length }) }}</span>
-          </div>
+          <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+          <KTableToolbar
+                :filters="kFilters"
+                :columns="kCols"
+                :shown="kFilters.filtered.value.length"
+                :total="(crews || []).length"
+                :noun="t('crewView.noun')"
+            />
           <v-data-table
-            :headers="headers"
-            :items="crews"
+            :headers="kCols.visible.value"
+            :items="kFilters.filtered.value"
             item-value="id"
             :loading="loadingCrews"
             hover
             density="comfortable"
             class="crew-table"
+              v-model="kSelected"
+              show-select
           >
             <template v-slot:loader>
               <div class="d-flex align-center justify-center pa-4">
@@ -340,6 +393,19 @@ onMounted(fetchCrews);
               </div>
             </template>
           </v-data-table>
+          <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+          <KBulkBar
+              :count="kSelected.length"
+              :shown="kFilters.filtered.value.length"
+              :total="(crews || []).length"
+              @clear="kSelected = []"
+          >
+              <template #actions>
+                  <v-btn variant="outlined" size="small" @click="kExportSelection">
+                      {{ t('kTable.exportSelection') }}
+                  </v-btn>
+              </template>
+          </KBulkBar>
         </v-card>
         
         <!-- Besatzung hinzufügen/bearbeiten Dialog -->

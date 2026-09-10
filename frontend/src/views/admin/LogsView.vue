@@ -340,13 +340,10 @@
       <v-row>
         <v-col cols="12">
           <v-card elevation="2" rounded="lg">
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (logs || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(logs || []).length" />
             <v-data-table
-              :headers="tableHeaders"
+              :headers="kCols.visible.value"
               :items="logs"
               :loading="logsLoading"
               v-model:options="tableOptions"
@@ -672,7 +669,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted, watch } from 'vue';
+import { ref, reactive, computed, onMounted, watch, unref } from 'vue';
 import { apiClientAuth } from '@/api';
 import { useAuthStore } from '@/stores/auth';
 import { useToast } from 'vue-toastification';
@@ -680,6 +677,8 @@ import { useI18n } from 'vue-i18n';
 import LogsService from '@/services/LogsService';
 import { useModulePermission } from '@/composables/useModulePermission';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 const authStore = useAuthStore();
 const toast = useToast();
 const { t } = useI18n();
@@ -776,13 +775,13 @@ const pagination = reactive({
 
 // Table Settings - Updated to match actual database columns
 const tableHeaders = computed(() => [
-  { title: t('logs.headers.id'), key: 'id', sortable: true, width: '60px' },
+  { title: t('logs.headers.id'), key: 'id', sortable: true, width: '60px', optional: true },
   { title: t('logs.headers.action'), key: 'action', sortable: true, width: '100px' },
   { title: t('logs.headers.table'), key: 'table_name', sortable: true },
   { title: t('logs.headers.user'), key: 'username', sortable: true },
-  { title: t('logs.headers.column'), key: 'column_name', sortable: true },
-  { title: t('logs.headers.recordId'), key: 'record_id', sortable: true },
-  { title: t('logs.headers.timestamp'), key: 'timestamp', sortable: true },
+  { title: t('logs.headers.column'), key: 'column_name', sortable: true, optional: true },
+  { title: t('logs.headers.recordId'), key: 'record_id', sortable: true, optional: true },
+  { title: t('logs.headers.timestamp'), key: 'timestamp', sortable: true, align: 'end' },
   { title: t('logs.headers.details'), key: 'actions', sortable: false, width: '60px' }
 ]);
 
@@ -1079,6 +1078,13 @@ watch(
     onFilterChange();
   }
 );
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/LogsView', () => unref(tableHeaders) as any);
 </script>
 
 <style scoped>

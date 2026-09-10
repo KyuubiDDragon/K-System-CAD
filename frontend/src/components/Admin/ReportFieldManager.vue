@@ -244,7 +244,7 @@ export default {
       { title: t('admin.headerCategory'), key: 'category_id' },
       { title: t('admin.headerOptions'), key: 'options' },
       { title: t('admin.headerRequired'), key: 'is_required' },
-      { title: t('admin.headerOrder'), key: 'sort_order' },
+      { title: t('admin.headerOrder'), key: 'sort_order', align: 'end' },
       { title: t('admin.headerActions'), key: 'actions', sortable: false }
     ];
     

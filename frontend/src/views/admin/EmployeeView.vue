@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed, type Ref } from 'vue';
+import { ref, onMounted, reactive, computed, type Ref, unref } from 'vue';
 import { useRoute } from 'vue-router'; // Import useRoute if permissions are needed
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { EmployeeCompany, EmployeeDepartment } from '@/types/Members'; // Adjust path if needed
@@ -8,6 +8,8 @@ import { useAuthStore } from '@/stores/auth'; // Import auth store
 import { useI18n } from 'vue-i18n';
 import { useModulePermission } from '@/composables/useModulePermission';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // --- Define Interfaces (if not fully covered by import) ---
 interface ItemFormData {
     id?: number | null;
@@ -137,7 +139,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 const baseHeaders = [
     { title: t('adminEmployee.headers.id'), key: 'id', align: 'start', sortable: true, width: '80px' },
     { title: t('adminEmployee.headers.name'), key: 'name', sortable: true },
-    { title: t('adminEmployee.headers.sortOrder'), key: 'sort_order', sortable: true, width: '120px' },
+    { title: t('adminEmployee.headers.sortOrder'), key: 'sort_order', sortable: true, width: '120px', align: 'end' },
     { title: t('adminEmployee.headers.actions'), key: 'actions', sortable: false, align: 'end', width: '120px' },
 ] as const;
 const companyHeaders = ref(baseHeaders);
@@ -341,6 +343,13 @@ const proceedWithDelete = async () => {
 onMounted(() => {
     fetchAllInitialData();
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/EmployeeView', () => unref(companyHeaders) as any);
 </script>
 
 <template>
@@ -403,13 +412,10 @@ onMounted(() => {
                     
                     <v-divider></v-divider>
                     
-                    <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                    <div class="k-toolbar">
-                        <span class="k-toolbar__spacer"></span>
-                        <span class="k-toolbar__count">{{ $t("common.entries", { n: (companies || []).length }) }}</span>
-                    </div>
+                    <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                    <KTableToolbar :columns="kCols" :shown="(companies || []).length" />
                     <v-data-table
-                        :headers="companyHeaders"
+                        :headers="kCols.visible.value"
                         :items="companies"
                         item-value="id"
                         class="elevation-0"

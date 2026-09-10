@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, reactive, watch, nextTick, defineAsyncComponent } from 'vue';
+import { ref, computed, onMounted, reactive, watch, nextTick, defineAsyncComponent, unref } from 'vue';
 import { useRoute } from 'vue-router';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store
@@ -9,6 +9,11 @@ import { useToast } from 'vue-toastification'; // Import Toastification
 import { useI18n } from 'vue-i18n';
 import AddShortcutButton from '@/components/shortcuts/AddShortcutButton.vue';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import KBulkBar from '@/components/table/KBulkBar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
+import { exportRowsAsCsv } from '@/utils/tableExport';
+import { useTableFilters } from '@/composables/useTableFilters';
 // --- Async Component Imports ---
 const DocumentEditor = defineAsyncComponent(
     () => import('@/components/document/DocumentEditor.vue')
@@ -130,8 +135,8 @@ const { t } = useI18n();
 const tableHeaders = computed(() => [
     { title: 'Titel', key: 'title', sortable: true },
     { title: 'Ersteller', key: 'creator_name', sortable: true },
-    { title: 'Erstellt am', key: 'created_at', sortable: true },
-    { title: 'Letzte Änderung', key: 'updated_at', sortable: true },
+    { title: 'Erstellt am', key: 'created_at', sortable: true, align: 'end' },
+    { title: 'Letzte Änderung', key: 'updated_at', sortable: true, optional: true, align: 'end' },
     { title: 'Aktionen', key: 'actions', sortable: false, align: 'end' },
 ]);
 const groupByCategory = [{ key: 'categoryName', order: 'asc' as const }];
@@ -679,6 +684,44 @@ onMounted(async () => {
         }
     }
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('DocumentView', () => unref(tableHeaders) as any);
+
+
+/**
+ * Auswahl fuer die Massenaktionen. Ausgegeben wird die Auswahl - oder,
+ * wenn nichts ausgewaehlt ist, die ganze sichtbare Liste. Und zwar mit
+ * genau den Spalten, die gerade sichtbar sind.
+ */
+const kSelected = ref<any[]>([]);
+
+function kExportSelection() {
+    const rows = (unref(kFilters.filtered.value) as any[]) ?? [];
+    const chosen = kSelected.value.length
+        ? rows.filter((r: any) => kSelected.value.includes(r.id))
+        : rows;
+    exportRowsAsCsv(kCols.visible.value, chosen, { name: 'dokumente' });
+}
+
+/**
+ * Filter der Leiste. Schalter tragen eine feste Bedingung,
+ * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
+ * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
+ */
+const kFilters = useTableFilters(
+    () => (unref(filteredFlattenedDocuments) as any[]) ?? [],
+    [],
+    [
+        { field: 'categoryName', label: t('documentView.category') },
+        { field: 'creator_name', label: t('documentView.creator'), emptyLabel: t('documentView.withoutCreator') },
+    ],
+);
+
 </script>
 
 <template>
@@ -1027,20 +1070,25 @@ onMounted(async () => {
                 class="main-table-card"
                 elevation="3"
             >
-                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-                <div class="k-toolbar">
-                    <span class="k-toolbar__spacer"></span>
-                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredFlattenedDocuments || []).length }) }}</span>
-                </div>
+                <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+                <KTableToolbar
+                :filters="kFilters"
+                :columns="kCols"
+                :shown="kFilters.filtered.value.length"
+                :total="(filteredFlattenedDocuments || []).length"
+                :noun="t('documentView.noun')"
+            />
                 <v-data-table
-                    :headers="tableHeaders"
-                    :items="filteredFlattenedDocuments"
+                    :headers="kCols.visible.value"
+                    :items="kFilters.filtered.value"
                     :group-by="groupByCategory"
                     items-per-page="25"
                     item-value="id"
                     hover
                     density="comfortable"
                     class="document-table"
+                    v-model="kSelected"
+                    show-select
                 >
                     <template v-slot:[`group-header`]="{ item, columns, toggleGroup, isGroupOpen }">
                         <tr class="group-header-row">
@@ -1142,6 +1190,19 @@ onMounted(async () => {
                         </div>
                     </template>
                 </v-data-table>
+                <!-- Massenaktionen: erst sichtbar, wenn sie etwas zu tun haben. -->
+                <KBulkBar
+                    :count="kSelected.length"
+                    :shown="kFilters.filtered.value.length"
+                    :total="(filteredFlattenedDocuments || []).length"
+                    @clear="kSelected = []"
+                >
+                    <template #actions>
+                        <v-btn variant="outlined" size="small" @click="kExportSelection">
+                            {{ t('kTable.exportSelection') }}
+                        </v-btn>
+                    </template>
+                </KBulkBar>
             </v-card>
             <DocumentEditor
                 v-if="selectedDocument !== null"

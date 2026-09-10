@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from 'vue';
+import { ref, onMounted, reactive, computed, unref } from 'vue';
 import { useRoute } from 'vue-router'; // Import if permissions needed
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import type { Categories as MapCategory } from '@/types/Map'; // Adjust path if needed
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import custom snackbar
 import { useI18n } from 'vue-i18n';
 
+import KTableToolbar from '@/components/table/KTableToolbar.vue';
+import { useTableColumns } from '@/composables/useTableColumns';
 // --- Define Interfaces ---
 interface IconInfo {
     name: string; // Filename without extension (e.g., 'icon1')
@@ -203,6 +205,13 @@ onMounted(() => {
     fetchCategories();
     fetchAvailableIcons();
 });
+
+/**
+ * Spaltenauswahl: Was man sieht, sollte man auch ausgeben koennen.
+ * Die Wahl liegt je Ansicht im localStorage und ueberlebt den
+ * Seitenwechsel.
+ */
+const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as any);
 </script>
 
 <template>
@@ -257,13 +266,10 @@ onMounted(() => {
 
             <v-divider></v-divider>
 
-            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
-            <div class="k-toolbar">
-                <span class="k-toolbar__spacer"></span>
-                <span class="k-toolbar__count">{{ $t("common.entries", { n: (categories || []).length }) }}</span>
-            </div>
+            <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
+            <KTableToolbar :columns="kCols" :shown="(categories || []).length" />
             <v-data-table
-                :headers="categoryHeaders"
+                :headers="kCols.visible.value"
                 :items="categories"
                 item-value="id"
                 :loading="loadingCategories"
