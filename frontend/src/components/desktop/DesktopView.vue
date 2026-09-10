@@ -9,15 +9,20 @@
             :progress-text="loadingProgressText"
         />
 
-        <div v-show="!isLoading && !isLoadingDesktopSettings && !isResettingLayout" class="desktop-container" :style="backgroundStyle">
+        <div
+            v-show="!isLoading && !isLoadingDesktopSettings && !isResettingLayout"
+            class="desktop-container"
+            :style="backgroundStyle"
+            @contextmenu.self.prevent="openDesktopMenu"
+        >
             <!-- Desktop Background -->
-            <div class="desktop-background">
+            <div class="desktop-background" @contextmenu.self.prevent="openDesktopMenu">
                 <!-- Desktop-Hintergrund mit Overlay -->
                 <div class="desktop-background-image" :style="backgroundStyle"></div>
                 <div class="desktop-background-overlay"></div>
 
                 <!-- Desktop Icons -->
-                <div class="desktop-icons">
+                <div class="desktop-icons" @contextmenu.self.prevent="openDesktopMenu">
                     <!-- Desktop-Icons immer anzeigen -->
                     <desktop-icon
                         v-for="app in desktopApps"
@@ -84,73 +89,51 @@
                     />
                 </div>
 
-                <!-- Exit Desktop Mode Button -->
-                <div class="exit-desktop-mode">
-                    <!-- Icon Sort Mode Selector -->
-                    <v-menu>
-                        <template v-slot:activator="{ props }">
-                            <v-btn
-                                color="primary"
-                                variant="tonal"
-                                prepend-icon="mdi-sort"
-                                v-bind="props"
-                                class="mr-2"
-                            >
-                                {{ t('desktop.sortIcons') }}
-                            </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item
-                                @click="() => { iconSortMode = 'priority'; forceGenerateIcons(); }"
-                                :active="iconSortMode === 'priority'"
-                            >
-                                <v-list-item-title>
-                                    <v-icon icon="mdi-star" size="small" class="mr-2"></v-icon>
-                                    {{ t('desktop.sortByPriority') }}
-                                </v-list-item-title>
-                            </v-list-item>
-                            <v-list-item
-                                @click="() => { iconSortMode = 'alphabetical'; forceGenerateIcons(); }"
-                                :active="iconSortMode === 'alphabetical'"
-                            >
-                                <v-list-item-title>
-                                    <v-icon icon="mdi-sort-alphabetical-ascending" size="small" class="mr-2"></v-icon>
-                                    {{ t('desktop.sortAlphabetically') }}
-                                </v-list-item-title>
-                            </v-list-item>
-                            <v-list-item
-                                @click="() => { iconSortMode = 'category'; forceGenerateIcons(); }"
-                                :active="iconSortMode === 'category'"
-                            >
-                                <v-list-item-title>
-                                    <v-icon icon="mdi-folder-multiple" size="small" class="mr-2"></v-icon>
-                                    {{ t('desktop.sortByCategory') }}
-                                </v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
+                <!--
+                    Kontextmenue der Arbeitsflaeche.
 
-                    <v-btn
-                        color="warning"
-                        variant="tonal"
-                        prepend-icon="mdi-refresh"
-                        @click="forceGenerateIcons"
-                    >
-                        {{ t('desktop.resetLayout') }}
-                    </v-btn>
-
-                    <!-- Debugging-Button für Dokumentenbereiche, wenn vorhanden -->
-                    <v-btn
-                        v-if="documentAreas.value && documentAreas.value.length > 0"
-                        color="info"
-                        variant="tonal"
-                        prepend-icon="mdi-bug"
-                        class="ml-2"
-                        @click="testOpenFirstDocArea"
-                    >
-                        {{ t('desktop.testDocuments') }}
-                    </v-btn>
-                </div>
+                    "Icons sortieren" und "Layout zuruecksetzen" schwebten
+                    bisher dauerhaft unten rechts. Der Entwurf ist hier
+                    deutlich: sie "gehoeren ins Kontextmenue der
+                    Arbeitsflaeche - gebraucht werden sie selten". Zwei
+                    Schaltflaechen, die staendig ueber dem Bild liegen, kosten
+                    jeden Tag Platz fuer etwas, das man im Monat einmal tut.
+                -->
+                <v-menu
+                    v-model="desktopMenuOpen"
+                    :target="desktopMenuAt"
+                    location="bottom start"
+                >
+                    <v-list density="compact" min-width="200">
+                        <v-list-subheader>{{ t('desktop.sortIcons') }}</v-list-subheader>
+                        <v-list-item
+                            @click="() => { iconSortMode = 'priority'; forceGenerateIcons(); }"
+                            :active="iconSortMode === 'priority'"
+                        >
+                            <template #prepend><v-icon size="small">mdi-star</v-icon></template>
+                            <v-list-item-title>{{ t('desktop.sortByPriority') }}</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
+                            @click="() => { iconSortMode = 'alphabetical'; forceGenerateIcons(); }"
+                            :active="iconSortMode === 'alphabetical'"
+                        >
+                            <template #prepend><v-icon size="small">mdi-sort-alphabetical-ascending</v-icon></template>
+                            <v-list-item-title>{{ t('desktop.sortAlphabetically') }}</v-list-item-title>
+                        </v-list-item>
+                        <v-list-item
+                            @click="() => { iconSortMode = 'category'; forceGenerateIcons(); }"
+                            :active="iconSortMode === 'category'"
+                        >
+                            <template #prepend><v-icon size="small">mdi-folder-multiple</v-icon></template>
+                            <v-list-item-title>{{ t('desktop.sortByCategory') }}</v-list-item-title>
+                        </v-list-item>
+                        <v-divider />
+                        <v-list-item @click="forceGenerateIcons">
+                            <template #prepend><v-icon size="small">mdi-refresh</v-icon></template>
+                            <v-list-item-title>{{ t('desktop.resetLayout') }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
 
                 <!-- Folder Popup -->
                 <div v-if="activeFolder" class="folder-popup" :style="folderPopupStyle">
@@ -795,6 +778,21 @@ const ICON_CONFIG = {
 
 // Icon sorting modes
 const iconSortMode = ref<'priority' | 'alphabetical' | 'category'>('priority');
+
+/**
+ * Kontextmenue der Arbeitsflaeche.
+ *
+ * `desktopMenuAt` traegt den Punkt, an dem geklickt wurde - Vuetify haengt das
+ * Menue daran auf. Ein Kontextmenue, das immer an derselben Stelle aufgeht,
+ * zwingt die Maus zurueck ueber den halben Bildschirm.
+ */
+const desktopMenuOpen = ref(false);
+const desktopMenuAt = ref<[number, number]>([0, 0]);
+
+function openDesktopMenu(event: MouseEvent) {
+    desktopMenuAt.value = [event.clientX, event.clientY];
+    desktopMenuOpen.value = true;
+}
 
 // Priority list for common apps (shown first)
 const PRIORITY_APP_IDS = [
@@ -3714,12 +3712,8 @@ const testOpenFirstDocArea = () => {
     }
 }
 
-.exit-desktop-mode {
-    position: absolute;
-    bottom: calc(var(--taskbar-height) + var(--desktop-padding));
-    right: var(--desktop-padding);
-    z-index: 7;
-}
+/* Die schwebenden Schaltflaechen unten rechts sind entfallen - ihre Aktionen
+   stehen jetzt im Kontextmenue der Arbeitsflaeche. */
 
 .folder-popup {
     position: fixed;
