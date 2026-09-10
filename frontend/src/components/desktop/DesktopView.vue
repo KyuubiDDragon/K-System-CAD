@@ -570,6 +570,28 @@ onMounted(async () => {
     
     // Listen for window resize
     window.addEventListener('resize', handleWindowResize);
+
+    /*
+       Einmaliges Nachruecken ins engere Raster.
+
+       Die Schrittweite lag frueher bei 130 x 150 px, jetzt bei 100 x 116. Wer
+       schon einmal hier war, traegt die alten, weiten Positionen im Store -
+       neue Maße allein ruecken sie nicht zusammen. Deshalb wird die Anordnung
+       genau einmal neu berechnet und das im Browser vermerkt, damit es beim
+       naechsten Besuch nicht wieder passiert.
+
+       Eine von Hand gelegte Anordnung geht damit verloren; das ist der Preis
+       dafuer, die alte weite Aufteilung nicht ewig mitzuschleppen.
+    */
+    const RASTER_STAND = 'k-desktop-raster-2';
+    try {
+        if (localStorage.getItem(RASTER_STAND) !== '1') {
+            localStorage.setItem(RASTER_STAND, '1');
+            await forceGenerateIcons();
+        }
+    } catch {
+        /* Speicher gesperrt - dann bleibt die Anordnung, wie sie ist. */
+    }
 });
 
 // Handle window resize to adjust widget positions
@@ -3966,30 +3988,17 @@ const testOpenFirstDocArea = () => {
     font-style: italic;
 }
 
-.desktop-icon {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px;
-    border-radius: var(--border-radius-sm);
-    transition: all var(--animation-duration-fast) var(--animation-easing);
-    cursor: pointer;
-    user-select: none;
-    width: 110px;
-    height: 120px;
-    margin: 0;
-}
+/*
+   Hier stand ein zweiter Satz Regeln fuer .desktop-icon - Breite 110, Hoehe
+   120, Radius 4, dazu ein Hover mit Anheben und Schatten. Weil Vue die
+   Bereichskennung der Elternkomponente auch auf die Wurzel des Kindes setzt,
+   trafen sie dieselben Elemente wie die Regeln in DesktopIcon.vue und gewannen
+   als spaetere Definition. Die Kachel blieb deshalb auf der alten Groesse, und
+   das Anheben beim Zeigen kam von hier - nicht aus dem Symbol selbst.
 
-.desktop-icon:hover {
-    background-color: rgba(var(--desktop-bg-dark-2), 0.3);
-    transform: var(--button-hover-translate);
-    box-shadow: var(--shadow-small);
-}
-
-.desktop-icon.selected {
-    background-color: rgba(var(--desktop-bg-dark-2), 0.5);
-    box-shadow: var(--shadow-small);
-}
+   Wie ein Symbol aussieht, gehoert in DesktopIcon.vue. Diese Ansicht bestimmt
+   nur, wo es liegt.
+*/
 
 .icon-image {
     width: var(--desktop-icon-size);
