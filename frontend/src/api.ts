@@ -275,6 +275,16 @@ async function performLogout() {
         const { useAuthStore } = await import('@/stores/auth');
         const authStore = useAuthStore();
 
+        // Auch wenn der Store bereits leer ist (etwa nach einem Neuladen mit
+        // abgelaufener Sitzung), muss der Weg zurueck zur Anmeldung fuehren.
+        // Sonst bleibt eine leere Seite stehen, ohne Hinweis, was passiert ist.
+        if (!authStore.isLoggedIn) {
+            const aktuellerPfad = router.currentRoute.value.path;
+            if (aktuellerPfad !== '/' && !aktuellerPfad.startsWith('/login')) {
+                await router.push('/');
+            }
+        }
+
         // Only trigger logout if user is currently logged in
         if (authStore.isLoggedIn) {
             console.log('Triggering logout');
