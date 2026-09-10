@@ -115,6 +115,33 @@
     font-size: var(--k-text-metric);
 }
 
+/* ---------- Gedimmte Schrift ----------
+   Vuetifys Grau-Klassen tragen ein festes Material-Grau (#9E9E9E). Auf heller
+   Flaeche ergibt das 2,7:1 - unter den 4,5:1, die der Entwurf fuer Text
+   verlangt, und ausserdem modusunabhaengig. Die 138 Fundstellen im Baum gehen
+   deshalb auf die Schrift-Merker, die mit dem Modus kippen.
+
+   Gemessen an "Keine Marker" unter Verwaltung - Karte: vorher 2,7:1. */
+.v-application {
+    .text-grey,
+    .text-grey-lighten-1,
+    .text-grey-darken-1 {
+        color: var(--k-ink-muted) !important;
+    }
+
+    .text-grey-darken-2,
+    .text-grey-darken-3,
+    .text-grey-darken-4 {
+        color: var(--k-ink) !important;
+    }
+
+    .text-grey-lighten-2,
+    .text-grey-lighten-3,
+    .text-grey-lighten-4 {
+        color: var(--k-ink-faint) !important;
+    }
+}
+
 /* ---------- Festbreite ---------- */
 /* Warum: "Engine E-1-15" und "Engine E-1-21" sind untereinander sofort als
    verschieden erkennbar; in einer Proportionalschrift verschwimmen sie. */
