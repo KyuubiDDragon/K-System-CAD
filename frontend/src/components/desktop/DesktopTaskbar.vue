@@ -1623,4 +1623,77 @@ const handleClickOutside = (event: MouseEvent) => {
     white-space: nowrap;
 }
 
+/* ============================================================
+   Der Abstand kommt aus der Leiste, nicht aus den Teilen.
+
+   Die Leiste selbst gibt 7 px zwischen allem vor. Daneben standen aus dem
+   alten Entwurf noch eigene Aussenabstaende: 12 px rechts am Start- und am
+   Suchknopf, 8 px an den angehefteten Programmen, dazu 10 px Rand und 10 px
+   Abstand an der Fensterliste. Gemessen ergab das links Luecken von 19, 19
+   und 25 px, wo 7 vorgesehen sind - die Leiste fiel nach links auseinander.
+
+   Dazu kamen zwei Trennlinien, links neben der Fensterliste und links vor dem
+   Ablagebereich. Der Entwurf zeigt fuer die Leiste eine durchgehende Flaeche
+   mit Kacheln darauf, keine Zonen. Die Linien entfallen; getrennt wird durch
+   den Abstand, den die Uhr ohnehin nach rechts aufspannt.
+   ============================================================ */
+.taskbar .start-button,
+.taskbar .search-button,
+.taskbar .taskbar-pinned-apps,
+.taskbar .taskbar-apps,
+.taskbar .system-tray {
+    margin: 0;
+}
+
+.taskbar .taskbar-apps,
+.taskbar .taskbar-pinned-apps,
+.taskbar .system-tray {
+    padding: 0;
+    border: 0;
+    height: auto;
+}
+
+.taskbar .taskbar-pinned-apps,
+.taskbar .system-tray {
+    gap: 7px;
+}
+
+/* Der Ablagebereich bleibt rechts. */
+.taskbar .system-tray {
+    margin-left: auto;
+}
+
+/* Ein Knopf ohne Beschriftung ist quadratisch - der Suchknopf war 44 breit
+   und 32 hoch und stand damit als einziges Rechteck in der Reihe. */
+.taskbar .search-button {
+    width: 32px;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Der Startknopf traegt keine eigene Farbe. Hier lagen ein blauer Verlauf,
+   ein blauer Rand und ein Schatten - der Entwurf gibt der Leiste eine
+   Flaeche und den Kacheln darauf hoechstens den Akzent des laufenden
+   Fensters. */
+.taskbar .start-button {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+/* Kein Anheben, kein Leuchten beim Zeigen. Die Knoepfe sprangen um 3 px nach
+   oben und wuchsen dabei um bis zu 8 Prozent. */
+.taskbar .start-button:hover,
+.taskbar .search-button:hover,
+.taskbar .taskbar-app:hover,
+.taskbar .taskbar-app-group:hover,
+.taskbar .tray-item:hover,
+.taskbar .system-tray > *:hover,
+.taskbar .start-button:active,
+.taskbar .search-button:active,
+.taskbar .taskbar-app:active {
+    transform: none;
+    box-shadow: none;
+}
+
 </style>
