@@ -328,7 +328,7 @@ function getFieldTypeName(type: string): string {
                 :loading="loading"
                 :sort-options="sortOptions"
                 class="elevation-1"
-            >
+             density="compact">
                 <template v-slot:item.field_type="{ item }">
                     {{ getFieldTypeName(item.raw?.field_type || item.field_type) }}
                 </template>

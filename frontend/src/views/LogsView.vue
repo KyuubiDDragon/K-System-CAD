@@ -121,7 +121,7 @@
             :server-items-length="totalLogs"
             v-model:options="options"
             @update:options="onOptionsChange"
-          >
+           density="compact">
             <template #[`item.timestamp`]="{ item }">
               {{ formatDateTime(item.timestamp) }}
             </template>

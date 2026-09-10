@@ -404,7 +404,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
                 :items="filteredPersons"
                 class="elevation-0"
                 :search="search"
-                :items-per-page="10"
+                :items-per-page="25"
                 item-value="id"
                 :loading="loadingPersons"
                 hover

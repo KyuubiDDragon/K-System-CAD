@@ -72,7 +72,7 @@
         :items="displayedContacts"
         :items-per-page="15"
         :search="search"
-      >
+       density="compact">
         <!-- Toolbar -->
         <template v-slot:top>
           <v-toolbar flat>

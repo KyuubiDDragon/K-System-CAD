@@ -25,7 +25,7 @@
           :items="filteredFields"
           :loading="loading"
           class="elevation-1"
-        >
+         density="compact">
           <template v-slot:item.field_type="{ item }">
             {{ getFieldTypeLabel(item.field_type) }}
           </template>

@@ -421,7 +421,7 @@ onMounted(async () => {
 		  :items="filteredVehicles"
 		  class="elevation-0"
 		  :search="search"
-		  :items-per-page="10"
+		  :items-per-page="25"
 		  item-value="id"
 		  :loading="loadingVehicles"
 		  hover

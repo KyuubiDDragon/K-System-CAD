@@ -198,7 +198,7 @@
                   :items-per-page="50"
                   :server-items-length="totalAccounts"
                   @update:options="loadAccountsWithPagination"
-                >
+                 density="compact">
                   <!-- Email Column -->
                   <template v-slot:item.email="{ item }">
                     <div class="d-flex align-center">

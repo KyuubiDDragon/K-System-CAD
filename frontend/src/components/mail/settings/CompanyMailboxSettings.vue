@@ -31,9 +31,9 @@
       <v-data-table
         :headers="headers"
         :items="mailboxes"
-        :items-per-page="10"
+        :items-per-page="25"
         :search="search"
-      >
+       density="compact">
         <!-- Search -->
         <template v-slot:top>
           <v-toolbar flat>

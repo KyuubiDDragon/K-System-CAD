@@ -154,7 +154,7 @@
                                     :items="sharingOptions.authorities"
                                     hide-default-footer
                                     class="elevation-1 mb-4"
-                                >
+                                 density="compact">
                                     <template #[`item.display_name`]="{ item }">
                                         {{ item.display_name }}
                                         <div class="text-caption text-grey">{{ item.name }}</div>

@@ -352,7 +352,7 @@
               item-key="id"
               class="elevation-0"
               @update:options="onTableOptionsChange"
-            >
+             density="compact">
               <!-- Action Column -->
               <template #[`item.action`]="{ item }">
                 <v-chip size="small" :color="getActionColor(item.action)" text-color="white">

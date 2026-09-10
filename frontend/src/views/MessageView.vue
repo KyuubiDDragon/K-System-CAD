@@ -1090,7 +1090,7 @@ onMounted(async () => {
                             :loading="loadingMessages"
                             hover
                             class="message-table"
-                        >
+                         density="compact">
                             <template v-slot:[`item.status`]="{ item }">
                                 <div class="d-flex align-center">
                                     <v-icon
@@ -1587,7 +1587,7 @@ onMounted(async () => {
                             :loading="loadingFolders"
                             hover
                             class="folder-table"
-                        >
+                         density="compact">
                             <template v-slot:[`item.name`]="{ item }">
                                 <div class="d-flex align-center">
                                     <v-icon start color="info" class="mr-2">mdi-folder</v-icon>
