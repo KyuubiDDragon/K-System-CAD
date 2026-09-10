@@ -1,0 +1,239 @@
+/**
+ * Bausteine des Design-Systems
+ *
+ * _density.scss setzt die Maße - hier steht die Gestalt: wie ein Zustand
+ * aussieht, wie sich die vier Schaltflaechenrollen unterscheiden, wie ein
+ * Tabellenkopf sich vom Inhalt abhebt.
+ *
+ * Die Regeln greifen auf die vorhandenen Vuetify-Komponenten, damit 248 Chips
+ * und 1040 Schaltflaechen nicht einzeln angefasst werden muessen.
+ */
+
+/* ============================================================
+   ZUSTAENDE
+   Ein Zustand traegt einen Punkt und einen Namen. Nie nur Farbe:
+   Rot und Gruen unterscheiden rund acht Prozent der maennlichen
+   Nutzer nicht zuverlaessig.
+   ============================================================ */
+.v-chip.v-chip--variant-tonal,
+.v-chip.v-chip--variant-flat,
+.v-chip.v-chip--variant-elevated {
+    font-weight: 550;
+    letter-spacing: 0;
+    border-radius: 4px;
+    padding-inline: 8px;
+}
+
+/* Der Punkt entfaellt, wenn der Chip bereits ein Symbol traegt. */
+.v-chip.v-chip--variant-tonal:not(:has(.v-icon))::before,
+.v-chip.v-chip--variant-flat:not(:has(.v-icon))::before,
+.v-chip.v-chip--variant-elevated:not(:has(.v-icon))::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    margin-inline-end: 6px;
+    flex: none;
+    opacity: 1;
+}
+
+/* Gefuellte Zustandsflaechen: dunkle Schrift im dunklen Modus, weil dort alle
+   Fuellfarben heller sind als der Grund. */
+.v-chip.bg-error,
+.v-chip.bg-warning,
+.v-chip.bg-success,
+.v-chip.bg-primary,
+.v-chip.bg-info {
+    color: var(--k-on-fill, #fff) !important;
+}
+
+/* ============================================================
+   SCHALTFLAECHEN - vier Rollen
+   Mehr Varianten fuehren dazu, dass keine mehr etwas bedeutet.
+   ============================================================ */
+.v-btn {
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-weight: 500;
+    border-radius: 5px;
+}
+
+/* Hauptaktion: gefuellt, ohne Schatten. Eine je Bildschirmbereich. */
+.v-btn--variant-elevated,
+.v-btn--variant-flat {
+    box-shadow: none;
+}
+
+.v-btn--variant-elevated:hover,
+.v-btn--variant-flat:hover {
+    box-shadow: none;
+    filter: brightness(1.08);
+}
+
+/* Zweitrangig: umrandet, gleiche Flaeche wie der Grund. */
+.v-btn--variant-outlined {
+    border-color: var(--k-line-strong, #ced4dd);
+}
+
+.v-btn--variant-outlined:hover {
+    background: var(--k-row-hover, #f5f7fa);
+}
+
+/* Leise: nur Text, bis man darauf zeigt. */
+.v-btn--variant-text:hover {
+    background: var(--k-row-hover, #f5f7fa);
+}
+
+/* Gefaehrlich: erst beim Zeigen rot, damit es nicht dauernd Alarm schlaegt. */
+.v-btn--variant-outlined.text-error:hover,
+.v-btn--variant-text.text-error:hover {
+    background: var(--k-critical-weak, #fbeae9);
+    border-color: var(--k-critical, #c0322b);
+}
+
+/* Symbolschaltflaechen bleiben rund. */
+.v-btn--icon {
+    border-radius: 50%;
+}
+
+/* ============================================================
+   TABELLEN
+   Der Kopf ordnet, er konkurriert nicht mit dem Inhalt.
+   ============================================================ */
+.v-data-table thead {
+    background: var(--k-sunken, #fafbfc);
+}
+
+.v-data-table tbody tr:hover > td {
+    background: var(--k-row-hover, #f5f7fa);
+}
+
+.v-data-table tbody tr.v-data-table__selected > td {
+    background: var(--k-row-select, #eaf1fc);
+}
+
+/* Keine Zebrastreifen: bei 36-px-Zeilen bringt der Wechsel Unruhe, ohne die
+   Zeilenfuehrung zu verbessern. Eine feine Trennlinie genuegt. */
+.v-data-table tbody td {
+    border-bottom: 1px solid var(--k-line, #e2e5ea);
+}
+
+/* Filterleiste ueber Tabellen: Chips zum Zuschalten, Anzahl rechts. */
+.k-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 9px 12px;
+    background: var(--k-surface, #fff);
+    border-bottom: 1px solid var(--k-line, #e2e5ea);
+}
+
+.k-toolbar__spacer {
+    flex: 1;
+}
+
+.k-toolbar__count {
+    font-size: 12px;
+    color: var(--k-ink-faint, #7d8794);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Ein noch nicht gesetzter Filter ist gestrichelt - er laedt zum Zuschalten
+   ein, ohne wie ein aktiver Zustand auszusehen. */
+.k-filter-chip {
+    border-style: dashed !important;
+}
+
+.k-filter-chip.is-active {
+    border-style: solid !important;
+    background: var(--k-accent-weak, #e8eefa);
+    border-color: var(--k-accent-line, #b9cdf0);
+    color: var(--k-accent, #2b62c4);
+}
+
+/* ============================================================
+   FLAECHEN
+   Nur was schwebt, wirft Schatten: Menue, Dialog, Fenster.
+   Karten und Tabellen liegen flach auf dem Grund.
+   ============================================================ */
+.v-card.v-card--variant-elevated {
+    box-shadow: none;
+    border: 1px solid var(--k-line, #e2e5ea);
+}
+
+.v-menu > .v-overlay__content,
+.v-dialog > .v-overlay__content {
+    box-shadow:
+        0 16px 40px rgba(16, 22, 32, 0.16),
+        0 2px 8px rgba(16, 22, 32, 0.08);
+}
+
+/* ============================================================
+   KENNZAHLEN
+   Beschriftung klein und gedimmt, Wert gross, Zusatz darunter.
+   Die Zahl traegt die Aussage, nicht die Beschriftung.
+   ============================================================ */
+.k-metric {
+    padding: 13px 15px;
+    background: var(--k-surface, #fff);
+}
+
+.k-metric__cap {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--k-ink-faint, #7d8794);
+    margin-bottom: 5px;
+}
+
+.k-metric__val {
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
+.k-metric__unit {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--k-ink-faint, #7d8794);
+}
+
+.k-metric__sub {
+    font-size: 11.5px;
+    color: var(--k-ink-muted, #5c6675);
+    margin-top: 3px;
+}
+
+/* ============================================================
+   EINGABEN
+   ============================================================ */
+.v-field--variant-outlined {
+    border-radius: 5px;
+}
+
+.v-input__details {
+    padding-inline: 2px;
+    min-height: 16px;
+}
+
+.v-messages__message {
+    font-size: 11.5px;
+    line-height: 1.35;
+}
+
+/* ============================================================
+   TASTATURFOKUS
+   Wer mit der Tastatur arbeitet, muss sehen, wo er ist.
+   ============================================================ */
+.v-btn:focus-visible,
+.v-chip:focus-visible,
+.v-list-item:focus-visible {
+    outline: 2px solid var(--k-accent, #2b62c4);
+    outline-offset: 1px;
+}

@@ -1,5 +1,7 @@
 // Dichte-System: kompaktere Grundmaße als die Vuetify-Standardhöhen.
 @use 'density';
+// Bausteine: Zustaende, Schaltflaechenrollen, Tabellenkoepfe, Kennzahlen.
+@use 'components';
 
 /**
  * Global CSS styles that apply variables from main.scss
