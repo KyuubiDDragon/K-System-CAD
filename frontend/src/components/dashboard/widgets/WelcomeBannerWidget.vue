@@ -2,7 +2,7 @@
   <div class="welcome-banner">
     <div class="welcome-content">
       <div class="welcome-text">
-        <h2 class="text-h5 mb-2">
+        <h2 class="text-h6 mb-0">
           {{ $t('dashboard.welcome.greeting', { name: username }) }}
         </h2>
         <p class="text-body-2 text-grey">
@@ -12,11 +12,11 @@
 
       <v-avatar
         v-if="config.showAvatar !== false"
-        size="64"
+        size="40"
         color="primary"
         class="welcome-avatar"
       >
-        <span class="text-h4">{{ userInitial }}</span>
+        <span class="text-subtitle-1">{{ userInitial }}</span>
       </v-avatar>
     </div>
 
@@ -106,7 +106,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem;
+  overflow: hidden;
+  padding: 10px 14px;
 }
 
 .welcome-content {
