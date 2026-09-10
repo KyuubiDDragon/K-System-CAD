@@ -2424,7 +2424,16 @@
     "availableEmployees": "Verfügbare Mitarbeiter",
     "availableVehicles": "Verfügbare Fahrzeuge",
     "searchEmployees": "Suche Mitarbeiter",
-    "searchVehicles": "Suche Fahrzeuge"
+    "searchVehicles": "Suche Fahrzeuge",
+    "occupiedCount": "{n} belegt",
+    "freeCount": "{n} frei",
+    "stock": "{employees} Mitarbeiter · {vehicles} Fahrzeuge",
+    "statusFree": "Frei",
+    "metricUnits": "Einheiten belegt",
+    "metricUnitsSub": "{n} auf „Frei“",
+    "metricEmployees": "Mitarbeiter",
+    "metricVehicles": "Fahrzeuge",
+    "metricAssignedSub": "{n} zugewiesen"
   },
   "invoiceItemsView": {
     "title": "Rechnungspositionen verwalten",

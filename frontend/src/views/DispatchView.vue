@@ -3,6 +3,12 @@
         <v-row>
             <!-- Linke/Mittlere Spalte: Dispatches -->
             <v-col :cols="dispatchColumnSize">
+                <!--
+                    Kennzahlenreihe ueber dem Arbeitsbereich, wie im Entwurf:
+                    erst der Bestand, dann die Einheiten.
+                -->
+                <KMetricRow :metrics="kMetrics" />
+
                 <v-card class="list-card" :loading="loadingDispatches" elevation="4">
                     <v-toolbar density="compact" color="primary" class="card-toolbar">
                         <v-toolbar-title class="text-subtitle-1">
@@ -54,9 +60,28 @@
                             </v-tooltip>
                         </v-btn>
 
-                        <v-chip size="small" label color="primary" variant="flat">{{
-                            dispatches.length
-                        }}</v-chip>
+                        <!--
+                            Kopfzeile nach Entwurf: wie viele Einheiten belegt
+                            und wie viele frei sind, danach die Bestaende. Man
+                            sieht die Lage, bevor man die Karten liest.
+                        -->
+                        <v-chip
+                            size="small"
+                            variant="tonal"
+                            color="info"
+                            class="mr-2"
+                        >{{ t('dispatchView.occupiedCount', { n: belegteEinheiten }) }}</v-chip>
+                        <v-chip
+                            size="small"
+                            variant="tonal"
+                            class="mr-3"
+                        >{{ t('dispatchView.freeCount', { n: freieEinheiten }) }}</v-chip>
+                        <span class="k-dispatch-stock">
+                            {{ t('dispatchView.stock', {
+                                employees: alleMitarbeiterZahl,
+                                vehicles: alleFahrzeugeZahl,
+                            }) }}
+                        </span>
                     </v-toolbar>
 
                     <v-card-text class="pa-3 list-scroll-area">
@@ -75,15 +100,29 @@
                                     :data-id="dispatch.id"
                                     elevation="3"
                                 >
-                                    <v-toolbar
-                                        density="compact"
-                                        :color="dispatch.color || 'primary'"
-                                        class="dispatch-toolbar"
-                                    >
-                                        <v-toolbar-title class="text-subtitle-2">{{
-                                            dispatch.name
-                                        }}</v-toolbar-title>
-                                    </v-toolbar>
+                                    <!--
+                                        Kopf einer Einheit: Name links, Funkstatus
+                                        rechts. Der Status stand bisher nur unten im
+                                        Auswahlfeld - man musste jede Karte bis zum
+                                        Ende lesen, um die Lage zu erfassen.
+
+                                        Keine Akzentflaeche mehr: `dispatch.color`
+                                        gibt es in kdd_dispatch nicht, der Ausdruck
+                                        fiel immer auf 'primary' zurueck. Acht
+                                        Einheiten nebeneinander in Akzentfarbe
+                                        markieren nichts.
+                                    -->
+                                    <div class="k-unit-head">
+                                        <span class="k-unit-name">{{ dispatch.name }}</span>
+                                        <v-chip
+                                            size="x-small"
+                                            variant="tonal"
+                                            class="k-mono"
+                                            :color="istBelegt(dispatch) ? 'info' : undefined"
+                                        >
+                                            {{ dispatch.status || t('dispatchView.statusFree') }}
+                                        </v-chip>
+                                    </div>
 
                                     <v-card-text class="flex-grow-1 pa-3">
                                         <!-- Mitarbeiter Drop-Zone -->
@@ -480,6 +519,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, reactive, nextTick, type Ref } from 'vue';
+import KMetricRow, { type KMetric } from '@/components/layout/KMetricRow.vue';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
@@ -576,6 +616,68 @@ const savingDispatch = ref<number | null>(null); // ID of dispatch being saved
 // diese fuenf. Was sie bedeuten, legt die Behoerde fest - deshalb stehen sie
 // hier unkommentiert und ohne zugewiesene Farbe.
 const statusOptions = ['10-6', '10-7', '10-8', 'MD', 'Frei'];
+
+/**
+ * Belegt oder frei.
+ *
+ * Der Entwurf zaehlt nach dem Funkstatus, nicht nach der Besatzung: die
+ * Kennzahl "Einheiten belegt 3 / 8" traegt dort den Zusatz "5 auf ‚Frei'".
+ * Eine Einheit gilt also als belegt, sobald ein Status gesetzt ist, der nicht
+ * "Frei" heisst - leerer Status zaehlt wie "Frei".
+ */
+function istBelegt(dispatch: any): boolean {
+    const status = (dispatch?.status ?? '').trim();
+    return status !== '' && status.toLowerCase() !== 'frei';
+}
+
+const belegteEinheiten = computed(() => dispatches.value.filter(istBelegt).length);
+const freieEinheiten = computed(() => dispatches.value.length - belegteEinheiten.value);
+
+/** Bestaende fuer die Kopfzeile - alle Mitarbeiter und Fahrzeuge, nicht nur
+    die gerade freien. */
+const alleMitarbeiterZahl = computed(
+    () =>
+        availableEmployees.value.length +
+        dispatches.value.reduce((sum: number, d: any) => sum + (d.employees?.length ?? 0), 0),
+);
+const alleFahrzeugeZahl = computed(
+    () =>
+        availableVehicles.value.length +
+        dispatches.value.reduce((sum: number, d: any) => sum + (d.vehicles?.length ?? 0), 0),
+);
+
+/**
+ * Die drei Kennzahlen aus dem Entwurf: belegte Einheiten mit ihrer Bezugsgroesse,
+ * dann Mitarbeiter und Fahrzeuge mit dem jeweils zugewiesenen Anteil.
+ */
+const kMetrics = computed<KMetric[]>(() => {
+    const zugewieseneMitarbeiter = dispatches.value.reduce(
+        (sum: number, d: any) => sum + (d.employees?.length ?? 0),
+        0,
+    );
+    const zugewieseneFahrzeuge = dispatches.value.reduce(
+        (sum: number, d: any) => sum + (d.vehicles?.length ?? 0),
+        0,
+    );
+    return [
+        {
+            cap: t('dispatchView.metricUnits'),
+            val: belegteEinheiten.value,
+            unit: `/ ${dispatches.value.length}`,
+            sub: t('dispatchView.metricUnitsSub', { n: freieEinheiten.value }),
+        },
+        {
+            cap: t('dispatchView.metricEmployees'),
+            val: alleMitarbeiterZahl.value,
+            sub: t('dispatchView.metricAssignedSub', { n: zugewieseneMitarbeiter }),
+        },
+        {
+            cap: t('dispatchView.metricVehicles'),
+            val: alleFahrzeugeZahl.value,
+            sub: t('dispatchView.metricAssignedSub', { n: zugewieseneFahrzeuge }),
+        },
+    ];
+});
 
 // Search / Filter
 const employeeSearch = ref('');
@@ -1465,8 +1567,36 @@ function handleDispatchUpdate(updateData: WebSocketUpdateData): void {
     overflow: hidden;
 }
 
-.dispatch-toolbar {
+/* 30 px wie im Entwurf, auf gesenkter Flaeche. Name links, Status rechts. */
+.k-unit-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 30px;
+    padding: 0 10px;
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
+}
+
+.k-unit-name {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--k-ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.k-unit-head .v-chip {
+    margin-left: auto;
+    font-size: 11px;
+}
+
+.k-dispatch-stock {
+    font-size: 12px;
+    color: var(--k-ink-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
 .drop-zone-header {

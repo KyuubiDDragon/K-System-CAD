@@ -2412,7 +2412,16 @@
     "availableEmployees": "Available Employees",
     "availableVehicles": "Available Vehicles",
     "searchEmployees": "Search employees",
-    "searchVehicles": "Search vehicles"
+    "searchVehicles": "Search vehicles",
+    "occupiedCount": "{n} in use",
+    "freeCount": "{n} free",
+    "stock": "{employees} employees · {vehicles} vehicles",
+    "statusFree": "Free",
+    "metricUnits": "Units in use",
+    "metricUnitsSub": "{n} set to “Free”",
+    "metricEmployees": "Employees",
+    "metricVehicles": "Vehicles",
+    "metricAssignedSub": "{n} assigned"
   },
   "invoiceItemsView": {
     "title": "Manage Invoice Items",
