@@ -200,3 +200,31 @@
         margin-top: 0 !important;
     }
 }
+
+/* ---------- Zahlen und Kennungen ---------- */
+/* Ziffern stehen auf gleicher Achse, sobald sie untereinander erscheinen.
+   Abweichungen fallen dadurch auf, ohne dass man liest. Betrifft Betraege,
+   Zeiten, Dienstnummern und Kennzeichen. */
+.v-data-table__td,
+.v-data-table-footer,
+.v-chip__content,
+.stat-value,
+.metric-value,
+time,
+[class*="number"],
+[class*="amount"],
+[class*="servicenumber"],
+[class*="numberplate"],
+[class*="count"] {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Kennungen und Zeitstempel in einer Festbreitenschrift: LSFD-Kennzeichen und
+   Fahrzeugnummern sind untereinander sonst schwer zu unterscheiden. */
+.k-mono,
+code,
+kbd,
+samp {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+}
