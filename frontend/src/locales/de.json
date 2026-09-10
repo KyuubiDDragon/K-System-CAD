@@ -119,7 +119,8 @@
       "applications": "Bewerbungen",
       "notes": "Notizen",
       "locations": "Standorte",
-      "dispatch": "Einsatz"
+      "dispatch": "Einsatz",
+      "views": "Ansichten"
     }
   },
   "widgets": {
@@ -153,7 +154,9 @@
     "tomorrow": "Morgen",
     "justNow": "Gerade eben",
     "minutesAgo": "{count} Minute vor | {count} Minuten vor",
-    "hoursAgo": "{count} Stunde vor | {count} Stunden vor"
+    "hoursAgo": "{count} Stunde vor | {count} Stunden vor",
+    "show": "Anzeigen",
+    "hide": "Ausblenden"
   },
   "desktop": {
     "start": "Start",
@@ -3123,5 +3126,8 @@
   },
   "auth": {
     "sessionExpired": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an."
+  },
+  "employee": {
+    "emptyRanks": "{n} Ränge unbesetzt"
   }
 }

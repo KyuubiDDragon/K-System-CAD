@@ -193,6 +193,27 @@ const filteredRanksWithEmployees = computed(() => {
     );
 });
 
+/**
+ * Besetzte Raenge. Unbesetzte bekommen keinen eigenen Abschnitt mehr - vorher
+ * belegte jeder von ihnen die volle Breite, sodass sechs Rangueberschriften und
+ * vier Personen einen ganzen Bildschirm fuellten.
+ */
+const besetzteRaenge = computed(() =>
+    filteredRanksWithEmployees.value.filter(rank => rank.employees.length > 0)
+);
+
+/** Unbesetzte Raenge - zusammengefasst in einer Zeile statt einzeln. */
+const unbesetzteRaenge = computed(() =>
+    filteredRanksWithEmployees.value.filter(rank => rank.employees.length === 0)
+);
+
+/** Blendet die unbesetzten Raenge auf Wunsch wieder einzeln ein. */
+const zeigeUnbesetzteRaenge = ref(false);
+
+const sichtbareRaenge = computed(() =>
+    zeigeUnbesetzteRaenge.value ? filteredRanksWithEmployees.value : besetzteRaenge.value
+);
+
 // --- Data Fetching ---
 const fetchData = async <T,>(
     action: string,
@@ -799,7 +820,7 @@ onMounted(async () => {
                 <div v-if="viewMode === 'cards'" class="employee-layout">
                 <div class="employee-content" :class="{ 'with-sidebar': selectedEmployee }">
                     <div class="rank-sections">
-                        <template v-for="rank in filteredRanksWithEmployees" :key="rank.id">
+                        <template v-for="rank in sichtbareRaenge" :key="rank.id">
                             <div class="rank-section">
                                 <!-- Rang-Header -->
                                 <div class="rank-header">
@@ -884,6 +905,32 @@ onMounted(async () => {
                                 class="rank-divider my-6"
                             ></v-divider>
                         </template>
+
+                        <!--
+                            Unbesetzte Raenge zusammengefasst: sie verschwinden
+                            nicht, kosten aber eine Zeile statt je einen ganzen
+                            Abschnitt. Ein Klick blendet sie wieder einzeln ein.
+                        -->
+                        <div
+                            v-if="unbesetzteRaenge.length > 0"
+                            class="empty-ranks-row"
+                        >
+                            <v-icon size="16" class="empty-ranks-row__icon">mdi-account-off-outline</v-icon>
+                            <span class="empty-ranks-row__text">
+                                {{ $t('employee.emptyRanks', { n: unbesetzteRaenge.length }) }}
+                            </span>
+                            <span class="empty-ranks-row__names">
+                                {{ unbesetzteRaenge.map(r => r.name).join(' · ') }}
+                            </span>
+                            <v-btn
+                                variant="text"
+                                size="small"
+                                class="empty-ranks-row__toggle"
+                                @click="zeigeUnbesetzteRaenge = !zeigeUnbesetzteRaenge"
+                            >
+                                {{ zeigeUnbesetzteRaenge ? $t('common.hide') : $t('common.show') }}
+                            </v-btn>
+                        </div>
                     </div>
                 </div>
 
@@ -1276,5 +1323,40 @@ onMounted(async () => {
     .employee-content.with-sidebar {
         margin-right: 0;
     }
+}
+
+/* Unbesetzte Raenge: eine Zeile statt je ein Abschnitt. */
+.empty-ranks-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    margin-top: 4px;
+    border: 1px dashed var(--k-line-strong, #363e4a);
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--k-ink-muted, #9aa4b2);
+}
+
+.empty-ranks-row__icon {
+    opacity: 0.6;
+    flex: none;
+}
+
+.empty-ranks-row__text {
+    font-weight: 550;
+    flex: none;
+}
+
+.empty-ranks-row__names {
+    color: var(--k-ink-faint, #6b7684);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.empty-ranks-row__toggle {
+    margin-left: auto;
+    flex: none;
 }
 </style>

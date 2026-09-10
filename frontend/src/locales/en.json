@@ -119,7 +119,8 @@
       "applications": "Applications",
       "notes": "Notes",
       "locations": "Locations",
-      "dispatch": "Dispatch"
+      "dispatch": "Dispatch",
+      "views": "Views"
     }
   },
   "widgets": {
@@ -153,7 +154,9 @@
     "tomorrow": "Tomorrow",
     "justNow": "Just now",
     "minutesAgo": "{count} minute ago | {count} minutes ago",
-    "hoursAgo": "{count} hour ago | {count} hours ago"
+    "hoursAgo": "{count} hour ago | {count} hours ago",
+    "show": "Show",
+    "hide": "Hide"
   },
   "desktop": {
     "start": "Start",
@@ -3111,5 +3114,8 @@
   },
   "auth": {
     "sessionExpired": "Your session has expired. Please sign in again."
+  },
+  "employee": {
+    "emptyRanks": "{n} ranks unoccupied"
   }
 }

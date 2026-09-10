@@ -307,6 +307,8 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { apiClientAuth } from '@/api';
 import { debounce } from 'lodash-es';
+import { useMenuItems } from '@/composables/useMenuItems';
+import type { MenuItem } from '@/types/Menu';
 
 interface SearchResult {
   id: string | number;
@@ -348,6 +350,7 @@ interface QuickAction {
 const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
+const { menuItems } = useMenuItems();
 
 // Props
 const props = defineProps<{
@@ -371,6 +374,18 @@ const recentSearches = ref<{ query: string; category?: string }[]>([]);
 
 // Categories configuration
 const categories = ref<SearchCategory[]>([
+  {
+    // Ansichten werden lokal aus der Navigation gefuellt, nicht ueber die API.
+    // Bei 63 Ansichten ist der Weg dorthin haeufig das eigentliche Ziel der
+    // Suche - vorher fand die Palette nur Inhalte.
+    id: 'view',
+    label: t('globalSearch.categories.views'),
+    icon: 'mdi-compass-outline',
+    itemIcon: 'mdi-arrow-right-thin',
+    color: 'primary',
+    searchPrefix: 'view:',
+    searchSymbol: '>'
+  },
   {
     id: 'person',
     label: t('globalSearch.categories.persons'),
@@ -974,9 +989,49 @@ const performSearch = debounce(async () => {
     console.error('Search error:', error);
     searchResults.value = {};
   } finally {
+    // Ansichten stammen aus der Navigation im Speicher und brauchen keine
+    // Abfrage. Sie stehen bewusst vorn: wer "fahr" tippt, sucht meist die
+    // Ansicht Fahrzeuge und nicht ein einzelnes Fahrzeug.
+    const ansichten = sucheAnsichten(cleanSearchQuery.value);
+    if (ansichten.length) {
+      searchResults.value = { view: ansichten, ...searchResults.value };
+    }
     isSearching.value = false;
   }
 }, 300);
+
+/**
+ * Durchsucht die Navigation nach Ansichten. Der Bereich (die uebergeordnete
+ * Gruppe) wird als Untertitel mitgegeben, damit ein Treffer einordbar ist -
+ * "Fahrzeuge" allein sagt nicht, ob die Akte oder die Leitstelle gemeint ist.
+ */
+function sucheAnsichten(query: string): SearchResult[] {
+  const q = query.trim().toLowerCase();
+  if (!q || q.length < 2) return [];
+
+  const gefunden: SearchResult[] = [];
+
+  const durchlaufe = (items: MenuItem[], bereich = '') => {
+    for (const item of items) {
+      if (item.route && item.title?.toLowerCase().includes(q)) {
+        gefunden.push({
+          id: `view:${item.route}`,
+          type: 'view',
+          title: item.title,
+          subtitle: bereich || undefined,
+          icon: typeof item.icon === 'string' && item.icon.startsWith('mdi-') ? item.icon : 'mdi-arrow-right-thin',
+          route: item.route,
+        });
+      }
+      if (item.children?.length) {
+        durchlaufe(item.children, item.route ? bereich : item.title);
+      }
+    }
+  };
+
+  durchlaufe(menuItems.value ?? []);
+  return gefunden.slice(0, 8);
+}
 
 // Watchers
 watch(searchQuery, () => {
