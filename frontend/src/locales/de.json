@@ -616,9 +616,10 @@
       },
       "employeeOverview": {
         "totalEmployees": "Mitarbeiter Gesamt",
-        "active": "Aktiv",
-        "onVacation": "Im Urlaub",
-        "loadError": "Fehler beim Laden der Mitarbeiterdaten"
+        "active": "Im Dienst",
+        "onVacation": "Abwesend",
+        "loadError": "Fehler beim Laden der Mitarbeiterdaten",
+        "total": "Mitarbeiter"
       },
       "openReports": {
         "noReports": "Keine offenen Meldungen",

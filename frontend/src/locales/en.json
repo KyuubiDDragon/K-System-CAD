@@ -616,9 +616,10 @@
       },
       "employeeOverview": {
         "totalEmployees": "Total Employees",
-        "active": "Active",
-        "onVacation": "On Vacation",
-        "loadError": "Failed to load employee data"
+        "active": "On duty",
+        "onVacation": "Absent",
+        "loadError": "Failed to load employee data",
+        "total": "Employees"
       },
       "openReports": {
         "noReports": "No open reports",

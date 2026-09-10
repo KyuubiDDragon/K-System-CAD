@@ -3,23 +3,25 @@
     <div v-if="loading" class="text-center pa-4">
       <v-progress-circular indeterminate size="32" />
     </div>
-    <div v-else class="overview-content">
-      <div class="stats-grid">
-        <div class="stat-card pa-3">
-          <v-icon size="48" color="primary">mdi-account-group</v-icon>
-          <div class="text-h4 mt-2">{{ stats.total }}</div>
-          <div class="text-caption">Total Employees</div>
+    <!--
+      Kennzahlen im Entwurfsstil: Beschriftung klein und gedimmt, die Zahl
+      gross. Vorher dominierte ein 48-px-Symbol ueber jeder Zahl - das Symbol
+      trug aber keine Information, die Zahl schon.
+    -->
+    <div v-else class="stats-grid">
+      <div class="k-metric">
+        <div class="k-metric__cap">{{ t('dashboard.widget.employeeOverview.total') }}</div>
+        <div class="k-metric__val">{{ stats.total }}</div>
+      </div>
+      <div class="k-metric">
+        <div class="k-metric__cap">{{ t('dashboard.widget.employeeOverview.active') }}</div>
+        <div class="k-metric__val">
+          {{ stats.active }}<span class="k-metric__unit"> / {{ stats.total }}</span>
         </div>
-        <div class="stat-card pa-3">
-          <v-icon size="48" color="success">mdi-account-check</v-icon>
-          <div class="text-h4 mt-2">{{ stats.active }}</div>
-          <div class="text-caption">Active</div>
-        </div>
-        <div class="stat-card pa-3">
-          <v-icon size="48" color="warning">mdi-beach</v-icon>
-          <div class="text-h4 mt-2">{{ stats.onVacation }}</div>
-          <div class="text-caption">On Vacation</div>
-        </div>
+      </div>
+      <div class="k-metric">
+        <div class="k-metric__cap">{{ t('dashboard.widget.employeeOverview.onVacation') }}</div>
+        <div class="k-metric__val">{{ stats.onVacation }}</div>
       </div>
     </div>
   </div>
@@ -28,6 +30,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { apiClientAuth } from '@/api'
+import { useI18n } from 'vue-i18n'
 
 interface Props {
   widgetId: string
@@ -37,6 +40,7 @@ interface Props {
 defineProps<Props>()
 
 const loading = ref(true)
+const { t } = useI18n()
 const stats = ref({ total: 0, active: 0, onVacation: 0 })
 
 async function loadStats() {
@@ -63,8 +67,9 @@ defineExpose({ refresh: loadStats })
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1px;
+  background: var(--k-line, #e2e5ea);
 }
 
 .stat-card {
