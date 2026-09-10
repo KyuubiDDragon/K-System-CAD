@@ -1041,9 +1041,9 @@ function getStats(PDO $pdo, string $authority, int $authorityId): void {
 
         // Employees on vacation (from vacations table)
         $today = date('Y-m-d');
-        $sqlVacation = "SELECT COUNT(DISTINCT v.employee_id)
-                        FROM kdd_vacations v
-                        INNER JOIN kdd_employee e ON v.employee_id = e.id
+        $sqlVacation = "SELECT COUNT(DISTINCT v.employee)
+                        FROM kdd_employee_vacation v
+                        INNER JOIN kdd_employee e ON v.employee = e.id
                         WHERE e.authority_id = ?
                         AND e.is_terminated = 0
                         AND DATE(v.start) <= ?
@@ -1081,8 +1081,8 @@ function getUpcomingVacations(PDO $pdo, string $authority, int $authorityId): vo
                     v.start,
                     v.end,
                     v.reason as type
-                FROM kdd_vacations v
-                INNER JOIN kdd_employee e ON v.employee_id = e.id
+                FROM kdd_employee_vacation v
+                INNER JOIN kdd_employee e ON v.employee = e.id
                 WHERE e.authority_id = ?
                 AND e.is_terminated = 0
                 AND DATE(v.start) <= ?
