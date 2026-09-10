@@ -165,6 +165,16 @@ app.use(Toast, {
     toastClassName: 'custom-toast',
     bodyClassName: 'custom-toast-body',
     containerClassName: 'custom-toast-container',
+    // Hoechstens sechs Meldungen gleichzeitig, damit sie nicht den halben
+    // Bildschirm verdecken.
+    maxToasts: 6,
+    // Gleichlautende Meldungen werden nicht mehrfach angezeigt. Beim Ablauf
+    // einer Sitzung schlug bisher jede laufende Anfrage einzeln auf - fuenf
+    // identische Meldungen uebereinander, obwohl es eine Ursache war.
+    filterBeforeCreate: (toast: { content: unknown }, toasts: Array<{ content: unknown }>) => {
+        const schonDa = toasts.some((t) => t.content === toast.content);
+        return schonDa ? false : toast;
+    },
 });
 
 // Theme initialisieren, bevor App gerendert wird

@@ -3115,5 +3115,13 @@
     "sick": "Krank",
     "terminated": "Ausgetreten",
     "until": "bis"
+  },
+  "dispatch": {
+    "title": "Leitstelle",
+    "status": "Status",
+    "empty": "Keine Einheiten angelegt"
+  },
+  "auth": {
+    "sessionExpired": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an."
   }
 }

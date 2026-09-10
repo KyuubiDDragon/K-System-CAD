@@ -7,7 +7,7 @@
                     <v-toolbar density="compact" color="primary" class="card-toolbar">
                         <v-toolbar-title class="text-subtitle-1">
                             <v-icon start size="18" class="mr-1">mdi-radio-tower</v-icon>
-                            Dispatches
+                            {{ $t('dispatch.title') }}
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
 
@@ -237,18 +237,21 @@
                                     <v-divider></v-divider>
 
                                     <v-card-actions class="pa-3">
-                                        <v-text-field
+                                        <!-- Auswahlfeld statt Freitext: Der Status ist ein
+                                             festes Vokabular. Als Textfeld landete der Funkcode
+                                             schon einmal versehentlich im Namensfeld einer
+                                             Einheit. Die Auswahl wirkt sofort, ohne Speichern. -->
+                                        <v-select
                                             v-model="dispatch.status"
-                                            append-inner-icon="mdi-content-save"
+                                            :items="statusOptions"
                                             density="compact"
-                                            label="Status"
+                                            :label="$t('dispatch.status')"
                                             variant="outlined"
                                             color="primary"
                                             hide-details
-                                            @click:append-inner="saveDispatch(dispatch)"
-                                            @keydown.enter="saveDispatch(dispatch)"
+                                            @update:model-value="saveDispatch(dispatch)"
                                             :loading="savingDispatch === dispatch.id"
-                                        ></v-text-field>
+                                        ></v-select>
                                     </v-card-actions>
                                 </v-card>
                             </v-col>
@@ -261,7 +264,7 @@
                             <v-icon color="grey-darken-1" size="48" class="mb-2"
                                 >mdi-radio-tower-off</v-icon
                             >
-                            <span>Keine Dispatches konfiguriert</span>
+                            <span>{{ $t('dispatch.empty') }}</span>
                         </div>
                     </v-card-text>
                 </v-card>
@@ -567,6 +570,12 @@ const loadingEmployees = ref(false);
 const loadingVehicles = ref(false);
 const loadingDispatches = ref(false);
 const savingDispatch = ref<number | null>(null); // ID of dispatch being saved
+
+// Funkstatus einer Einheit. Die Werte stammen aus dem Bestand in
+// kdd_dispatch.status; die Spalte ist Freitext, benutzt wurden bisher nur
+// diese fuenf. Was sie bedeuten, legt die Behoerde fest - deshalb stehen sie
+// hier unkommentiert und ohne zugewiesene Farbe.
+const statusOptions = ['10-6', '10-7', '10-8', 'MD', 'Frei'];
 
 // Search / Filter
 const employeeSearch = ref('');
@@ -1475,12 +1484,16 @@ function handleDispatchUpdate(updateData: WebSocketUpdateData): void {
     position: relative;
 }
 
-.drop-zone.employee-drop-zone {
-    min-height: 160px;
+/* Eine leere Ablageflaeche braucht nur die Hoehe einer Zeile. Vorher standen
+   hier 160 bzw. 80 px, sodass acht Einheiten einen ganzen Bildschirm fuellten. */
+.drop-zone.employee-drop-zone,
+.drop-zone.vehicle-drop-zone {
+    min-height: 34px;
 }
 
-.drop-zone.vehicle-drop-zone {
-    min-height: 80px;
+/* Sind Leute oder Fahrzeuge zugewiesen, waechst die Flaeche mit dem Inhalt. */
+.drop-zone.has-items {
+    min-height: 0;
 }
 
 .drop-zone:hover {

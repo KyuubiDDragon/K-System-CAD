@@ -282,6 +282,19 @@ async function performLogout() {
             authStore._setUser(null);
             authStore.isLoading = false;
 
+            // Eine verstaendliche Meldung statt des technischen Backend-Texts
+            // ("Authentication failed: Session invalid or revoked."), der bisher
+            // ungefiltert und auf Englisch durchgereicht wurde. Gleichlautende
+            // Meldungen werden vom Toast-Filter zusammengefasst, sodass hier
+            // auch bei mehreren offenen Anfragen nur eine erscheint.
+            try {
+                const { useToast } = await import('vue-toastification');
+                const i18n = (await import('@/plugins/i18n')).default;
+                useToast().warning(String(i18n.global.t('auth.sessionExpired')));
+            } catch (toastError) {
+                console.warn('Konnte Hinweis zur abgelaufenen Sitzung nicht anzeigen:', toastError);
+            }
+
             // Navigate to login
             await router.push('/');
         }

@@ -170,3 +170,33 @@
         min-height: auto;
     }
 }
+
+/* ---------- Leerzustaende ---------- */
+/* Ein Leerzustand darf nicht mehr Platz beanspruchen als der gefuellte Zustand.
+   Vorher: zentrierter Block mit 48-px-Symbol ueber rund 150 px Hoehe - der
+   Bildschirm war damit am leersten, wenn am wenigsten los war.
+   Jetzt: eine Zeile mit kleinem Symbol und Text daneben. */
+.no-data {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px !important;
+    text-align: left !important;
+
+    .v-icon {
+        font-size: 20px !important;
+        flex: none;
+        opacity: 0.6;
+    }
+
+    p {
+        margin: 0 !important;
+        font-size: 12.5px;
+    }
+
+    /* Eine Aktion im Leerzustand rueckt ans Ende der Zeile. */
+    .v-btn {
+        margin-left: auto;
+        margin-top: 0 !important;
+    }
+}
