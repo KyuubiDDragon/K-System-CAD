@@ -539,7 +539,7 @@ const kFilters = useTableFilters(
   }
   
   .main-table-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;

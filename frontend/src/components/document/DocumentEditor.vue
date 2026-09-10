@@ -772,7 +772,7 @@ onBeforeUnmount(() => {
   }
   
   .document-settings-card {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
   }
   

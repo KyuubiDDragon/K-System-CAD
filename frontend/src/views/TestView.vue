@@ -1033,7 +1033,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 
 /* Action Bar */
 .action-bar {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     border-radius: 12px;
@@ -1058,7 +1058,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 /* Main Card & Table Styles */
 .main-card,
 .test-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1068,14 +1068,14 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--k-line);
 }
 
 :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
     font-weight: 600;
     color: #e2e8f0;
-    background: rgba(30, 41, 59, 0.5) !important;
+    background: var(--k-sunken) !important;
     padding: 12px 16px;
 }
 
@@ -1095,7 +1095,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 :deep(.v-table .v-table__wrapper > table > tbody > tr:hover > td) {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
 }
 
 /* Table Icons & Text Colors */
@@ -1125,7 +1125,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 
 /* Generated Test Styles */
 .test-header {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
 }
 
 .test-title {
@@ -1137,7 +1137,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 .question-item {
-    background: rgba(30, 41, 59, 0.2);
+    background: var(--k-sunken);
     border-radius: 8px;
     padding: 12px 16px;
     margin-bottom: 16px;
@@ -1145,7 +1145,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 .question-item:hover {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
 }
 
 .question-text {

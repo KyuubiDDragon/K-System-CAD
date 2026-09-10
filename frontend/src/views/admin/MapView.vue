@@ -644,7 +644,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 
 /* Main Card */
 .main-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -653,7 +653,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 
 /* Card Toolbar */
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--card-border);
 }
 
@@ -665,12 +665,12 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 
 /* Icon Display */
 .icon-avatar {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border: 1px solid var(--k-line);
 }
 
 .icon-preview {
-    background: rgba(30, 41, 59, 0.6);
+    background: var(--k-sunken);
     border: 1px solid var(--k-line);
 }
 
@@ -690,7 +690,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 .icon-picker {
     max-height: 350px;
     overflow-y: auto;
-    background: rgba(15, 23, 42, 0.95) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -781,7 +781,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 }
 
 .icon-picker::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.5);
+    background: var(--k-surface);
     border-radius: 4px;
 }
 

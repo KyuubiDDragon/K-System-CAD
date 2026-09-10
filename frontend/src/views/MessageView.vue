@@ -1974,7 +1974,7 @@ const kFilters = useTableFilters(
 
 /* Sidebar Styles */
 .sidebar-drawer {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: var(--k-surface) !important;
     border-right: 1px solid var(--k-line);
     box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -2005,7 +2005,7 @@ const kFilters = useTableFilters(
 
 /* Card Styles */
 .main-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -2015,7 +2015,7 @@ const kFilters = useTableFilters(
 }
 
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--k-line);
 }
 
@@ -2050,12 +2050,12 @@ const kFilters = useTableFilters(
     text-transform: uppercase;
     letter-spacing: 0.5px;
     border-bottom: 1px solid rgba(148, 163, 184, 0.2) !important;
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
 }
 
 .message-table :deep(tr:hover),
 .folder-table :deep(tr:hover) {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
 }
 
 .message-table :deep(tr),
@@ -2163,7 +2163,7 @@ const kFilters = useTableFilters(
 }
 
 .dialog-card {
-    background: rgba(15, 23, 42, 0.95) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
 }
@@ -2183,7 +2183,7 @@ const kFilters = useTableFilters(
 
 .message-editor :deep(.ProseMirror) {
     min-height: 250px;
-    background-color: rgba(30, 41, 59, 0.6);
+    background-color: var(--k-sunken);
     color: #e2e8f0;
     padding: 16px;
 }
@@ -2223,14 +2223,14 @@ const kFilters = useTableFilters(
     border: 1px solid var(--k-line);
     border-radius: 8px;
     padding: 16px;
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
     max-height: 50vh;
     overflow-y: auto;
     line-height: 1.6;
 }
 
 .note-textarea {
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
     border-radius: 8px;
 }
 

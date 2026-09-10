@@ -506,7 +506,7 @@ const { t } = useI18n();
 
   /* Card Styling */
   .apartment-card {
-	background: rgba(15, 23, 42, 0.6) !important;
+	background: var(--k-surface) !important;
 	border: 1px solid var(--card-border);
 	backdrop-filter: blur(10px);
 	border-radius: 12px;
@@ -524,7 +524,7 @@ const { t } = useI18n();
   
   /* Tabs Styling */
   .tab-bar {
-	background: rgba(30, 41, 59, 0.4) !important;
+	background: var(--k-sunken) !important;
 	border-bottom: 1px solid var(--card-border);
   }
   
@@ -556,7 +556,7 @@ const { t } = useI18n();
   /* Address Map Placeholder */
   .address-map {
 	border-radius: 8px;
-	background: rgba(30, 41, 59, 0.3);
+	background: var(--k-sunken);
 	border: 1px solid var(--card-border);
   }
   
@@ -571,13 +571,13 @@ const { t } = useI18n();
   
   /* Table Card */
   .table-card {
-	background: rgba(30, 41, 59, 0.3) !important;
+	background: var(--k-sunken) !important;
 	border-radius: 8px;
 	overflow: hidden;
   }
   
   .person-table :deep(th) {
-	background-color: rgba(30, 41, 59, 0.5) !important;
+	background-color: var(--k-sunken) !important;
   }
   
   .person-table :deep(tr:hover) {
@@ -596,7 +596,7 @@ const { t } = useI18n();
   }
   
   .description-content {
-	background: rgba(30, 41, 59, 0.3);
+	background: var(--k-sunken);
 	border-radius: 8px;
 	padding: 16px;
 	border: 1px solid var(--card-border);

@@ -783,7 +783,7 @@ const kCols = useTableColumns('admin/WeatherView', () => unref(weatherHeaders) a
 
 /* Main Card */
 .main-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -800,7 +800,7 @@ const kCols = useTableColumns('admin/WeatherView', () => unref(weatherHeaders) a
 
 /* Card Toolbar */
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--card-border);
 }
 
@@ -829,7 +829,7 @@ const kCols = useTableColumns('admin/WeatherView', () => unref(weatherHeaders) a
 
 /* Weather Icon Selector */
 .weather-icon-selector {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border-radius: 8px;
     padding: 16px;
     border: 1px solid var(--k-line);
@@ -860,7 +860,7 @@ const kCols = useTableColumns('admin/WeatherView', () => unref(weatherHeaders) a
 
 /* Delete Preview */
 .delete-weather-preview {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border: 1px solid var(--k-line);
 }
 

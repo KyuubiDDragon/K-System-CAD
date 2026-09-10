@@ -1844,7 +1844,7 @@ onMounted(() => {
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border: 1px solid var(--k-line);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -1854,7 +1854,7 @@ onMounted(() => {
 .category-header:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--k-sunken);
 }
 
 .edit-field {
@@ -1870,7 +1870,7 @@ onMounted(() => {
 }
 
 .template-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1887,7 +1887,7 @@ onMounted(() => {
 }
 
 .template-toolbar {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border-bottom: 1px solid var(--k-line);
 }
 
@@ -1930,7 +1930,7 @@ onMounted(() => {
 }
 
 .empty-state-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1976,14 +1976,14 @@ onMounted(() => {
 }
 
 .sorting-list {
-    background: rgba(15, 23, 42, 0.4) !important;
+    background: var(--k-surface) !important;
     border-radius: 8px;
     padding: 8px;
     border: 1px solid var(--k-line);
 }
 
 .draggable-item {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     margin-bottom: 8px;
     border-radius: 6px;
@@ -1991,7 +1991,7 @@ onMounted(() => {
 }
 
 .draggable-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
     transform: translateY(-2px);
 }
 
@@ -2002,7 +2002,7 @@ onMounted(() => {
 }
 
 code {
-    background-color: rgba(15, 23, 42, 0.6);
+    background-color: var(--k-surface);
     padding: 2px 4px;
     border-radius: 4px;
     color: var(--k-accent);
@@ -2042,7 +2042,7 @@ code {
 }
 
 .template-card {
-  background: rgba(15, 23, 42, 0.6) !important;
+  background: var(--k-surface) !important;
   border: 1px solid var(--k-line);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -2171,7 +2171,7 @@ code {
 
 /* Stilisierung der Karten */
 .template-card {
-  background: rgba(15, 23, 42, 0.6) !important;
+  background: var(--k-surface) !important;
   border: 1px solid var(--k-line);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -2190,7 +2190,7 @@ code {
 }
 
 .template-toolbar {
-  background: rgba(30, 41, 59, 0.4) !important;
+  background: var(--k-sunken) !important;
   border-bottom: 1px solid var(--k-line);
   min-height: 48px !important;
   height: 48px;

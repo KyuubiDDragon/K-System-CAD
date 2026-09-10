@@ -1159,7 +1159,7 @@ function kExportSelection() {
 
 /* Action Bar */
 .action-bar {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     border-radius: 12px;
@@ -1192,7 +1192,7 @@ function kExportSelection() {
 
 /* Main Card & Table Styles */
 .main-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1204,7 +1204,7 @@ function kExportSelection() {
 :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
     font-weight: 600;
     color: #e2e8f0;
-    background: rgba(30, 41, 59, 0.5) !important;
+    background: var(--k-sunken) !important;
     padding: 12px 16px;
 }
 
@@ -1224,7 +1224,7 @@ function kExportSelection() {
 }
 
 :deep(.v-table .v-table__wrapper > table > tbody > tr:hover > td) {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
 }
 
 /* Group chips */

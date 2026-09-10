@@ -234,7 +234,7 @@ onMounted(() => {
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: rgba(17, 23, 35, 0.8);
+    background-color: var(--k-surface);
     backdrop-filter: blur(10px);
     border-radius: 8px;
     padding: 8px 0;
@@ -242,7 +242,7 @@ onMounted(() => {
   }
   
   .filter-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -256,7 +256,7 @@ onMounted(() => {
   
   .search-field {
     transition: all var(--transition-timing);
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--k-surface);
     border-radius: 12px;
   }
   

@@ -534,7 +534,7 @@ const closeDialog = () => {
 
   /* Card Styling */
   .person-add-card {
-	background: rgba(15, 23, 42, 0.6) !important;
+	background: var(--k-surface) !important;
 	border: 1px solid var(--card-border);
 	backdrop-filter: blur(10px);
 	border-radius: 12px;
@@ -547,7 +547,7 @@ const closeDialog = () => {
   
   /* Tabs Styling */
   .tab-bar {
-	background: rgba(30, 41, 59, 0.4) !important;
+	background: var(--k-sunken) !important;
 	border-bottom: 1px solid var(--card-border);
   }
   
@@ -579,7 +579,7 @@ const closeDialog = () => {
   
   /* Editor Container */
   .editor-container {
-	background: rgba(30, 41, 59, 0.3);
+	background: var(--k-sunken);
 	border-radius: 8px;
 	border: 1px solid var(--card-border);
 	overflow: hidden;

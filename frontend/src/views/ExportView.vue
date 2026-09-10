@@ -1902,7 +1902,7 @@ onMounted(async () => {
 }
 
 .config-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     border-radius: 12px;
@@ -1916,7 +1916,7 @@ onMounted(async () => {
 }
 
 .selected-columns-list {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border-radius: 8px;
     max-height: 300px;
     overflow-y: auto;
@@ -1977,7 +1977,7 @@ onMounted(async () => {
     max-height: 250px;
     overflow-y: auto;
     border-radius: 8px;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
 }
 
 .preview-table {

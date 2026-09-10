@@ -1252,7 +1252,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 .login-field :deep(.v-list) {
-    background: rgba(30, 41, 59, 0.95);
+    background: var(--k-sunken);
     backdrop-filter: blur(20px);
     border: 1px solid var(--k-line);
     border-radius: 12px;

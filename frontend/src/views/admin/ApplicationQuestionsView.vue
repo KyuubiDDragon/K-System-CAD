@@ -505,7 +505,7 @@ onMounted(() => {
 
 /* Position Card */
 .position-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -525,7 +525,7 @@ onMounted(() => {
 
 /* Card Toolbar */
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--card-border);
 }
 
@@ -542,14 +542,14 @@ onMounted(() => {
 
 /* Question Item */
 .question-item {
-    background: rgba(30, 41, 59, 0.2);
+    background: var(--k-sunken);
     border-radius: 8px;
     padding: 8px;
     transition: all 0.2s ease;
 }
 
 .question-item:hover {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
 }
 
 .question-number {
@@ -560,21 +560,21 @@ onMounted(() => {
 
 /* Draggable Items */
 .draggable-list {
-    background: rgba(15, 23, 42, 0.4) !important;
+    background: var(--k-surface) !important;
     border-radius: 8px;
     padding: 8px;
     border: 1px solid var(--k-line);
 }
 
 .draggable-item {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     border-radius: 6px;
     transition: all 0.2s ease;
 }
 
 .draggable-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }

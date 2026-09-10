@@ -964,7 +964,7 @@ onMounted(() => {
 
 /* Action Bar */
 .action-bar {
-	background: rgba(15, 23, 42, 0.6) !important;
+	background: var(--k-surface) !important;
 	border: 1px solid var(--k-line);
 	backdrop-filter: blur(8px);
 	border-radius: 12px;
@@ -974,7 +974,7 @@ onMounted(() => {
 }
 
 .folder-path {
-	background: rgba(30, 41, 59, 0.4);
+	background: var(--k-sunken);
 	padding: 4px 8px;
 	border-radius: 8px;
 }
@@ -1008,7 +1008,7 @@ onMounted(() => {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: rgba(15, 23, 42, 0.8);
+	background: var(--k-surface);
 	z-index: 10;
 	border-radius: 12px;
 	backdrop-filter: blur(4px);
@@ -1016,7 +1016,7 @@ onMounted(() => {
 
 /* Content Area */
 .content-area {
-	background: rgba(15, 23, 42, 0.6) !important;
+	background: var(--k-surface) !important;
 	border: 1px solid var(--k-line);
 	backdrop-filter: blur(8px);
 	border-radius: 12px;
@@ -1043,7 +1043,7 @@ onMounted(() => {
 	cursor: pointer;
 	border: 1px solid var(--k-line);
 	border-radius: 12px;
-	background: rgba(30, 41, 59, 0.4) !important;
+	background: var(--k-sunken) !important;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	height: 100%;
 	min-height: 160px;
@@ -1052,7 +1052,7 @@ onMounted(() => {
 
 .folder-card:hover {
 	transform: translateY(-6px);
-	background: rgba(30, 41, 59, 0.6) !important;
+	background: var(--k-sunken) !important;
 	border-color: var(--k-accent-line);
 }
 
@@ -1100,7 +1100,7 @@ onMounted(() => {
 	cursor: pointer;
 	border: 1px solid var(--k-line);
 	border-radius: 12px;
-	background: rgba(30, 41, 59, 0.4) !important;
+	background: var(--k-sunken) !important;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 	height: 100%;
 	overflow: hidden;
@@ -1108,13 +1108,13 @@ onMounted(() => {
 
 .file-card:hover {
 	transform: translateY(-6px);
-	background: rgba(30, 41, 59, 0.6) !important;
+	background: var(--k-sunken) !important;
 	border-color: var(--k-accent-line);
 }
 
 .file-preview {
 	height: 160px;
-	background: rgba(15, 23, 42, 0.5);
+	background: var(--k-surface);
 	overflow: hidden;
 }
 
@@ -1184,7 +1184,7 @@ onMounted(() => {
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background: rgba(15, 23, 42, 0.85);
+	background: var(--k-surface);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1222,7 +1222,7 @@ onMounted(() => {
 }
 
 .file-list-item:hover {
-	background: rgba(30, 41, 59, 0.6) !important;
+	background: var(--k-sunken) !important;
 }
 
 .file-list-item:last-child {

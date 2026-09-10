@@ -1158,7 +1158,7 @@ onMounted(async () => {
 }
 
 .empty-state-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
 }
@@ -1174,7 +1174,7 @@ onMounted(async () => {
     justify-content: space-between;
     margin-bottom: 20px;
     padding: 12px 16px;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border-radius: 8px;
     backdrop-filter: blur(8px);
     border: 1px solid var(--k-line);
@@ -1228,14 +1228,14 @@ onMounted(async () => {
 
 /* Draggable items */
 .draggable-list {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border-radius: 8px;
     padding: 8px;
     border: 1px solid var(--k-line);
 }
 
 .draggable-item {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
     margin-bottom: 8px;
     border-radius: 6px;
     border: 1px solid var(--k-line);
@@ -1243,7 +1243,7 @@ onMounted(async () => {
 }
 
 .draggable-item:hover {
-    background: rgba(30, 41, 59, 0.9) !important;
+    background: var(--k-sunken) !important;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

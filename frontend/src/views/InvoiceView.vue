@@ -691,7 +691,7 @@ const kFilters = useTableFilters(
 
 /* Filter Toolbar */
 .filter-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
 }
 
 .search-field {
@@ -772,7 +772,7 @@ const kFilters = useTableFilters(
 }
 
 .dialog-card {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;

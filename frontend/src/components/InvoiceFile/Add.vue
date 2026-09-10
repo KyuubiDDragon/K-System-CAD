@@ -573,7 +573,7 @@ onMounted(() => {
     justify-content: flex-start;
     align-items: center;
     padding: 16px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 12px;
     margin-bottom: 24px;
 }
@@ -628,14 +628,14 @@ onMounted(() => {
     align-items: center;
     justify-content: center;
     padding: 32px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     color: var(--k-ink-muted);
 }
 
 /* Invoice Items */
 .invoice-item {
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--k-line);
@@ -651,7 +651,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    background-color: rgba(30, 41, 59, 0.5);
+    background-color: var(--k-sunken);
 }
 
 .index-badge {

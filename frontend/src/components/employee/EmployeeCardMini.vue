@@ -120,7 +120,7 @@ const handleClick = () => {
 
 <style scoped>
 .employee-card-mini {
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--k-surface);
     border: 1px solid var(--k-line);
     border-radius: 12px;
     overflow: hidden;

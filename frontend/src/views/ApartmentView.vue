@@ -495,7 +495,7 @@ const kFilters = useTableFilters(
 
 /* Main Container Styles */
 .main-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -523,7 +523,7 @@ const kFilters = useTableFilters(
 
 /* Table Styles */
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--card-border);
 }
 
@@ -607,7 +607,7 @@ const kFilters = useTableFilters(
     position: sticky;
     top: 0;
     z-index: 10;
-    background-color: rgba(15, 23, 42, 0.8);
+    background-color: var(--k-surface);
     backdrop-filter: blur(8px);
     padding: 12px 0;
     border-radius: 8px;

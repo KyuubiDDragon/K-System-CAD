@@ -1450,14 +1450,14 @@ watch([markers, categories], () => {
     height: 100%;
     border-radius: 12px;
     overflow: hidden;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--k-surface);
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
 }
 
 .map-style-controls {
     padding: 12px;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
     display: flex;
     justify-content: flex-start;
@@ -1483,7 +1483,7 @@ watch([markers, categories], () => {
     display: flex;
     flex-direction: column;
     border-radius: 12px;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--k-surface);
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     overflow: hidden;
@@ -1491,7 +1491,7 @@ watch([markers, categories], () => {
 
 .sidebar-header {
     padding: 16px;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
 }
 
@@ -1518,7 +1518,7 @@ watch([markers, categories], () => {
 .map-category-panel {
     border-radius: 8px;
     margin-bottom: 8px;
-    background-color: rgba(30, 41, 59, 0.4) !important;
+    background-color: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
 }
 

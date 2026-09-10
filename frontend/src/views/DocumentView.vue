@@ -1390,14 +1390,14 @@ const kFilters = useTableFilters(
 }
 
 .empty-state-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
 }
 
 .main-table-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1405,7 +1405,7 @@ const kFilters = useTableFilters(
 }
 
 .category-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1416,7 +1416,7 @@ const kFilters = useTableFilters(
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
 }
 
 .category-title {
@@ -1457,7 +1457,7 @@ const kFilters = useTableFilters(
     flex-direction: column;
     align-items: center;
     padding: 8px;
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     transition: all 0.2s ease;
 }
@@ -1528,7 +1528,7 @@ const kFilters = useTableFilters(
 }
 
 .group-header-row {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
 }
 
 .group-header-cell {
@@ -1536,7 +1536,7 @@ const kFilters = useTableFilters(
 }
 
 .draggable-category-item {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     margin-bottom: 8px;
     border-radius: 6px;
@@ -1544,7 +1544,7 @@ const kFilters = useTableFilters(
 }
 
 .draggable-category-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
     transform: translateY(-2px);
 }
 
@@ -1554,7 +1554,7 @@ const kFilters = useTableFilters(
 }
 
 .category-sort-list {
-    background: rgba(15, 23, 42, 0.4) !important;
+    background: var(--k-surface) !important;
     border-radius: 8px;
     padding: 8px;
     border: 1px solid var(--k-line);
@@ -1676,6 +1676,6 @@ const kFilters = useTableFilters(
 .embedded-mode .main-table-card,
 .embedded-mode .empty-state-card {
     backdrop-filter: none;
-    background: rgba(15, 23, 42, 0.95) !important;
+    background: var(--k-surface) !important;
 }
 </style>

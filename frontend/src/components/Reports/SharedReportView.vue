@@ -374,12 +374,12 @@ const formatCustomFieldValue = (value: any): string => {
 
 /* For dark theme compatibility */
 :deep(.v-theme--dark) .creator-info-bar {
-  background-color: rgba(30, 41, 59, 0.4);
+  background-color: var(--k-sunken);
   border-color: var(--k-ink);
 }
 
 :deep(.v-theme--dark) .formatted-content {
-  background-color: rgba(15, 23, 42, 0.3);
+  background-color: var(--k-surface);
   border-color: var(--k-ink);
 }
 

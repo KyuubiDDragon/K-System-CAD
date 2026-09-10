@@ -793,7 +793,7 @@ watch(
 
 /* Tabs Styling */
 .detail-tabs {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--k-line);
 }
 
@@ -831,7 +831,7 @@ watch(
 
 .readonly-field:hover {
     opacity: 1;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
 }
 
 /* Editor Container */
@@ -844,7 +844,7 @@ watch(
 
 /* Report Panels */
 .report-panel {
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     border-radius: 8px !important;
     overflow: hidden;
@@ -921,7 +921,7 @@ watch(
 
 /* Dialog Cards */
 .dialog-card {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -961,7 +961,7 @@ watch(
 }
 
 .report-html {
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     padding: 16px;
     border-radius: 8px;
     min-height: 300px;

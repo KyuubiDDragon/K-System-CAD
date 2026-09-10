@@ -1298,7 +1298,7 @@ const showErrorSnackbar = (message: string) => {
 
 /* Tabs */
 .custom-tabs {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--card-border);
 }
 
@@ -1329,7 +1329,7 @@ const showErrorSnackbar = (message: string) => {
 }
 
 .status-section {
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     padding: 16px;
     border-radius: 8px;
 }
@@ -1363,7 +1363,7 @@ const showErrorSnackbar = (message: string) => {
 }
 
 .additional-item {
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     padding: 8px;
     margin-bottom: 8px;
@@ -1371,7 +1371,7 @@ const showErrorSnackbar = (message: string) => {
 }
 
 .additional-item:hover {
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--k-sunken);
 }
 
 /* Empty state */
@@ -1381,14 +1381,14 @@ const showErrorSnackbar = (message: string) => {
     align-items: center;
     justify-content: center;
     padding: 32px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     color: var(--k-ink-muted);
 }
 
 /* Totals section */
 .totals-section {
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     padding: 16px;
     border-radius: 8px;
 }

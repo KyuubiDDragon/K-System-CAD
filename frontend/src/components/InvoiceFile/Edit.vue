@@ -602,14 +602,14 @@ onMounted(fetchItems);
     align-items: center;
     justify-content: center;
     padding: 32px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     color: var(--k-ink-muted);
 }
 
 /* Invoice Items */
 .invoice-item {
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid var(--k-line);
@@ -625,7 +625,7 @@ onMounted(fetchItems);
     display: flex;
     align-items: center;
     padding: 8px 12px;
-    background-color: rgba(30, 41, 59, 0.5);
+    background-color: var(--k-sunken);
 }
 
 .index-badge {
@@ -657,7 +657,7 @@ onMounted(fetchItems);
     display: flex;
     flex-direction: column;
     border-radius: 8px;
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     transition: all var(--transition-timing);
     overflow: hidden;
@@ -673,7 +673,7 @@ onMounted(fetchItems);
     align-items: center;
     justify-content: center;
     height: 140px;
-    background: rgba(15, 23, 42, 0.5);
+    background: var(--k-surface);
     overflow: hidden;
 }
 

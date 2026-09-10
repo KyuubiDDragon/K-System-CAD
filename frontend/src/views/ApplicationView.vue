@@ -1024,7 +1024,7 @@ watch(filteredQuestions, newQuestions => {
 
 /* Filter Menu */
 .filter-menu {
-    background: rgba(15, 23, 42, 0.9) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
@@ -1035,12 +1035,12 @@ watch(filteredQuestions, newQuestions => {
 }
 
 .filter-list-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
 }
 
 /* Empty State */
 .empty-state-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1059,7 +1059,7 @@ watch(filteredQuestions, newQuestions => {
     transition: all 0.2s ease-in-out;
     border: 1px solid var(--k-line);
     border-radius: 10px !important;
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     backdrop-filter: blur(5px);
     animation: fadeIn 0.3s ease-out forwards;
     animation-delay: calc(var(--index, 0) * 0.05s);
@@ -1138,7 +1138,7 @@ watch(filteredQuestions, newQuestions => {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(15, 23, 42, 0.85);
+    background: var(--k-surface);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1211,7 +1211,7 @@ watch(filteredQuestions, newQuestions => {
 }
 
 .question-card {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     border-radius: 8px;
     overflow: hidden;
@@ -1220,7 +1220,7 @@ watch(filteredQuestions, newQuestions => {
 .question-header {
     display: flex;
     align-items: center;
-    background: rgba(15, 23, 42, 0.5) !important;
+    background: var(--k-surface) !important;
 }
 
 .answer-field :deep(.v-field__input) {

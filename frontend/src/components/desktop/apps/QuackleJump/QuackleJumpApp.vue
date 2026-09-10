@@ -521,7 +521,7 @@ canvas {
 
 .pause-menu {
   min-width: 300px;
-  background: rgba(30, 41, 59, 0.95) !important;
+  background: var(--k-sunken) !important;
   border: 1px solid var(--k-line);
 }
 
@@ -537,7 +537,7 @@ canvas {
 
 .gameover-card {
   min-width: 400px;
-  background: rgba(30, 41, 59, 0.95) !important;
+  background: var(--k-sunken) !important;
   border: 1px solid var(--k-line);
 }
 

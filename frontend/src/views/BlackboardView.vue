@@ -1036,7 +1036,7 @@ onMounted(async () => {
 
 /* Read Confirmation */
 .read-confirmation {
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
 }
 
 .read-confirmation-label {
@@ -1101,7 +1101,7 @@ onMounted(async () => {
 
 .options-container {
     padding: 16px;
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
     border-radius: 8px;
     margin-top: 8px;
 }

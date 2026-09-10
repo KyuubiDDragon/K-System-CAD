@@ -346,7 +346,7 @@ onMounted(() => {
     top: 0;
     height: 100%;
     z-index: 1000;
-    background-color: rgba(17, 23, 35, 0.95);
+    background-color: var(--k-surface);
     backdrop-filter: blur(10px);
 }
 

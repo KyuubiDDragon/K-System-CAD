@@ -1551,7 +1551,7 @@ onUnmounted(() => {
     justify-content: space-between;
     align-items: center;
     padding: 16px 24px;
-    background: rgba(30, 41, 59, 0.95);
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
     flex-shrink: 0;
     z-index: 10;
@@ -1585,7 +1585,7 @@ onUnmounted(() => {
     border-right: 1px solid var(--k-line);
     display: flex;
     flex-direction: column;
-    background: rgba(15, 23, 42, 0.6);
+    background: var(--k-surface);
     overflow: hidden;
 }
 
@@ -1598,7 +1598,7 @@ onUnmounted(() => {
 
 .panel-header {
     padding: 16px;
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
     display: flex;
     justify-content: space-between;
@@ -1634,7 +1634,7 @@ onUnmounted(() => {
 .items-table-container {
     flex: 1;
     overflow: auto;
-    background: rgba(15, 23, 42, 0.3);
+    background: var(--k-surface);
 }
 
 .items-table {
@@ -1686,12 +1686,12 @@ onUnmounted(() => {
 .items-table tbody tr {
     cursor: move;
     transition: all 0.2s ease;
-    background-color: rgba(15, 23, 42, 0.3);
+    background-color: var(--k-surface);
     border-bottom: 1px solid var(--k-line);
 }
 
 .items-table tbody tr:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
 }
 
 .items-table tbody tr.drag-over {
@@ -1745,7 +1745,7 @@ onUnmounted(() => {
 }
 
 .preview-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
@@ -1904,15 +1904,15 @@ onUnmounted(() => {
 }
 
 .preview-data-table tbody tr:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
 }
 
 .preview-data-table tbody tr:nth-child(odd) {
-    background-color: rgba(15, 23, 42, 0.3);
+    background-color: var(--k-surface);
 }
 
 .preview-data-table tbody tr:nth-child(even) {
-    background-color: rgba(15, 23, 42, 0.1);
+    background-color: var(--k-surface);
 }
 
 .preview-data-table tbody tr td {
@@ -1945,15 +1945,15 @@ onUnmounted(() => {
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr:nth-child(odd) {
-    background-color: rgba(15, 23, 42, 0.3);
+    background-color: var(--k-surface);
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr:nth-child(even) {
-    background-color: rgba(15, 23, 42, 0.1);
+    background-color: var(--k-surface);
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr > td,

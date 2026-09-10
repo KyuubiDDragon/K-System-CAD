@@ -1589,7 +1589,7 @@ onMounted(async () => {
 .action-bar,
 .filter-card,
 .quick-assign-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(8px);
     border-radius: 12px;
@@ -1636,7 +1636,7 @@ onMounted(async () => {
 
 /* Category Card */
 .category-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1647,13 +1647,13 @@ onMounted(async () => {
 }
 
 .category-header {
-    background: rgba(30, 41, 59, 0.4);
+    background: var(--k-sunken);
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
 .category-header:hover {
-    background: rgba(30, 41, 59, 0.6);
+    background: var(--k-sunken);
 }
 
 .category-title {
@@ -1686,7 +1686,7 @@ onMounted(async () => {
 :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
     font-weight: 600;
     color: #e2e8f0;
-    background: rgba(30, 41, 59, 0.5) !important;
+    background: var(--k-sunken) !important;
     padding: 12px 16px;
 }
 
@@ -1706,7 +1706,7 @@ onMounted(async () => {
 }
 
 :deep(.v-table .v-table__wrapper > table > tbody > tr:hover > td) {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
 }
 
 .status-icon {
@@ -1731,7 +1731,7 @@ onMounted(async () => {
 }
 
 .empty-state-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1811,7 +1811,7 @@ onMounted(async () => {
 
 /* Export Dialog */
 .selected-columns-list {
-    background: rgba(30, 41, 59, 0.4) !important;
+    background: var(--k-sunken) !important;
     border-radius: 8px;
     max-height: 300px;
     overflow-y: auto;

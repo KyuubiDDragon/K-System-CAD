@@ -904,7 +904,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
 
 /* Card Toolbar */
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--k-line);
 }
 

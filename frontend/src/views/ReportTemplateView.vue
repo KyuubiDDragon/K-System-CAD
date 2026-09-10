@@ -589,7 +589,7 @@ const kCols = useTableColumns('ReportTemplateView', () => unref(templateHeaders)
 }
 
 .dialog-card {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;

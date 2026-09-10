@@ -1600,7 +1600,7 @@ onMounted(async () => {
 
 .list-card {
     position: relative;
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     height: calc(90vh - 100px);
@@ -1656,7 +1656,7 @@ onMounted(async () => {
 }
 
 .folder-group {
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 4px;
     margin: 4px 0;
     border: 1px solid var(--k-line);
@@ -1673,7 +1673,7 @@ onMounted(async () => {
 }
 
 .sub-list-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
 }
 
 .todo-item {
@@ -1684,7 +1684,7 @@ onMounted(async () => {
 }
 
 .todo-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
     transform: translateX(4px);
 }
 
@@ -1698,7 +1698,7 @@ onMounted(async () => {
 }
 
 .subtasks-section {
-    background: rgba(15, 23, 42, 0.3);
+    background: var(--k-surface);
     border-radius: 8px;
     padding: 16px;
     border: 1px solid var(--k-line);
@@ -1731,7 +1731,7 @@ onMounted(async () => {
 }
 
 .checkbox-item:hover {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
 }
 
 .inline-edit-field .v-field__input {

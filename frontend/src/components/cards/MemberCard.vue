@@ -1247,7 +1247,7 @@ async function addVacation(member: Employee) {
 
 /* Dialog Styling */
 .dialog-card {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1337,7 +1337,7 @@ async function addVacation(member: Employee) {
 
 .promotion-table :deep(th),
 .vacation-table :deep(th) {
-    background-color: rgba(30, 41, 59, 0.5) !important;
+    background-color: var(--k-sunken) !important;
     color: var(--k-ink) !important;
     font-weight: 500;
 }

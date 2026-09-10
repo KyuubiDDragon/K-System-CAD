@@ -1654,7 +1654,7 @@ onMounted(() => {
 <style scoped>
 /* Main card styling */
 .settings-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1683,14 +1683,14 @@ onMounted(() => {
 
 .settings-panel :deep(.v-expansion-panel-title) {
     padding: 12px 16px;
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
     border-radius: 8px;
     min-height: 48px;
     transition: background-color 0.2s ease;
 }
 
 .settings-panel :deep(.v-expansion-panel-title:hover) {
-    background: rgba(30, 41, 59, 0.5) !important;
+    background: var(--k-sunken) !important;
 }
 
 .settings-panel :deep(.v-expansion-panel-text__wrapper) {
@@ -1802,7 +1802,7 @@ onMounted(() => {
     padding: 0 16px;
     display: flex;
     align-items: center;
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--k-sunken);
     border: 1px solid var(--k-line);
 }
 

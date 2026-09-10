@@ -1506,7 +1506,7 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
 
 /* Main Card */
 .main-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -1515,7 +1515,7 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
 
 /* Card Toolbar */
 .card-toolbar {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--card-border);
 }
 
@@ -1570,11 +1570,11 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
     border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
     border-radius: 8px;
     overflow: hidden;
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
 }
 
 .group-header-cell {
-    background: rgba(30, 41, 59, 0.6) !important;
+    background: var(--k-sunken) !important;
     padding: 8px 16px !important;
 }
 
@@ -1584,7 +1584,7 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
 
 .permissions-header {
     padding: 8px 12px;
-    background: rgba(30, 41, 59, 0.2);
+    background: var(--k-sunken);
     border-radius: 6px;
     margin-bottom: 12px;
 }
@@ -1598,7 +1598,7 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
 .permission-table :deep(th) {
     height: 44px !important;
     font-size: 0.85rem;
-    background: rgba(30, 41, 59, 0.5) !important;
+    background: var(--k-sunken) !important;
 }
 
 .permission-table :deep(.v-data-table-group-header-row td) {
@@ -1637,14 +1637,14 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
 
 .permission-group {
     margin-bottom: 8px;
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
 }
 
 .permission-group :deep(.v-expansion-panel-title) {
     min-height: 48px;
     padding: 12px 16px;
-    background: rgba(30, 41, 59, 0.5) !important;
+    background: var(--k-sunken) !important;
     text-align: left !important;
 }
 
@@ -1653,7 +1653,7 @@ const kCols = useTableColumns('admin/RoleView', () => unref(roleHeaders) as any)
 }
 
 .permission-group :deep(.v-expansion-panel-title:hover) {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
 }
 
 .permission-group :deep(.v-expansion-panel-text__wrapper) {

@@ -1237,7 +1237,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .filter-card {
-    background: rgba(15, 23, 42, 0.9) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 8px;
@@ -1344,7 +1344,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--v-theme-primary) transparent;
-    background: rgba(30, 41, 59, 0.2);
+    background: var(--k-sunken);
     border-radius: 8px;
 }
 
@@ -1390,7 +1390,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 
 /* Color Picker */
 .color-picker {
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
     border-radius: 8px;
     overflow: hidden;
     padding: 8px;
@@ -1405,7 +1405,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .dialog-card {
-    background: rgba(15, 23, 42, 0.8) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--card-border);
     backdrop-filter: blur(10px);
     border-radius: 12px;

@@ -606,7 +606,7 @@ onUnmounted(() => {
 
 /* Card Styles */
 .preview-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     transition: all 0.3s ease;
@@ -690,15 +690,15 @@ onUnmounted(() => {
 }
 
 .preview-data-table tbody tr:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
 }
 
 .preview-data-table tbody tr:nth-child(odd) {
-    background-color: rgba(15, 23, 42, 0.3);
+    background-color: var(--k-surface);
 }
 
 .preview-data-table tbody tr:nth-child(even) {
-    background-color: rgba(15, 23, 42, 0.1);
+    background-color: var(--k-surface);
 }
 
 .preview-data-table tbody tr td {
@@ -730,15 +730,15 @@ onUnmounted(() => {
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr:hover {
-    background: rgba(30, 41, 59, 0.7) !important;
+    background: var(--k-sunken) !important;
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr:nth-child(odd) {
-    background-color: rgba(15, 23, 42, 0.3);
+    background-color: var(--k-surface);
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr:nth-child(even) {
-    background-color: rgba(15, 23, 42, 0.1);
+    background-color: var(--k-surface);
 }
 
 .data-table-dense .v-table__wrapper > table > tbody > tr > td,

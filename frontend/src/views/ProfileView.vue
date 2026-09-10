@@ -912,7 +912,7 @@ onMounted(() => {
 
 /* Tab Styles */
 .settings-tabs {
-    background-color: rgba(30, 41, 59, 0.3) !important;
+    background-color: var(--k-sunken) !important;
     border-bottom: 1px solid var(--k-line);
 }
 
@@ -928,7 +928,7 @@ onMounted(() => {
 
 /* Card Styles */
 .v-card {
-    background: rgba(15, 23, 42, 0.6) !important;
+    background: var(--k-surface) !important;
     border: 1px solid var(--k-line);
     backdrop-filter: blur(10px);
     border-radius: 8px;
@@ -945,7 +945,7 @@ onMounted(() => {
     font-size: 1rem;
     font-weight: 600;
     padding: 12px 16px;
-    background-color: rgba(30, 41, 59, 0.3);
+    background-color: var(--k-sunken);
 }
 
 /* Bildvorschau Dialog */
@@ -956,7 +956,7 @@ onMounted(() => {
 }
 
 .preview-dialog-image {
-    background-color: rgba(15, 23, 42, 0.3);
+    background-color: var(--k-surface);
     min-height: 300px;
 }
 

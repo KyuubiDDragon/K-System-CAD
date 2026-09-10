@@ -498,7 +498,7 @@ const getFileIcon = path => {
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 12px;
     margin-bottom: 24px;
 }
@@ -535,7 +535,7 @@ const getFileIcon = path => {
 
 .readonly-field:hover {
     opacity: 1;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
 }
 
 /* Invoice Items */
@@ -544,7 +544,7 @@ const getFileIcon = path => {
 }
 
 .invoice-item {
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     overflow: hidden;
     transition: all var(--transition-timing);
@@ -560,7 +560,7 @@ const getFileIcon = path => {
     display: flex;
     align-items: center;
     padding: 12px 16px;
-    background: rgba(30, 41, 59, 0.5);
+    background: var(--k-sunken);
 }
 
 .index-badge {
@@ -615,14 +615,14 @@ const getFileIcon = path => {
     align-items: center;
     justify-content: center;
     padding: 32px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     color: var(--k-ink-muted);
 }
 
 .invoice-totals {
     padding: 16px;
-    background: rgba(30, 41, 59, 0.3);
+    background: var(--k-sunken);
     border-radius: 8px;
     margin-top: 16px;
 }
@@ -639,7 +639,7 @@ const getFileIcon = path => {
     display: flex;
     flex-direction: column;
     border-radius: 8px;
-    background: rgba(30, 41, 59, 0.3) !important;
+    background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
     transition: all var(--transition-timing);
     overflow: hidden;
@@ -655,7 +655,7 @@ const getFileIcon = path => {
     align-items: center;
     justify-content: center;
     height: 140px;
-    background: rgba(15, 23, 42, 0.5);
+    background: var(--k-surface);
     overflow: hidden;
 }
 

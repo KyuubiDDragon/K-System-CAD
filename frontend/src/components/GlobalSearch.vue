@@ -1218,19 +1218,19 @@ defineExpose({
 .search-input {
   :deep(.v-field) {
     font-size: 18px;
-    background: rgba(15, 23, 42, 0.5) !important;
+    background: var(--k-surface) !important;
     border-radius: 16px !important;
     border: 1px solid var(--k-line);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &:hover {
       border-color: var(--k-line);
-      background: rgba(15, 23, 42, 0.6) !important;
+      background: var(--k-surface) !important;
     }
 
     &:focus-within {
       border-color: var(--k-accent-line);
-      background: rgba(15, 23, 42, 0.7) !important;
+      background: var(--k-surface) !important;
       box-shadow:
         0 0 0 3px var(--k-accent-weak),
         0 4px 12px rgba(0, 0, 0, 0.2);
@@ -1323,7 +1323,7 @@ defineExpose({
 .search-results {
   flex: 1;
   overflow-y: auto;
-  background: rgba(15, 23, 42, 0.4);
+  background: var(--k-surface);
   padding: 8px;
 }
 
@@ -1368,7 +1368,7 @@ defineExpose({
   border-radius: 12px;
   margin: 4px 8px;
   padding: 12px !important;
-  background: rgba(30, 41, 59, 0.4);
+  background: var(--k-sunken);
   border: 1px solid var(--k-line);
 
   &:hover {
