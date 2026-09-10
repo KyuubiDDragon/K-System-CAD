@@ -2447,7 +2447,15 @@ function getEmployeeInfoByUserId(PDO $pdo, int $userId): ?array {
         return null;
     }
 }
-?>
+/*
+   Hier stand das schliessende PHP-Tag, und getRecent() wurde darunter angehaengt.
+   Damit war die Funktion fuer PHP kein Code mehr, sondern Text: der Aufruf im
+   switch lief auf eine Funktion, die es nicht gab, und der Baustein
+   "Zuletzt bearbeitete Dokumente" bekam einen leeren 500 ohne Protokolleintrag.
+   function_exists("getRecent") war an der Aufrufstelle false - daran war es zu
+   erkennen. Die Datei endet jetzt ohne schliessendes Tag; dann kann auch nichts
+   mehr dahinter rutschen.
+*/
 /**
  * Get recent documents for dashboard widget
  * Returns: List of recently modified documents (limited to 5)

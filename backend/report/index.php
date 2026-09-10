@@ -85,9 +85,11 @@ $request_method = $_SERVER['REQUEST_METHOD'];
 $permissions_map = [
     // Report specific
     'getReports'                  => ['module' => 'report', 'action' => 'read'],
-    // Baustein "Offene Berichte". Die Aktion stand im switch, fehlte aber
-    // hier - ohne Eintrag weist die Rechtepruefung sie mit 404 ab.
+    // Bausteine des Dashboards. Beide Aktionen standen im switch und als
+    // Funktion bereit, fehlten aber hier - ohne Eintrag weist die
+    // Rechtepruefung sie mit 404 ab, bevor der switch ueberhaupt laeuft.
     'getOpenReports'              => ['module' => 'report', 'action' => 'read'],
+    'getAnalytics'                => ['module' => 'report', 'action' => 'read'],
     'getReport'                   => ['module' => 'report', 'action' => 'read'],
     'getOwnReportCount'           => ['module' => 'report', 'action' => 'read'],
     'getReportsToProcessCount'    => ['module' => 'report', 'action' => 'read'],
