@@ -90,7 +90,17 @@ const additionalHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 const positivePriceRule = (value: number) =>
     (value && value > 0) || 'Preis muss größer als 0 sein.';
 
@@ -374,7 +384,7 @@ const kCols = useTableColumns('ReportAdditionalView', () => unref(additionalHead
 				  label="Name"
 				  v-model="additionalFormData.name"
 				  required
-				  :rules="[requiredRule]"
+				  :rules="[requiredRule('Name')]"
 				  variant="outlined"
 				  density="comfortable"
 				  color="primary"
@@ -408,7 +418,7 @@ const kCols = useTableColumns('ReportAdditionalView', () => unref(additionalHead
 					  required
 					  type="number"
 					  prefix="$"
-					  :rules="[requiredRule, positivePriceRule]"
+					  :rules="[requiredRule('Preis'), positivePriceRule]"
 					  variant="outlined"
 					  density="comfortable"
 					  color="primary"

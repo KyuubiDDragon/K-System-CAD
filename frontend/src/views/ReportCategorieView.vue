@@ -87,7 +87,17 @@ const categoryHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchRoles = async () => {
@@ -404,7 +414,7 @@ const kCols = useTableColumns('ReportCategorieView', () => unref(categoryHeaders
                                         :label="t('reportCategorieView.name')"
                                         v-model="categoryFormData.name"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule(t('reportCategorieView.name'))]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -417,7 +427,7 @@ const kCols = useTableColumns('ReportCategorieView', () => unref(categoryHeaders
                                         :label="t('reportCategorieView.titleForReports')"
                                         v-model="categoryFormData.title"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule(t('reportCategorieView.titleForReports'))]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"

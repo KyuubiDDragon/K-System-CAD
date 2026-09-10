@@ -214,7 +214,17 @@ const fetchAdditionals = async () => {
     }
 };
 
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 const addNewReport = async () => {
     try {
@@ -818,7 +828,7 @@ const showErrorSnackbar = (message: string) => {
                                     item-title="display_name"
                                     item-value="id"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Ersteller')]"
                                     variant="outlined"
                                     density="comfortable"
                                     color="primary"
@@ -833,7 +843,7 @@ const showErrorSnackbar = (message: string) => {
                                     item-title="name"
                                     item-value="id"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Kategorie')]"
                                     :disabled="true"
                                     variant="outlined"
                                     density="comfortable"

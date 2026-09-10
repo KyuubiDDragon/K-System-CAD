@@ -78,7 +78,17 @@ const typeHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Name ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchCompanyTypes = async () => {
@@ -322,7 +332,7 @@ const kCols = useTableColumns('CompanyTypeView', () => unref(typeHeaders) as any
                                     v-model="selectedType.name"
                                     label="Name*"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Name')]"
                                     variant="outlined"
                                     density="comfortable"
                                     bg-color="grey-darken-3"

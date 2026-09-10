@@ -314,7 +314,17 @@ const categoriesWithFilteredTrainings = computed((): CategoryWithData[] => {
 });
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 const multiSelectRequiredRule = (value: any[]) =>
     (value && value.length > 0) || 'Mindestens ein Element auswählen.';
 
@@ -1290,7 +1300,7 @@ onMounted(async () => {
                                             label="Datum"
                                             type="date"
                                             required
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule('Datum')]"
                                             variant="outlined"
                                             density="comfortable"
                                             

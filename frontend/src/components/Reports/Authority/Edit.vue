@@ -470,7 +470,17 @@ const fetchCompanies = async () => {
 };
 
 // Update und Validation Methoden
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 const updateReport = async () => {
     try {
@@ -762,7 +772,7 @@ watch(
                                     item-title="display_name"
                                     item-value="id"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Ersteller')]"
                                     variant="outlined"
                                     density="comfortable"
                                     color="primary"
@@ -776,7 +786,7 @@ watch(
                                     item-title="name"
                                     item-value="id"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Kategorie')]"
                                     :disabled="true"
                                     variant="outlined"
                                     density="comfortable"
@@ -791,7 +801,7 @@ watch(
                                     item-title="name"
                                     item-value="id"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Status')]"
                                     variant="outlined"
                                     density="comfortable"
                                     color="primary"
@@ -857,7 +867,7 @@ watch(
                                     label="Datum"
                                     v-model="report.report_date"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Datum')]"
                                     type="datetime-local"
                                     variant="outlined"
                                     density="comfortable"
@@ -873,7 +883,7 @@ watch(
                                     item-title="code"
                                     item-value="id"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Report Code')]"
                                     variant="outlined"
                                     density="comfortable"
                                     color="primary"
@@ -885,7 +895,7 @@ watch(
                                     label="Standort"
                                     v-model="report.location"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Standort')]"
                                     variant="outlined"
                                     density="comfortable"
                                     color="primary"
@@ -897,7 +907,7 @@ watch(
                                     label="Titel"
                                     v-model="report.title"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule('Titel')]"
                                     variant="outlined"
                                     density="comfortable"
                                     color="primary"

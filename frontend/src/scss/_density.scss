@@ -14,12 +14,16 @@
  * und die Editoren, die eigene Maße mitbringen.
  */
 
+/* Die Werte des Entwurfs, Zeile fuer Zeile aus seiner Tabelle:
+   Tabellenzeile 36, Eingabe 30, Schaltflaeche 30, Navigationspunkt 27,
+   Kopfleiste 42. Hier standen bisher 32 / 30 / 44 - nah dran, aber daneben. */
 :root {
     --k-row-height: 36px;
     --k-row-height-compact: 30px;
-    --k-control-height: 32px;
-    --k-nav-item-height: 30px;
-    --k-bar-height: 44px;
+    --k-row-height-relaxed: 44px;
+    --k-control-height: 30px;
+    --k-nav-item-height: 27px;
+    --k-bar-height: 42px;
 }
 
 /* ---------- Navigation ---------- */
@@ -72,16 +76,18 @@
         padding-inline: 12px;
     }
 
+    /* Spaltenkopf: 10.5 / 650 / 0.08em - die Stufe aus dem Entwurf. */
     .v-data-table__th.v-data-table__th {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: 0.05em;
+        font-size: 10.5px;
+        font-weight: 650;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
         white-space: nowrap;
+        color: var(--k-ink-faint);
     }
 
     .v-data-table__td {
-        font-size: 13px;
+        font-size: var(--k-text-cell, 13px);
     }
 
     /* Zahlen stehen auf gleicher Achse — Abweichungen fallen dadurch auf,
@@ -108,7 +114,7 @@
 }
 
 .v-btn.v-btn--size-default {
-    --v-btn-height: 32px;
+    --v-btn-height: 30px;
     font-size: 13px;
     letter-spacing: 0.02em;
 }

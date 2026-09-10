@@ -112,7 +112,17 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 const emailRule = (value: string) => /.+@.+\..+/.test(value) || 'Gültige E-Mail erforderlich.';
 
 // --- Data Fetching ---
@@ -731,7 +741,7 @@ watch(filteredQuestions, newQuestions => {
                                                 item-value="id"
                                                 label="Job Typ / Abteilung"
                                                 required
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Job Typ / Abteilung')]"
                                                 variant="outlined"
                                                 density="compact"
                                                 :disabled="isEditing"
@@ -747,7 +757,7 @@ watch(filteredQuestions, newQuestions => {
                                                 item-value="value"
                                                 label="Bewerbungsstatus"
                                                 required
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Bewerbungsstatus')]"
                                                 variant="outlined"
                                                 density="compact"
                                                 color="primary"
@@ -767,7 +777,7 @@ watch(filteredQuestions, newQuestions => {
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field
                                                 v-model="applicationData.name"
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Name')]"
                                                 label="Name"
                                                 required
                                                 variant="outlined"
@@ -780,7 +790,7 @@ watch(filteredQuestions, newQuestions => {
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field
                                                 v-model="applicationData.email"
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('E-Mail')]"
                                                 label="E-Mail"
                                                 required
                                                 variant="outlined"
@@ -795,7 +805,7 @@ watch(filteredQuestions, newQuestions => {
                                                 v-model="applicationData.phonenumber"
                                                 label="Telefonnummer"
                                                 required
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Telefonnummer')]"
                                                 variant="outlined"
                                                 density="compact"
                                                 prepend-inner-icon="mdi-phone"
@@ -806,7 +816,7 @@ watch(filteredQuestions, newQuestions => {
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field
                                                 v-model="applicationData.birthdate"
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Geburtstag')]"
                                                 label="Geburtstag"
                                                 type="date"
                                                 required
@@ -820,7 +830,7 @@ watch(filteredQuestions, newQuestions => {
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field
                                                 v-model="applicationData.jobinterviewDate"
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Bewerbungsgespräch Datum')]"
                                                 label="Bewerbungsgespräch Datum"
                                                 type="date"
                                                 required
@@ -834,7 +844,7 @@ watch(filteredQuestions, newQuestions => {
                                         <v-col cols="12" sm="6" md="4">
                                             <v-text-field
                                                 v-model="applicationData.jobinterviewTime"
-                                                :rules="[requiredRule]"
+                                                :rules="[requiredRule('Bewerbungsgespräch Zeit')]"
                                                 label="Bewerbungsgespräch Zeit"
                                                 type="time"
                                                 required

@@ -151,7 +151,17 @@ const jobRoleHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Name ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchData = async (
@@ -735,7 +745,7 @@ const kCols = useTableColumns('admin/EmployeeView', () => unref(companyHeaders) 
                                         v-model="selectedItem.name"
                                         label="Name"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Name')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"

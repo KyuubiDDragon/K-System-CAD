@@ -142,7 +142,17 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Computed Properties ---
 
@@ -1044,7 +1054,7 @@ onMounted(async () => {
                                 :label="t('employeeView.rankName')"
                                 required
                                 v-model="newRank.name"
-                                :rules="[requiredRule]"
+                                :rules="[requiredRule(t('employeeView.rankName'))]"
                                 variant="outlined"
                                 density="comfortable"
                                 class="mb-3"
@@ -1058,7 +1068,7 @@ onMounted(async () => {
                                 item-title="name"
                                 item-value="id"
                                 required
-                                :rules="[requiredRule]"
+                                :rules="[requiredRule(t('employeeView.associatedDepartment'))]"
                                 variant="outlined"
                                 density="comfortable"
                                 

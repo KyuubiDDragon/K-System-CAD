@@ -198,7 +198,17 @@ const fetchUsers = async () => {
 };
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 const multiSelectRequiredRule = (value: any[]) =>
     (value && value.length > 0) || 'Mind. eine Auswahl erforderlich.';
 const emailRule = (value: string) => /.+@.+\..+/.test(value) || 'Gültige E-Mail erforderlich.';
@@ -816,7 +826,7 @@ function kExportSelection() {
                                             label="Benutzername"
                                             v-model="newUser.username"
                                             required
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule('Benutzername')]"
                                             variant="outlined"
                                             density="comfortable"
                                             color="primary"
@@ -827,7 +837,7 @@ function kExportSelection() {
                                             label="E-Mail"
                                             v-model="newUser.email"
                                             required
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule('E-Mail')]"
                                             variant="outlined"
                                             density="comfortable"
                                             color="primary"
@@ -857,7 +867,7 @@ function kExportSelection() {
                                             v-model="newUser.password"
                                             type="password"
                                             required
-                                            :rules="[requiredRule, passwordRules.minLength]"
+                                            :rules="[requiredRule('Passwort'), passwordRules.minLength]"
                                             variant="outlined"
                                             density="comfortable"
                                             color="primary"
@@ -910,7 +920,7 @@ function kExportSelection() {
                                             label="Benutzername"
                                             v-model="editedUser.username"
                                             required
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule('Benutzername')]"
                                             variant="outlined"
                                             density="comfortable"
                                             color="primary"
@@ -921,7 +931,7 @@ function kExportSelection() {
                                             label="E-Mail"
                                             v-model="editedUser.email"
                                             required
-                                            :rules="[requiredRule]"
+                                            :rules="[requiredRule('E-Mail')]"
                                             variant="outlined"
                                             density="comfortable"
                                             color="primary"

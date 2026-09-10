@@ -195,7 +195,7 @@
                                         label="Titel"
                                         required
                                         v-model="entryFormData.title"
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Titel')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -206,7 +206,7 @@
                                         label="Autor"
                                         required
                                         v-model="entryFormData.author"
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Autor')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -478,7 +478,17 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 }
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- oEmbed Conversion --- (Keep original logic, needs DOM access)
 function createYouTubeIframe(url: string): HTMLIFrameElement | null {

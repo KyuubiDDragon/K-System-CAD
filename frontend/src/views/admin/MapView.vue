@@ -66,7 +66,17 @@ const categoryHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchCategories = async () => {
@@ -394,7 +404,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
                                         v-model="selectedItem.name"
                                         label="Kategoriename"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Kategoriename')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -409,7 +419,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
                                         label="Icon auswählen"
                                         readonly
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Icon auswählen')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"

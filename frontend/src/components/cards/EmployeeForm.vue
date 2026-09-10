@@ -45,7 +45,7 @@
                                     color="primary"
                                     bg-color="grey-darken-3"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule($t('employeeForm.name') + '*')]"
                                     prepend-inner-icon="mdi-account"
                                     class="field-item"
                                 />
@@ -147,7 +147,7 @@
                                     color="primary"
                                     bg-color="grey-darken-3"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule($t('employeeForm.servicenumber') + '*')]"
                                     prepend-inner-icon="mdi-badge-account-horizontal"
                                     class="field-item"
                                 />
@@ -218,7 +218,7 @@
                                     density="comfortable"
                                     color="primary"
                                     bg-color="grey-darken-3"
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule($t('employeeForm.rank') + '*')]"
                                     chips
                                     required
                                     prepend-inner-icon="mdi-medal"
@@ -264,7 +264,7 @@
                                     bg-color="grey-darken-3"
                                     type="date"
                                     required
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule($t('employeeForm.entrydate') + '*')]"
                                     prepend-inner-icon="mdi-calendar-plus"
                                     class="field-item"
                                 />
@@ -404,7 +404,17 @@ const {
 const dialog = ref(false);
 const employee = ref({ ...props.initialEmployee });
 const newEmployer = ref(false);
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 const emit = defineEmits(['updateEmployeeList']);
 
 onMounted(async () => {

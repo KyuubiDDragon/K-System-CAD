@@ -60,7 +60,17 @@ const groupHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Name ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchGroups = async () => {
@@ -353,7 +363,7 @@ const kCols = useTableColumns('admin/MessagesView', () => unref(groupHeaders) as
                                         v-model="selectedGroup.name"
                                         label="Gruppenname"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Gruppenname')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"

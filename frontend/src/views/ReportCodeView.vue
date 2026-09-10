@@ -83,7 +83,17 @@ const codeHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchCodes = async () => {
@@ -339,7 +349,7 @@ const kCols = useTableColumns('ReportCodeView', () => unref(codeHeaders) as any)
 				  label="Code"
 				  v-model="codeFormData.code"
 				  required
-				  :rules="[requiredRule]"
+				  :rules="[requiredRule('Code')]"
 				  variant="outlined"
 				  density="comfortable"
 				  color="primary"

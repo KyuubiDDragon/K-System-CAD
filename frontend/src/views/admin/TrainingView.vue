@@ -24,7 +24,17 @@ interface TrainingCategory {
 }
 
 // Form validation rules
-const requiredRule = (value: any) => !!value || 'Dieses Feld ist erforderlich';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Define Interfaces ---
 // Type for the shared form data (adjust properties based on actual types)
@@ -570,7 +580,7 @@ const kCols = useTableColumns('admin/TrainingView', () => unref(trainingHeaders)
                                         v-model="selectedItem.name"
                                         label="Name"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Name')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -585,7 +595,7 @@ const kCols = useTableColumns('admin/TrainingView', () => unref(trainingHeaders)
                                         v-model="selectedItem.short"
                                         label="Kürzel"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Kürzel')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -605,7 +615,7 @@ const kCols = useTableColumns('admin/TrainingView', () => unref(trainingHeaders)
                                         item-value="id"
                                         label="Kategorie"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Kategorie')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"
@@ -633,7 +643,7 @@ const kCols = useTableColumns('admin/TrainingView', () => unref(trainingHeaders)
                                         label="Sortierung"
                                         type="number"
                                         required
-                                        :rules="[requiredRule]"
+                                        :rules="[requiredRule('Sortierung')]"
                                         variant="outlined"
                                         density="comfortable"
                                         color="primary"

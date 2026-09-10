@@ -60,7 +60,17 @@ const uploadedFilesHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Computed Properties ---
 const validityDateDisplay = computed(() => {
@@ -421,7 +431,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                         <v-text-field
                             v-model="creator"
                             :label="t('fireprotectionView.creator')"
-                            :rules="[requiredRule]"
+                            :rules="[requiredRule(t('fireprotectionView.creator'))]"
                             variant="outlined"
                             density="compact"
                             class="mb-4"
@@ -429,7 +439,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                         <v-text-field
                             v-model="office"
                             :label="t('fireprotectionView.office')"
-                            :rules="[requiredRule]"
+                            :rules="[requiredRule(t('fireprotectionView.office'))]"
                             variant="outlined"
                             density="compact"
                             class="mb-4"
@@ -446,7 +456,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                         <v-text-field
                             v-model="objectFireProtection"
                             :label="t('fireprotectionView.objectName')"
-                            :rules="[requiredRule]"
+                            :rules="[requiredRule(t('fireprotectionView.objectName'))]"
                             variant="outlined"
                             density="compact"
                             class="mb-4"
@@ -454,7 +464,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                         <v-text-field
                             v-model="location"
                             :label="t('fireprotectionView.location')"
-                            :rules="[requiredRule]"
+                            :rules="[requiredRule(t('fireprotectionView.location'))]"
                             variant="outlined"
                             density="compact"
                             class="mb-4"
@@ -462,7 +472,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                         <v-text-field
                             v-model="reportNumber"
                             :label="t('fireprotectionView.reportNumber')"
-                            :rules="[requiredRule]"
+                            :rules="[requiredRule(t('fireprotectionView.reportNumber'))]"
                             variant="outlined"
                             density="compact"
                             class="mb-4"
@@ -473,7 +483,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                                     v-model="validFrom"
                                     :label="t('fireprotectionView.validFrom')"
                                     type="date"
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule(t('fireprotectionView.validFrom'))]"
                                     variant="outlined"
                                     density="compact"
                                     class="mb-sm-0"
@@ -484,7 +494,7 @@ const kCols = useTableColumns('FireprotectionView', () => unref(uploadedFilesHea
                                     v-model="validTo"
                                     :label="t('fireprotectionView.validTo')"
                                     type="date"
-                                    :rules="[requiredRule]"
+                                    :rules="[requiredRule(t('fireprotectionView.validTo'))]"
                                     variant="outlined"
                                     density="compact"
                                 ></v-text-field>

@@ -245,9 +245,59 @@
 
 /* ============================================================
    EINGABEN
+   Beschriftung ueber dem Feld, nicht darin.
+
+   Vuetify laesst die Beschriftung in den Rahmen schweben. Das spart Platz,
+   kostet aber zweierlei: solange das Feld leer ist, verdeckt die Beschriftung
+   den Platzhalter, und beim Tippen wandert sie weg - man kann also nie beide
+   zugleich sehen. Der Entwurf setzt sie deshalb darueber:
+
+       .field > span { font-size: 12px; color: var(--ink-muted); font-weight: 500; }
+
+   Felder ohne Beschriftung (Suchfelder mit Platzhalter, Filter in Leisten)
+   bleiben unberuehrt - :has() greift nur, wo es eine gibt.
    ============================================================ */
 .v-field--variant-outlined {
     border-radius: 5px;
+}
+
+.v-input.v-text-field:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
+.v-input.v-select:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
+.v-input.v-autocomplete:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
+.v-input.v-combobox:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
+.v-input.v-textarea:has(> .v-input__control > .v-field > .v-field__field > .v-field__label) {
+    margin-top: 18px;
+
+    .v-field__label {
+        top: -18px;
+        inset-inline-start: 0;
+        transform: none !important;
+        transition: none;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--k-ink-muted, #5c6675);
+        opacity: 1;
+        max-width: 100%;
+    }
+
+    /* Die Kerbe im Rahmen entfaellt: die Beschriftung liegt nicht mehr darin,
+       also darf die Oberkante durchlaufen. */
+    .v-field__outline__notch {
+        --v-field-label-scale: 1;
+
+        &::before,
+        &::after {
+            opacity: 1;
+        }
+    }
+}
+
+/* In Leisten und Tabellenzeilen zaehlt Hoehe mehr als Beschriftung - dort
+   bleibt es beim Verhalten von Vuetify. */
+.k-toolbar .v-input,
+.v-toolbar .v-input,
+.v-data-table .v-input {
+    margin-top: 0;
 }
 
 .v-input__details {
@@ -255,9 +305,74 @@
     min-height: 16px;
 }
 
+/* ============================================================
+   FEHLERMELDUNGEN
+   Eine Meldung nennt die Ursache. "Ungueltige Eingabe" sagt nur,
+   dass etwas nicht stimmt - nicht, was zu aendern ist.
+   ============================================================ */
 .v-messages__message {
     font-size: 11.5px;
     line-height: 1.35;
+}
+
+.v-input--error .v-messages__message {
+    color: var(--k-critical, #c0322b);
+}
+
+/* Ein fehlerhaftes Feld traegt den Fehler am Rand, nicht als Flaeche - eine
+   rot hinterlegte Zeile schlaegt Alarm, wo ein Hinweis genuegt. */
+.v-input--error .v-field--variant-outlined .v-field__outline {
+    --v-field-border-width: 1px;
+    color: var(--k-critical, #c0322b);
+}
+
+/* ============================================================
+   DIALOGE
+   Ein Dialog schwebt - er ist das einzige neben Menue und Fenster,
+   das im System einen Schatten wirft. Radius 6-7 px, Flaeche
+   --raised, Kopfzeile wie bei jedem Panel.
+   ============================================================ */
+.v-dialog > .v-overlay__content > .v-card {
+    border-radius: 7px;
+    border: 1px solid var(--k-line-strong, #ced4dd);
+    background: var(--k-raised, #fff);
+}
+
+/* Kopfzeile: 34 px, gesenkte Flaeche, Name in 12/600 - dieselbe Zeile wie
+   ueber jeder Tabelle und jeder Kachel. Vuetify gibt ihr sonst 64 px und die
+   Groesse einer Ueberschrift. */
+.v-dialog .v-card > .v-card-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 34px;
+    padding: 0 12px;
+    background: var(--k-sunken, #fafbfc);
+    border-bottom: 1px solid var(--k-line, #e2e5ea);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.v-dialog .v-card > .v-card-text {
+    padding: 16px 14px;
+    font-size: 13.5px;
+}
+
+/* Die Fusszeile traegt die Entscheidung: Abbrechen leise links vom
+   gefuellten Knopf, damit die Hauptaktion am Rand steht, wo der Blick
+   endet. */
+.v-dialog .v-card > .v-card-actions {
+    gap: 8px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--k-line, #e2e5ea);
+    background: var(--k-sunken, #fafbfc);
+    min-height: 0;
+}
+
+/* Der Vorhang verdunkelt, ohne die Farbe zu kippen. */
+.v-overlay__scrim {
+    background: rgba(10, 14, 20, 0.45);
 }
 
 /* ============================================================

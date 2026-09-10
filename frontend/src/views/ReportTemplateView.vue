@@ -88,7 +88,17 @@ const templateHeaders = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 // Add rule for template if needed, though often just checking non-empty is enough
 const templateRequiredRule = (value: string) =>
     (value && value.trim() !== '') || 'Template Inhalt darf nicht leer sein.';
@@ -359,7 +369,7 @@ const kCols = useTableColumns('ReportTemplateView', () => unref(templateHeaders)
                                 label="Name"
                                 v-model="templateFormData.name"
                                 required
-                                :rules="[requiredRule]"
+                                :rules="[requiredRule('Name')]"
                                 variant="outlined"
                                 density="comfortable"
                                 color="primary"

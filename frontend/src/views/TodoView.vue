@@ -108,7 +108,17 @@ const editedValue = ref('');
 const editFieldRef = ref<any>(null); // Ref for the inline text field
 
 // --- Validation Rules ---
-const requiredRule = (value: string) => !!value || 'Dieses Feld ist erforderlich';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Snackbar ---
 const toast = useToast();
@@ -1448,7 +1458,7 @@ onMounted(async () => {
                                 v-model="newListName"
                                 label="Ordnername"
                                 required
-                                :rules="[requiredRule]"
+                                :rules="[requiredRule('Ordnername')]"
                                 variant="outlined"
                                 density="comfortable"
                                 

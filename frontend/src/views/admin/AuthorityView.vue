@@ -649,7 +649,8 @@ const authorityHeaders = [
 ];
 
 // --- Validation Rules ---
-// const requiredRule = (value: any) => !!value || 'This field is required'; // Kept for reference
+// Diese Ansicht benutzt keine Pflichtfeld-Regel; die Definition stand hier
+// auskommentiert und ist ersatzlos entfallen.
 
 // --- Data Fetching ---
 

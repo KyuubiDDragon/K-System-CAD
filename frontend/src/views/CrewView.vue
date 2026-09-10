@@ -78,7 +78,17 @@ const headers = computed(() => [
 ]);
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Feld ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Data Fetching ---
 const fetchCrews = async () => {
@@ -423,7 +433,7 @@ const kFilters = useTableFilters(
                       v-model="selectedCrew.name"
                       label="Name"
                       required
-                      :rules="[requiredRule]"
+                      :rules="[requiredRule('Name')]"
                       variant="outlined"
                       density="comfortable"
                       color="primary"
@@ -450,7 +460,7 @@ const kFilters = useTableFilters(
                       label="Sortierung"
                       type="number"
                       required
-                      :rules="[requiredRule]"
+                      :rules="[requiredRule('Sortierung')]"
                       variant="outlined"
                       density="comfortable"
                       color="primary"

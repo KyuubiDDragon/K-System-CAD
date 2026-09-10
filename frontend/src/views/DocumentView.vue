@@ -244,7 +244,17 @@ const fetchCategoriesAndDocuments = async () => {
 };
 
 // --- Validation Rules ---
-const requiredRule = (value: any) => !!value || 'Name ist erforderlich.';
+/**
+ * Pflichtfeld-Regel.
+ *
+ * Der Entwurf verlangt, dass eine Meldung die Ursache benennt: "Diese
+ * Dienstnummer ist bereits vergeben" statt "Ungueltige Eingabe". Fuer ein
+ * fehlendes Pflichtfeld heisst das, den Namen des Feldes zu nennen - er steht
+ * ohnehin als Beschriftung daneben.
+ */
+const requiredRule = (feld?: string) => (value: any) =>
+    (value !== null && value !== undefined && String(value).trim() !== '') ||
+    (feld ? `${feld} fehlt.` : 'Dieses Feld muss ausgefüllt werden.');
 
 // --- Methods ---
 
@@ -1234,7 +1244,7 @@ const kFilters = useTableFilters(
                                 :label="$t('name')"
                                 required
                                 v-model="newCategory.name"
-                                :rules="[requiredRule]"
+                                :rules="[requiredRule($t('name'))]"
                                 variant="outlined"
                                 density="comfortable"
                                 @keydown.enter="addNewCategory"
