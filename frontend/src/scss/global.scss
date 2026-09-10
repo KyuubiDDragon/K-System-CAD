@@ -43,6 +43,20 @@
 .v-app-bar {
   background: var(--k-surface) !important;
   border-bottom: 1px solid var(--k-line) !important;
+  /*
+    Die Schriftfarbe muss mitkommen. Rund zwanzig Leisten tragen im Markup
+    color="primary"; Vuetify rechnet daraus die Gegenfarbe fuer einen blauen
+    Grund aus. Bleibt die Flaeche hell und die Schrift auf "hell auf blau",
+    steht ein fast unsichtbarer Titel auf der Leiste - genau das war in der
+    Leitstelle zu sehen.
+  */
+  color: var(--k-ink) !important;
+}
+
+/* Eine Leiste im Dialog ist dessen Kopfzeile - sie liegt auf der gesenkten
+   Flaeche wie jede andere Kopfzeile im System. */
+.v-dialog .v-toolbar {
+  background: var(--k-sunken) !important;
 }
 
 /* Data table styling */
@@ -177,65 +191,85 @@
 .bg-warning { background-color: var(--warning) !important; }
 .bg-error { background-color: var(--error) !important; }
 
-/* Custom Toast Styling */
+/* ============================================================
+   MELDUNGEN
+   Nach dem Entwurf: gehobene Flaeche, ein Rahmen, ein Schatten -
+   und die Bedeutung als kleiner runder Punkt, nicht als Balken.
+
+   Vorher lag hier ein fest verdrahtetes #1E1E1E mit weisser
+   Schrift, das im hellen Modus als schwarzer Kasten stehen blieb,
+   dazu ein 4-px-Streifen in Akzentfarbe an der linken Kante.
+   Der Akzent markiert im System aber Ort und Hauptaktion - eine
+   Meldung ist weder das eine noch das andere. Ihre Farbe ist die
+   Bedeutungsfarbe, und die traegt der Punkt.
+   ============================================================ */
 .custom-toast-container {
   z-index: 9999 !important;
 }
 
 .custom-toast {
-  background-color: var(--container-color, #1E1E1E) !important;
-  color: var(--text-color, #FFFFFF) !important;
-  border-radius: var(--border-radius, 8px) !important;
-  border-left: 4px solid var(--primary, var(--k-accent)) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-  
-  &.Vue-Toastification__toast--success {
-    border-left-color: var(--success, #138D75) !important;
-    
-    .Vue-Toastification__icon {
-      color: var(--success, #138D75) !important;
-    }
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 9px !important;
+  background-color: var(--k-raised) !important;
+  color: var(--k-ink) !important;
+  border: 1px solid var(--k-line-strong) !important;
+  border-radius: 6px !important;
+  box-shadow:
+    0 4px 12px rgba(16, 22, 32, 0.08),
+    0 1px 3px rgba(16, 22, 32, 0.05) !important;
+  max-width: 380px;
+  font-size: 12.5px !important;
+
+  /* Das Symbol wird zum Punkt: 7 px, rund, in der Bedeutungsfarbe. */
+  .Vue-Toastification__icon {
+    width: 7px !important;
+    height: 7px !important;
+    min-width: 7px;
+    border-radius: 50%;
+    margin: 6px 0 0 0 !important;
+    font-size: 0 !important;
+    align-self: flex-start;
+    background: var(--k-neutral);
   }
-  
-  &.Vue-Toastification__toast--error {
-    border-left-color: var(--error, #dc3545) !important;
-    
-    .Vue-Toastification__icon {
-      color: var(--error, #dc3545) !important;
-    }
+
+  &.Vue-Toastification__toast--success .Vue-Toastification__icon {
+    background: var(--k-success);
   }
-  
-  &.Vue-Toastification__toast--warning {
-    border-left-color: var(--warning, #FFC107) !important;
-    
-    .Vue-Toastification__icon {
-      color: var(--warning, #FFC107) !important;
-    }
+
+  &.Vue-Toastification__toast--error .Vue-Toastification__icon {
+    background: var(--k-critical);
   }
-  
-  &.Vue-Toastification__toast--info {
-    border-left-color: var(--info, #007bff) !important;
-    
-    .Vue-Toastification__icon {
-      color: var(--info, #007bff) !important;
-    }
+
+  &.Vue-Toastification__toast--warning .Vue-Toastification__icon {
+    background: var(--k-warning);
   }
-  
+
+  &.Vue-Toastification__toast--info .Vue-Toastification__icon {
+    background: var(--k-accent);
+  }
+
   .Vue-Toastification__close-button {
-    color: var(--text-muted, #888888) !important;
-    
+    color: var(--k-ink-faint) !important;
+    opacity: 1;
+
     &:hover {
-      color: var(--text-color, #FFFFFF) !important;
+      color: var(--k-ink) !important;
     }
   }
-  
+
+  /* Der Fortschrittsbalken zeigt nur, wie lange die Meldung noch steht -
+     er braucht dafuer keine Signalfarbe. */
   .Vue-Toastification__progress-bar {
-    background-color: rgba(var(--primary-rgb, 59, 130, 246), 0.7) !important;
+    background-color: var(--k-line-strong) !important;
+    height: 2px;
   }
 }
 
 .custom-toast-body {
   font-family: inherit !important;
-  font-size: 14px !important;
-  padding: 12px !important;
+  font-size: 12.5px !important;
+  line-height: 1.4;
+  padding: 0 !important;
+  color: var(--k-ink);
 } 
