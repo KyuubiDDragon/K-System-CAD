@@ -583,7 +583,7 @@ onMounted(async () => {
        Eine von Hand gelegte Anordnung geht damit verloren; das ist der Preis
        dafuer, die alte weite Aufteilung nicht ewig mitzuschleppen.
     */
-    const RASTER_STAND = 'k-desktop-raster-2';
+    const RASTER_STAND = 'k-desktop-raster-3';
     try {
         if (localStorage.getItem(RASTER_STAND) !== '1') {
             localStorage.setItem(RASTER_STAND, '1');
@@ -793,15 +793,16 @@ const validateIconPositions = (positions) => {
 /*
    Raster der Arbeitsflaeche.
 
-   Die Kachel misst 88 px und traegt ein 40-px-Symbol. Mit 130 px Schrittweite
-   standen zwischen zwei Symbolen ueber vierzig Pixel Luft - die Reihe fiel
-   auseinander. 100 px waagerecht und 116 senkrecht lassen genug Abstand, damit
-   sich zweizeilige Namen nicht beruehren, und ruecken die Symbole sichtbar
-   zusammen. Mehr Spalten passen dadurch nebeneinander.
+   Die Kachel misst 88 px breit; hoch ist sie 79 px bei einzeiligem und 94 px
+   bei zweizeiligem Namen ("Schwarzes Brett", "Tools & Utilities",
+   "Website-Manager") - live gemessen. Die Schrittweite ist die Kachel plus
+   12 px Luft: 100 waagerecht, 106 senkrecht. Mit 130 bzw. 116 stand zwischen
+   zwei Reihen ueber dreimal so viel Luft wie zwischen zwei Spalten, das Raster
+   fiel in Streifen auseinander.
 */
 const ICON_CONFIG = {
-    width: 100,           // waagerechte Schrittweite
-    height: 116,          // senkrechte Schrittweite
+    width: 100,           // waagerechte Schrittweite: 88 Kachel + 12 Luft
+    height: 106,          // senkrechte Schrittweite: 94 Kachel + 12 Luft
     startX: 20,           // Left margin
     startY: 20,           // Top margin
     gridSize: 20,         // Snap-to-grid size
