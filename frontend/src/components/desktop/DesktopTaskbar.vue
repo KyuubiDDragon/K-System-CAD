@@ -1601,54 +1601,26 @@ const handleClickOutside = (event: MouseEvent) => {
     margin-left: auto;
 }
 
-/* Start, Suche und die angehefteten Programme tragen dieselbe Hoehe wie eine
-   laufende Aufgabe - sonst sitzt die Leiste unruhig. */
-.taskbar .start-button,
-.taskbar .search-button,
-.taskbar .taskbar-app,
-.taskbar .system-tray > * {
-    height: 22px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0 8px;
-    border-radius: 4px;
-    font-size: 11.5px;
-    color: var(--k-ink-muted);
-    cursor: pointer;
-}
-
-.taskbar .start-button:hover,
-.taskbar .search-button:hover,
-.taskbar .taskbar-app:hover {
-    background: var(--k-row-hover);
-    color: var(--k-ink);
-}
-
-.taskbar .start-text {
-    font-size: 11.5px;
-    font-weight: 550;
-}
-
-/* Die Zaehlmarke einer Gruppe: klein genug, um im 22-px-Knopf zu bleiben. */
-.taskbar .app-count {
-    bottom: -3px;
-    right: -3px;
-    min-width: 12px;
-    height: 12px;
-    font-size: 8px;
-    border: 0;
-    box-shadow: none;
-    background: var(--k-accent);
-    color: var(--k-on-fill);
-}
-
-/* Die Uhr rechts steht in Festbreite, damit sie beim Ticken nicht springt. */
-.taskbar .clock,
-.taskbar .taskbar-clock {
+/* Die Uhr traegt Zeit und Datum untereinander - sie braucht deshalb die
+   volle Hoehe eines Leistenelements, sonst steht das Datum ausserhalb ihrer
+   Flaeche. Genau das war zu sehen. */
+.taskbar .tray-item.clock,
+.taskbar .clock {
+    height: 34px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 0;
+    line-height: 1.15;
     font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    font-size: 11.5px;
     font-variant-numeric: tabular-nums;
     color: var(--k-ink-muted);
 }
+
+.taskbar .tray-item.clock > *,
+.taskbar .clock > * {
+    font-size: 12px;
+    white-space: nowrap;
+}
+
 </style>

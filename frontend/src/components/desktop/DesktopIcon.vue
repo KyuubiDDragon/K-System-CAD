@@ -273,7 +273,9 @@ onUnmounted(() => {
     border-radius: 6px;
     cursor: pointer;
     user-select: none;
-    width: 110px;
+    /* 88 statt 110 px: der Entwurf gibt .dicon 78 px, und ein 40-px-Symbol in
+       einer 110-px-Kachel laesst die Reihe auseinanderfallen. */
+    width: 88px;
     box-sizing: border-box;
     /*
        Wie .dicon im Entwurf: eine unsichtbare Kachel, die nur Symbol und Namen
@@ -297,33 +299,15 @@ onUnmounted(() => {
     background: rgba(127, 140, 160, 0.26);
 }
 
-.desktop-icon:hover {
-    background: var(--k-raised);
-    box-shadow:
-        0 8px 20px rgba(0, 0, 0, 0.25),
-        0 4px 8px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 1px solid var(--k-line);
-    transform: translateY(-4px) scale(1.02);
-}
-
-.desktop-icon.selected {
-    background: var(--k-accent-weak);
-    border: 1px solid var(--k-accent-line);
-    box-shadow: none;
-}
-
+/*
+   Ein Symbol hebt sich beim Zeigen nicht an und wirft keinen Schatten. Hier
+   standen ein Anheben um 4 px, eine Vergroesserung und drei uebereinander
+   gelegte Schatten - auf der Arbeitsflaeche sah das aus, als leuchte die
+   Kachel. Der Entwurf gibt fuer .dicon nur eine ruhige Flaeche an.
+*/
 .desktop-icon.is-dragging {
-    opacity: 0.95;
-    transform: scale(1.08) !important;
-    box-shadow:
-        0 25px 40px rgba(0, 0, 0, 0.35),
-        0 12px 20px rgba(0, 0, 0, 0.25),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    opacity: 0.9;
     cursor: grabbing;
-    background: var(--k-raised);
-    border: 1px solid var(--k-accent-line);
-    z-index: 10 !important;
 }
 
 .icon-container {
@@ -355,22 +339,18 @@ onUnmounted(() => {
     font-size: 40px;
 }
 
-.desktop-icon:hover .icon-container .v-icon {
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
-}
 
 .icon-image {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .folder-icon {
+    /* Kein Schein um den Ordner. Der drop-shadow hier war bernsteinfarben
+       (rgba(251,191,36,.5)) - eine Farbe, die in der Palette nicht vorkommt,
+       und ein Leuchten, das der Entwurf nirgends vorsieht. */
     color: var(--icon-color, var(--k-warning)) !important;
-    filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.5));
 }
 
-.desktop-icon:hover .folder-icon {
-    filter: drop-shadow(0 6px 16px rgba(251, 191, 36, 0.6));
-}
 
 /*
    Beschriftung ohne Platte.
@@ -443,12 +423,9 @@ onUnmounted(() => {
     width: 48px;
     height: 48px;
     object-fit: contain;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .desktop-icon:hover .custom-icon-image {
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
     transform: scale(1.1);
 }
 

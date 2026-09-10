@@ -951,11 +951,11 @@ const windowStyle = computed(() => {
         style.top = '0px';
         style.left = '0px';
         style.width = '100vw';
-        style.height = 'calc(100vh - 40px)'; // Subtract Taskbar height (adjust 40px as needed)
+        style.height = 'calc(100vh - var(--taskbar-height, 48px))'; // Hoehe der Taskleiste
         style.borderRadius = '0'; // No border radius when maximized
         style.border = 'none';      // No border when maximized
         style.maxWidth = '100vw';   // Ensure it doesn't exceed viewport
-        style.maxHeight = 'calc(100vh - 40px)'; // Ensure it doesn't exceed viewport height
+        style.maxHeight = 'calc(100vh - var(--taskbar-height, 48px))';
 
         // --- Local state is NOT used for styling in maximized state ---
         // The watcher syncs it when entering maximized state.
@@ -968,10 +968,12 @@ const windowStyle = computed(() => {
         style.width = `${(isDragging.value || isResizing.value) ? currentWidth.value : props.window.width}px`;
         style.height = `${(isDragging.value || isResizing.value) ? currentHeight.value : props.window.height}px`;
 
-        style.borderRadius = '6px';
-        style.border = '1px solid rgba(0, 0, 0, 0.1)';
+        // Radius und Rahmen kommen aus dem Stylesheet. Hier standen sie als
+        // Inline-Stil und schlugen damit jede CSS-Regel - der Radius blieb auf
+        // 6 px haengen, und der Rahmen lag auf einem festen rgba(0,0,0,.1),
+        // das im dunklen Modus nicht mitkippt.
         style.maxWidth = 'unset';
-        style.maxHeight = 'calc(100vh - 40px)'; // Still cap max height
+        style.maxHeight = 'calc(100vh - var(--taskbar-height, 48px))';
     }
 
     return style;
@@ -1067,7 +1069,7 @@ provide('windowContext', windowStore);
     flex-direction: column;
     overflow: hidden;
     pointer-events: auto;
-    max-height: calc(100vh - 40px);
+    max-height: calc(100vh - var(--taskbar-height, 48px));
     min-width: 300px;
     min-height: 200px;
     outline: none;
@@ -1191,29 +1193,50 @@ provide('windowContext', windowStore);
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 7px;
+    /* 9 px Abstand: bei 7 px lagen die Trefferflaechen so dicht beieinander,
+       dass man beim Zielen auf das X leicht daneben griff. */
+    gap: 9px;
     flex-shrink: 0;
 }
 
 /* Ein Punkt: 11 px, rund, in Linienfarbe. Das Zeichen darin ist unsichtbar,
    bis man darauf zeigt. */
+/*
+   Ein Punkt ist genau 11 px gross - und sein Zeichen darf nicht darueber
+   hinausragen.
+
+   Vorher lag das Symbol als normales Kind im Knopf. Vuetify gibt ihm eine
+   eigene Zeilenhoehe, wodurch der Knopf breiter wurde als der sichtbare
+   Punkt: die Flaechen ueberlappten sich, und ein Klick auf das X landete auf
+   "Groesser". Jetzt liegt das Zeichen absolut in der Mitte, nimmt keine
+   Klicks entgegen und kann den Knopf nicht mehr aufblasen.
+*/
 .window-dot {
+    position: relative;
     width: 11px;
     height: 11px;
+    min-width: 11px;
+    flex: 0 0 11px;
+    box-sizing: border-box;
     padding: 0;
     border: 0;
     border-radius: 50%;
     background: var(--k-line-strong);
     color: transparent;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     outline: none;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
     transition: background-color 120ms ease, color 120ms ease;
 }
 
 .window-dot .v-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
     opacity: 0;
     transition: opacity 120ms ease;
 }
