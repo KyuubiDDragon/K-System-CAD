@@ -1218,12 +1218,16 @@ provide('windowContext', windowStore);
     transition: opacity 120ms ease;
 }
 
-/* Beim Zeigen auf die Leiste bekommen alle Punkte ihre Bedeutungsfarbe -
-   so wie man es vom Fenster kennt. */
-.window-titlebar:hover .window-dot.close { background: var(--k-critical); }
-.window-titlebar:hover .window-dot.minimize { background: var(--k-warning); }
-.window-titlebar:hover .window-dot.maximize { background: var(--k-success); }
-.window-titlebar:hover .window-dot.reload { background: var(--k-accent); }
+/*
+   Farbe tragen die Punkte nur im aktiven Fenster - ruhende Fenster behalten
+   ihr Grau. Das ist das Verhalten, das man vom Mac kennt, und es deckt sich
+   mit dem Entwurf: "Das aktive Fenster erkennt man an der Titelleiste."
+   Titelleiste und Punkte sagen damit dasselbe.
+*/
+.window.active .window-dot.close { background: var(--k-critical); }
+.window.active .window-dot.minimize { background: var(--k-warning); }
+.window.active .window-dot.maximize { background: var(--k-success); }
+.window.active .window-dot.reload { background: var(--k-accent); }
 
 .window-dot:hover .v-icon {
     opacity: 1;
@@ -1355,7 +1359,7 @@ provide('windowContext', windowStore);
     color: var(--k-ink);
     padding: 32px;
     background: var(--k-row-hover);
-    border-radius: 6px;
+    border-radius: 8px;
     border: 1px solid var(--k-line);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }

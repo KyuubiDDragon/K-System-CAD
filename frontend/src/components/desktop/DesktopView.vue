@@ -2983,19 +2983,57 @@ const loadWidgetState = async () => {
 };
 
 // Verbesserte Funktion zur Bestimmung der Iconposition
+/**
+ * Rasterplaetze fuer Symbole ohne gespeicherte Position.
+ *
+ * Vorher gab diese Funktion jedem Symbol ohne Eintrag dieselbe
+ * Standardposition (20, 20) zurueck. Zwei neue Symbole lagen damit exakt
+ * uebereinander - auf der Arbeitsflaeche standen "Dashboard" und "Schwarzes
+ * Brett" buchstaeblich am selben Punkt und ihre Namen ueberdruckten sich.
+ *
+ * Jetzt bekommt jedes von ihnen den naechsten freien Platz im Raster. Belegt
+ * sind dabei sowohl die gespeicherten Positionen als auch die, die in diesem
+ * Durchgang schon vergeben wurden. Die Reihenfolge haengt an der Liste der
+ * Programme und ist damit ueber Neuaufbauten hinweg stabil.
+ */
+const SPALTE = 130;   // waagerechter Abstand zweier Symbole
+const ZEILE = 140;    // senkrechter Abstand
+const RAND = 20;
+
+const berechnetePositionen = computed(() => {
+    const gespeichert = iconPositions.value || {};
+    const belegt = new Set(
+        Object.values(gespeichert).map(pos => `${pos.x}|${pos.y}`),
+    );
+    const zeilenProSpalte = Math.max(
+        1,
+        Math.floor((window.innerHeight - 120) / ZEILE),
+    );
+
+    const ergebnis = {};
+    let n = 0;
+    for (const app of desktopApps.value) {
+        if (gespeichert[app.id]) continue;
+        // Den naechsten Platz suchen, der noch niemandem gehoert.
+        let platz;
+        do {
+            const spalte = Math.floor(n / zeilenProSpalte);
+            const zeile = n % zeilenProSpalte;
+            platz = { x: RAND + spalte * SPALTE, y: RAND + zeile * ZEILE };
+            n += 1;
+        } while (belegt.has(`${platz.x}|${platz.y}`));
+        belegt.add(`${platz.x}|${platz.y}`);
+        ergebnis[app.id] = platz;
+    }
+    return ergebnis;
+});
+
 const getIconPosition = appId => {
-    // Standardposition, falls keine Position gefunden wird
-    const defaultPosition = { x: 20, y: 20 };
-    
-    // Prüfe, ob die Position bereits im Store definiert ist
     const savedPositions = iconPositions.value || {};
-    
-    // Wenn eine gespeicherte Position existiert, diese verwenden
     if (savedPositions[appId]) {
         return savedPositions[appId];
     }
-    
-    return defaultPosition;
+    return berechnetePositionen.value[appId] || { x: RAND, y: RAND };
 };
 
 // Window minimize function (bleibt gleich)
