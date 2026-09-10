@@ -31,7 +31,8 @@
     "sidebarDesc": "Modernes Menü mit Sidebar",
     "desktopDesc": "Windows-ähnliche Desktop-Oberfläche",
     "accountSuspended": "Dein Account ist aktuell suspendiert. Bitte kontaktiere einen Administrator.",
-    "accountBanned": "Dein Account wurde gesperrt."
+    "accountBanned": "Dein Account wurde gesperrt.",
+    "accessNote": "Zugang nur für hinterlegte Dienstnummern. Jede Anmeldung wird protokolliert."
   },
   "layoutSelection": {
     "title": "Wählen Sie Ihren Anzeigemodus",

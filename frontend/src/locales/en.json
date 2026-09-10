@@ -31,7 +31,8 @@
     "sidebarDesc": "Modern menu with sidebar",
     "desktopDesc": "Windows-like desktop interface",
     "accountSuspended": "Your account is currently suspended. Please contact an administrator.",
-    "accountBanned": "Your account has been banned."
+    "accountBanned": "Your account has been banned.",
+    "accessNote": "Access is limited to registered service numbers. Every sign-in is logged."
   },
   "layoutSelection": {
     "title": "Choose Your Display Mode",

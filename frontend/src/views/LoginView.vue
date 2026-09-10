@@ -1,26 +1,7 @@
 <template>
     <v-container fluid class="fill-height login-container pa-0">
         <v-row align="center" justify="center" no-gutters>
-            <v-col cols="12" sm="8" md="6" lg="4" xl="3">
-                <div class="logo-container text-center mb-8">
-                    <!-- Dynamic Authority Logo -->
-                    <img
-                        v-if="selectedAuthorityBranding?.logo_url"
-                        :src="getFullImageUrl(selectedAuthorityBranding.logo_url)"
-                        :alt="selectedAuthorityBranding.app_title + ' Logo'"
-                        class="logo-image authority-logo mb-2"
-                    />
-                    <!-- Category-specific or Fallback Logo -->
-                    <img
-                        v-else
-                        :src="getDefaultLogo()"
-                        :alt="getDefaultLogoAlt()"
-                        class="logo-image mb-2"
-                    />
-                    <div class="logo-text">
-                        {{ selectedAuthorityBranding?.app_title || 'Command & Control' }}
-                    </div>
-                </div>
+            <v-col cols="12" sm="10" md="9" lg="8" xl="7">
 
                 <!-- Authority Info Card (for URL-based selection) -->
                 <v-card
@@ -50,7 +31,40 @@
                 </v-card>
 
                 <v-card class="login-card rounded-xl overflow-hidden" :style="dynamicCardStyle">
-                    <v-card-text class="px-8 py-8 position-relative">
+                    <!--
+                        Linke Spalte: wer hier anmeldet, bei welcher Behoerde.
+                        Der Betriebszustand aus dem Entwurf steht bewusst nicht
+                        hier - diese Zahlen waeren vor der Anmeldung sichtbar
+                        und gehen Unbefugte nichts an.
+                    -->
+                    <aside class="login-aside">
+                        <div class="login-aside__brand">
+                            <img
+                                v-if="selectedAuthorityBranding?.logo_url"
+                                :src="getFullImageUrl(selectedAuthorityBranding.logo_url)"
+                                :alt="selectedAuthorityBranding.app_title + ' Logo'"
+                                class="login-aside__logo"
+                            />
+                            <img
+                                v-else
+                                :src="getDefaultLogo()"
+                                :alt="getDefaultLogoAlt()"
+                                class="login-aside__logo"
+                            />
+                            <div class="login-aside__title">
+                                {{ selectedAuthorityBranding?.app_title || 'Command &amp; Control' }}
+                            </div>
+                        </div>
+
+                        <div class="login-aside__foot">
+                            <div class="login-aside__authority">
+                                {{ selectedAuthorityBranding?.display_name || urlAuthority?.display_name || '' }}
+                            </div>
+                            <p class="login-aside__note">{{ $t('login.accessNote') }}</p>
+                        </div>
+                    </aside>
+
+                    <v-card-text class="login-form px-8 py-8 position-relative">
                         <h2 class="text-h5 font-weight-medium mb-8 text-center">
                             {{ $t('login.welcomeBack') }}
                         </h2>
@@ -1312,5 +1326,71 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
     color: var(--k-ink, rgba(255, 255, 255, 0.95));
     font-weight: 600;
     letter-spacing: 0.5px;
+}
+
+/* Zweispaltige Anmeldung: links die Behoerde, rechts das Formular.
+   Unter 760 px stapeln beide Spalten. */
+.login-card {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 760px) {
+    .login-card {
+        grid-template-columns: 0.85fr 1fr;
+    }
+}
+
+.login-aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 28px 30px;
+    background: var(--k-sunken, #12161b);
+    border-right: 1px solid var(--k-line, #262c35);
+}
+
+@media (max-width: 759px) {
+    .login-aside {
+        border-right: 0;
+        border-bottom: 1px solid var(--k-line, #262c35);
+        padding: 20px 24px;
+    }
+}
+
+.login-aside__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.login-aside__logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex: none;
+}
+
+.login-aside__title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--k-ink, #e4e7ec);
+}
+
+.login-aside__authority {
+    font-size: 14px;
+    font-weight: 620;
+    margin-bottom: 4px;
+    color: var(--k-ink, #e4e7ec);
+}
+
+.login-aside__note {
+    font-size: 12.5px;
+    line-height: 1.45;
+    margin: 0;
+    max-width: 34ch;
+    color: var(--k-ink-muted, #9aa4b2);
 }
 </style>
