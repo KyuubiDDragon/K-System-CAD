@@ -2794,7 +2794,7 @@ function getAnalytics(PDO $pdo, string $authority, int $authorityId): void {
         // Reports by category
         $sqlByCategory = "SELECT c.name as category, COUNT(r.id) as count
                           FROM kdd_reports r
-                          LEFT JOIN kdd_categories c ON r.category_id = c.id
+                          LEFT JOIN kdd_report_category c ON r.category_id = c.id
                           WHERE r.authority_id = ? AND r.is_deleted = 0
                           GROUP BY c.id, c.name
                           ORDER BY count DESC
