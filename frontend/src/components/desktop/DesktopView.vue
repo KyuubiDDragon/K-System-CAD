@@ -768,13 +768,22 @@ const validateIconPositions = (positions) => {
 };
 
 // ====== ICON ARRANGEMENT CONFIGURATION ======
+/*
+   Raster der Arbeitsflaeche.
+
+   Die Kachel misst 88 px und traegt ein 40-px-Symbol. Mit 130 px Schrittweite
+   standen zwischen zwei Symbolen ueber vierzig Pixel Luft - die Reihe fiel
+   auseinander. 100 px waagerecht und 116 senkrecht lassen genug Abstand, damit
+   sich zweizeilige Namen nicht beruehren, und ruecken die Symbole sichtbar
+   zusammen. Mehr Spalten passen dadurch nebeneinander.
+*/
 const ICON_CONFIG = {
-    width: 130,           // Icon width including padding
-    height: 150,          // Icon height including padding
+    width: 100,           // waagerechte Schrittweite
+    height: 116,          // senkrechte Schrittweite
     startX: 20,           // Left margin
     startY: 20,           // Top margin
     gridSize: 20,         // Snap-to-grid size
-    maxColsPerRow: 6,     // Maximum icons per row
+    maxColsPerRow: 8,     // Maximum icons per row
     maxRows: 10,          // Maximum rows (increased for more flexibility)
     minSpacing: 10,       // Minimum spacing between icons
 };
@@ -2996,11 +3005,11 @@ const loadWidgetState = async () => {
  * Durchgang schon vergeben wurden. Die Reihenfolge haengt an der Liste der
  * Programme und ist damit ueber Neuaufbauten hinweg stabil.
  */
-const SPALTE = 130;   // waagerechter Abstand zweier Symbole
-const ZEILE = 140;    // senkrechter Abstand
+const SPALTE = 100;   // waagerechter Abstand zweier Symbole
+const ZEILE = 116;    // senkrechter Abstand
 const RAND = 20;
 
-const NAEHE = 70;     // ab hier ueberdecken sich zwei Symbole sichtbar
+const NAEHE = 60;     // ab hier ueberdecken sich zwei Symbole sichtbar
 
 const berechnetePositionen = computed(() => {
     const gespeichert = iconPositions.value || {};
@@ -3142,8 +3151,8 @@ const handleUpdateSize = (payload: { id: string, x: number, y: number, width: nu
 // Funktion zum Aktualisieren der Icon-Position
 const updateIconPosition = (appId, position) => {
     // Kollisionserkennung - prüfen, ob die neue Position bereits belegt ist
-    const iconWidth = 110; // Desktop-Icon Breite
-    const iconHeight = 120; // Desktop-Icon Höhe
+    const iconWidth = 88; // Desktop-Icon Breite
+    const iconHeight = 108; // Desktop-Icon Höhe
     
     // Offset für Randbereich des Icons bestimmen
     const collisionThreshold = 80; // Kollisionserkennung mit Puffer
