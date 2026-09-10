@@ -1243,23 +1243,30 @@ provide('windowContext', windowStore);
 }
 
 /*
-   Farbe tragen die Punkte nur im aktiven Fenster - ruhende Fenster behalten
-   ihr Grau. Das ist das Verhalten, das man vom Mac kennt, und es deckt sich
-   mit dem Entwurf: "Das aktive Fenster erkennt man an der Titelleiste."
-   Titelleiste und Punkte sagen damit dasselbe.
-*/
-.window.active .window-dot.close { background: var(--k-critical); }
-.window.active .window-dot.minimize { background: var(--k-warning); }
-.window.active .window-dot.maximize { background: var(--k-success); }
-.window.active .window-dot.reload { background: var(--k-accent); }
+   Die Punkte tragen keine Farbe.
 
+   Hier standen vier Ampelfarben - rot, gelb, gruen, blau - im aktiven Fenster.
+   Der Entwurf gibt fuer .win-dots genau eine Farbe an, --line-strong, und
+   sagt dazu: "Das aktive Fenster erkennt man an der Titelleiste, nicht an
+   einem Leuchten." Vier bunte Punkte sind genau das Leuchten, das dort
+   wegfaellt; erkannt wird das aktive Fenster an der Leiste in --accent-weak.
+
+   Die Bedeutung zeigt sich erst beim Zeigen: dann faerbt sich der Punkt, auf
+   dem der Zeiger steht, und sein Zeichen wird sichtbar.
+*/
 .window-dot:hover .v-icon {
     opacity: 1;
 }
 
 .window-dot:hover {
     color: var(--k-on-fill);
+    background: var(--k-neutral);
 }
+
+.window-dot.close:hover { background: var(--k-critical); }
+.window-dot.minimize:hover { background: var(--k-warning); }
+.window-dot.maximize:hover { background: var(--k-success); }
+.window-dot.reload:hover { background: var(--k-accent); }
 
 .window-dot:focus-visible {
     outline: 2px solid var(--k-accent);

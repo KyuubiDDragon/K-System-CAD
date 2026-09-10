@@ -321,12 +321,13 @@ watch(() => props.note, (newNote) => {
 <style scoped>
 .note-widget {
   background: var(--k-surface);
-  border-left: 3px solid var(--notiz-farbe, var(--k-accent));
   border-radius: var(--border-radius-md);
   overflow: hidden;
   width: var(--desktop-widget-width);
   box-shadow: var(--shadow-medium);
   border: 1px solid var(--k-line);
+  /* Muss nach der allgemeinen Kante stehen, sonst setzt die sie zurueck. */
+  border-left: 3px solid var(--notiz-farbe, var(--k-accent));
   transition: all var(--animation-duration-normal) var(--animation-easing);
   animation: note-appear 0.5s var(--animation-easing);
   display: flex;
