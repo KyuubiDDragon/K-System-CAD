@@ -415,8 +415,17 @@ const currentVacation = computed(() => {
     z-index: 2000 !important;
 }
 
+/*
+   Die Karte fuellt die Schublade und teilt sich in Kopf und Inhalt.
+   Ohne Spaltenfluss bekam der Inhalt eine feste Hoehe aus 100vh, die nicht
+   zur Schublade passte: sie war 65 px hoeher als die Karte, und weil die
+   Karte abschneidet, war der Knopf "Mitarbeiter bearbeiten" am unteren Rand
+   nicht mehr erreichbar - egal wie weit man scrollte.
+*/
 .preview-card {
     background: var(--k-surface) !important;
+    display: flex;
+    flex-direction: column;
 }
 
 .preview-toolbar {
@@ -424,8 +433,12 @@ const currentVacation = computed(() => {
 }
 
 .preview-content {
+    /* Nimmt den Platz, der nach der Kopfleiste uebrig bleibt, und scrollt
+       darin. min-height: 0 ist noetig, damit ein Flex-Kind ueberhaupt kleiner
+       werden darf als sein Inhalt. */
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
-    height: calc(100vh - 48px);
 }
 
 .preview-avatar {

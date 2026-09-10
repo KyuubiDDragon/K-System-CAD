@@ -1,9 +1,17 @@
 <template>
+  <!--
+    Die Hoehe muss mit --k-bar-height aus scss/_density.scss uebereinstimmen.
+    Vuetify rechnet aus dieser Zahl den Platz aus, den es unter der Leiste
+    freihaelt - fuer den Arbeitsbereich und fuer jede Schublade. Stand hier 64,
+    waehrend das CSS die Leiste auf 42 setzte, blieb ein 21 px hoher toter
+    Streifen darunter: die Schnellansicht der Mitarbeiter begann nicht an der
+    Leiste, sondern darunter.
+  -->
   <v-app-bar
     elevation="1"
     class="top-bar"
     color="surface"
-    height="64"
+    height="42"
   >
     <!-- Toggle Sidebar Button -->
     <v-btn

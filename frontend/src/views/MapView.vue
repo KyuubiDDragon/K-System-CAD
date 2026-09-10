@@ -1426,8 +1426,8 @@ watch([markers, categories], () => {
   overflow-x: hidden !important;
 }
 .map-container {
-    min-height: calc(100vh - 64px);
-    height: calc(100vh - 64px);
+    min-height: calc(100vh - var(--k-bar-height));
+    height: calc(100vh - var(--k-bar-height));
     width: 100%;
     background-color: var(--k-canvas);
     position: relative;

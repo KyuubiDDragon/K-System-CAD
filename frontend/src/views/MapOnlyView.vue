@@ -226,7 +226,7 @@ onMounted(async () => {
 
 <style scoped>
 .outer-container {
-    height: calc(100vh - 64px); /* Adjust based on header height */
+    height: calc(100vh - var(--k-bar-height));
     display: flex;
     flex-direction: column;
 }
