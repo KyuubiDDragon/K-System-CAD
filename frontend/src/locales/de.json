@@ -157,7 +157,8 @@
     "minutesAgo": "{count} Minute vor | {count} Minuten vor",
     "hoursAgo": "{count} Stunde vor | {count} Stunden vor",
     "show": "Anzeigen",
-    "hide": "Ausblenden"
+    "hide": "Ausblenden",
+    "entries": "{n} Einträge"
   },
   "desktop": {
     "start": "Start",

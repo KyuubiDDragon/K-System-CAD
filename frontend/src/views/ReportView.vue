@@ -1268,6 +1268,11 @@ const closeSharedReportDialog = () => {
 
             <!-- Haupttabelle -->
             <v-card v-if="!isAddingOrEditing" class="main-card" elevation="4">
+                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+                <div class="k-toolbar">
+                    <span class="k-toolbar__spacer"></span>
+                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (formattedFilteredReports || []).length }) }}</span>
+                </div>
                 <v-data-table
                     :headers="reportHeaders"
                     :items="activeTab === 'all' 

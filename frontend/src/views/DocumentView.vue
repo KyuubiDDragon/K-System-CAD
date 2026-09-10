@@ -1027,6 +1027,11 @@ onMounted(async () => {
                 class="main-table-card"
                 elevation="3"
             >
+                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+                <div class="k-toolbar">
+                    <span class="k-toolbar__spacer"></span>
+                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredFlattenedDocuments || []).length }) }}</span>
+                </div>
                 <v-data-table
                     :headers="tableHeaders"
                     :items="filteredFlattenedDocuments"

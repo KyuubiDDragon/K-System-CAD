@@ -1094,6 +1094,11 @@ onMounted(async () => {
                     
                     <v-expand-transition>
                         <v-card-text v-if="expandedCategories[index]" class="pa-0 category-content">
+                            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+                            <div class="k-toolbar">
+                                <span class="k-toolbar__spacer"></span>
+                                <span class="k-toolbar__count">{{ $t("common.entries", { n: (category.employees || []).length }) }}</span>
+                            </div>
                             <v-data-table
                                 :headers="category.headers"
                                 :items="category.employees"

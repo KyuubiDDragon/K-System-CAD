@@ -113,6 +113,11 @@
             </v-col>
           </v-row>
 
+          <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+          <div class="k-toolbar">
+              <span class="k-toolbar__spacer"></span>
+              <span class="k-toolbar__count">{{ $t("common.entries", { n: (logs || []).length }) }}</span>
+          </div>
           <v-data-table
             :headers="headers"
             :items="logs"

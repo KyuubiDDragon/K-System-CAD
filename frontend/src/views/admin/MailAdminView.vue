@@ -191,6 +191,11 @@
             <!-- Accounts Table -->
             <v-card>
               <v-card-text>
+                <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+                <div class="k-toolbar">
+                    <span class="k-toolbar__spacer"></span>
+                    <span class="k-toolbar__count">{{ $t("common.entries", { n: (accounts || []).length }) }}</span>
+                </div>
                 <v-data-table
                   :headers="accountHeaders"
                   :items="accounts"

@@ -399,6 +399,11 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
             <v-divider></v-divider>
 
+            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+            <div class="k-toolbar">
+                <span class="k-toolbar__spacer"></span>
+                <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredPersons || []).length }) }}</span>
+            </div>
             <v-data-table
                 :headers="personHeaders"
                 :items="filteredPersons"

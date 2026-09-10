@@ -340,6 +340,11 @@
       <v-row>
         <v-col cols="12">
           <v-card elevation="2" rounded="lg">
+            <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+            <div class="k-toolbar">
+                <span class="k-toolbar__spacer"></span>
+                <span class="k-toolbar__count">{{ $t("common.entries", { n: (logs || []).length }) }}</span>
+            </div>
             <v-data-table
               :headers="tableHeaders"
               :items="logs"

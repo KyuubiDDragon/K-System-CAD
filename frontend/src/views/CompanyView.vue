@@ -634,6 +634,11 @@ onMounted(async () => {
                     <v-divider></v-divider>
 
                     <!-- Datentabelle -->
+                    <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+                    <div class="k-toolbar">
+                        <span class="k-toolbar__spacer"></span>
+                        <span class="k-toolbar__count">{{ $t("common.entries", { n: (filteredCompanies || []).length }) }}</span>
+                    </div>
                     <v-data-table
                         :headers="companyHeaders"
                         :items="filteredCompanies"

@@ -236,6 +236,11 @@ onMounted(() => {
   
 	  <!-- Tabelle -->
 	  <v-card class="main-card" elevation="4">
+		<!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+		<div class="k-toolbar">
+		    <span class="k-toolbar__spacer"></span>
+		    <span class="k-toolbar__count">{{ $t("common.entries", { n: (tableItems || []).length }) }}</span>
+		</div>
 		<v-data-table
 		  :headers="codeHeaders"
 		  :items="tableItems"

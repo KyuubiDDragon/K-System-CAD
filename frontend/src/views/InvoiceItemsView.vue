@@ -181,6 +181,11 @@ onMounted(fetchItems);
       
       <v-divider></v-divider>
       
+      <!-- Filterleiste: Anzahl der Eintraege, wie im Entwurf. -->
+      <div class="k-toolbar">
+          <span class="k-toolbar__spacer"></span>
+          <span class="k-toolbar__count">{{ $t("common.entries", { n: (items || []).length }) }}</span>
+      </div>
       <v-data-table
         :headers="itemHeaders"
         :items="items"

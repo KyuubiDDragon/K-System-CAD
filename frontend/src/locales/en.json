@@ -157,7 +157,8 @@
     "minutesAgo": "{count} minute ago | {count} minutes ago",
     "hoursAgo": "{count} hour ago | {count} hours ago",
     "show": "Show",
-    "hide": "Hide"
+    "hide": "Hide",
+    "entries": "{n} entries"
   },
   "desktop": {
     "start": "Start",
