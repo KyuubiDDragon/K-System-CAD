@@ -59,6 +59,8 @@ $permissions_map = [
     'getCompanies'      => ['module' => 'employee', 'action' => 'read'],
     'getDepartments'    => ['module' => 'employee', 'action' => 'read'],
     'getRanks'          => ['module' => 'employee', 'action' => 'read'],
+    // Baustein "Urlaubskalender".
+    'getUpcomingVacations' => ['module' => 'employee', 'action' => 'read'],
     // Kennzahlen fuer das Dashboard-Widget. Die Aktion stand im switch,
     // fehlte aber hier - ohne Eintrag antwortet Zeile 77 mit 404, und das
     // Widget zeigte 0 Mitarbeiter statt der tatsaechlichen Zahl.

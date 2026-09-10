@@ -173,6 +173,9 @@ $request_method = $_SERVER['REQUEST_METHOD'];
 // Map actions to base permission structure (site suffix will determine sub-module)
 $permissions_map = [
     'getCategoriesAndDocuments' => ['base' => 'document', 'action' => 'read'],
+    // Baustein "Zuletzt bearbeitete Dokumente". Fester Modul-Name, weil der
+    // Baustein ueber alle Bereiche hinweg liest und keinen Bereich kennt.
+    'getRecent'               => ['module' => 'document', 'action' => 'read'],
     'updateCategoryName'      => ['base' => 'document', 'action' => 'write'],
     'saveCategorySorting'     => ['base' => 'document', 'action' => 'write'],
     'addCategorie'            => ['base' => 'document', 'action' => 'write'],

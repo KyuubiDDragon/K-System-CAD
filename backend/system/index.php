@@ -273,7 +273,12 @@ function convertToBytes(string $value): int {
     return $value;
 }
 
-function MethodNotAllowed(): void {
-    http_response_code(405);
-    echo json_encode(['error' => 'Method not allowed for this action.']);
-}
+/*
+   MethodNotAllowed() steht in bootstrap.php, das oben eingebunden wird.
+   Hier stand die Funktion ein zweites Mal - PHP legt Funktionen des
+   Hauptskripts vor dem require an, bootstrap fiel deshalb mit
+   "Cannot redeclare MethodNotAllowed()" aus. Damit antwortete /system/ auf
+   jede Anfrage mit einem Fatal Error, und die drei Bausteine des
+   Verwaltungs-Dashboards - Systemzustand, Benutzeraktivitaet, letzte
+   Protokolle - blieben leer.
+*/

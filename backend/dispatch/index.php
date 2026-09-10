@@ -51,6 +51,8 @@ $request_method = $_SERVER['REQUEST_METHOD'];
 // Map actions to required permissions (module.action format)
 $permissions_map = [
     'getDispatches'  => ['module' => 'dispatch', 'action' => 'read'],
+    // Kennzahlen fuer den Baustein "Schnelle Disposition".
+    'getStats'       => ['module' => 'dispatch', 'action' => 'read'],
     'getEmployees'   => ['module' => 'dispatch', 'action' => 'read'],
     'getVehicles'    => ['module' => 'dispatch', 'action' => 'read'],
     'addDispatch'    => ['module' => 'dispatch', 'action' => 'write'],
