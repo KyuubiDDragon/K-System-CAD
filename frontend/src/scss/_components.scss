@@ -261,34 +261,52 @@
     border-radius: 5px;
 }
 
-.v-input.v-text-field:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
-.v-input.v-select:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
-.v-input.v-autocomplete:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
-.v-input.v-combobox:has(> .v-input__control > .v-field > .v-field__field > .v-field__label),
-.v-input.v-textarea:has(> .v-input__control > .v-field > .v-field__field > .v-field__label) {
-    margin-top: 18px;
+/*
+   Vuetify legt zwei Beschriftungen an: eine im Feld und eine in der Kerbe des
+   Rahmens. Sichtbar ist je nach Zustand die eine oder die andere. Die im Feld
+   entfaellt hier ganz, die in der Kerbe wandert ueber die Oberkante - dadurch
+   steht sie immer an derselben Stelle, egal ob das Feld leer ist oder nicht.
+*/
+.v-input.v-text-field:has(.v-field__outline__notch .v-label.v-field-label),
+.v-input.v-select:has(.v-field__outline__notch .v-label.v-field-label),
+.v-input.v-autocomplete:has(.v-field__outline__notch .v-label.v-field-label),
+.v-input.v-combobox:has(.v-field__outline__notch .v-label.v-field-label),
+.v-input.v-textarea:has(.v-field__outline__notch .v-label.v-field-label) {
+    margin-top: 20px;
+}
 
-    .v-field__label {
-        top: -18px;
-        inset-inline-start: 0;
-        transform: none !important;
-        transition: none;
-        font-size: 12px;
-        font-weight: 500;
-        color: var(--k-ink-muted, #5c6675);
-        opacity: 1;
-        max-width: 100%;
+.v-field--variant-outlined {
+    /* Die Beschriftung im Feld verdeckt sonst den Platzhalter. */
+    .v-field__field > .v-label.v-field-label {
+        display: none;
     }
 
-    /* Die Kerbe im Rahmen entfaellt: die Beschriftung liegt nicht mehr darin,
-       also darf die Oberkante durchlaufen. */
+    /* Die Kerbe entfaellt: die Beschriftung liegt nicht mehr im Rahmen, also
+       darf die Oberkante durchlaufen. */
     .v-field__outline__notch {
         --v-field-label-scale: 1;
+        max-width: none;
 
         &::before,
         &::after {
-            opacity: 1;
+            opacity: 1 !important;
         }
+    }
+
+    .v-field__outline__notch > .v-label.v-field-label {
+        position: absolute;
+        top: auto !important;
+        bottom: calc(100% + 3px);
+        inset-inline-start: 0 !important;
+        transform: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        font-size: 12px !important;
+        font-weight: 500;
+        line-height: 1.2;
+        color: var(--k-ink-muted, #5c6675) !important;
+        white-space: nowrap;
+        max-width: none;
     }
 }
 
