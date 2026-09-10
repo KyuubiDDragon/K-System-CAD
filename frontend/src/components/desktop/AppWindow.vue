@@ -26,49 +26,58 @@
                 <span class="window-title">{{ currentTitle }}</span>
             </div>
 
-            <div class="window-controls">
+            <!--
+                Die Bedienknoepfe als Punkte, wie .win-dots im Entwurf.
+
+                Ruhend sind es drei gleich grosse Kreise in Linienfarbe - das
+                ist die Gestalt aus dem Entwurf und zugleich die, die man vom
+                Mac kennt. Erst beim Zeigen faerben sie sich nach ihrer
+                Bedeutung und zeigen ihr Zeichen: so bleibt die Titelleiste
+                ruhig, ohne dass man raten muss, welcher Punkt was tut.
+            -->
+            <div class="window-dots">
                 <button
                     v-if="window.route || window.appId"
-                    class="window-control reload"
+                    class="window-dot reload"
                     @mousedown.stop.prevent
                     @click.stop.prevent="reloadWindow"
                     :title="t('layout.reload')"
                 >
-                    <v-icon size="13">mdi-refresh</v-icon>
+                    <v-icon size="9">mdi-refresh</v-icon>
                 </button>
                 <button
-                    class="window-control minimize"
+                    class="window-dot minimize"
                     @mousedown.stop.prevent
                     @click.stop.prevent="minimizeWindow"
                     :title="t('layout.minimize')"
                 >
-                    <v-icon size="13">mdi-minus</v-icon>
+                    <v-icon size="9">mdi-minus</v-icon>
                 </button>
                 <button
                     v-if="!window.maximized"
-                    class="window-control maximize maximize-button"
+                    class="window-dot maximize maximize-button"
                     @mousedown.stop.prevent
                     @click.stop.prevent="maximizeWindow"
                     :title="t('layout.maximize')"
                 >
-                    <v-icon size="13">mdi-window-maximize</v-icon>
+                    <v-icon size="9">mdi-arrow-top-right</v-icon>
                 </button>
                 <button
                     v-else
-                    class="window-control maximize restore-button"
+                    class="window-dot maximize restore-button"
                     @mousedown.stop.prevent
                     @click.stop.prevent="restoreWindow"
                     :title="t('layout.restore')"
                 >
-                    <v-icon size="13">mdi-window-restore</v-icon>
+                    <v-icon size="9">mdi-arrow-bottom-left</v-icon>
                 </button>
                 <button
-                    class="window-control close"
+                    class="window-dot close"
                     @mousedown.stop.prevent
                     @click.stop.prevent="closeWindow"
                     :title="t('layout.close')"
                 >
-                    <v-icon size="13">mdi-close</v-icon>
+                    <v-icon size="9">mdi-close</v-icon>
                 </button>
             </div>
         </div>
@@ -1064,7 +1073,7 @@ provide('windowContext', windowStore);
     outline: none;
     border: 1px solid var(--k-line-strong);
     color: var(--k-ink);
-    border-radius: 7px;
+    border-radius: 8px;
     transition: box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1),
         border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1129,14 +1138,16 @@ provide('windowContext', windowStore);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 7px;
-    padding: 0 10px;
-    height: 28px;
+    gap: 8px;
+    padding: 0 12px;
+    /* 28 px im Entwurf, dort aber in einer 400-px-Arbeitsflaeche. Auf dem
+       echten Bildschirm sind 32 px das Mass, das Windows und macOS benutzen. */
+    height: 32px;
     background: var(--k-sunken);
     cursor: grab;
     user-select: none;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
     position: relative;
     z-index: 10;
     flex-shrink: 0;
@@ -1168,7 +1179,7 @@ provide('windowContext', windowStore);
 /* 11.5 / 600 wie im Entwurf. Ein Schlagschatten auf 14-px-Text macht ihn
    unschaerfer, nicht lesbarer. */
 .window-title {
-    font-size: 11.5px;
+    font-size: 12.5px;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
@@ -1176,63 +1187,57 @@ provide('windowContext', windowStore);
     letter-spacing: 0;
 }
 
-.window-controls {
+.window-dots {
+    margin-left: auto;
     display: flex;
     align-items: center;
+    gap: 7px;
     flex-shrink: 0;
-    gap: 4px;
 }
 
-.window-control {
+/* Ein Punkt: 11 px, rund, in Linienfarbe. Das Zeichen darin ist unsichtbar,
+   bis man darauf zeigt. */
+.window-dot {
+    width: 11px;
+    height: 11px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--k-line-strong);
+    color: transparent;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 22px;
-    height: 20px;
-    border: none;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 120ms ease;
     outline: none;
+    transition: background-color 120ms ease, color 120ms ease;
 }
 
-/*
-   Die Steuerknoepfe tragen dieselbe Schriftfarbe wie die Titelleiste, in der
-   sie sitzen - im aktiven Fenster also die Akzentfarbe, sonst gedimmt. Vorher
-   stand hier fest --k-ink, wodurch sie im aktiven Fenster aus der Farbe der
-   Leiste fielen.
-*/
-.window .window-control {
-    color: var(--k-ink-muted);
+.window-dot .v-icon {
+    opacity: 0;
+    transition: opacity 120ms ease;
 }
 
-.window.active .window-control {
-    color: var(--k-accent);
+/* Beim Zeigen auf die Leiste bekommen alle Punkte ihre Bedeutungsfarbe -
+   so wie man es vom Fenster kennt. */
+.window-titlebar:hover .window-dot.close { background: var(--k-critical); }
+.window-titlebar:hover .window-dot.minimize { background: var(--k-warning); }
+.window-titlebar:hover .window-dot.maximize { background: var(--k-success); }
+.window-titlebar:hover .window-dot.reload { background: var(--k-accent); }
+
+.window-dot:hover .v-icon {
+    opacity: 1;
 }
 
-.window-control:hover {
-    background: var(--k-row-hover);
-}
-
-.window.active .window-control:hover {
-    background: var(--k-surface);
-}
-
-/* Schliessen wird erst beim Zeigen rot - so schlaegt es nicht dauernd
-   Alarm. Die Farbe kommt aus den Bedeutungsmerkern, die Schrift darauf aus
-   --on-fill, weil sie im dunklen Modus kippen muss. */
-.window-control.close:hover {
-    background: var(--k-critical);
+.window-dot:hover {
     color: var(--k-on-fill);
 }
 
-.window-control:active {
-    transform: scale(0.95);
+.window-dot:focus-visible {
+    outline: 2px solid var(--k-accent);
+    outline-offset: 2px;
 }
 
-/* --- Window Content Styles --- */
 .window-content {
     flex: 1;
     overflow: hidden;

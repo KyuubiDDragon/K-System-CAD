@@ -183,8 +183,8 @@
     "pleaseWaitReset": "Please wait a moment...",
     "search": "Search",
     "searchTooltip": "Search desktop (Ctrl+K)",
-    "searchApps": "Search apps...",
-    "searchResults": "Search Results",
+    "searchApps": "Search apps …",
+    "searchResults": "Results",
     "noResults": "No results found",
     "recentlyUsed": "Recently Used",
     "pinnedApps": "Pinned Apps",
@@ -253,7 +253,8 @@
     "humidity": "Humidity",
     "wind": "Wind",
     "noWarnings": "No warnings",
-    "noData": "No data"
+    "noData": "No data",
+    "noAppsFound": "No app matches “{q}”."
   },
   "menu": {
     "search": "Search",

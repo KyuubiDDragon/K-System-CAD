@@ -680,14 +680,14 @@ const handleClickOutside = (event: MouseEvent) => {
     display: flex;
     align-items: center;
     gap: 6px;
-    height: 22px;
-    padding: 0 9px;
-    border-radius: 4px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 120ms ease, border-color 120ms ease;
     color: var(--k-ink-muted);
     white-space: nowrap;
-    font-size: 11.5px;
+    font-size: 12.5px;
     background: var(--k-sunken);
     border: 1px solid var(--k-line);
 }
@@ -1035,7 +1035,7 @@ const handleClickOutside = (event: MouseEvent) => {
    fehlen der Arbeitsflaeche auf jedem Bildschirm.
 */
 .taskbar {
-    --taskbar-height: 34px;
+    --taskbar-height: 48px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -1518,21 +1518,87 @@ const handleClickOutside = (event: MouseEvent) => {
 /* ============================================================
    MASSE DER LEISTE
 
-   Die Leiste ist 34 px hoch, ihre Elemente 22 px. Die Symbole
-   standen auf 20-24 px und ragten damit ueber ihren eigenen
-   Knopf hinaus. Hier stehen sie einmal zentral, statt an
-   einem Dutzend size="..."-Angaben im Markup.
+   Der Entwurf gibt fuer die Taskleiste 34 px an - allerdings in
+   einer Arbeitsflaeche, die dort nur 400 px hoch ist. Das ist ein
+   Modell im Kleinen, kein 1:1-Mass: auf einem echten Bildschirm
+   waere eine 34-px-Leiste ein Streifen, in dem Symbol und Name
+   kaum Platz haben.
+
+   Uebernommen werden deshalb die Verhaeltnisse, nicht die
+   absoluten Zahlen. Die Leiste misst 48 px wie unter Windows,
+   und alles darin waechst im selben Verhaeltnis mit:
+
+       Leiste       34 -> 48
+       Aufgabe      22 -> 32
+       Schrift    11.5 -> 12.5
+       Symbol       15 -> 18
+
+   Gestalt und Verhalten bleiben, wie der Entwurf sie zeigt:
+   gesenkte Flaeche mit Linie, das laufende Fenster in
+   Akzentflaeche mit Akzentrand, die Uhr rechts in Festbreite.
    ============================================================ */
 .taskbar .v-icon {
-    font-size: 15px !important;
-    width: 15px;
-    height: 15px;
+    font-size: 18px !important;
+    width: 18px;
+    height: 18px;
 }
 
 .taskbar .taskbar-app-image {
-    width: 15px;
-    height: 15px;
+    width: 18px;
+    height: 18px;
     object-fit: contain;
+}
+
+.taskbar .start-button,
+.taskbar .search-button,
+.taskbar .taskbar-app,
+.taskbar .taskbar-app-group,
+.taskbar .system-tray > * {
+    height: 32px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 10px;
+    border-radius: 5px;
+    font-size: 12.5px;
+    color: var(--k-ink-muted);
+    cursor: pointer;
+}
+
+.taskbar .start-button:hover,
+.taskbar .search-button:hover,
+.taskbar .taskbar-app:hover,
+.taskbar .system-tray > *:hover {
+    background: var(--k-row-hover);
+    color: var(--k-ink);
+}
+
+.taskbar .start-text {
+    font-size: 12.5px;
+    font-weight: 550;
+}
+
+/* Die Zaehlmarke einer Gruppe bleibt im Knopf. */
+.taskbar .app-count {
+    bottom: -3px;
+    right: -3px;
+    min-width: 14px;
+    height: 14px;
+    font-size: 9px;
+    border: 0;
+    box-shadow: none;
+    background: var(--k-accent);
+    color: var(--k-on-fill);
+}
+
+/* Die Uhr steht in Festbreite, damit sie beim Ticken nicht springt. */
+.taskbar .clock,
+.taskbar .taskbar-clock {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--k-ink-muted);
+    margin-left: auto;
 }
 
 /* Start, Suche und die angehefteten Programme tragen dieselbe Hoehe wie eine

@@ -14,7 +14,6 @@
         ref="iconRef"
     >
         <div class="icon-container">
-            <div class="icon-glow"></div>
             <v-icon 
                 v-if="isFolder" 
                 icon="mdi-folder" 
@@ -269,22 +268,33 @@ onUnmounted(() => {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 12px;
+    gap: 7px;
+    padding: 8px 4px 6px;
     border-radius: 6px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     user-select: none;
     width: 110px;
-    height: 130px;
     box-sizing: border-box;
-    /* Die Kachel selbst bleibt unsichtbar - sie traegt nur Symbol und Namen.
-       Vorher lag hier ein fest verdrahtetes Dunkelblau mit Weichzeichner, das
-       im hellen Modus als graue Platte auf dem Hintergrundbild stand. */
+    /*
+       Wie .dicon im Entwurf: eine unsichtbare Kachel, die nur Symbol und Namen
+       traegt. Keine Flaeche, keine Linie, kein Schatten - die Arbeitsflaeche
+       liegt darunter und soll sichtbar bleiben.
+
+       Die Hoehe ist nicht mehr fest: bei zweizeiligen Namen wuchs der Text
+       sonst aus der 130-px-Kachel heraus.
+    */
     background: transparent;
-    border: 1px solid transparent;
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 0;
+    box-shadow: none;
+    transition: background-color 120ms ease;
+}
+
+.desktop-icon:hover {
+    background: rgba(127, 140, 160, 0.16);
+}
+
+.desktop-icon.selected {
+    background: rgba(127, 140, 160, 0.26);
 }
 
 .desktop-icon:hover {
@@ -320,39 +330,14 @@ onUnmounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 64px;
-    height: 64px;
-    margin-bottom: 12px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 44px;
+    height: 44px;
     position: relative;
 }
 
-.icon-glow {
-    position: absolute;
-    width: 120%;
-    height: 120%;
-    border-radius: 50%;
-    background: radial-gradient(circle,
-                rgba(var(--desktop-accent-color-rgb, 59, 130, 246), 0.2) 0%,
-                rgba(var(--desktop-accent-color-rgb, 59, 130, 246), 0) 70%);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: scale(1);
-}
 
-.desktop-icon:hover .icon-glow {
-    opacity: 0.8;
-    transform: scale(1.3);
-}
 
-.desktop-icon.selected .icon-glow {
-    opacity: 1;
-    transform: scale(1.4);
-    background: radial-gradient(circle,
-                rgba(var(--desktop-accent-color-rgb, 59, 130, 246), 0.35) 0%,
-                rgba(var(--desktop-accent-color-rgb, 59, 130, 246), 0.1) 50%,
-                rgba(var(--desktop-accent-color-rgb, 59, 130, 246), 0) 80%);
-}
+
 
 .desktop-icon:hover .icon-container {
     transform: scale(1.15);
@@ -363,9 +348,11 @@ onUnmounted(() => {
 }
 
 .icon-container .v-icon {
-    font-size: 42px;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
-    transition: all 0.3s ease;
+    /* Der Entwurf zeichnet hier eine 30x24 grosse Ordnerform. Ein Symbol in
+       derselben Groessenordnung tut dasselbe und traegt zusaetzlich die
+       Bereichsfarbe. Ein Schlagschatten darunter macht es nicht lesbarer,
+       nur unschaerfer - er faellt weg. */
+    font-size: 40px;
 }
 
 .desktop-icon:hover .icon-container .v-icon {
@@ -386,20 +373,19 @@ onUnmounted(() => {
 }
 
 /*
-   Zweizeilige Beschriftung.
+   Beschriftung ohne Platte.
 
-   Vorher stand hier white-space: nowrap mit text-overflow: ellipsis - genau
-   die Ursache der abgeschnittenen Namen auf der Arbeitsflaeche: "Schwarze...",
-   "Organisati...", "Datei Man...". Der Entwurf loest das mit zwei Zeilen,
-   "ohne dass das Raster waechst": Breite und Hoehe der Kachel bleiben, nur der
-   Umbruch ist erlaubt. Gespeicherte Anordnungen bleiben damit gueltig.
+   Der Entwurf setzt hier reinen Text: 10.5 px, zentriert, in gedimmter
+   Schrift, mit `overflow-wrap: anywhere` und zwei Zeilen. Die Platte, die
+   hier stand, gehoert nicht dazu - sie legte unter jeden Namen eine Karte und
+   verdeckte die Arbeitsflaeche.
 
-   overflow-wrap: anywhere, weil "Website-Manager" sonst als ein Wort ueber die
-   Kachel hinausragt.
+   Statt der Platte traegt der Text einen Schatten: das Hintergrundbild kann
+   jede Farbe haben, und ohne Trennung waere ein heller Name auf hellem Bild
+   nicht zu lesen. Der Schatten kostet keine Flaeche.
 */
 .icon-title {
     width: 100%;
-    max-width: 100px;
     text-align: center;
     overflow: hidden;
     display: -webkit-box;
@@ -407,27 +393,21 @@ onUnmounted(() => {
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow-wrap: anywhere;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--k-ink);
+    font-size: 11.5px;
+    font-weight: 500;
     line-height: 1.25;
-    padding: 4px 6px;
-    border-radius: 4px;
-    background: var(--k-surface);
-    border: 1px solid var(--k-line);
-    transition: background-color 120ms ease, border-color 120ms ease;
+    color: #fff;
+    text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.9),
+        0 0 6px rgba(0, 0, 0, 0.55);
+    padding: 0;
+    background: none;
+    border: 0;
 }
 
-.desktop-icon:hover .icon-title {
-    background: var(--k-row-hover);
-    border-color: var(--k-line-strong);
-}
 
-.desktop-icon.selected .icon-title {
-    background: var(--k-accent-weak);
-    border-color: var(--k-accent-line);
-    color: var(--k-accent);
-}
+
+
 
 /* Indikator für Ordner (optional) */
 .folder-indicator {

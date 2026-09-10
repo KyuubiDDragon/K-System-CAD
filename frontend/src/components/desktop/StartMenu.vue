@@ -2,102 +2,109 @@
 <template>
     <div class="start-menu-overlay" @click="closeMenu">
         <div class="start-menu" @click.stop>
-            <!-- User section -->
-            <div class="menu-user-section">
-                <div class="user-avatar">
-                    <img :src="userAvatar" :alt="userName" />
-                </div>
-                <div class="user-info">
-                    <div class="user-name">{{ userName }}</div>
-                    <div class="user-status">{{ userStatus }}</div>
-                </div>
-            </div>
+            <!--
+                Kopfzeile: wer angemeldet ist, und das Suchfeld.
 
-            <!-- Apps section -->
-            <div class="menu-apps-section">
-                <div class="section-title">{{ t('desktop.applications') }}</div>
-                <div class="apps-grid">
-                    <div
-                        v-for="app in favoriteApps"
-                        :key="app.id"
-                        class="menu-app"
-                        @click="launchApp(app)"
-                    >
-                        <div
-                            class="menu-app-icon"
-                            :style="{ backgroundColor: app.color || 'var(--k-accent)' }"
-                        >
-                            <v-icon size="22" color="white">{{ app.icon }}</v-icon>
-                        </div>
-                        <div class="menu-app-title">{{ app.title }}</div>
+                Die Suche stand vorher nur im Stylesheet, im Markup gab es sie
+                nicht. Bei ueber dreissig Programmen ist Tippen aber der
+                schnellste Weg - der Entwurf sagt dasselbe ueber die
+                Befehlspalette: "Ein Tastendruck, ein Feld."
+            -->
+            <header class="menu-head">
+                <div class="menu-user">
+                    <div class="user-avatar">
+                        <img v-if="userAvatar" :src="userAvatar" :alt="userName" />
+                        <span v-else>{{ userInitialen }}</span>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">{{ userName }}</div>
+                        <div class="user-status">{{ userStatus }}</div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Tools & Utilities section -->
-            <div class="menu-apps-section">
-                <div class="section-title">{{ t('desktop.toolsUtilities') }}</div>
-                <div class="apps-grid">
-                    <div
-                        v-for="app in toolsApps"
+                <label class="menu-search">
+                    <v-icon size="16">mdi-magnify</v-icon>
+                    <input
+                        ref="sucheRef"
+                        v-model="suche"
+                        type="text"
+                        :placeholder="t('desktop.searchApps')"
+                        @keydown.esc="suche ? (suche = '') : closeMenu()"
+                        @keydown.enter="ersterTreffer && launchApp(ersterTreffer)"
+                    />
+                    <kbd v-if="!suche">ESC</kbd>
+                </label>
+            </header>
+
+            <div class="menu-body">
+                <!-- Angeheftet: die Programme, die man taeglich braucht. -->
+                <template v-if="!suche">
+                    <p class="menu-group">{{ t('desktop.applications') }}</p>
+                    <div class="menu-grid">
+                        <button
+                            v-for="app in favoriteApps"
+                            :key="app.id"
+                            type="button"
+                            class="menu-tile"
+                            @click="launchApp(app)"
+                        >
+                            <span class="tile-icon" :style="{ color: app.color || 'var(--k-accent)' }">
+                                <v-icon size="26">{{ app.icon }}</v-icon>
+                            </span>
+                            <span class="tile-title">{{ app.title }}</span>
+                        </button>
+                    </div>
+                </template>
+
+                <!--
+                    Alle Programme als Liste. Bei einer Suche steht nur sie da -
+                    die Kacheln oben waeren dann eine zweite Antwort auf
+                    dieselbe Frage.
+                -->
+                <p class="menu-group">
+                    {{ suche ? t('desktop.searchResults') : t('desktop.allApps') }}
+                    <span class="menu-count">{{ gefilterteApps.length }}</span>
+                </p>
+                <div class="menu-list">
+                    <button
+                        v-for="app in gefilterteApps"
                         :key="app.id"
-                        class="menu-app"
+                        type="button"
+                        class="menu-row"
                         @click="launchApp(app)"
                     >
-                        <div
-                            class="menu-app-icon"
-                            :style="{ backgroundColor: app.color || 'var(--k-accent)' }"
-                        >
-                            <v-icon size="22" color="white">{{ app.icon }}</v-icon>
-                        </div>
-                        <div class="menu-app-title">{{ app.title }}</div>
-                    </div>
+                        <v-icon size="17" :style="{ color: app.color || 'var(--k-accent)' }">
+                            {{ app.icon }}
+                        </v-icon>
+                        <span>{{ app.title }}</span>
+                    </button>
+                    <p v-if="!gefilterteApps.length" class="menu-leer">
+                        {{ t('desktop.noAppsFound', { q: suche }) }}
+                    </p>
                 </div>
             </div>
 
-            <!-- All apps list -->
-            <div class="menu-list-section">
-                <div class="section-title">{{ t('desktop.allApps') }}</div>
-                <div class="apps-list">
-                    <div
-                        v-for="app in allApps"
-                        :key="app.id"
-                        class="list-app"
-                        @click="launchApp(app)"
-                    >
-                        <div
-                            class="list-app-icon"
-                            :style="{ backgroundColor: app.color || 'var(--k-accent)' }"
-                        >
-                            <v-icon size="16" color="white">{{ app.icon }}</v-icon>
-                        </div>
-                        <div class="list-app-title">{{ app.title }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bottom actions -->
-            <div class="menu-actions">
-                <!-- SCHNELLWECHSEL: Desktop → Sidebar -->
-                <div class="action-button switch-button" @click="switchToSidebar">
-                    <v-icon size="20">mdi-view-list</v-icon>
+            <!-- Fusszeile: die drei Wege hinaus. -->
+            <footer class="menu-actions">
+                <button type="button" class="action-button" @click="switchToSidebar">
+                    <v-icon size="16">mdi-view-list</v-icon>
                     <span>{{ t('desktop.switchToSidebar') }}</span>
-                </div>
-                <div class="action-button logout-button" @click="logout">
-                    <v-icon size="20">mdi-logout</v-icon>
-                    <span>{{ t('desktop.logout') }}</span>
-                </div>
-                <div class="action-button close-button" @click="closeMenu">
-                    <v-icon size="20">mdi-close</v-icon>
+                </button>
+                <button type="button" class="action-button" @click="closeMenu">
+                    <v-icon size="16">mdi-close</v-icon>
                     <span>{{ t('desktop.close') }}</span>
-                </div>
-            </div>
+                </button>
+                <button type="button" class="action-button is-danger" @click="logout">
+                    <v-icon size="16">mdi-logout</v-icon>
+                    <span>{{ t('desktop.logout') }}</span>
+                </button>
+            </footer>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, onMounted, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
@@ -129,7 +136,10 @@ const authStore = useAuthStore();
 
 // User data
 const userAvatar = computed(() => {
-    return authStore.user?.avatar || 'https://via.placeholder.com/40';
+    // Kein Ersatzbild von einem fremden Dienst: via.placeholder.com wurde
+    // blockiert bzw. war nicht erreichbar, sodass das kaputte Bild samt
+    // Alternativtext im Menue stand. Ohne Bild uebernehmen die Initialen.
+    return authStore.user?.avatar || '';
 });
 
 const userName = computed(() => {
@@ -163,6 +173,34 @@ const allApps = computed(() => {
 });
 
 // Actions
+/** Suchbegriff des Startmenues. */
+const suche = ref('');
+const sucheRef = ref<HTMLInputElement | null>(null);
+
+/** Beim Oeffnen liegt der Schreibzeiger im Feld - Tippen ist der schnellste Weg. */
+onMounted(async () => {
+    await nextTick();
+    sucheRef.value?.focus();
+});
+
+/** Kuerzel, solange kein Bild hinterlegt ist. */
+const userInitialen = computed(() =>
+    String(userName.value || '?')
+        .split(/\s+/)
+        .slice(0, 2)
+        .map(w => w.charAt(0).toUpperCase())
+        .join(''),
+);
+
+const gefilterteApps = computed(() => {
+    const q = suche.value.trim().toLowerCase();
+    const alle = allApps.value as AppItem[];
+    if (!q) return alle;
+    return alle.filter(a => String(a.title ?? '').toLowerCase().includes(q));
+});
+
+const ersterTreffer = computed<AppItem | null>(() => gefilterteApps.value[0] ?? null);
+
 const launchApp = (app: AppItem) => {
     emit('app-click', app);
 };
@@ -206,379 +244,279 @@ const switchToSidebar = async () => {
 </script>
 
 <style scoped>
+/* ============================================================
+   STARTMENUE
+
+   Groesse nach dem Vorbild, das die Leute kennen: Windows und
+   macOS geben ihrem Menue reichlich Platz. Die vorherige Fassung
+   war auf die 34-px-Leiste geschrumpft und wirkte gedrungen.
+
+   Gestalt aus dem Entwurf: gehobene Flaeche, ein Rahmen, ein
+   Schatten. Kein Verlauf, kein Weichzeichner, Radius 8.
+   ============================================================ */
 .start-menu-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    /* Derselbe Vorhang wie hinter jedem Dialog. */
+    inset: 0;
     background-color: rgba(10, 14, 20, 0.45);
     z-index: 1000;
 }
 
 .start-menu {
     position: fixed;
-    bottom: 38px;   /* ueber der 34-px-Leiste */
+    bottom: 56px;
     left: 12px;
-    width: 500px;
-    max-width: 90vw;
-    max-height: 80vh;
-    /*
-       Das Startmenue ist ein Menue - es liegt also auf der gehobenen Flaeche
-       und wirft den Schatten, den im System alles wirft, was schwebt.
-       Vorher: ein fest verdrahteter Verlauf mit 20 px Weichzeichner, 16 px
-       Radius und zwei uebereinandergelegten Schatten, im hellen Modus eine
-       dunkle Platte.
-    */
+    width: 560px;
+    max-width: calc(100vw - 24px);
+    max-height: min(680px, calc(100vh - 80px));
+    display: flex;
+    flex-direction: column;
     background: var(--k-raised);
-    overflow-y: auto;
-    border-radius: 7px;
-    box-shadow: none;
     border: 1px solid var(--k-line-strong);
+    border-radius: 8px;
+    box-shadow:
+        0 16px 40px rgba(16, 22, 32, 0.16),
+        0 2px 8px rgba(16, 22, 32, 0.08);
     z-index: 1001;
+    overflow: hidden;
     animation: slideUp 150ms cubic-bezier(0.16, 1, 0.3, 1);
     transform-origin: bottom left;
 }
 
-.start-menu-header {
-    padding: 10px 12px;
-    background-color: var(--k-sunken);
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .start-menu { animation: none; }
+}
+
+/* ---- Kopfzeile ---- */
+.menu-head {
+    flex: none;
+    padding: 12px 14px;
+    background: var(--k-sunken);
     border-bottom: 1px solid var(--k-line);
 }
 
-.search-input {
-    width: 100%;
-    /* Ein Eingabefeld wie jedes andere: 30 px, 1 px Rand, Radius 5.
-       Ein 2-px-Rahmen in Akzentfarbe sieht aus wie ein Fehlerzustand. */
-    background-color: var(--k-surface);
-    border: 1px solid var(--k-line-strong);
-    border-radius: 5px;
-    color: var(--k-ink);
-    padding: 0 9px;
-    height: 30px;
-    font-size: 13px;
-    outline: none;
-    transition: all 0.2s;
-}
-
-.user-profile {
+.menu-user {
     display: flex;
     align-items: center;
-    margin-bottom: 16px;
-}
-
-.avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    border: 2px solid var(--desktop-accent-blue);
-    color: var(--on-primary);
-    font-weight: bold;
-}
-
-.user-info {
-    flex: 1;
-}
-
-.username {
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--desktop-text);
-}
-
-.email {
-    font-size: 14px;
-    color: var(--desktop-text-secondary);
-}
-
-.status-indicator {
-    width: 24px;
-    height: 24px;
-    background-color: var(--success);
-    border-radius: 50%;
-    margin-left: 8px;
-}
-
-.menu-user-section {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    background: var(--k-accent-weak);
-    border-bottom: 1px solid var(--k-line);
-    position: relative;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .user-avatar {
-    width: 48px;
-    height: 48px;
+    width: 34px;
+    height: 34px;
+    flex: none;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid var(--k-accent);
-    margin-right: 16px;
-    box-shadow: none;
-    transition: all 0.3s ease;
+    background: var(--k-accent);
+    color: var(--k-on-fill);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12.5px;
+    font-weight: 650;
 }
 
-.user-avatar:hover {
-    transform: scale(1.05);
-    box-shadow: none;
-}
-
-.user-avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+.user-avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 .user-name {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: 13.5px;
+    font-weight: 600;
     color: var(--k-ink);
-    margin-bottom: 4px;
-    letter-spacing: 0.3px;
 }
 
 .user-status {
-    font-size: 13px;
+    font-size: 11.5px;
     color: var(--k-ink-muted);
+}
+
+/* Suchfeld: dieselbe Gestalt wie jedes Eingabefeld im System. */
+.menu-search {
     display: flex;
     align-items: center;
-    font-weight: 500;
+    gap: 8px;
+    height: 32px;
+    padding: 0 10px;
+    background: var(--k-surface);
+    border: 1px solid var(--k-line-strong);
+    border-radius: 5px;
+    color: var(--k-ink-faint);
 }
 
-.user-status::before {
-    content: '';
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: var(--k-success);
-    margin-right: 8px;
-    box-shadow: none;
-    animation: pulse 2s infinite;
+.menu-search:focus-within {
+    border-color: var(--k-accent);
+    box-shadow: 0 0 0 3px var(--k-accent-weak);
 }
 
-@keyframes pulse {
-    0% { box-shadow: none; }
-    50% { box-shadow: none; }
-    100% { box-shadow: none; }
-}
-
-.menu-apps-section {
-    padding: 20px;
-}
-
-.section-title {
-    font-size: 13px;
-    font-weight: 700;
+.menu-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: transparent;
     color: var(--k-ink);
-    margin-bottom: 16px;
+    font: inherit;
+    font-size: 13px;
+}
+
+.menu-search input::placeholder { color: var(--k-ink-faint); }
+
+.menu-search kbd {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 10px;
+    border: 1px solid var(--k-line-strong);
+    border-radius: 3px;
+    padding: 0 4px;
+    color: var(--k-ink-faint);
+    background: var(--k-sunken);
+    line-height: 15px;
+}
+
+/* ---- Inhalt ---- */
+.menu-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 8px 8px;
+}
+
+.menu-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    padding-bottom: 8px;
+    color: var(--k-ink-faint);
+    margin: 12px 0 6px;
+    padding: 0 6px;
 }
 
-.section-title::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 30px;
-    height: 2px;
-    /* Ein Strich unter der Ueberschrift, keine Verlaufsspielerei -
-       das Violett kommt in der Palette gar nicht vor. */
-    background: var(--k-accent);
-    border-radius: 1px;
+.menu-count {
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0;
+    color: var(--k-ink-faint);
 }
 
-.apps-grid {
+/* Angeheftete Programme als Kacheln. */
+.menu-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 4px;
 }
 
-.menu-app {
+.menu-tile {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 7px;
+    padding: 12px 6px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    padding: 8px;
-    border-radius: 6px;
+    font: inherit;
+    transition: background-color 120ms ease;
 }
 
-.menu-app:hover {
-    transform: translateY(-4px) scale(1.05);
-    background-color: var(--k-row-hover);
-}
+.menu-tile:hover { background: var(--k-row-hover); }
 
-.menu-app-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 6px;
+.tile-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2), 0 2px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
 }
 
-.menu-app:hover .menu-app-icon {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3), 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.menu-app-title {
-    font-size: 12px;
+.tile-title {
+    font-size: 11.5px;
+    line-height: 1.25;
     color: var(--k-ink);
     text-align: center;
-    max-width: 80px;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
-    font-weight: 500;
-    letter-spacing: 0.2px;
 }
 
-.menu-list-section {
-    padding: 0 16px 16px;
-    flex: 1;
-    overflow: hidden;
-    max-height: 240px;
-}
+/* Alle Programme als Liste - 30 px Zeile wie im Dichte-System. */
+.menu-list { display: flex; flex-direction: column; }
 
-.apps-list {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    padding: 8px;
-    max-height: 200px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--k-ink-faint) rgba(0, 0, 0, 0.2);
-}
-
-.apps-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.apps-list::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-}
-
-.apps-list::-webkit-scrollbar-thumb {
-    background-color: var(--k-line-strong);
-    border-radius: 8px;
-}
-
-.list-app {
+.menu-row {
     display: flex;
     align-items: center;
-    padding: 8px;
+    gap: 10px;
+    height: 30px;
+    padding: 0 8px;
+    border: 0;
     border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.list-app:hover {
-    background-color: var(--k-row-hover);
-}
-
-.list-app-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-}
-
-.list-app-title {
-    font-size: 13px;
+    background: transparent;
     color: var(--k-ink);
+    font: inherit;
+    font-size: 12.5px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 120ms ease;
 }
 
+.menu-row:hover { background: var(--k-row-hover); }
+
+.menu-leer {
+    font-size: 12.5px;
+    color: var(--k-ink-muted);
+    padding: 10px 8px;
+    margin: 0;
+}
+
+/* ---- Fusszeile ---- */
 .menu-actions {
+    flex: none;
     display: flex;
-    justify-content: center;
-    gap: 16px;
+    gap: 8px;
     padding: 10px 12px;
     background: var(--k-sunken);
     border-top: 1px solid var(--k-line);
-    border-radius: 0 0 6px 6px;
 }
 
 .action-button {
     display: flex;
     align-items: center;
-    padding: 0 13px;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
     height: 30px;
+    padding: 0 12px;
+    border: 1px solid var(--k-line-strong);
     border-radius: 5px;
+    background: var(--k-surface);
     color: var(--k-ink);
-    font-size: 13px;
+    font: inherit;
+    font-size: 12.5px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 120ms ease;
-    border: 1px solid var(--k-line-strong);
-    background: var(--k-surface);
-    min-width: 100px;
-    justify-content: center;
+    transition: background-color 120ms ease, border-color 120ms ease;
 }
 
-.action-button:hover {
-    background-color: var(--k-row-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border-color: var(--k-line);
+.action-button:hover { background: var(--k-row-hover); }
+
+/* Abmelden wird erst beim Zeigen rot - so schlaegt es nicht dauernd Alarm. */
+.action-button.is-danger { color: var(--k-critical); }
+.action-button.is-danger:hover {
+    background: var(--k-critical-weak);
+    border-color: var(--k-critical);
 }
 
-.switch-button:hover {
-    background-color: var(--k-accent-weak);
-    border-color: var(--k-accent-line);
-    color: var(--k-accent-line);
-}
-
-.logout-button:hover {
-    background-color: rgba(239, 68, 68, 0.2);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: #fca5a5;
-}
-
-.close-button:hover {
-    background-color: rgba(107, 114, 128, 0.2);
-    border-color: rgba(107, 114, 128, 0.3);
-}
-
-.action-button span {
-    margin-left: 8px;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-@media (max-width: 480px) {
-    .start-menu {
-        width: calc(100% - 32px);
-    }
-
-    .apps-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+.action-button:focus-visible {
+    outline: 2px solid var(--k-accent);
+    outline-offset: 1px;
 }
 </style>

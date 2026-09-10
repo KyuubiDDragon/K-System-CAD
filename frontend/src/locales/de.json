@@ -183,8 +183,8 @@
     "pleaseWaitReset": "Bitte warten Sie einen Moment...",
     "search": "Suchen",
     "searchTooltip": "Desktop durchsuchen (Strg+K)",
-    "searchApps": "Apps durchsuchen...",
-    "searchResults": "Suchergebnisse",
+    "searchApps": "Programm suchen …",
+    "searchResults": "Treffer",
     "noResults": "Keine Ergebnisse gefunden",
     "recentlyUsed": "Zuletzt verwendet",
     "pinnedApps": "Angeheftete Apps",
@@ -253,7 +253,8 @@
     "humidity": "Luftfeuchtigkeit",
     "wind": "Wind",
     "noWarnings": "Keine Warnungen",
-    "noData": "Keine Daten"
+    "noData": "Keine Daten",
+    "noAppsFound": "Kein Programm passt zu „{q}“."
   },
   "menu": {
     "search": "Suchen",

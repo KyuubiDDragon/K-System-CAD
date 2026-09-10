@@ -3665,6 +3665,14 @@ const testOpenFirstDocArea = () => {
     z-index: 1;
 }
 
+/*
+   Das Raster der Arbeitsflaeche, wie .desk-grid im Entwurf: zwei feine Linien
+   im 28-px-Abstand, stark abgeschwaecht. Es macht sichtbar, dass die Symbole
+   auf einem Raster liegen, ohne mit dem Hintergrundbild zu konkurrieren.
+
+   Ueber einem Foto wuerde es unruhig wirken - deshalb liegt es nur dort, wo
+   die Arbeitsflaeche ihre eigene Farbe traegt.
+*/
 .desktop-background-overlay {
     position: absolute;
     top: 0;
@@ -3673,6 +3681,11 @@ const testOpenFirstDocArea = () => {
     height: 100%;
     pointer-events: none;
     z-index: 2;
+    background-image:
+        linear-gradient(to right, var(--k-line) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--k-line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    opacity: 0.12;
 }
 
 .desktop-area {
