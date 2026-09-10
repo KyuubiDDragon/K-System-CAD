@@ -1298,7 +1298,7 @@ const extractMenuItems = () => {
             title: t('tabs.administration'),
             icon: 'mdi-shield-account-outline',
             route: '/admin/users',
-            color: '#9333ea',
+            color: '#6B7684',
             isGroup: true,
         });
 
@@ -1309,7 +1309,7 @@ const extractMenuItems = () => {
                 title: t('tabs.users'),
                 icon: 'mdi-account-multiple-outline',
                 route: '/admin/users',
-                color: '#4f46e5',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1320,7 +1320,7 @@ const extractMenuItems = () => {
                 title: t('tabs.roles'),
                 icon: 'mdi-account-key-outline',
                 route: '/admin/roles',
-                color: 'var(--k-accent)',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1332,7 +1332,7 @@ const extractMenuItems = () => {
                 title: t('tabs.system'),
                 icon: 'mdi-cog-outline',
                 route: '/admin/authorities',
-                color: '#84cc16',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1343,7 +1343,7 @@ const extractMenuItems = () => {
                 title: t('tabs.authorityFields'),
                 icon: 'mdi-form-select',
                 route: '/admin/authorityfields',
-                color: '#65a30d',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1354,7 +1354,7 @@ const extractMenuItems = () => {
                 title: t('tabs.reportFields'),
                 icon: 'mdi-notebook-edit-outline',
                 route: '/admin/reportfields',
-                color: '#16a34a',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1365,7 +1365,7 @@ const extractMenuItems = () => {
                 title: t('tabs.employee'),
                 icon: 'mdi-account-group-outline',
                 route: '/admin/employees',
-                color: 'var(--k-accent-hover)',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1376,7 +1376,7 @@ const extractMenuItems = () => {
                 title: t('tabs.training'),
                 icon: 'mdi-school-outline',
                 route: '/admin/trainings',
-                color: '#1d4ed8',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1387,7 +1387,7 @@ const extractMenuItems = () => {
                 title: t('tabs.applicationQuestions'),
                 icon: 'mdi-help-circle-outline',
                 route: '/admin/applicationquestions',
-                color: '#0ea5e9',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1398,7 +1398,7 @@ const extractMenuItems = () => {
                 title: 'Mail-System',
                 icon: 'mdi-shield-account',
                 route: '/admin/mail',
-                color: '#06b6d4',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1409,7 +1409,7 @@ const extractMenuItems = () => {
                 title: t('tabs.map'),
                 icon: 'mdi-map-outline',
                 route: '/admin/map',
-                color: '#14b8a6',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1420,7 +1420,7 @@ const extractMenuItems = () => {
                 title: t('desktop.weather'),
                 icon: 'mdi-weather-partly-cloudy',
                 route: '/admin/weather',
-                color: '#10b981',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1431,7 +1431,7 @@ const extractMenuItems = () => {
                 title: t('tabs.documentAreas'),
                 icon: 'mdi-folder-multiple-outline',
                 route: '/admin/documentareas',
-                color: '#0d9488',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1442,7 +1442,7 @@ const extractMenuItems = () => {
                 title: t('tabs.blackboardAreas'),
                 icon: 'mdi-bulletin-board',
                 route: '/admin/blackboard-areas',
-                color: '#0891b2',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1453,7 +1453,7 @@ const extractMenuItems = () => {
                 title: t('tabs.authorityBranding'),  // Changed from tabs.settings
                 icon: 'mdi-palette-outline',  // Changed to branding icon
                 route: '/admin/settings',
-                color: '#8b5cf6',  // Changed to purple
+                color: '#6B7684',  // Changed to purple
                 parent: 'admin',
             });
         }
@@ -1465,7 +1465,7 @@ const extractMenuItems = () => {
                 title: t('tabs.systemLogs'),
                 icon: 'mdi-database-search',
                 route: '/admin/logs',
-                color: '#a855f7',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1476,7 +1476,7 @@ const extractMenuItems = () => {
                 title: t('tabs.cheatsheet'),
                 icon: 'mdi-book-open-variant',
                 route: '/admin/cheatsheet',
-                color: '#06b6d4',
+                color: '#6B7684',
                 parent: 'admin',
             });
         }
@@ -1489,7 +1489,7 @@ const extractMenuItems = () => {
             id: 'dispatch-group',
             title: t('tabs.dispatch'),
             icon: 'mdi-fire-truck',
-            color: '#ef4444',
+            color: '#D9534F',
             isGroup: true,
         });
 
@@ -1499,7 +1499,7 @@ const extractMenuItems = () => {
                 title: t('tabs.dispatch'),
                 icon: 'mdi-fire-truck',
                 route: '/dispatch',
-                color: '#ef4444',
+                color: '#D9534F',
                 parent: 'dispatch-group',
             });
         }
@@ -1510,7 +1510,7 @@ const extractMenuItems = () => {
                 title: t('tabs.vehicle'),
                 icon: 'mdi-car',
                 route: '/vehicle',
-                color: '#dc2626',
+                color: '#D9534F',
                 parent: 'dispatch-group',
             });
         }
@@ -1521,7 +1521,7 @@ const extractMenuItems = () => {
                 title: t('tabs.crew'),
                 icon: 'mdi-account-group',
                 route: '/crew',
-                color: '#b91c1c',
+                color: '#D9534F',
                 parent: 'dispatch-group',
             });
         }
@@ -1533,7 +1533,7 @@ const extractMenuItems = () => {
             id: 'blackboard-group',
             title: t('tabs.blackboard'),
             icon: 'mdi-bulletin-board',
-            color: '#f59e0b',
+            color: '#D9534F',
             isGroup: true,
         });
 
@@ -1558,7 +1558,7 @@ const extractMenuItems = () => {
             id: 'authorities-group',
             title: t('tabs.authorities'),
             icon: 'mdi-home-group',
-            color: '#84cc16',
+            color: '#D9534F',
             isGroup: true,
         });
 
@@ -1568,7 +1568,7 @@ const extractMenuItems = () => {
                 title: t('tabs.blackboard'),
                 icon: 'mdi-developer-board',
                 route: '/blackboard/global',
-                color: '#84cc16',
+                color: '#D9534F',
                 parent: 'authorities-group',
             });
         }
@@ -1579,7 +1579,7 @@ const extractMenuItems = () => {
                 title: t('tabs.document'),
                 icon: 'mdi-file-document',
                 route: '/document/global',
-                color: '#65a30d',
+                color: '#3D7DD8',
                 parent: 'authorities-group',
             });
         }
@@ -1590,7 +1590,7 @@ const extractMenuItems = () => {
                 title: t('tabs.map'),
                 icon: 'mdi-map',
                 route: '/map/global',
-                color: '#4d7c0f',
+                color: '#D9534F',
                 parent: 'authorities-group',
             });
         }
@@ -1603,7 +1603,7 @@ const extractMenuItems = () => {
             title: t('tabs.template'),
             icon: 'mdi-file-edit-outline',
             route: '/template',
-            color: '#22c55e',
+            color: '#6B7684',
         });
     }
 
@@ -1614,7 +1614,7 @@ const extractMenuItems = () => {
             title: t('tabs.websiteManager'),
             icon: 'mdi-web',
             route: '/company/website',
-            color: '#a21caf',
+            color: '#6B7684',
         });
     }
 
@@ -1624,7 +1624,7 @@ const extractMenuItems = () => {
             id: 'files-group',
             title: t('tabs.records'),
             icon: 'mdi-folder-outline',
-            color: '#8b5cf6',
+            color: '#3D7DD8',
             isGroup: true,
         });
 
@@ -1634,7 +1634,7 @@ const extractMenuItems = () => {
                 title: t('tabs.person'),
                 icon: 'mdi-account',
                 route: '/person',
-                color: '#8b5cf6',
+                color: '#3D7DD8',
                 parent: 'files-group',
             });
         }
@@ -1645,7 +1645,7 @@ const extractMenuItems = () => {
                 title: t('tabs.vehicle'),
                 icon: 'mdi-car',
                 route: '/vehicleFile',
-                color: '#7c3aed',
+                color: '#3D7DD8',
                 parent: 'files-group',
             });
         }
@@ -1656,7 +1656,7 @@ const extractMenuItems = () => {
                 title: t('tabs.apartment'),
                 icon: 'mdi-home',
                 route: '/apartmentFile',
-                color: '#6d28d9',
+                color: '#3D7DD8',
                 parent: 'files-group',
             });
         }
@@ -1668,7 +1668,7 @@ const extractMenuItems = () => {
             id: 'employees-group',
             title: t('tabs.employee'),
             icon: 'mdi-account-group-outline',
-            color: '#a855f7',
+            color: '#3D7DD8',
             isGroup: true,
         });
 
@@ -1678,7 +1678,7 @@ const extractMenuItems = () => {
                 title: t('tabs.employee'),
                 icon: 'mdi-account-group',
                 route: '/employee',
-                color: '#a855f7',
+                color: '#3D7DD8',
                 parent: 'employees-group',
             });
         }
@@ -1689,7 +1689,7 @@ const extractMenuItems = () => {
                 title: t('tabs.vacation'),
                 icon: 'mdi-beach',
                 route: '/vacation',
-                color: '#9333ea',
+                color: '#3D7DD8',
                 parent: 'employees-group',
             });
         }
@@ -1701,7 +1701,7 @@ const extractMenuItems = () => {
             id: 'companies-group',
             title: t('tabs.company'),
             icon: 'mdi-domain',
-            color: '#d946ef',
+            color: '#3D7DD8',
             isGroup: true,
         });
 
@@ -1711,7 +1711,7 @@ const extractMenuItems = () => {
                 title: t('tabs.company'),
                 icon: 'mdi-domain',
                 route: '/company',
-                color: '#d946ef',
+                color: '#3D7DD8',
                 parent: 'companies-group',
             });
         }
@@ -1722,7 +1722,7 @@ const extractMenuItems = () => {
                 title: t('tabs.companyType'),
                 icon: 'mdi-shape',
                 route: '/companytype',
-                color: '#c026d3',
+                color: '#3D7DD8',
                 parent: 'companies-group',
             });
         }
@@ -1734,7 +1734,7 @@ const extractMenuItems = () => {
             id: 'invoices-group',
             title: t('tabs.invoices'),
             icon: 'mdi-currency-usd',
-            color: '#ec4899',
+            color: '#3D7DD8',
             isGroup: true,
         });
 
@@ -1744,7 +1744,7 @@ const extractMenuItems = () => {
                 title: t('tabs.invoice'),
                 icon: 'mdi-currency-usd',
                 route: '/invoice',
-                color: '#ec4899',
+                color: '#3D7DD8',
                 parent: 'invoices-group',
             });
         }
@@ -1755,7 +1755,7 @@ const extractMenuItems = () => {
                 title: t('tabs.invoiceItem'),
                 icon: 'mdi-receipt',
                 route: '/invoiceitems',
-                color: '#db2777',
+                color: '#3D7DD8',
                 parent: 'invoices-group',
             });
         }
@@ -1776,7 +1776,7 @@ const extractMenuItems = () => {
             id: 'reports-group',
             title: t('tabs.report'),
             icon: 'mdi-book-open-variant',
-            color: '#f43f5e',
+            color: '#3D7DD8',
             isGroup: true,
         });
 
@@ -1786,7 +1786,7 @@ const extractMenuItems = () => {
                 title: t('tabs.report'),
                 icon: 'mdi-book-open-variant',
                 route: '/report',
-                color: '#f43f5e',
+                color: '#3D7DD8',
                 parent: 'reports-group',
             });
         }
@@ -1797,7 +1797,7 @@ const extractMenuItems = () => {
                 title: t('tabs.category'),
                 icon: 'mdi-shape',
                 route: '/reportcategory',
-                color: '#e11d48',
+                color: '#3D7DD8',
                 parent: 'reports-group',
             });
         }
@@ -1808,7 +1808,7 @@ const extractMenuItems = () => {
                 title: t('tabs.template'),
                 icon: 'mdi-file-document-edit',
                 route: '/reporttemplate',
-                color: '#be123c',
+                color: '#3D7DD8',
                 parent: 'reports-group',
             });
         }
@@ -1819,7 +1819,7 @@ const extractMenuItems = () => {
                 title: t('tabs.code'),
                 icon: 'mdi-code-tags',
                 route: '/reportcode',
-                color: '#9f1239',
+                color: '#3D7DD8',
                 parent: 'reports-group',
             });
         }
@@ -1830,7 +1830,7 @@ const extractMenuItems = () => {
                 title: t('tabs.additional'),
                 icon: 'mdi-plus-box',
                 route: '/reportadditional',
-                color: '#881337',
+                color: '#3D7DD8',
                 parent: 'reports-group',
             });
         }
@@ -1841,7 +1841,7 @@ const extractMenuItems = () => {
                 title: t('tabs.status'),
                 icon: 'mdi-clipboard-check',
                 route: '/reportstatus',
-                color: '#4c0519',
+                color: '#3D7DD8',
                 parent: 'reports-group',
             });
         }
@@ -1853,7 +1853,7 @@ const extractMenuItems = () => {
             id: 'documents-group',
             title: t('tabs.document'),
             icon: 'mdi-file-document-outline',
-            color: '#f97316',
+            color: '#3D7DD8',
             isGroup: true,
         });
 
@@ -1883,7 +1883,7 @@ const extractMenuItems = () => {
             id: 'organization-group',
             title: t('tabs.organization'),
             icon: 'mdi-format-list-checks',
-            color: '#eab308',
+            color: '#2FA36B',
             isGroup: true,
         });
 
@@ -1893,7 +1893,7 @@ const extractMenuItems = () => {
                 title: t('tabs.todo'),
                 icon: 'mdi-checkbox-marked-circle',
                 route: '/todo',
-                color: '#eab308',
+                color: '#2FA36B',
                 parent: 'organization-group',
             });
         }
@@ -1904,7 +1904,7 @@ const extractMenuItems = () => {
                 title: t('tabs.calendar'),
                 icon: 'mdi-calendar',
                 route: '/calendar',
-                color: '#ca8a04',
+                color: '#2FA36B',
                 parent: 'organization-group',
             });
         }
@@ -1915,7 +1915,7 @@ const extractMenuItems = () => {
                 title: t('tabs.application'),
                 icon: 'mdi-file-account',
                 route: '/application',
-                color: '#a16207',
+                color: '#2FA36B',
                 parent: 'organization-group',
             });
         }
@@ -1928,7 +1928,7 @@ const extractMenuItems = () => {
             title: t('tabs.fileManager'),
             icon: 'mdi-file-tree',
             route: '/filemanager',
-            color: '#84cc16',
+            color: '#2FA36B',
         });
     }
 
@@ -1938,7 +1938,7 @@ const extractMenuItems = () => {
             id: 'training-group',
             title: t('tabs.training'),
             icon: 'mdi-school',
-            color: '#10b981',
+            color: '#2FA36B',
             isGroup: true,
         });
 
@@ -1948,7 +1948,7 @@ const extractMenuItems = () => {
                 title: t('tabs.overview'),
                 icon: 'mdi-view-dashboard',
                 route: '/trainingassign',
-                color: '#10b981',
+                color: '#2FA36B',
                 parent: 'training-group',
             });
         }
@@ -1959,7 +1959,7 @@ const extractMenuItems = () => {
                 title: t('tabs.generateTest'),
                 icon: 'mdi-file-document-edit',
                 route: '/test',
-                color: '#059669',
+                color: '#2FA36B',
                 parent: 'training-group',
             });
         }
@@ -1971,7 +1971,7 @@ const extractMenuItems = () => {
             id: 'misc-group',
             title: t('tabs.misc'),
             icon: 'mdi-fire',
-            color: '#0ea5e9',
+            color: '#6B7684',
             isGroup: true,
         });
 
@@ -1981,7 +1981,7 @@ const extractMenuItems = () => {
                 title: t('tabs.fireProtection'),
                 icon: 'mdi-fire',
                 route: '/fireprotection',
-                color: '#0ea5e9',
+                color: '#6B7684',
                 parent: 'misc-group',
             });
         }
@@ -1992,7 +1992,7 @@ const extractMenuItems = () => {
                 title: t('tabs.cheatsheet'),
                 icon: 'mdi-file-document',
                 route: '/cheatsheet',
-                color: '#0284c7',
+                color: '#6B7684',
                 parent: 'misc-group',
             });
         }
@@ -2005,7 +2005,7 @@ const extractMenuItems = () => {
             title: t('tabs.map'),
             icon: 'mdi-map',
             route: '/map',
-            color: 'var(--k-accent)',
+            color: '#D9534F',
         });
     }
 
@@ -3417,14 +3417,14 @@ const appDefinitions = [
         title: t('tabs.calendar'),
         icon: 'mdi-calendar',
         route: '/calendar',
-        color: '#eab308',
+        color: '#2FA36B',
     },
     {
         id: 'todo',
         title: t('tabs.todoList'),
         icon: 'mdi-checkbox-marked-circle-outline',
         route: '/todo',
-        color: '#22c55e',
+        color: '#2FA36B',
     },
     {
         id: 'profile',
@@ -3438,14 +3438,14 @@ const appDefinitions = [
         title: t('tabs.fileManager'),
         icon: 'mdi-folder-outline',
         route: '/filemanager',
-        color: '#f59e0b',
+        color: '#2FA36B',
     },
     {
         id: 'map',
         title: t('tabs.map'),
         icon: 'mdi-map',
         route: '/map',
-        color: '#10b981',
+        color: '#D9534F',
     },
     {
         id: 'template',
@@ -3459,35 +3459,35 @@ const appDefinitions = [
         title: t('tabs.person'),
         icon: 'mdi-account-multiple-outline',
         route: '/person',
-        color: '#ec4899',
+        color: '#3D7DD8',
     },
     {
         id: 'vehicleFile',
         title: t('tabs.vehicleFile'),
         icon: 'mdi-car',
         route: '/vehicleFile',
-        color: '#ef4444',
+        color: '#3D7DD8',
     },
     {
         id: 'apartmentFile',
         title: t('tabs.apartmentFile'),
         icon: 'mdi-home',
         route: '/apartmentFile',
-        color: '#84cc16',
+        color: '#3D7DD8',
     },
     {
         id: 'application',
         title: t('tabs.application'),
         icon: 'mdi-account-plus-outline',
         route: '/application',
-        color: '#8b5cf6',
+        color: '#2FA36B',
     },
     {
         id: 'trainingassign',
         title: t('tabs.training'),
         icon: 'mdi-school-outline',
         route: '/trainingassign',
-        color: '#06b6d4',
+        color: '#2FA36B',
     },
     {
         id: 'tests',
