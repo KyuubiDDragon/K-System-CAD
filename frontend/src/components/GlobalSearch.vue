@@ -84,9 +84,45 @@
         </div>
 
         <v-list v-else class="search-results-list" density="compact">
+          <!--
+            Zuletzt benutzt: die zuletzt geoeffneten Orte und Datensaetze, jeder
+            mit seinem Bereich rechts. Steht ueber den letzten Suchbegriffen,
+            weil ein geoeffneter Datensatz einen zurueck an die Arbeit bringt
+            und ein Suchbegriff nur zurueck ins Suchfeld.
+          -->
+          <template v-if="!searchQuery && recentItems.length">
+            <v-list-subheader class="k-pal-group">{{ $t('globalSearch.recentlyUsed') }}</v-list-subheader>
+            <v-list-item
+              v-for="(item, index) in recentItems"
+              :key="`recent-item-${item.type}-${item.id}`"
+              class="search-result-item"
+              @click="openRecentItem(item)"
+            >
+              <template v-slot:prepend>
+                <v-avatar size="26" :color="getCategoryColor(item.type) || 'grey'">
+                  <v-icon size="16" color="white">{{ item.icon || 'mdi-file-outline' }}</v-icon>
+                </v-avatar>
+              </template>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+              <template v-slot:append>
+                <span v-if="item.where" class="k-pal-where">{{ item.where }}</span>
+                <v-btn
+                  icon
+                  size="x-small"
+                  variant="text"
+                  :aria-label="$t('globalSearch.removeRecent')"
+                  @click.stop="removeRecentItem(index)"
+                >
+                  <v-icon size="14">mdi-close</v-icon>
+                </v-btn>
+              </template>
+            </v-list-item>
+            <v-divider class="my-2" />
+          </template>
+
           <!-- Recent Searches -->
           <template v-if="!searchQuery && recentSearches.length">
-            <v-list-subheader>{{ $t('globalSearch.recent') }}</v-list-subheader>
+            <v-list-subheader class="k-pal-group">{{ $t('globalSearch.recent') }}</v-list-subheader>
             <v-list-item
               v-for="(recent, index) in recentSearches"
               :key="`recent-${index}`"
@@ -372,6 +408,33 @@ const expandedCategories = ref<Set<string>>(new Set());
 const activeResultIndex = ref(0);
 const recentSearches = ref<{ query: string; category?: string }[]>([]);
 
+/**
+ * Zuletzt benutzt.
+ *
+ * Der Entwurf zeigt in der Palette Orte und Inhalte zugleich, jeden mit
+ * seinem Bereich rechts: "So lernt man nebenbei, wo die Dinge liegen, statt
+ * nur hinzuspringen." Genau das leistet diese Gruppe beim Oeffnen mit leerem
+ * Feld - sie zeigt, was man zuletzt geoeffnet hat, samt Bereich.
+ *
+ * Bewusst nicht dasselbe wie die alten "letzten Suchen": ein gespeicherter
+ * Suchbegriff bringt einen zurueck ins Suchfeld, ein geoeffneter Datensatz
+ * zurueck an die Arbeit.
+ */
+interface RecentItem {
+  id: string | number;
+  type: string;
+  title: string;
+  /** Bereich oder Zusammenhang - steht rechts, wie im Entwurf. */
+  where?: string;
+  icon?: string;
+  route?: string;
+  at: number;
+}
+
+const recentItems = ref<RecentItem[]>([]);
+const RECENT_ITEMS_KEY = 'k-recent-items';
+const RECENT_ITEMS_MAX = 8;
+
 // Categories configuration
 const categories = ref<SearchCategory[]>([
   {
@@ -602,6 +665,13 @@ const getCategoryLabel = (categoryId: string) => {
   return categories.value.find(c => c.id === categoryId)?.label || categoryId;
 };
 
+/** Die Bereichsfarbe eines Treffers - dieselbe wie in der Trefferliste, damit
+    ein Eintrag unter "Zuletzt benutzt" nicht anders aussieht als derselbe
+    Eintrag im Suchergebnis. */
+const getCategoryColor = (categoryId: string) => {
+  return categories.value.find(c => c.id === categoryId)?.color || 'grey';
+};
+
 const getCategoryResults = (categoryId: string) => {
   const results = searchResults.value[categoryId] || [];
   const isExpanded = expandedCategories.value.has(categoryId);
@@ -683,6 +753,8 @@ const handleEnter = () => {
 const selectResult = (result: SearchResult) => {
   // Save to recent searches
   saveRecentSearch();
+  // ... und den geoeffneten Treffer selbst, fuer die Gruppe "Zuletzt benutzt".
+  rememberRecentItem(result);
 
   // Check if we're in desktop mode
   const isDesktopMode = document.documentElement.classList.contains('desktop-mode');
@@ -952,6 +1024,62 @@ const saveRecentSearchesToStorage = () => {
   localStorage.setItem('recentSearches', JSON.stringify(recentSearches.value));
 };
 
+/** Merkt sich einen geoeffneten Treffer. Derselbe Eintrag rutscht nach oben,
+    statt sich zu verdoppeln. */
+const rememberRecentItem = (result: SearchResult) => {
+  const entry: RecentItem = {
+    id: result.id,
+    type: result.type,
+    title: result.title,
+    where: result.subtitle || getCategoryLabel(result.type),
+    icon: result.icon,
+    route: result.route,
+    at: Date.now(),
+  };
+
+  recentItems.value = [
+    entry,
+    ...recentItems.value.filter(r => !(r.type === entry.type && String(r.id) === String(entry.id))),
+  ].slice(0, RECENT_ITEMS_MAX);
+
+  try {
+    localStorage.setItem(RECENT_ITEMS_KEY, JSON.stringify(recentItems.value));
+  } catch {
+    /* Speicher gesperrt - die Liste gilt dann nur fuer diese Sitzung. */
+  }
+};
+
+const loadRecentItems = () => {
+  try {
+    const saved = localStorage.getItem(RECENT_ITEMS_KEY);
+    const parsed = saved ? JSON.parse(saved) : [];
+    recentItems.value = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    recentItems.value = [];
+  }
+};
+
+const removeRecentItem = (index: number) => {
+  recentItems.value.splice(index, 1);
+  try {
+    localStorage.setItem(RECENT_ITEMS_KEY, JSON.stringify(recentItems.value));
+  } catch {
+    /* siehe oben */
+  }
+};
+
+/** Ein Eintrag aus "Zuletzt benutzt" geht denselben Weg wie ein Suchtreffer. */
+const openRecentItem = (item: RecentItem) => {
+  selectResult({
+    id: item.id,
+    type: item.type,
+    title: item.title,
+    subtitle: item.where,
+    icon: item.icon,
+    route: item.route,
+  } as SearchResult);
+};
+
 const loadRecentSearches = () => {
   try {
     const saved = localStorage.getItem('recentSearches');
@@ -1052,6 +1180,7 @@ watch(isOpen, async (newValue) => {
 // Lifecycle
 onMounted(() => {
   loadRecentSearches();
+  loadRecentItems();
 });
 
 // Expose for parent component
@@ -1289,16 +1418,47 @@ defineExpose({
 .document-area-group {
   margin-bottom: 12px;
 
+  /*
+    Gruppenueberschrift wie im Entwurf: klein, gesperrt, gedimmt. Vorher trug
+    sie einen 3-px-Balken in einem Violett, das in der Palette nicht vorkommt,
+    und einen fest verdrahteten dunklen Grund - im hellen Modus ein dunkler
+    Streifen auf heller Flaeche. Eine Ueberschrift ordnet; sie braucht dafuer
+    weder Balken noch eigene Flaeche.
+  */
   .area-subheader {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--k-ink-faint);
-    font-weight: 700;
+    font-weight: 650;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 6px 16px 4px;
-    background: rgba(30, 41, 59, 0.3);
-    border-left: 3px solid rgba(139, 92, 246, 0.5);
+    letter-spacing: 0.09em;
+    padding: 10px 16px 4px;
+    background: transparent;
   }
+}
+
+/* Gruppen der Palette: 10 px, gesperrt, gedimmt - genau wie .pal-group im
+   Entwurf. */
+.k-pal-group {
+  font-size: 10px !important;
+  font-weight: 650;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--k-ink-faint) !important;
+  min-height: 24px;
+}
+
+/*
+  Der Bereich rechts neben dem Treffer. Im Entwurf traegt jeder Eintrag ihn:
+  "So lernt man nebenbei, wo die Dinge liegen, statt nur hinzuspringen."
+*/
+.k-pal-where {
+  font-size: 11.5px;
+  color: var(--k-ink-faint);
+  padding-left: 12px;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .show-more-item {

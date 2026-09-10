@@ -122,7 +122,9 @@
       "locations": "Standorte",
       "dispatch": "Einsatz",
       "views": "Ansichten"
-    }
+    },
+    "recentlyUsed": "Zuletzt benutzt",
+    "removeRecent": "Aus der Liste entfernen"
   },
   "widgets": {
     "weather": {

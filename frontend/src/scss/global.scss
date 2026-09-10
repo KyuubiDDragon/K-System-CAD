@@ -28,21 +28,19 @@
   padding: 16px;
 }
 
-/* Toolbar styling - subtle primary color theme */
-.v-toolbar {
-  background: rgba(var(--primary-rgb), 0.08) !important;
-  border-bottom: 1px solid rgba(var(--primary-rgb), 0.12) !important;
-}
+/*
+  Leisten tragen keine Akzentfarbe mehr.
 
-/* Override Vuetify's primary color class for toolbars */
-.v-toolbar.bg-primary {
-  background: rgba(var(--primary-rgb), 0.08) !important;
-}
-
-/* App bar styling - same as toolbar */
+  Der Akzent markiert im System genau zwei Dinge: wo man gerade ist und was
+  die Hauptaktion ist. Eine dauerhaft eingefaerbte Kopfleiste sagt weder das
+  eine noch das andere - sie faerbt nur, und sie tut es bei jeder Behoerde in
+  einer anderen Farbe. Flaeche und Trennlinie kommen deshalb aus den Merkern.
+*/
+.v-toolbar,
+.v-toolbar.bg-primary,
 .v-app-bar {
-  background: rgba(var(--primary-rgb), 0.08) !important;
-  border-bottom: 1px solid rgba(var(--primary-rgb), 0.12) !important;
+  background: var(--k-surface) !important;
+  border-bottom: 1px solid var(--k-line) !important;
 }
 
 /* Data table styling */
@@ -54,25 +52,30 @@
   background: transparent !important;
 }
 
-.v-data-table th {
-  background-color: rgba(var(--desktop-bg-dark-2), 0.7) !important;
-  color: var(--on-surface) !important;
-  font-weight: 500 !important;
-}
+/*
+  Die Spaltenkoepfe standen hier auf rgba(var(--desktop-bg-dark-2), .7) - einem
+  fest verdrahteten Dunkelblau, und zwar mit !important in beiden Modi. Im
+  hellen Modus ergab das ein dunkles Band mit dunkler Schrift darauf, also
+  praktisch unlesbar. Gestalt und Maße stehen jetzt in _components.scss und
+  _density.scss; hier bleibt nichts, was sie ueberschreibt.
+*/
 
 .v-data-table tr:hover td {
-  background-color: var(--hover-bg) !important;
+  background-color: var(--k-row-hover) !important;
 }
 
 /* Page containers */
+/*
+  Die beiden Radialverlaeufe hier waren wirkungslos: rgba() bekam mit
+  var(--primary) einen Hex-Wert statt dreier Zahlen, die Deklaration war
+  ungueltig. Sie sind ersatzlos raus - der Entwurf will ohnehin eine ruhige
+  Grundflaeche, auf der sich Karten ohne Linie abheben.
+*/
 .page-container {
   min-height: 90vh;
-  background-color: var(--background);
-  background-image: 
-    radial-gradient(circle at 20% 30%, rgba(var(--primary), 0.05) 0%, transparent 25%),
-    radial-gradient(circle at 85% 85%, rgba(var(--primary), 0.05) 0%, transparent 35%);
+  background-color: var(--k-canvas);
   position: relative;
-  color: var(--on-background);
+  color: var(--k-ink);
 }
 
 /* Section headers */
@@ -90,11 +93,14 @@
   border: 1px solid var(--card-border);
 }
 
-/* Form control styling */
+/*
+  Eingabefelder trugen denselben fest verdrahteten dunklen Grund - im hellen
+  Modus ein grauer Kasten mitten auf weisser Flaeche. Die Flaeche kommt jetzt
+  aus dem Merker, der mit dem Modus kippt.
+*/
 .v-text-field .v-field__input,
 .v-textarea .v-field__input {
-  background-color: rgba(var(--desktop-bg-dark-2), 0.3) !important;
-  color: var(--on-background) !important;
+  color: var(--k-ink) !important;
 }
 
 .v-btn {

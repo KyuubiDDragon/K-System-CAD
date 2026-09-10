@@ -192,6 +192,18 @@
         0 2px 8px rgba(16, 22, 32, 0.08);
 }
 
+/* Was schwebt, liegt auf der gehobenen Flaeche - im dunklen Modus ist sie
+   heller als die Karte darunter, sodass ein Menue sich abhebt, ohne dass eine
+   Linie noetig waere. Vuetify setzt hier sonst dieselbe Flaeche wie fuer
+   Karten. */
+.v-menu > .v-overlay__content > .v-list,
+.v-menu > .v-overlay__content > .v-card,
+.v-menu > .v-overlay__content > .v-sheet,
+.v-dialog > .v-overlay__content > .v-card,
+.v-dialog > .v-overlay__content > .v-sheet {
+    background: var(--k-raised, #fff);
+}
+
 /* ============================================================
    KENNZAHLEN
    Beschriftung klein und gedimmt, Wert gross, Zusatz darunter.

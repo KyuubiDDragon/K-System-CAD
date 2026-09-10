@@ -122,7 +122,9 @@
       "locations": "Locations",
       "dispatch": "Dispatch",
       "views": "Views"
-    }
+    },
+    "recentlyUsed": "Recently used",
+    "removeRecent": "Remove from list"
   },
   "widgets": {
     "weather": {
