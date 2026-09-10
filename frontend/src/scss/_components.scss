@@ -262,23 +262,35 @@
 }
 
 /*
-   Vuetify legt zwei Beschriftungen an: eine im Feld und eine in der Kerbe des
-   Rahmens. Sichtbar ist je nach Zustand die eine oder die andere. Die im Feld
-   entfaellt hier ganz, die in der Kerbe wandert ueber die Oberkante - dadurch
-   steht sie immer an derselben Stelle, egal ob das Feld leer ist oder nicht.
+   Vuetify legt die Beschriftung zweimal an - einmal im Feld, einmal in der
+   Kerbe des Rahmens - und beide tragen denselben Text. Sichtbar ist je nach
+   Zustand nur eine: solange das Feld leer ist die im Feld, sobald es einen
+   Wert traegt oder den Fokus hat die in der Kerbe.
+
+   Hier stand vorher nur die Kerben-Fassung ueber dem Feld, die im Feld war
+   abgeschaltet. Damit war die Beschriftung genau dann unsichtbar, wenn das
+   Feld leer war - also bei den meisten Feldern der Anwendung. Gemessen an der
+   Mitarbeitersuche: "Suche nach Name oder Dienstnummer" stand im Markup, auf
+   dem Bildschirm war nur eine Lupe zu sehen.
+
+   Jetzt gilt der umgekehrte Weg: die Kerben-Fassung entfaellt, die im Feld
+   wird sichtbar gehalten und ueber die Oberkante gelegt. Weil sie in jedem
+   Zustand dieselbe ist, springt die Beschriftung beim Tippen nicht.
 */
-.v-input.v-text-field:has(.v-field__outline__notch .v-label.v-field-label),
-.v-input.v-select:has(.v-field__outline__notch .v-label.v-field-label),
-.v-input.v-autocomplete:has(.v-field__outline__notch .v-label.v-field-label),
-.v-input.v-combobox:has(.v-field__outline__notch .v-label.v-field-label),
-.v-input.v-textarea:has(.v-field__outline__notch .v-label.v-field-label) {
+.v-input.v-text-field:has(.v-field__field > .v-label.v-field-label),
+.v-input.v-select:has(.v-field__field > .v-label.v-field-label),
+.v-input.v-autocomplete:has(.v-field__field > .v-label.v-field-label),
+.v-input.v-combobox:has(.v-field__field > .v-label.v-field-label),
+.v-input.v-textarea:has(.v-field__field > .v-label.v-field-label) {
     margin-top: 20px;
 }
 
 .v-field--variant-outlined {
-    /* Die Beschriftung im Feld verdeckt sonst den Platzhalter. */
-    .v-field__field > .v-label.v-field-label {
-        display: none;
+    /* Die Beschriftung liegt ueber dem Feld - sie darf an dessen Oberkante
+       nicht abgeschnitten werden. */
+    .v-field__field {
+        position: static;
+        overflow: visible;
     }
 
     /* Die Kerbe entfaellt: die Beschriftung liegt nicht mehr im Rahmen, also
@@ -291,13 +303,19 @@
         &::after {
             opacity: 1 !important;
         }
+
+        > .v-label.v-field-label {
+            display: none !important;
+        }
     }
 
-    .v-field__outline__notch > .v-label.v-field-label {
+    .v-field__field > .v-label.v-field-label {
+        display: block !important;
+        visibility: visible !important;
         position: absolute;
         top: auto !important;
         bottom: calc(100% + 3px);
-        inset-inline-start: 0 !important;
+        inset-inline-start: 10px !important;
         transform: none !important;
         transition: none !important;
         opacity: 1 !important;
