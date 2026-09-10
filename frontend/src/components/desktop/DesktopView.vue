@@ -99,41 +99,44 @@
                     Schaltflaechen, die staendig ueber dem Bild liegen, kosten
                     jeden Tag Platz fuer etwas, das man im Monat einmal tut.
                 -->
-                <v-menu
-                    v-model="desktopMenuOpen"
-                    :target="desktopMenuAt"
-                    location="bottom start"
-                >
-                    <v-list density="compact" min-width="200">
-                        <v-list-subheader>{{ t('desktop.sortIcons') }}</v-list-subheader>
-                        <v-list-item
-                            @click="() => { iconSortMode = 'priority'; forceGenerateIcons(); }"
-                            :active="iconSortMode === 'priority'"
+                <!--
+                    Kontextmenue der Arbeitsflaeche.
+
+                    Eigen gebaut statt v-menu: Vuetifys Menue braucht einen
+                    Ausloeser oder einen Zielpunkt, und mit einem reinen
+                    Koordinatenziel oeffnete es zwar, rendert seinen Inhalt
+                    aber nicht. Hier genuegt eine Liste an der Klickstelle -
+                    das ist weniger Technik und tut genau das, was es soll.
+                -->
+                <Teleport to="body">
+                    <div
+                        v-if="desktopMenuOpen"
+                        class="desk-menu-scrim"
+                        @click="desktopMenuOpen = false"
+                        @contextmenu.prevent="desktopMenuOpen = false"
+                    ></div>
+                    <div
+                        v-if="desktopMenuOpen"
+                        class="desk-menu"
+                        :style="{ left: desktopMenuAt[0] + 'px', top: desktopMenuAt[1] + 'px' }"
+                    >
+                        <p class="desk-menu__label">{{ t('desktop.sortIcons') }}</p>
+                        <button
+                            v-for="mode in ['priority', 'alphabetical', 'category']"
+                            :key="mode"
+                            type="button"
+                            class="desk-menu__item"
+                            :class="{ 'is-on': iconSortMode === mode }"
+                            @click="chooseSortMode(mode)"
                         >
-                            <template #prepend><v-icon size="small">mdi-star</v-icon></template>
-                            <v-list-item-title>{{ t('desktop.sortByPriority') }}</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item
-                            @click="() => { iconSortMode = 'alphabetical'; forceGenerateIcons(); }"
-                            :active="iconSortMode === 'alphabetical'"
-                        >
-                            <template #prepend><v-icon size="small">mdi-sort-alphabetical-ascending</v-icon></template>
-                            <v-list-item-title>{{ t('desktop.sortAlphabetically') }}</v-list-item-title>
-                        </v-list-item>
-                        <v-list-item
-                            @click="() => { iconSortMode = 'category'; forceGenerateIcons(); }"
-                            :active="iconSortMode === 'category'"
-                        >
-                            <template #prepend><v-icon size="small">mdi-folder-multiple</v-icon></template>
-                            <v-list-item-title>{{ t('desktop.sortByCategory') }}</v-list-item-title>
-                        </v-list-item>
-                        <v-divider />
-                        <v-list-item @click="forceGenerateIcons">
-                            <template #prepend><v-icon size="small">mdi-refresh</v-icon></template>
-                            <v-list-item-title>{{ t('desktop.resetLayout') }}</v-list-item-title>
-                        </v-list-item>
-                    </v-list>
-                </v-menu>
+                            {{ t(sortModeLabels[mode]) }}
+                        </button>
+                        <hr class="desk-menu__rule" />
+                        <button type="button" class="desk-menu__item" @click="resetDesktopLayout">
+                            {{ t('desktop.resetLayout') }}
+                        </button>
+                    </div>
+                </Teleport>
 
                 <!-- Folder Popup -->
                 <div v-if="activeFolder" class="folder-popup" :style="folderPopupStyle">
@@ -789,9 +792,32 @@ const iconSortMode = ref<'priority' | 'alphabetical' | 'category'>('priority');
 const desktopMenuOpen = ref(false);
 const desktopMenuAt = ref<[number, number]>([0, 0]);
 
+const sortModeLabels: Record<string, string> = {
+    priority: 'desktop.sortByPriority',
+    alphabetical: 'desktop.sortAlphabetically',
+    category: 'desktop.sortByCategory',
+};
+
 function openDesktopMenu(event: MouseEvent) {
-    desktopMenuAt.value = [event.clientX, event.clientY];
+    // Nicht ueber den Rand hinaus: sonst steht das Menue halb ausserhalb.
+    const breite = 210;
+    const hoehe = 190;
+    desktopMenuAt.value = [
+        Math.min(event.clientX, window.innerWidth - breite - 8),
+        Math.min(event.clientY, window.innerHeight - hoehe - 8),
+    ];
     desktopMenuOpen.value = true;
+}
+
+function chooseSortMode(mode: string) {
+    iconSortMode.value = mode as typeof iconSortMode.value;
+    desktopMenuOpen.value = false;
+    forceGenerateIcons();
+}
+
+function resetDesktopLayout() {
+    desktopMenuOpen.value = false;
+    forceGenerateIcons();
 }
 
 // Priority list for common apps (shown first)
@@ -3714,6 +3740,63 @@ const testOpenFirstDocArea = () => {
 
 /* Die schwebenden Schaltflaechen unten rechts sind entfallen - ihre Aktionen
    stehen jetzt im Kontextmenue der Arbeitsflaeche. */
+.desk-menu-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+}
+
+.desk-menu {
+    position: fixed;
+    z-index: 3001;
+    width: 210px;
+    padding: 4px;
+    background: var(--k-raised);
+    border: 1px solid var(--k-line-strong);
+    border-radius: 6px;
+    box-shadow:
+        0 16px 40px rgba(16, 22, 32, 0.16),
+        0 2px 8px rgba(16, 22, 32, 0.08);
+}
+
+.desk-menu__label {
+    font-size: 10px;
+    font-weight: 650;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--k-ink-faint);
+    margin: 0;
+    padding: 6px 8px 4px;
+}
+
+.desk-menu__item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    font-size: 12.5px;
+    color: var(--k-ink);
+    background: transparent;
+    border: 0;
+    border-radius: 4px;
+    padding: 6px 8px;
+    cursor: pointer;
+}
+
+.desk-menu__item:hover {
+    background: var(--k-row-hover);
+}
+
+.desk-menu__item.is-on {
+    color: var(--k-accent);
+    background: var(--k-accent-weak);
+}
+
+.desk-menu__rule {
+    border: 0;
+    border-top: 1px solid var(--k-line);
+    margin: 4px 0;
+}
 
 .folder-popup {
     position: fixed;
