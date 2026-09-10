@@ -1192,7 +1192,44 @@ export function useMenuItems() {
       organized.push(waterduck);
     }
 
-    return organized;
+    return faerbeNachBereich(organized);
+  }
+
+  /**
+   * Faerbt die Navigationspunkte nach ihrem Bereich.
+   *
+   * Vorher trug jeder Punkt eine eigene Farbe - 44 verschiedene Werte, fest im
+   * Code hinterlegt. Akten war violett, Behoerden gruen, Berichte rot: die
+   * Farbe sagte nichts darueber, wohin etwas gehoert, und dieselbe Willkuer
+   * lag auch auf den Symbolen der Arbeitsflaeche.
+   *
+   * Jetzt steht eine Farbe je Bereich, und zwar dieselbe in Seitenleiste und
+   * Fenster-Modus. So benutzen beide Ansichten dieselbe Landkarte.
+   */
+  function faerbeNachBereich(items: MenuItem[]): MenuItem[] {
+    const bereichsFarben: Record<string, string> = {
+      'section-dispatch': 'var(--k-critical, #e5675c)',
+      'section-akten': 'var(--k-accent, #558ee0)',
+      'section-organization': 'var(--k-success, #4fbf89)',
+      'section-admin': 'var(--k-neutral, #8b96a4)',
+      'section-misc': 'var(--k-neutral, #8b96a4)',
+    };
+
+    let aktuelleFarbe = 'var(--k-accent, #558ee0)';
+
+    const faerbe = (item: MenuItem): MenuItem => ({
+      ...item,
+      color: aktuelleFarbe,
+      children: item.children?.map(faerbe),
+    });
+
+    return items.map(item => {
+      if (item.isSectionHeader) {
+        aktuelleFarbe = bereichsFarben[item.id] ?? aktuelleFarbe;
+        return item; // Ueberschriften bleiben ungefaerbt
+      }
+      return faerbe(item);
+    });
   }
 
   /**
