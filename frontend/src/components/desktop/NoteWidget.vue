@@ -1,5 +1,5 @@
 <template>
-  <div class="note-widget" :style="{ background: bgColor }">
+  <div class="note-widget" :style="{ '--notiz-farbe': color }">
     <div class="note-header">
       <div class="notes-selector">
         <v-btn density="comfortable" variant="text" icon="mdi-chevron-left" size="small" @click="emitPrevNote" :disabled="!hasPrevNote"></v-btn>
@@ -19,7 +19,6 @@
         :placeholder="t('desktop.enterNote')"
         @input="onInput"
         ref="noteTextarea"
-        :style="{ borderColor: `${color}40` }"
       ></textarea>
     </div>
     
@@ -157,11 +156,13 @@ const hasChanges = computed(() => {
          JSON.stringify(tags.value) !== JSON.stringify(originalTags.value);
 });
 
-const bgColor = computed(() => {
-  // Get color with opacity
-  const baseColor = color.value;
-  return `${baseColor}80`; // 15% opacity
-});
+/*
+   Die gewaehlte Farbe markiert die Notiz, sie traegt sie nicht.
+   Vorher lag die Farbe mit 50 Prozent Deckung als ganze Flaeche unter dem
+   Zettel: der Zaehler "1 / 0" kam damit auf 1,51:1 und war nicht zu lesen. Der
+   Zettel steht jetzt auf der normalen Flaeche, die Farbe sitzt als Kante links
+   - dieselbe Rolle, die sie in den Listen als Bedeutungspunkt hat.
+*/
 
 // Methods for tags
 const addTag = () => {
@@ -319,6 +320,8 @@ watch(() => props.note, (newNote) => {
 
 <style scoped>
 .note-widget {
+  background: var(--k-surface);
+  border-left: 3px solid var(--notiz-farbe, var(--k-accent));
   border-radius: var(--border-radius-md);
   overflow: hidden;
   width: var(--desktop-widget-width);
@@ -333,11 +336,7 @@ watch(() => props.note, (newNote) => {
   margin-top: 10px;
 }
 
-.note-widget:hover {
-  transform: var(--button-hover-translate);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(var(--primary-rgb), 0.15);
-  border-color: var(--k-line);
-}
+/* Kein Anheben und kein Leuchten beim Zeigen - eine Notiz ist keine Schaltflaeche. */
 
 .note-header {
   display: flex;
@@ -345,7 +344,7 @@ watch(() => props.note, (newNote) => {
   justify-content: space-between;
   padding: 8px;
   border-bottom: 1px solid var(--k-line);
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--k-sunken);
 }
 
 .notes-selector {
@@ -375,7 +374,7 @@ watch(() => props.note, (newNote) => {
 .note-tag-section {
   padding: 8px 10px;
   border-top: 1px solid var(--k-line);
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--k-sunken);
 }
 
 .tag-input-container {
