@@ -226,7 +226,7 @@ onMounted(async () => {
 
 <style scoped>
 .outer-container {
-    height: calc(100vh - var(--k-bar-height));
+    height: calc(100vh - var(--k-bar-height) - 2 * var(--k-work-pad));
     display: flex;
     flex-direction: column;
 }

@@ -31,7 +31,7 @@
         eine leere 210-px-Spalte waere schlimmer als keine.
       -->
       <div class="work-area">
-        <v-container fluid class="content-container pa-6">
+        <v-container fluid class="content-container">
           <transition name="fade-slide" mode="out-in">
             <router-view />
           </transition>
@@ -307,6 +307,7 @@ onMounted(async () => {
   flex: 1;
   min-width: 0;
   min-height: calc(100vh - var(--k-bar-height, 44px));
+  padding: var(--k-work-pad);
   background-color: rgb(var(--v-theme-background));
 }
 
@@ -386,7 +387,7 @@ onMounted(async () => {
 // Responsive: Mobile
 @media (max-width: 960px) {
   .content-container {
-    padding: 16px !important;
+    --k-work-pad: 16px;
   }
 }
 </style>

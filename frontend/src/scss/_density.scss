@@ -24,6 +24,9 @@
     --k-control-height: 30px;
     --k-nav-item-height: 27px;
     --k-bar-height: 42px;
+    /* Rand um den Arbeitsbereich. Wer die Hoehe einer Ansicht aus 100vh
+       ausrechnet, muss beides abziehen: die Leiste und diesen Rand doppelt. */
+    --k-work-pad: 24px;
 }
 
 /* ---------- Navigation ---------- */
