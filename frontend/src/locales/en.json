@@ -3106,7 +3106,11 @@
     "vacation": "Vacation",
     "sick": "Sick",
     "terminated": "Terminated",
-    "until": "until"
+    "until": "until",
+    "countOf": "{n} of {total} employees",
+    "filterActive": "On duty",
+    "filterAbsent": "Absent",
+    "filterLeaving": "Leaving"
   },
   "dispatch": {
     "title": "Dispatch",

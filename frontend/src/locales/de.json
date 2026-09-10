@@ -3118,7 +3118,11 @@
     "vacation": "Urlaub",
     "sick": "Krank",
     "terminated": "Ausgetreten",
-    "until": "bis"
+    "until": "bis",
+    "countOf": "{n} von {total} Mitarbeitern",
+    "filterActive": "Im Dienst",
+    "filterAbsent": "Abwesend",
+    "filterLeaving": "Austritt geplant"
   },
   "dispatch": {
     "title": "Leitstelle",

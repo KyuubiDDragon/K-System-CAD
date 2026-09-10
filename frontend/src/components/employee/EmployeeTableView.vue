@@ -56,6 +56,36 @@ const headers = [
     { title: t('employeeTable.actions'), key: 'actions', sortable: false, width: '140px', align: 'center' as const },
 ];
 
+/**
+ * Alle Mitarbeiter aus allen Raengen in einer Liste. Der Rang wandert dabei
+ * vom Ueberschrift-Dasein in eine Spalte, damit quer sortiert und gefiltert
+ * werden kann.
+ */
+const alleMitarbeiter = computed(() =>
+    (props.ranks ?? []).flatMap((rank: any) =>
+        (rank.employees ?? []).map((e: any) => ({ ...e, rankName: rank.name, rankImage: rank.rankImage })),
+    ),
+);
+
+/** Zuschaltbare Filter. Ohne Auswahl sind alle Mitarbeiter sichtbar. */
+const filter = ref([
+    { key: 'active', label: t('employeeTable.filterActive'), aktiv: false },
+    { key: 'absent', label: t('employeeTable.filterAbsent'), aktiv: false },
+    { key: 'leaving', label: t('employeeTable.filterLeaving'), aktiv: false },
+]);
+
+const sichtbareMitarbeiter = computed(() => {
+    const aktiv = filter.value.filter(f => f.aktiv).map(f => f.key);
+    if (!aktiv.length) return alleMitarbeiter.value;
+
+    return alleMitarbeiter.value.filter((e: any) => {
+        if (aktiv.includes('absent') && !e.is_absent) return false;
+        if (aktiv.includes('leaving') && !e.leavedate) return false;
+        if (aktiv.includes('active') && (e.is_absent || e.is_terminated)) return false;
+        return true;
+    });
+});
+
 // Get current vacation for employee
 const getCurrentVacation = (employee: any) => {
     if (!employee.vacations) return null;
@@ -114,27 +144,41 @@ const handleEdit = (employee: any, rank: Rank) => {
 
 <template>
     <div class="employee-table-view">
-        <!-- Table for each rank -->
-        <div v-for="rank in ranks" :key="rank.id" class="rank-table-section mb-6">
-            <!-- Rank Header -->
-            <div class="rank-table-header">
-                <div class="rank-title">
-                    <v-icon size="small" class="mr-2">mdi-shield-star</v-icon>
-                    {{ rank.name }}
-                </div>
-                <v-chip size="small" color="primary" variant="tonal">
-                    {{ rank.employees?.length || 0 }} {{ t('employeeTable.employees') }}
+        <!--
+            Eine Tabelle statt einer je Rang. Vorher standen neun Tabellen
+            untereinander, jede mit eigenem Kopf und eigener Fusszeile - der
+            Rang war die Ueberschrift statt eine Spalte, sodass man weder
+            sortieren noch quer filtern konnte.
+        -->
+        <div class="rank-table-section">
+            <!-- Filterleiste: Zustaende zuschalten, Anzahl rechts. -->
+            <div class="k-toolbar">
+                <v-chip
+                    v-for="f in filter"
+                    :key="f.key"
+                    size="small"
+                    variant="outlined"
+                    class="k-filter-chip"
+                    :class="{ 'is-active': f.aktiv }"
+                    @click="f.aktiv = !f.aktiv"
+                >
+                    {{ f.label }}
                 </v-chip>
+
+                <span class="k-toolbar__spacer"></span>
+
+                <span class="k-toolbar__count">
+                    {{ t('employeeTable.countOf', { n: sichtbareMitarbeiter.length, total: alleMitarbeiter.length }) }}
+                </span>
             </div>
 
             <!-- Data Table -->
             <v-data-table
-                v-if="rank.employees && rank.employees.length > 0"
                 :headers="headers"
-                :items="rank.employees"
+                :items="sichtbareMitarbeiter"
                 class="employee-data-table"
                 :items-per-page="25"
-                density="default"
+                density="compact"
                 hover
             >
                 <!-- Employee Name Column -->
@@ -297,13 +341,14 @@ const handleEdit = (employee: any, rank: Rank) => {
                         </v-tooltip>
                     </div>
                 </template>
+                <!-- Leerzustand innerhalb der Tabelle statt als eigene Karte -->
+                <template #no-data>
+                    <div class="no-data">
+                        <v-icon size="20" color="grey">mdi-account-off</v-icon>
+                        <p>{{ t('employeeTable.noEmployees') }}</p>
+                    </div>
+                </template>
             </v-data-table>
-
-            <!-- No employees -->
-            <v-card v-else variant="outlined" class="pa-8 text-center">
-                <v-icon size="48" color="grey">mdi-account-off</v-icon>
-                <p class="text-grey mt-2">{{ t('employeeTable.noEmployees') }}</p>
-            </v-card>
         </div>
     </div>
 </template>
