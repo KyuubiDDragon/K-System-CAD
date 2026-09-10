@@ -277,10 +277,11 @@ onUnmounted(() => {
     width: 110px;
     height: 130px;
     box-sizing: border-box;
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.5), rgba(51, 65, 85, 0.45));
-    backdrop-filter: blur(12px) saturate(150%);
-    -webkit-backdrop-filter: blur(12px) saturate(150%);
-    border: 1px solid var(--k-line);
+    /* Die Kachel selbst bleibt unsichtbar - sie traegt nur Symbol und Namen.
+       Vorher lag hier ein fest verdrahtetes Dunkelblau mit Weichzeichner, das
+       im hellen Modus als graue Platte auf dem Hintergrundbild stand. */
+    background: transparent;
+    border: 1px solid transparent;
     box-shadow:
         0 4px 12px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -388,40 +389,48 @@ onUnmounted(() => {
     filter: drop-shadow(0 6px 16px rgba(251, 191, 36, 0.6));
 }
 
+/*
+   Zweizeilige Beschriftung.
+
+   Vorher stand hier white-space: nowrap mit text-overflow: ellipsis - genau
+   die Ursache der abgeschnittenen Namen auf der Arbeitsflaeche: "Schwarze...",
+   "Organisati...", "Datei Man...". Der Entwurf loest das mit zwei Zeilen,
+   "ohne dass das Raster waechst": Breite und Hoehe der Kachel bleiben, nur der
+   Umbruch ist erlaubt. Gespeicherte Anordnungen bleiben damit gueltig.
+
+   overflow-wrap: anywhere, weil "Website-Manager" sonst als ein Wort ueber die
+   Kachel hinausragt.
+*/
 .icon-title {
     width: 100%;
     max-width: 100px;
     text-align: center;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow-wrap: anywhere;
+    font-size: 10.5px;
     font-weight: 600;
     color: var(--k-ink);
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
-    line-height: 1.4;
-    padding: 5px 8px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.25));
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    line-height: 1.25;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: var(--k-surface);
     border: 1px solid var(--k-line);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 120ms ease, border-color 120ms ease;
 }
 
 .desktop-icon:hover .icon-title {
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.4));
-    transform: translateY(2px) scale(1.02);
-    border-color: var(--k-line);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: var(--k-row-hover);
+    border-color: var(--k-line-strong);
 }
 
 .desktop-icon.selected .icon-title {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(37, 99, 235, 0.4));
-    border-color: rgba(59, 130, 246, 0.5);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-    color: rgba(255, 255, 255, 1);
+    background: var(--k-accent-weak);
+    border-color: var(--k-accent-line);
+    color: var(--k-accent);
 }
 
 /* Indikator für Ordner (optional) */
@@ -437,21 +446,10 @@ onUnmounted(() => {
     border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
-/* Light theme Anpassungen (falls benötigt) */
-:deep(.theme-light) .icon-title {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
-:deep(.theme-light) .desktop-icon {
-    background-color: var(--k-ink-faint);
-    border-color: rgba(0, 0, 0, 0.1);
-}
-
-:deep(.theme-light) .desktop-icon:hover,
-:deep(.theme-light) .desktop-icon.selected {
-    background-color: var(--k-ink-faint);
-}
+/* Keine Sonderregeln mehr fuer den hellen Modus: Flaeche, Linie und Schrift
+   kommen aus den Merkern und kippen mit dem Theme. Die Regeln hier setzten die
+   Kachel auf --k-ink-faint, also auf ein mittleres Grau - eine graue Platte
+   unter jedem Symbol. */
 
 /* Puls-Animation beim Ziehen */
 @keyframes pulse {

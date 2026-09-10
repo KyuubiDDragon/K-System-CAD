@@ -1044,12 +1044,18 @@ provide('windowContext', windowStore);
 
 <style scoped>
 /* --- Base Window Styles --- */
+/*
+   Fenstergestalt nach Entwurf: Radius 7 px, Flaeche und Linie aus den Merkern,
+   ein Schatten - mehr nicht. Vorher lag hier ein fest verdrahtetes
+   rgba(30,41,59,.98), also eine dunkle Platte, die im hellen Modus nicht
+   mitkippte, dazu 16 px Radius und drei uebereinandergelegte Schatten samt
+   Innenkante.
+*/
 .window {
-    background: rgba(30, 41, 59, 0.98);
+    background: var(--k-surface);
     box-shadow:
-        0 12px 48px rgba(0, 0, 0, 0.4),
-        0 6px 20px rgba(0, 0, 0, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        0 4px 12px rgba(16, 22, 32, 0.08),
+        0 1px 3px rgba(16, 22, 32, 0.05);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -1058,22 +1064,25 @@ provide('windowContext', windowStore);
     min-width: 300px;
     min-height: 200px;
     outline: none;
-    border: 1px solid var(--k-line);
+    border: 1px solid var(--k-line-strong);
     color: var(--k-ink);
-    border-radius: 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 7px;
+    transition: box-shadow 150ms cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Active state styling */
+/*
+   "Das aktive Fenster erkennt man an der Titelleiste, nicht an einem
+   Leuchten." Deshalb hier nur der zweite Schattengrad und eine Randfarbe -
+   kein blauer Ring, kein Anheben um zwei Pixel. Das Heben verschob beim
+   Fokuswechsel jedes Mal den gesamten Inhalt.
+*/
 .window.active {
     z-index: 100;
     box-shadow:
-        0 16px 60px rgba(0, 0, 0, 0.5),
-        0 8px 24px rgba(0, 0, 0, 0.35),
-        0 0 0 1px rgba(59, 130, 246, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.6);
-    transform: translateY(-2px);
+        0 16px 40px rgba(16, 22, 32, 0.16),
+        0 2px 8px rgba(16, 22, 32, 0.08);
+    border-color: var(--k-accent-line);
 }
 
 /* Maximized state styling (applied via windowStyle) */
@@ -1085,19 +1094,28 @@ provide('windowContext', windowStore);
 }
 
 /* Improved animation for window appearance */
+/* Einblenden statt Aufspringen: der Entwurf laesst 120-180 ms fuer
+   Zustandswechsel und Einblendungen zu - ein Federn ueber den Zielwert hinaus
+   klaert nichts. */
 @keyframes windowAppear {
     from {
         opacity: 0;
-        transform: scale(0.92) translateY(20px);
+        transform: scale(0.98);
     }
     to {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: scale(1);
     }
 }
 
 .window {
-    animation: windowAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: windowAppear 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .window {
+        animation: none;
+    }
 }
 
 /* Snapping classes (optional) */
@@ -1106,38 +1124,36 @@ provide('windowContext', windowStore);
 .window.snap-top { border-top-left-radius: 0; border-top-right-radius: 0; }
 
 /* --- Title Bar Styles --- */
+/*
+   Titelleiste: 28 px auf gesenkter Flaeche. Die beiden Verlaeufe hier waren
+   fest verdrahtet und trugen im hellen Modus dieselbe dunkle Farbe wie im
+   dunklen.
+*/
 .window-titlebar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 16px;
-    height: 44px;
-    background: linear-gradient(135deg, rgba(51, 65, 85, 0.9), rgba(71, 85, 105, 0.85));
+    gap: 7px;
+    padding: 0 10px;
+    height: 28px;
+    background: var(--k-sunken);
     cursor: grab;
     user-select: none;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
     position: relative;
     z-index: 10;
     flex-shrink: 0;
     border-bottom: 1px solid var(--k-line);
-    color: var(--k-ink);
+    color: var(--k-ink-muted);
     margin: 0;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Hier - und nur hier - erkennt man das aktive Fenster. */
 .window.active .window-titlebar {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.85), rgba(37, 99, 235, 0.8));
-    color: rgba(255, 255, 255, 1);
-    border-bottom-color: rgba(59, 130, 246, 0.4);
-}
-
-.window-titlebar:hover {
-    background: linear-gradient(135deg, rgba(51, 65, 85, 0.95), rgba(71, 85, 105, 0.9));
-}
-
-.window.active .window-titlebar:hover {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.85));
+    background: var(--k-accent-weak);
+    color: var(--k-accent);
+    border-bottom-color: var(--k-accent-line);
 }
 
 .window-titlebar-left {
@@ -1150,18 +1166,18 @@ provide('windowContext', windowStore);
 }
 
 .window-icon {
-    margin-right: 10px;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    margin-right: 7px;
 }
 
+/* 11.5 / 600 wie im Entwurf. Ein Schlagschatten auf 14-px-Text macht ihn
+   unschaerfer, nicht lesbarer. */
 .window-title {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 11.5px;
+    font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    letter-spacing: 0.3px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0;
 }
 
 .window-controls {
@@ -1175,14 +1191,14 @@ provide('windowContext', windowStore);
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 30px;
+    width: 22px;
+    height: 20px;
     border: none;
     background: transparent;
     color: inherit;
     cursor: pointer;
-    border-radius: 10px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 4px;
+    transition: background-color 120ms ease;
     outline: none;
 }
 
@@ -1191,19 +1207,19 @@ provide('windowContext', windowStore);
 }
 
 .window-control:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
-    transform: scale(1.08);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: var(--k-row-hover);
 }
 
 .window.active .window-control:hover {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.15));
+    background: var(--k-surface);
 }
 
+/* Schliessen wird erst beim Zeigen rot - so schlaegt es nicht dauernd
+   Alarm. Die Farbe kommt aus den Bedeutungsmerkern, die Schrift darauf aus
+   --on-fill, weil sie im dunklen Modus kippen muss. */
 .window-control.close:hover {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: var(--k-ink);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    background: var(--k-critical);
+    color: var(--k-on-fill);
 }
 
 .window-control:active {

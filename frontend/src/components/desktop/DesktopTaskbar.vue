@@ -666,36 +666,41 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 /* App-Gruppierung Styles */
+/*
+   Eine Aufgabe in der Leiste: 22 px, Radius 4, gesenkte Flaeche mit Linie.
+   Das laufende Fenster traegt Akzentflaeche und Akzentrand - dasselbe
+   Kennzeichen wie der aktive Punkt in der Seitenleiste, damit beide Modi
+   dieselbe Sprache sprechen.
+
+   Vorher: 40 px hoch, Radius 12, zwei Verlaeufe aus fest verdrahteten
+   Dunkelwerten und beim Zeigen ein Sprung um drei Pixel nach oben.
+*/
 .taskbar-app-group {
     position: relative;
     display: flex;
     align-items: center;
-    height: 40px;
-    padding: 0 14px;
-    border-radius: 12px;
+    gap: 6px;
+    height: 22px;
+    padding: 0 9px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
-    color: var(--desktop-text-secondary, rgba(255, 255, 255, 0.7));
+    transition: background-color 120ms ease, border-color 120ms ease;
+    color: var(--k-ink-muted);
     white-space: nowrap;
-    background: linear-gradient(45deg, 
-        rgba(var(--desktop-bg-dark-2, 31, 41, 55), 0.3),
-        rgba(var(--desktop-bg-dark-3, 55, 65, 81), 0.2));
+    font-size: 11.5px;
+    background: var(--k-sunken);
+    border: 1px solid var(--k-line);
 }
 
 .taskbar-app-group.active {
-    background: linear-gradient(45deg, 
-        rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.15),
-        rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.05));
-    color: var(--desktop-text, rgba(255, 255, 255, 0.95));
-    box-shadow: inset 0 0 0 1px rgba(var(--desktop-accent-blue-rgb, 59, 130, 246), 0.2);
+    background: var(--k-accent-weak);
+    border-color: var(--k-accent-line);
+    color: var(--k-accent);
 }
 
 .taskbar-app-group:hover {
-    background: linear-gradient(45deg, 
-        rgba(var(--desktop-bg-dark-2, 31, 41, 55), 0.4),
-        rgba(var(--desktop-bg-dark-3, 55, 65, 81), 0.3));
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    background: var(--k-row-hover);
+    color: var(--k-ink);
 }
 
 .app-group-icon {
@@ -1023,27 +1028,29 @@ const handleClickOutside = (event: MouseEvent) => {
 }
 
 /* Base Taskbar Styles - Adding these to make the taskbar visible */
+/*
+   Taskleiste nach Entwurf: 34 px, Flaeche und Trennlinie aus den Merkern.
+
+   Vorher: 60 px hoch, ein fest verdrahteter dunkler Verlauf mit 25 px
+   Weichzeichner und 180 % Saettigung, dazu drei Schatten nach oben. Der
+   Verlauf kippte im hellen Modus nicht mit, und die 26 Pixel Unterschied
+   fehlen der Arbeitsflaeche auf jedem Bildschirm.
+*/
 .taskbar {
-    --taskbar-height: 60px;
+    --taskbar-height: 34px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     height: var(--taskbar-height);
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.9));
-    backdrop-filter: blur(25px) saturate(180%);
-    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    background: var(--k-surface);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 var(--desktop-padding, 16px);
+    gap: 7px;
+    padding: 0 10px;
     z-index: 1000;
     border-top: 1px solid var(--k-line);
-    box-shadow:
-        0 -10px 40px rgba(0, 0, 0, 0.3),
-        0 -4px 16px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Start Button mit modernerem Design */
