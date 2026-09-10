@@ -2475,16 +2475,39 @@ function getRecent(PDO $pdo, int $authorityId): void {
         foreach ($documents as &$doc) {
             $doc['url'] = "/document/" . $doc['id'];
             $doc['type'] = $doc['category'] ?? 'Document';
-            // Truncate content for preview
-            if (isset($doc['content']) && strlen($doc['content']) > 100) {
-                $doc['content'] = substr($doc['content'], 0, 100) . '...';
+            /*
+               Nach Zeichen kuerzen, nicht nach Bytes. substr() schneidet
+               mitten in ein mehrteiliges Zeichen - die Dokumenttitel tragen
+               Emoji und Umlaute - und was dabei herauskommt, ist kein
+               gueltiges UTF-8 mehr. json_encode() liefert dafuer false, und
+               der Baustein bekommt eine leere Antwort.
+            */
+            if (isset($doc['content']) && mb_strlen($doc['content'], 'UTF-8') > 100) {
+                $doc['content'] = mb_substr($doc['content'], 0, 100, 'UTF-8') . '...';
             }
+        }
+        unset($doc);
+
+        // Ein einzelnes ungueltiges Byte darf nicht die ganze Antwort kosten.
+        $json = json_encode($documents, JSON_INVALID_UTF8_SUBSTITUTE);
+        if ($json === false) {
+            error_log("json_encode failed in getRecent: " . json_last_error_msg());
+            http_response_code(500);
+            echo json_encode(["error" => "Could not encode recent documents."]);
+            return;
         }
 
         http_response_code(200);
-        echo json_encode($documents);
-    } catch (\PDOException $e) {
-        error_log("Database error in getRecent: " . $e->getMessage());
+        echo $json;
+    } catch (\Throwable $e) {
+        /*
+           Throwable statt PDOException: der Baustein antwortete mit einem
+           leeren 500 - Status gesetzt, kein Text, nichts im Protokoll. Genau
+           das passiert, wenn hier etwas anderes als ein Datenbankfehler
+           auftritt und niemand ihn faengt.
+        */
+        error_log("Error in getRecent: " . get_class($e) . ' ' . $e->getMessage()
+            . ' @ ' . $e->getFile() . ':' . $e->getLine());
         http_response_code(500);
         echo json_encode(["error" => "Could not retrieve recent documents."]);
     }

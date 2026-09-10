@@ -2821,6 +2821,12 @@ function getAnalytics(PDO $pdo, string $authority, int $authorityId): void {
  * Returns: List of open reports (limited to 5)
  */
 function getOpenReports(PDO $pdo, string $authority, int $authorityId): void {
+    /*
+       Die Kategorie steht in kdd_report_category - so liest sie der ganze
+       Rest dieser Datei. Hier stand kdd_categories, eine Tabelle, die es im
+       Schema nicht gibt; die Abfrage brach mit 1146 ab und der Baustein
+       "Offene Berichte" blieb leer.
+    */
     try {
         $sql = "SELECT
                     r.id,
@@ -2830,7 +2836,7 @@ function getOpenReports(PDO $pdo, string $authority, int $authorityId): void {
                     c.name as category,
                     s.name as status
                 FROM kdd_reports r
-                LEFT JOIN kdd_categories c ON r.category_id = c.id
+                LEFT JOIN kdd_report_category c ON r.category_id = c.id
                 LEFT JOIN kdd_report_status s ON r.report_status_id = s.id
                 WHERE r.authority_id = ?
                 AND r.is_deleted = 0
