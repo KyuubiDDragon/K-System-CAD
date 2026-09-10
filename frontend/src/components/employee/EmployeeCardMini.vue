@@ -162,7 +162,7 @@ const handleClick = () => {
 .card-mini-name {
     font-weight: 600;
     font-size: 1rem;
-    color: #e2e8f0;
+    color: var(--k-ink);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

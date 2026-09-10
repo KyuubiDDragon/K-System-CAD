@@ -1074,7 +1074,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 
 :deep(.v-table .v-table__wrapper > table > thead > tr > th) {
     font-weight: 600;
-    color: #e2e8f0;
+    color: var(--k-ink);
     background: var(--k-sunken) !important;
     padding: 12px 16px;
 }

@@ -144,13 +144,13 @@ onMounted(() => {
     font-weight: 300;
     margin: 0 0 12px 0;
     letter-spacing: 1px;
-    color: #f8fafc;
+    color: var(--k-ink);
 }
 
 .loading-text p {
     font-size: 16px;
     margin: 0;
-    color: #cbd5e1;
+    color: var(--k-ink-muted);
     font-weight: 300;
 }
 

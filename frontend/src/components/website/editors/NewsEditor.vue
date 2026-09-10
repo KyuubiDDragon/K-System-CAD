@@ -251,7 +251,7 @@ function formatDateTimeLocal(isoString: string): string {
 .modal-header h2 {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--k-ink);
     margin: 0;
 }
 
@@ -273,7 +273,7 @@ function formatDateTimeLocal(isoString: string): string {
 
 .btn-close:hover {
     background-color: #374151;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .modal-body {
@@ -290,7 +290,7 @@ function formatDateTimeLocal(isoString: string): string {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 0.875rem;
 }
 
@@ -298,7 +298,7 @@ function formatDateTimeLocal(isoString: string): string {
     width: 100%;
     padding: 0.75rem;
     background-color: var(--k-sunken);
-    color: #e5e7eb;
+    color: var(--k-ink);
     border: 1px solid var(--k-line);
     border-radius: 6px;
     font-size: 0.875rem;
@@ -334,7 +334,7 @@ textarea.form-control {
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 0.875rem;
 }
 
@@ -364,7 +364,7 @@ textarea.form-control {
 
 .btn-secondary {
     background-color: var(--k-neutral);
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .btn-secondary:hover {

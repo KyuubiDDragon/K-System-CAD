@@ -363,7 +363,7 @@ function handleBlockImageUpload(data: any) {
 .form-group label {
     display: block;
     margin-bottom: 8px;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-weight: 500;
 }
 
@@ -373,7 +373,7 @@ function handleBlockImageUpload(data: any) {
     border: 1px solid var(--k-line);
     border-radius: 4px;
     background-color: #1e2327;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 14px;
     transition: border-color 0.3s ease;
 }
@@ -400,7 +400,7 @@ function handleBlockImageUpload(data: any) {
     display: flex;
     align-items: center;
     cursor: pointer;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .checkbox-label input[type="checkbox"] {
@@ -492,6 +492,6 @@ function handleBlockImageUpload(data: any) {
 
 .btn-icon:hover {
     background-color: #374151;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 </style>

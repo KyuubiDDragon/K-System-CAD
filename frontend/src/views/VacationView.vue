@@ -281,7 +281,7 @@ onMounted(() => {
     align-items: center;
     font-size: 1.25rem;
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--k-ink);
     margin: 0 16px;
     white-space: nowrap;
   }

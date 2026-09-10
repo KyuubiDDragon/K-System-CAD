@@ -474,7 +474,7 @@ const kCols = useTableColumns('ReportTemplateView', () => unref(templateHeaders)
 .main-container {
     min-height: 89vh;
     background-color: var(--k-canvas);
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 /* Page Header */
@@ -514,7 +514,7 @@ const kCols = useTableColumns('ReportTemplateView', () => unref(templateHeaders)
 
 .item-title {
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 /* Action Buttons */

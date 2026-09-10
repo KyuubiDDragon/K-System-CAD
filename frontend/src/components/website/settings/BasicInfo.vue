@@ -94,7 +94,7 @@ function emitChange() {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-group {
@@ -105,7 +105,7 @@ function emitChange() {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-control {

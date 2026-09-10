@@ -356,7 +356,7 @@ const dialog = computed({
   .section-title {
 	display: flex;
 	align-items: center;
-	color: #e2e8f0;
+	color: var(--k-ink);
 	padding-bottom: 8px;
 	border-bottom: 1px solid var(--k-line);
   }

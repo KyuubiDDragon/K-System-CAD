@@ -227,7 +227,7 @@ function formatDate(dateString: string): string {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .news-tab > p {
@@ -252,7 +252,7 @@ function formatDate(dateString: string): string {
 .filter-select {
     padding: 0.5rem 1rem;
     background-color: var(--k-sunken);
-    color: #e5e7eb;
+    color: var(--k-ink);
     border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 0.875rem;
@@ -304,7 +304,7 @@ function formatDate(dateString: string): string {
 
 .btn-icon:hover {
     background-color: #374151;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .btn-icon.danger:hover {
@@ -383,7 +383,7 @@ function formatDate(dateString: string): string {
 
 .news-priority {
     background-color: #374151;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .priority-high {
@@ -409,7 +409,7 @@ function formatDate(dateString: string): string {
 .news-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--k-ink);
     margin-bottom: 0.5rem;
 }
 
@@ -472,7 +472,7 @@ function formatDate(dateString: string): string {
 
 .empty-state h3 {
     font-size: 1.25rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
     margin-bottom: 0.5rem;
 }
 

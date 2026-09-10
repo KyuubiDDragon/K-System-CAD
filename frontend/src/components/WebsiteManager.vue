@@ -1577,7 +1577,7 @@ watch(selectedWebsiteId, (newId) => {
     flex-direction: column;
     height: 100%;
     background-color: #1e2327;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .app-toolbar {
@@ -1611,7 +1611,7 @@ watch(selectedWebsiteId, (newId) => {
     border-radius: 4px;
     border: 1px solid var(--k-line);
     background-color: #1e2327;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .action-buttons {

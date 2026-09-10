@@ -212,7 +212,7 @@ function updateSettings() {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .section-description {
@@ -288,7 +288,7 @@ function updateSettings() {
 }
 
 .template-info h4 {
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
@@ -308,7 +308,7 @@ function updateSettings() {
 }
 
 .template-features li {
-    color: #d1d5db;
+    color: var(--k-ink-muted);
     font-size: 0.813rem;
     margin-bottom: 0.5rem;
     display: flex;
@@ -368,7 +368,7 @@ function updateSettings() {
 }
 
 .template-settings h4 {
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 1rem;
@@ -379,7 +379,7 @@ function updateSettings() {
 }
 
 .setting-item label {
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 0.875rem;
     display: flex;
     align-items: center;

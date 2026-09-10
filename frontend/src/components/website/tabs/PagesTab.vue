@@ -169,7 +169,7 @@ defineEmits<{
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .pages-tab > p {
@@ -195,7 +195,7 @@ defineEmits<{
     border: 1px solid var(--k-line);
     border-bottom: none;
     border-radius: 4px 4px 0 0;
-    color: #e5e7eb;
+    color: var(--k-ink);
     transition: all 0.3s ease;
 }
 
@@ -231,12 +231,12 @@ defineEmits<{
     border-spacing: 0 10px;
     margin-top: 20px;
     background-color: #1e2327;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .data-table thead th {
     background-color: var(--k-sunken);
-    color: #e5e7eb;
+    color: var(--k-ink);
     padding: 12px;
     text-align: left;
     border-bottom: 2px solid #4a5568;

@@ -560,7 +560,7 @@ const kCols = useTableColumns('ReportCategorieView', () => unref(categoryHeaders
 .main-container {
     min-height: 89vh;
     background-color: var(--k-canvas);
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 /* Page Header */
@@ -600,7 +600,7 @@ const kCols = useTableColumns('ReportCategorieView', () => unref(categoryHeaders
 
 .item-title {
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 /* Action Buttons */

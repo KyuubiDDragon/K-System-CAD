@@ -2730,7 +2730,7 @@ function scanWebsite(blockIndex) {
 }
 
 .btn-icon:hover {
-    color: #f3f4f6;
+    color: var(--k-ink);
     background-color: var(--k-row-hover);
 }
 
@@ -2761,7 +2761,7 @@ function scanWebsite(blockIndex) {
     border: 1px solid #4b5563;
     border-radius: 4px;
     background-color: var(--k-surface);
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .columns-container {

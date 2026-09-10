@@ -396,7 +396,7 @@ a:hover {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-group {
@@ -407,7 +407,7 @@ a:hover {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-control {
@@ -417,7 +417,7 @@ a:hover {
     border-radius: 4px;
     font-size: 1rem;
     background-color: var(--k-sunken);
-    color: #e5e7eb;
+    color: var(--k-ink);
     transition: all 0.3s ease;
 }
 
@@ -498,7 +498,7 @@ a:hover {
     font-size: 0.875rem;
     font-weight: 500;
     text-align: center;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .toggle-container {
@@ -513,7 +513,7 @@ a:hover {
 
 .toggle-label {
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .toggle-switch {
@@ -587,7 +587,7 @@ a:hover {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .color-palette-preview {

@@ -131,7 +131,7 @@ function emitChange() {
     font-size: 1.2rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-group {
@@ -142,7 +142,7 @@ function emitChange() {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-control {
@@ -195,7 +195,7 @@ function emitChange() {
 .contact-form-config h4 {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--k-ink);
     display: flex;
     align-items: center;
     gap: 0.5rem;

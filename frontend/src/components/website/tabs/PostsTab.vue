@@ -210,7 +210,7 @@ function formatDate(dateString?: string): string {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .posts-tab > p {
@@ -236,7 +236,7 @@ function formatDate(dateString?: string): string {
 .category-filter label {
     margin: 0;
     white-space: nowrap;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .category-filter select {
@@ -269,7 +269,7 @@ function formatDate(dateString?: string): string {
 
 .data-table th {
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .data-table tbody tr {
@@ -289,7 +289,7 @@ function formatDate(dateString?: string): string {
 }
 
 .drag-handle:hover {
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .ghost-item {
@@ -308,7 +308,7 @@ function formatDate(dateString?: string): string {
 }
 
 .post-title-cell strong {
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .post-meta {
@@ -341,7 +341,7 @@ function formatDate(dateString?: string): string {
 }
 
 .data-table td {
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .actions {
@@ -399,7 +399,7 @@ function formatDate(dateString?: string): string {
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    color: #e5e7eb;
+    color: var(--k-ink);
     background-color: var(--k-sunken);
     border: 1px solid var(--k-line);
     border-radius: 4px;

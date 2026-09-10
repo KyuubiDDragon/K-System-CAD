@@ -464,7 +464,7 @@ const kCols = useTableColumns('CompanyTypeView', () => unref(typeHeaders) as any
 
 .type-name {
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 .type-description {

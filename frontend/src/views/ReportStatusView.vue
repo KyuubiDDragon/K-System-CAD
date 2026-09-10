@@ -428,7 +428,7 @@ const kCols = useTableColumns('ReportStatusView', () => unref(statusHeaders) as 
   .main-container {
 	  min-height: 89vh;
 	  background-color: var(--k-canvas);
-	  color: #e2e8f0;
+	  color: var(--k-ink);
   }
   
   /* Page Header */
@@ -468,7 +468,7 @@ const kCols = useTableColumns('ReportStatusView', () => unref(statusHeaders) as 
   
   .item-title {
 	  font-weight: 500;
-	  color: #e2e8f0;
+	  color: var(--k-ink);
   }
   
   .sort-order {

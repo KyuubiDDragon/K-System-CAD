@@ -352,7 +352,7 @@ function getIndent(item: NavigationItem): string {
 .item-title {
     font-size: 16px;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
     margin-bottom: 5px;
     display: flex;
     align-items: center;
@@ -502,7 +502,7 @@ function getIndent(item: NavigationItem): string {
     background-color: #1e2327;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .modal-header {
@@ -517,7 +517,7 @@ function getIndent(item: NavigationItem): string {
     margin: 0;
     font-size: 20px;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .btn-close {
@@ -538,7 +538,7 @@ function getIndent(item: NavigationItem): string {
 
 .btn-close:hover {
     background-color: #374151;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .modal-body {
@@ -553,7 +553,7 @@ function getIndent(item: NavigationItem): string {
     display: block;
     margin-bottom: 8px;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-control {
@@ -562,7 +562,7 @@ function getIndent(item: NavigationItem): string {
     background-color: var(--k-sunken);
     border: 1px solid var(--k-line);
     border-radius: 4px;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 14px;
     transition: all 0.3s ease;
 }
@@ -594,7 +594,7 @@ function getIndent(item: NavigationItem): string {
     align-items: center;
     gap: 8px;
     cursor: pointer;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-weight: normal;
 }
 

@@ -1969,7 +1969,7 @@ const kFilters = useTableFilters(
 .mail-system-container {
     background-color: var(--k-canvas);
     min-height: 100vh;
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 /* Sidebar Styles */
@@ -2068,7 +2068,7 @@ const kFilters = useTableFilters(
 .message-title {
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #e2e8f0;
+    color: var(--k-ink);
     position: relative;
 }
 
@@ -2184,7 +2184,7 @@ const kFilters = useTableFilters(
 .message-editor :deep(.ProseMirror) {
     min-height: 250px;
     background-color: var(--k-sunken);
-    color: #e2e8f0;
+    color: var(--k-ink);
     padding: 16px;
 }
 

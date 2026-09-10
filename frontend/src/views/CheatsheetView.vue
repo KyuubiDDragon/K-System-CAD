@@ -557,7 +557,7 @@ onUnmounted(() => {
 .cheatsheet {
     min-height: 89vh;
     background-color: var(--k-canvas);
-    color: #e2e8f0;
+    color: var(--k-ink);
     position: relative;
 }
 
@@ -650,7 +650,7 @@ onUnmounted(() => {
 .preview-data-table thead tr th {
     font-weight: 600;
     background-color: #141c2e !important;
-    color: #e2e8f0 !important;
+    color: var(--k-ink) !important;
     border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -704,7 +704,7 @@ onUnmounted(() => {
 .preview-data-table tbody tr td {
     padding: 6px 12px;
     font-size: 0.85rem;
-    color: #e2e8f0;
+    color: var(--k-ink);
     word-wrap: break-word;
     word-break: break-word;
     overflow-wrap: break-word;
@@ -718,7 +718,7 @@ onUnmounted(() => {
 .data-table-dense .v-table__wrapper > table > thead > tr > th {
     font-weight: 600;
     background-color: #141c2e !important;
-    color: #e2e8f0 !important;
+    color: var(--k-ink) !important;
     border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;

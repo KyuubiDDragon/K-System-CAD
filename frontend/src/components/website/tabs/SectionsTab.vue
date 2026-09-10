@@ -245,7 +245,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .sections-tab > p {
@@ -272,7 +272,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .template-notice p {
     margin: 0;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 /* Toolbar */
@@ -293,7 +293,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 .filter-select {
     padding: 0.5rem 1rem;
     background-color: var(--k-sunken);
-    color: #e5e7eb;
+    color: var(--k-ink);
     border: 1px solid var(--k-line);
     border-radius: 4px;
     font-size: 0.875rem;
@@ -310,7 +310,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     align-items: center;
     gap: 0.5rem;
     cursor: pointer;
-    color: #e5e7eb;
+    color: var(--k-ink);
     font-size: 0.875rem;
 }
 
@@ -360,7 +360,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .btn-icon:hover {
     background-color: #374151;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .btn-icon.danger:hover {
@@ -490,7 +490,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 .section-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--k-ink);
     margin-bottom: 0.5rem;
 }
 
@@ -531,7 +531,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .empty-state h3 {
     font-size: 1.25rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
     margin-bottom: 0.5rem;
 }
 

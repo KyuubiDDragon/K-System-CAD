@@ -2046,7 +2046,7 @@
     word-wrap: break-word;
     overflow-x: auto;
     background: transparent;
-    color: #e2e8f0;
+    color: var(--k-ink);
     flex: 1;
     min-height: 0;
   }

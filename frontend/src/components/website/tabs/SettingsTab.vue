@@ -287,7 +287,7 @@ function handleSelectScheme(schemeName: string) {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .settings-tab > p {

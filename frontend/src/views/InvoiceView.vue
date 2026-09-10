@@ -711,7 +711,7 @@ const kFilters = useTableFilters(
 
 .invoice-title {
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 .invoice-customer {

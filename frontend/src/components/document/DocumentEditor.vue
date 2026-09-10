@@ -787,7 +787,7 @@ onBeforeUnmount(() => {
   .editor-label {
     font-size: 0.95rem;
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--k-ink);
     margin-bottom: 8px;
     display: flex;
     align-items: center;
@@ -869,7 +869,7 @@ onBeforeUnmount(() => {
     min-height: 800px; /* Double the default height from 500px to 800px */
     padding: 30px;
     background-color: var(--k-sunken) !important;
-    color: #e2e8f0 !important;
+    color: var(--k-ink) !important;
     width: 100% !important; /* Ensure full width */
   }
   
@@ -1089,7 +1089,7 @@ onBeforeUnmount(() => {
 
   .fullscreen-document-view pre {
     background: var(--k-sunken);
-    color: #e2e8f0;
+    color: var(--k-ink);
     padding: 1em;
     border-radius: 8px;
     overflow-x: auto;

@@ -489,7 +489,7 @@ const closeDialog = () => {
 .section-title {
     display: flex;
     align-items: center;
-    color: #e2e8f0;
+    color: var(--k-ink);
 }
 
 /* Empty States */

@@ -375,7 +375,7 @@ function handleCancel() {
     background-color: #1e2327;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    color: #e5e7eb;
+    color: var(--k-ink);
     max-height: 90vh;
     display: flex;
     flex-direction: column;
@@ -392,7 +392,7 @@ function handleCancel() {
 .modal-header h3 {
     margin: 0;
     font-size: 1.25rem;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .btn-icon {
@@ -425,7 +425,7 @@ function handleCancel() {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    color: #e5e7eb;
+    color: var(--k-ink);
 }
 
 .form-control {
@@ -433,7 +433,7 @@ function handleCancel() {
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    color: #e5e7eb;
+    color: var(--k-ink);
     background-color: var(--k-sunken);
     border: 1px solid var(--k-line);
     border-radius: 4px;
