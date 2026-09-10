@@ -361,7 +361,7 @@ function formatDate(dateString?: string): string {
 
 .btn-icon:hover {
     background-color: #374151;
-    color: #60a5fa;
+    color: var(--k-accent);
 }
 
 .btn-icon:hover i.mdi-delete {

@@ -429,8 +429,8 @@ const currentVacation = computed(() => {
 }
 
 .preview-avatar {
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
-    border: 3px solid rgba(59, 130, 246, 0.2);
+    box-shadow: 0 8px 24px var(--k-accent-line);
+    border: 3px solid var(--k-accent-weak);
 }
 
 .preview-section {

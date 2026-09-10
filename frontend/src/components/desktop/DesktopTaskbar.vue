@@ -1179,7 +1179,7 @@ const handleClickOutside = (event: MouseEvent) => {
 .taskbar-app.active {
     background: var(--k-accent-weak);
     color: var(--desktop-text, rgba(255, 255, 255, 0.95));
-    border-color: rgba(59, 130, 246, 0.3);
+    border-color: var(--k-accent-line);
     box-shadow: none;
 }
 

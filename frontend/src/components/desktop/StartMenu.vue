@@ -541,9 +541,9 @@ const switchToSidebar = async () => {
 }
 
 .switch-button:hover {
-    background-color: rgba(59, 130, 246, 0.2);
-    border-color: rgba(59, 130, 246, 0.3);
-    color: #93c5fd;
+    background-color: var(--k-accent-weak);
+    border-color: var(--k-accent-line);
+    color: var(--k-accent-line);
 }
 
 .logout-button:hover {

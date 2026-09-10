@@ -1430,9 +1430,6 @@ watch([markers, categories], () => {
     height: calc(100vh - 64px);
     width: 100%;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
     position: relative;
     padding: 16px;
     display: flex;
@@ -1551,7 +1548,7 @@ watch([markers, categories], () => {
 }
 
 .location-item:hover {
-    background-color: rgba(59, 130, 246, 0.1) !important;
+    background-color: var(--k-accent-weak) !important;
     transform: translateX(4px);
 }
 
@@ -1606,7 +1603,7 @@ watch([markers, categories], () => {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover));
     color: var(--k-ink);
     padding: 16px;
 }

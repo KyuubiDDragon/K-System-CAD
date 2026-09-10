@@ -1797,9 +1797,6 @@ onMounted(() => {
 .app-container {
     min-height: 90vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
     position: relative;
 }
 
@@ -1886,7 +1883,7 @@ onMounted(() => {
 .template-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    border-color: rgba(59, 130, 246, 0.3);
+    border-color: var(--k-accent-line);
 }
 
 .template-toolbar {
@@ -1901,8 +1898,8 @@ onMounted(() => {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    background: var(--k-accent-weak);
+    border: 1px solid var(--k-accent-weak);
 }
 
 .template-title {
@@ -1927,7 +1924,7 @@ onMounted(() => {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover));
     color: var(--k-ink);
     padding: 16px;
 }
@@ -1966,7 +1963,7 @@ onMounted(() => {
 }
 
 .open-button:hover {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 .icon-pick-btn {
@@ -1975,7 +1972,7 @@ onMounted(() => {
 
 .icon-pick-btn:hover {
     transform: scale(1.2);
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 .sorting-list {
@@ -2000,15 +1997,15 @@ onMounted(() => {
 
 .ghost {
     opacity: 0.5;
-    background: rgba(59, 130, 246, 0.2) !important;
-    border: 1px dashed rgba(59, 130, 246, 0.5) !important;
+    background: var(--k-accent-weak) !important;
+    border: 1px dashed var(--k-accent-line) !important;
 }
 
 code {
     background-color: rgba(15, 23, 42, 0.6);
     padding: 2px 4px;
     border-radius: 4px;
-    color: #60a5fa;
+    color: var(--k-accent);
     font-family: monospace;
 }
 
@@ -2058,7 +2055,7 @@ code {
 .template-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: var(--k-accent-line);
 }
 
 .template-card-content {
@@ -2078,8 +2075,8 @@ code {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: var(--k-accent-weak);
+  border: 1px solid var(--k-accent-weak);
   margin-bottom: 16px;
 }
 
@@ -2189,7 +2186,7 @@ code {
 .template-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: var(--k-accent-line);
 }
 
 .template-toolbar {
@@ -2217,8 +2214,8 @@ code {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: rgba(59, 130, 246, 0.1);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: var(--k-accent-weak);
+  border: 1px solid var(--k-accent-weak);
   margin-bottom: 16px;
 }
 
@@ -2248,7 +2245,7 @@ code {
 /* Anpassung des Template-Grid für Draggable */
 .template-grid:deep(.sortable-ghost) {
   opacity: 0.5;
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--k-accent-weak);
 }
 
 /* Medienabfragen für responsive Anpassungen */

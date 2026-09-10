@@ -1435,7 +1435,7 @@ provide('windowContext', windowStore);
 .window.active:hover .resize-handle-sw::after,
 .window.active:hover .resize-handle-ne::after,
 .window.active:hover .resize-handle-nw::after {
-    background: rgba(59, 130, 246, 0.4);
+    background: var(--k-accent-line);
     opacity: 1;
 }
 
@@ -1444,7 +1444,7 @@ provide('windowContext', windowStore);
 .resize-handle-sw:hover::after,
 .resize-handle-ne:hover::after,
 .resize-handle-nw:hover::after {
-    background: rgba(59, 130, 246, 0.6);
+    background: var(--k-accent-line);
     opacity: 1;
     transform: scale(1.2);
 }

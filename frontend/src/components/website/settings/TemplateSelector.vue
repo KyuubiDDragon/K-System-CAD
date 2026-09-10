@@ -242,7 +242,7 @@ function updateSettings() {
 .template-card:hover:not(.disabled) {
     border-color: var(--k-accent);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 4px 12px var(--k-accent-weak);
 }
 
 .template-card.active {

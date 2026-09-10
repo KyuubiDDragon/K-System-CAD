@@ -236,12 +236,12 @@ const contactForm = ref({
 
 // Preset Color Schemes
 const presetColorSchemes: Record<string, any> = {
-    'Blue Ocean': { primary: '#3b82f6', secondary: '#60a5fa', accent: '#93c5fd', background: '#ffffff', text: '#111827' },
+    'Blue Ocean': { primary: 'var(--k-accent)', secondary: 'var(--k-accent)', accent: 'var(--k-accent-line)', background: '#ffffff', text: '#111827' },
     'Forest Green': { primary: '#10b981', secondary: '#34d399', accent: '#6ee7b7', background: '#ffffff', text: '#111827' },
     'Royal Purple': { primary: '#8b5cf6', secondary: '#a78bfa', accent: '#c4b5fd', background: '#ffffff', text: '#111827' },
     'Sunset Orange': { primary: '#f59e0b', secondary: '#fbbf24', accent: '#fcd34d', background: '#ffffff', text: '#111827' },
     'Rose Pink': { primary: '#ec4899', secondary: '#f472b6', accent: '#fbcfe8', background: '#ffffff', text: '#111827' },
-    'Dark Blue': { primary: '#3b82f6', secondary: '#60a5fa', accent: '#93c5fd', background: '#111827', text: '#f9fafb' },
+    'Dark Blue': { primary: 'var(--k-accent)', secondary: 'var(--k-accent)', accent: 'var(--k-accent-line)', background: '#111827', text: '#f9fafb' },
     'Dark Forest': { primary: '#10b981', secondary: '#34d399', accent: '#6ee7b7', background: '#0f1419', text: '#f0fdf4' },
     'Dark Purple': { primary: '#a855f7', secondary: '#c084fc', accent: '#e9d5ff', background: '#1e1b2e', text: '#faf5ff' },
     'Dark Amber': { primary: '#f59e0b', secondary: '#fbbf24', accent: '#fde68a', background: '#1c1917', text: '#fffbeb' },
@@ -270,9 +270,9 @@ const websiteStyles = computed(() => {
         colors = props.website.customColors;
     } else {
         colors = {
-            primary: props.website.primary_color || '#3b82f6',
-            secondary: props.website.secondary_color || '#1e3a8a',
-            accent: '#60a5fa',
+            primary: props.website.primary_color || 'var(--k-accent)',
+            secondary: props.website.secondary_color || 'var(--k-accent-hover)',
+            accent: 'var(--k-accent)',
             background: props.website.background_color || '#ffffff',
             text: '#111827',
         };
@@ -590,11 +590,11 @@ function getDividerSettings(section: any): { shape: string; position: string; fl
             flip: settings.dividerFlip || false,
             height: settings.dividerHeight || 80,
             colorMode: settings.dividerColorMode || 'primary',
-            color: settings.dividerColor || '#3b82f6'
+            color: settings.dividerColor || 'var(--k-accent)'
         };
     } catch (e) {
         console.error('Error parsing divider settings:', e);
-        return { shape: 'none', position: 'bottom', flip: false, height: 80, colorMode: 'primary', color: '#3b82f6' };
+        return { shape: 'none', position: 'bottom', flip: false, height: 80, colorMode: 'primary', color: 'var(--k-accent)' };
     }
 }
 
@@ -1888,12 +1888,12 @@ onBeforeUnmount(() => {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px var(--k-accent-line);
 }
 
 .plan-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 25px var(--k-accent-line);
 }
 
 /* Dark mode pricing cards */

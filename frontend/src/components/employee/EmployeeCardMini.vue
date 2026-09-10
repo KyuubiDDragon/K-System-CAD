@@ -132,12 +132,12 @@ const handleClick = () => {
 .employee-card-mini:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    border-color: rgba(59, 130, 246, 0.4);
+    border-color: var(--k-accent-line);
 }
 
 .employee-card-mini.selected {
     border-color: var(--k-accent);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 2px var(--k-accent-line);
     transform: scale(1.02);
 }
 
@@ -150,8 +150,8 @@ const handleClick = () => {
 
 .card-mini-avatar {
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-    background: linear-gradient(135deg, #1e3a8a, var(--k-accent));
+    box-shadow: 0 2px 8px var(--k-accent-weak);
+    background: linear-gradient(135deg, var(--k-accent-hover), var(--k-accent));
 }
 
 .card-mini-info {
@@ -170,7 +170,7 @@ const handleClick = () => {
 }
 
 .card-mini-id {
-    color: #60a5fa;
+    color: var(--k-accent);
     font-size: 0.75rem;
     font-weight: 500;
     margin-bottom: 2px;
@@ -195,7 +195,7 @@ const handleClick = () => {
 }
 
 .card-mini-status.vacation {
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 8px var(--k-accent-line);
 }
 
 .card-mini-status.sick {

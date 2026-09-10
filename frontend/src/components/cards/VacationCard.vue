@@ -348,7 +348,7 @@
   
   .upcoming-vacation-card {
     background: var(--upcoming-bg) !important;
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    border: 1px solid var(--k-accent-line);
   }
   
   .recent-return-card {
@@ -372,11 +372,11 @@
   }
   
   .current-vacation-card .status-banner {
-    background: rgba(59, 130, 246, 0.15);
+    background: var(--k-accent-weak);
   }
   
   .upcoming-vacation-card .status-banner {
-    background: rgba(59, 130, 246, 0.2);
+    background: var(--k-accent-weak);
   }
   
   .recent-return-card .status-banner {

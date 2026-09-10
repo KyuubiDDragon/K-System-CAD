@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive, computed } from 'vue';
+import { ref, onMounted, reactive, computed, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store
@@ -52,7 +53,27 @@ const passwordChange = reactive({
 });
 
 // Neue Eigenschaften für die überarbeitete UI
-const activeTab = ref('personal');
+/**
+ * Welcher Reiter offen ist, steht in der Adresse.
+ *
+ * Das Benutzermenue oben rechts fuehrte auf "/settings" - eine Route, die es
+ * nie gab, sodass der Punkt "Einstellungen" schlicht nichts tat. Die
+ * Einstellungen liegen hier in den Reitern; das Menue zeigt jetzt direkt auf
+ * den richtigen, und wer den Link teilt, landet an derselben Stelle.
+ */
+const route = useRoute();
+const ERLAUBTE_REITER = ['personal', 'templates', 'security'] as const;
+
+function reiterAusAdresse(): string {
+    const gewuenscht = String(route.query.tab ?? '');
+    return (ERLAUBTE_REITER as readonly string[]).includes(gewuenscht) ? gewuenscht : 'personal';
+}
+
+const activeTab = ref(reiterAusAdresse());
+
+watch(() => route.query.tab, () => {
+    activeTab.value = reiterAusAdresse();
+});
 const previewDialog = ref(false);
 const previewImage = ref('');
 
@@ -874,22 +895,19 @@ onMounted(() => {
 .account-settings-container {
     min-height: 90vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
     position: relative;
 }
 
 /* Profil Styles */
 .profile-avatar {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(59, 130, 246, 0.3);
+    border: 2px solid var(--k-accent-line);
     transition: all 0.3s ease;
 }
 
 .profile-avatar:hover {
     transform: scale(1.05);
-    border-color: rgba(59, 130, 246, 0.5);
+    border-color: var(--k-accent-line);
 }
 
 /* Tab Styles */
@@ -905,7 +923,7 @@ onMounted(() => {
 }
 
 .settings-tabs :deep(.v-tab--selected) {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 /* Card Styles */

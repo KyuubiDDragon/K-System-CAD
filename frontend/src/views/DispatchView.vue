@@ -492,27 +492,27 @@
 
 /* Active panel button highlight */
 .active-panel-btn {
-    background-color: rgba(59, 130, 246, 0.2) !important;
+    background-color: var(--k-accent-weak) !important;
 }
 
 /* Highlight animation for dispatch cards when navigated to via ID */
 .highlight-dispatch {
     animation: highlightPulse 0.5s ease-in-out 3;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6) !important;
+    box-shadow: 0 0 20px var(--k-accent-line) !important;
 }
 
 @keyframes highlightPulse {
     0% {
         transform: scale(1);
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 0 10px var(--k-accent-line);
     }
     50% {
         transform: scale(1.02);
-        box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+        box-shadow: 0 0 20px var(--k-accent);
     }
     100% {
         transform: scale(1);
-        box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+        box-shadow: 0 0 10px var(--k-accent-line);
     }
 }
 </style>
@@ -1524,7 +1524,7 @@ function handleDispatchUpdate(updateData: WebSocketUpdateData): void {
 }
 
 .list-scroll-area::-webkit-scrollbar-thumb {
-    background-color: rgba(59, 130, 246, 0.5);
+    background-color: var(--k-accent-line);
     border-radius: 3px;
 }
 
@@ -1628,11 +1628,11 @@ function handleDispatchUpdate(updateData: WebSocketUpdateData): void {
 
 .drop-zone:hover {
     border-color: var(--v-theme-primary);
-    background-color: rgba(59, 130, 246, 0.05);
+    background-color: var(--k-accent-weak);
 }
 
 .drop-zone.sortable-ghost {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
     border: 1px dashed var(--v-theme-primary);
 }
 
@@ -1682,7 +1682,7 @@ function handleDispatchUpdate(updateData: WebSocketUpdateData): void {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, var(--k-accent-weak), transparent);
     /* Remove animation */
     /* animation: shimmer 3s infinite; */
     pointer-events: none;

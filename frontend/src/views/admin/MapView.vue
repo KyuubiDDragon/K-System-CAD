@@ -620,9 +620,6 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 .map-category-container {
     min-height: 90vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 20% 30%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
     position: relative;
 }
 
@@ -709,7 +706,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 .icon-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    border-color: rgba(59, 130, 246, 0.5);
+    border-color: var(--k-accent-line);
 }
 
 /* Action Icons */
@@ -749,7 +746,7 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover));
     color: var(--k-ink);
     padding: 16px;
 }
@@ -789,11 +786,11 @@ const kCols = useTableColumns('admin/MapView', () => unref(categoryHeaders) as a
 }
 
 .icon-picker::-webkit-scrollbar-thumb {
-    background: rgba(59, 130, 246, 0.3);
+    background: var(--k-accent-line);
     border-radius: 4px;
 }
 
 .icon-picker::-webkit-scrollbar-thumb:hover {
-    background: rgba(59, 130, 246, 0.5);
+    background: var(--k-accent-line);
 }
 </style>

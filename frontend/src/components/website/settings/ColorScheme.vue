@@ -138,7 +138,7 @@
                         :style="{
                             backgroundColor: localSettings.useCustomColors
                                 ? localSettings.customColors.secondary
-                                : getSelectedSchemeColor('secondary') || '#60a5fa',
+                                : getSelectedSchemeColor('secondary') || 'var(--k-accent)',
                         }"
                     ></div>
                     <div class="color-label">Sekundärfarbe</div>
@@ -149,7 +149,7 @@
                         :style="{
                             backgroundColor: localSettings.useCustomColors
                                 ? localSettings.customColors.accent
-                                : getSelectedSchemeColor('accent') || '#93c5fd',
+                                : getSelectedSchemeColor('accent') || 'var(--k-accent-line)',
                         }"
                     ></div>
                     <div class="color-label">Akzentfarbe</div>
@@ -477,8 +477,8 @@ a:hover {
 
 .color-scheme-item.selected {
     border-color: var(--k-accent);
-    background-color: #1e3a8a;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    background-color: var(--k-accent-hover);
+    box-shadow: 0 0 0 3px var(--k-accent-line);
 }
 
 .scheme-colors {

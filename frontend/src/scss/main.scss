@@ -42,7 +42,7 @@ $custom-shadow: rgba(0, 0, 0, 0.3);
 // Define specific colors for desktop components
 $desktop-bg-dark-1: #0f172a;
 $desktop-bg-dark-2: #1e293b;
-$desktop-accent-blue: rgba(59, 130, 246, 0.5);
+$desktop-accent-blue: var(--k-accent-line);
 $desktop-accent-purple: rgba(147, 51, 234, 0.15);
 $desktop-text: white;
 $desktop-text-secondary: rgba(255, 255, 255, 0.7);
@@ -73,7 +73,7 @@ $animation-easing-bounce: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 $shadow-small: 0 2px 10px rgba(0, 0, 0, 0.15);
 $shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.2);
 $shadow-large: 0 15px 30px rgba(0, 0, 0, 0.4);
-$shadow-accent: 0 0 15px rgba(59, 130, 246, 0.2);
+$shadow-accent: 0 0 15px var(--k-accent-weak);
 
 // Scrollbar variables
 $scrollbar-width: 6px;
@@ -243,7 +243,7 @@ $scrollbar-track-color: transparent;
 }
 
 .vacation-employee .status-banner {
-  background: rgba(59, 130, 246, 0.15);
+  background: var(--k-accent-weak);
 }
 
 .status-icon {
@@ -465,7 +465,7 @@ $scrollbar-track-color: transparent;
 }
 
 .dialog-title {
-  background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+  background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover));
   color: var(--k-ink);
   padding: 16px;
 }
@@ -504,7 +504,7 @@ $scrollbar-track-color: transparent;
 }
 
 .save-button:hover {
-  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Action Icons */
@@ -524,7 +524,7 @@ $scrollbar-track-color: transparent;
 }
 
 .close-button:hover {
-  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Promotion and Vacation Tables */
@@ -542,7 +542,7 @@ $scrollbar-track-color: transparent;
 
 .promotion-table :deep(tr:hover), 
 .vacation-table :deep(tr:hover) {
-  background-color: rgba(59, 130, 246, 0.08) !important;
+  background-color: var(--k-accent-weak) !important;
 }
 
 /* Document Editor Container */
@@ -599,7 +599,7 @@ $scrollbar-track-color: transparent;
   // Colors
   --desktop-bg-dark-1: 15, 23, 42; // rgb format for opacity control
   --desktop-bg-dark-2: 30, 41, 59;
-  --desktop-accent-blue: rgba(59, 130, 246, 0.8);
+  --desktop-accent-blue: var(--k-accent);
   --desktop-accent-purple: rgba(139, 92, 246, 0.8);
   --desktop-border: rgba(255, 255, 255, 0.1);
   --desktop-text: rgba(255, 255, 255, 0.95);
@@ -624,7 +624,7 @@ $scrollbar-track-color: transparent;
   --shadow-small: 0 2px 5px rgba(0, 0, 0, 0.2);
   --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.15);
   --shadow-large: 0 8px 25px rgba(0, 0, 0, 0.25);
-  --shadow-accent: 0 0 15px rgba(59, 130, 246, 0.3);
+  --shadow-accent: 0 0 15px var(--k-accent-line);
   --desktop-button-highlight: rgba(255, 255, 255, 0.15);
   
   // Borders
@@ -653,7 +653,7 @@ $scrollbar-track-color: transparent;
 .theme-light {
   --desktop-bg-dark-1: 240, 245, 250;
   --desktop-bg-dark-2: 226, 232, 240;
-  --desktop-accent-blue: rgba(59, 130, 246, 0.8);
+  --desktop-accent-blue: var(--k-accent);
   --desktop-accent-purple: rgba(139, 92, 246, 0.8);
   --desktop-border: rgba(0, 0, 0, 0.1);
   --desktop-text: rgba(15, 23, 42, 0.95);

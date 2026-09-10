@@ -933,9 +933,6 @@ const kFilters = useTableFilters(
 .company-container {
     min-height: 89vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
 }
 
 /* Page Header */
@@ -983,7 +980,7 @@ const kFilters = useTableFilters(
 
 .action-button:hover {
     transform: var(--button-hover-translate);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Main Card */

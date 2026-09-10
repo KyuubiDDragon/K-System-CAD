@@ -842,7 +842,7 @@
       #1d4ed8 10px,
       #1d4ed8 20px
     );
-    border: 2px solid #1e40af;
+    border: 2px solid var(--k-accent-hover);
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
     color: transparent;
   }

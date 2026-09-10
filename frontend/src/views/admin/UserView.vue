@@ -1140,9 +1140,6 @@ function kExportSelection() {
 .user-management-container {
     min-height: 90vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
     position: relative;
 }
 
@@ -1152,7 +1149,7 @@ function kExportSelection() {
 }
 
 .header-icon {
-    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.4));
+    filter: drop-shadow(0 2px 6px var(--k-accent-line));
 }
 
 .info-alert {
@@ -1178,7 +1175,7 @@ function kExportSelection() {
 
 .search-field:focus-within,
 .status-filter:focus-within {
-    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 1px var(--k-accent-line);
 }
 
 .action-button {
@@ -1288,7 +1285,7 @@ function kExportSelection() {
 }
 
 .dialog-toolbar {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover)) !important;
 }
 
 /* Image tooltips */

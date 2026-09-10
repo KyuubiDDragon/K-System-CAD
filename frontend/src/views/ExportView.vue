@@ -1891,9 +1891,6 @@ onMounted(async () => {
 .export-container {
     min-height: 90vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
 }
 
 .header-title {
@@ -1901,7 +1898,7 @@ onMounted(async () => {
 }
 
 .header-icon {
-    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.4));
+    filter: drop-shadow(0 2px 6px var(--k-accent-line));
 }
 
 .config-card {
@@ -1935,11 +1932,11 @@ onMounted(async () => {
 }
 
 .draggable-column-item:hover {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 .draggable-column-item.drag-over {
-    background-color: rgba(59, 130, 246, 0.3);
+    background-color: var(--k-accent-line);
     border-top: 2px solid var(--k-accent);
 }
 
@@ -1968,7 +1965,7 @@ onMounted(async () => {
 }
 
 .preset-item:hover {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 .loading-state {
@@ -1990,8 +1987,8 @@ onMounted(async () => {
 }
 
 .preview-table th {
-    background-color: rgba(59, 130, 246, 0.2);
-    color: #93c5fd;
+    background-color: var(--k-accent-weak);
+    color: var(--k-accent-line);
     font-weight: 600;
     padding: 8px 12px;
     text-align: left;
@@ -2016,7 +2013,7 @@ onMounted(async () => {
 }
 
 .preview-table tr:hover td {
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 @keyframes fadeIn {

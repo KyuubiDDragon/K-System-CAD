@@ -185,7 +185,7 @@ function confirmSelection() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(99, 102, 241, 0.05));
+  background: linear-gradient(135deg, var(--k-accent-weak), rgba(99, 102, 241, 0.05));
   border-bottom: 1px solid var(--k-line);
   transition: all 0.3s ease;
 
@@ -195,7 +195,7 @@ function confirmSelection() {
 }
 
 .layout-option:hover .layout-preview {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(99, 102, 241, 0.1));
+  background: linear-gradient(135deg, var(--k-accent-weak), rgba(99, 102, 241, 0.1));
 
   .v-icon {
     transform: scale(1.1);
@@ -203,7 +203,7 @@ function confirmSelection() {
 }
 
 .layout-option.selected .layout-preview {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.15));
+  background: linear-gradient(135deg, var(--k-accent-weak), rgba(99, 102, 241, 0.15));
 }
 
 .selection-chip {

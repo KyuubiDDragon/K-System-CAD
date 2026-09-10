@@ -1014,9 +1014,6 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 .question-catalog-container {
     min-height: 90vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 10% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 90% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 35%);
     position: relative;
 }
 
@@ -1026,7 +1023,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 .header-icon {
-    filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.4));
+    filter: drop-shadow(0 2px 6px var(--k-accent-line));
 }
 
 .info-alert {
@@ -1200,7 +1197,7 @@ const kCols = useTableColumns('TestView', () => unref(headers) as any);
 }
 
 .dialog-toolbar {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover)) !important;
 }
 
 .dialog-toolbar.v-toolbar {

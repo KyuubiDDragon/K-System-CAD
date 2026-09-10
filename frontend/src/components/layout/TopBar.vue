@@ -157,7 +157,12 @@
           <v-list-item prepend-icon="mdi-account" to="/profile">
             <v-list-item-title>{{ $t('menu.profile') }}</v-list-item-title>
           </v-list-item>
-          <v-list-item prepend-icon="mdi-cog" to="/settings">
+          <!--
+            Fuehrte auf "/settings" - eine Route, die der Router nicht kennt.
+            Der Punkt tat deshalb nichts. Die persoenlichen Einstellungen
+            liegen in den Reitern des Profils.
+          -->
+          <v-list-item prepend-icon="mdi-cog" to="/profile?tab=security">
             <v-list-item-title>{{ $t('menu.settings') }}</v-list-item-title>
           </v-list-item>
           <v-divider />

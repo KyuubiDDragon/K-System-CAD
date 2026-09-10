@@ -1037,7 +1037,7 @@ async function addVacation(member: Employee) {
 }
 
 .vacation-employee .status-banner {
-    background: rgba(59, 130, 246, 0.15);
+    background: var(--k-accent-weak);
 }
 
 .status-icon {
@@ -1259,7 +1259,7 @@ async function addVacation(member: Employee) {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover));
     color: var(--k-ink);
     padding: 16px;
 }
@@ -1301,7 +1301,7 @@ async function addVacation(member: Employee) {
 
 .save-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Action Icons */
@@ -1325,7 +1325,7 @@ async function addVacation(member: Employee) {
 
 .close-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Promotion and Vacation Tables */
@@ -1344,7 +1344,7 @@ async function addVacation(member: Employee) {
 
 .promotion-table :deep(tr:hover),
 .vacation-table :deep(tr:hover) {
-    background-color: rgba(59, 130, 246, 0.08) !important;
+    background-color: var(--k-accent-weak) !important;
 }
 
 /* Document Editor Container - Fixed z-index */

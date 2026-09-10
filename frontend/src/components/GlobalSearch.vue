@@ -1229,10 +1229,10 @@ defineExpose({
     }
 
     &:focus-within {
-      border-color: rgba(59, 130, 246, 0.5);
+      border-color: var(--k-accent-line);
       background: rgba(15, 23, 42, 0.7) !important;
       box-shadow:
-        0 0 0 3px rgba(59, 130, 246, 0.15),
+        0 0 0 3px var(--k-accent-weak),
         0 4px 12px rgba(0, 0, 0, 0.2);
     }
   }
@@ -1270,8 +1270,8 @@ defineExpose({
 
 .category-chip {
   margin-right: 8px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.15)) !important;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, var(--k-accent-weak), var(--k-accent-weak)) !important;
+  border: 1px solid var(--k-accent-line);
   font-weight: 600;
   color: rgba(147, 197, 253, 0.95);
 }
@@ -1302,9 +1302,9 @@ defineExpose({
 
     &.v-tab--selected {
       color: var(--k-ink);
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.2));
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+      background: linear-gradient(135deg, var(--k-accent-line), var(--k-accent-weak));
+      border: 1px solid var(--k-accent-line);
+      box-shadow: 0 4px 12px var(--k-accent-weak);
     }
 
     .v-chip {
@@ -1372,8 +1372,8 @@ defineExpose({
   border: 1px solid var(--k-line);
 
   &:hover {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.1));
-    border-color: rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, var(--k-accent-weak), var(--k-accent-weak));
+    border-color: var(--k-accent-line);
     transform: translateX(4px);
     box-shadow:
       0 4px 12px rgba(0, 0, 0, 0.2),
@@ -1381,10 +1381,10 @@ defineExpose({
   }
 
   &.active {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(37, 99, 235, 0.2));
-    border-color: rgba(59, 130, 246, 0.4);
+    background: linear-gradient(135deg, var(--k-accent-line), var(--k-accent-weak));
+    border-color: var(--k-accent-line);
     box-shadow:
-      0 6px 16px rgba(59, 130, 246, 0.25),
+      0 6px 16px var(--k-accent-line),
       inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 
@@ -1467,12 +1467,12 @@ defineExpose({
   margin: 4px 8px;
   padding: 8px !important;
   background: transparent;
-  border: 1px dashed rgba(59, 130, 246, 0.3);
+  border: 1px dashed var(--k-accent-line);
   border-radius: 8px;
 
   &:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: rgba(59, 130, 246, 0.5);
+    background: var(--k-accent-weak);
+    border-color: var(--k-accent-line);
   }
 
   :deep(.v-list-item-title) {

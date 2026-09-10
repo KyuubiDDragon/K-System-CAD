@@ -997,8 +997,8 @@ const websiteStyles = computed(() => {
         
     // Set CSS variables for colors
     styles['--primary-color'] = colorSource.primary || website.value.primary_color || 'var(--k-accent)';
-    styles['--secondary-color'] = colorSource.secondary || website.value.secondary_color || '#1e3a8a';
-    styles['--accent-color'] = colorSource.accent || website.value.accent_color || '#60a5fa';
+    styles['--secondary-color'] = colorSource.secondary || website.value.secondary_color || 'var(--k-accent-hover)';
+    styles['--accent-color'] = colorSource.accent || website.value.accent_color || 'var(--k-accent)';
     styles['--background-color'] = colorSource.background || website.value.background_color || '#ffffff';
     styles['--text-color'] = colorSource.text || website.value.text_color || '#333333';
 
@@ -1209,15 +1209,15 @@ function getSelectedSchemeColors() {
         {
             name: 'Blau-Weiß',
             primary: 'var(--k-accent)',
-            secondary: '#60a5fa',
-            accent: '#93c5fd',
+            secondary: 'var(--k-accent)',
+            accent: 'var(--k-accent-line)',
             background: '#ffffff',
             text: '#111827',
             bannerBackground: 'var(--k-accent)',
             bannerText: '#ffffff',
             heroBackground: 'rgba(96, 165, 250, 0.8)',
             heroText: '#ffffff',
-            buttonBackground: '#60a5fa',
+            buttonBackground: 'var(--k-accent)',
             buttonText: '#ffffff',
         },
         {
@@ -1312,13 +1312,13 @@ function getHeroStyles() {
             'background-position': 'center',
             'background-color':
                 schemeColors.heroBackground ||
-                `rgba(${hexToRgb(schemeColors.secondary || '#1e3a8a')}, 0.8)`, // Default overlay color
+                `rgba(${hexToRgb(schemeColors.secondary || 'var(--k-accent-hover)')}, 0.8)`, // Default overlay color
             'background-blend-mode': 'multiply', // Overlay effect
             padding: '5rem 2rem',
         };
     } else {
         styles = {
-            'background-color': website.value.secondary_color || '#1e3a8a', // Fallback or old style
+            'background-color': website.value.secondary_color || 'var(--k-accent-hover)', // Fallback or old style
             'background-blend-mode': 'normal',
             padding: '5rem 2rem',
         };
@@ -1343,7 +1343,7 @@ function getButtonStyles() {
         schemeColors.buttonBackground ||
         website.value.accent_color ||
         website.value.secondary_color ||
-        '#60a5fa';
+        'var(--k-accent)';
     const textColor = schemeColors.buttonText || (isDarkColor(bgColor) ? '#ffffff' : '#333333');
 
     return {
@@ -3005,7 +3005,7 @@ function handleCountdownButtonClick(content) {
     background-image: linear-gradient(
         135deg,
         var(--primary-color, var(--k-accent)),
-        var(--secondary-color, #1e3a8a)
+        var(--secondary-color, var(--k-accent-hover))
     ); /* Default gradient */
 }
 
@@ -3145,7 +3145,7 @@ function handleCountdownButtonClick(content) {
     padding: 3.5rem 2rem;
     margin-bottom: 3rem;
     border-radius: 16px;
-    background-color: var(--secondary-color, #1e3a8a);
+    background-color: var(--secondary-color, var(--k-accent-hover));
     color: var(--k-ink);
     position: relative;
     overflow: hidden;
@@ -3212,7 +3212,7 @@ function handleCountdownButtonClick(content) {
 
 /* General CTA Button Style (used elsewhere if not in hero) */
 .cta-button {
-    background-color: var(--accent-color, #60a5fa);
+    background-color: var(--accent-color, var(--k-accent));
     color: var(--k-ink);
     border: none;
     padding: 12px 24px;
@@ -3265,7 +3265,7 @@ function handleCountdownButtonClick(content) {
 .dynamic-content a {
     color: var(--primary-color, var(--k-accent));
     text-decoration: none;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+    border-bottom: 1px solid var(--k-accent-line);
     transition: all 0.2s ease;
 }
 
@@ -3291,10 +3291,10 @@ function handleCountdownButtonClick(content) {
 
 /* Footer Styling */
 .site-footer {
-    background-color: var(--secondary-color, #1e3a8a);
+    background-color: var(--secondary-color, var(--k-accent-hover));
     background-image: linear-gradient(
         135deg,
-        var(--secondary-color, #1e3a8a),
+        var(--secondary-color, var(--k-accent-hover)),
         #152352
     ); /* Default gradient */
     color: var(--k-ink);
@@ -3961,7 +3961,7 @@ function handleCountdownButtonClick(content) {
 }
 
 .read-more:hover {
-    background-color: var(--secondary-color, #1e3a8a);
+    background-color: var(--secondary-color, var(--k-accent-hover));
     transform: translateY(-2px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     text-decoration: none;
@@ -4154,7 +4154,7 @@ textarea.form-control {
 }
 
 .btn-primary {
-    background-color: var(--accent-color, #60a5fa);
+    background-color: var(--accent-color, var(--k-accent));
     color: var(--button-text-color, white);
     border: none;
     padding: 10px 20px;

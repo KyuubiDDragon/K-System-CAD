@@ -1986,15 +1986,15 @@ const props = withDefaults(defineProps<Props>(), {
     pages: () => [],
     colorScheme: () => ({
         primary: 'var(--k-accent)',
-        secondary: '#60a5fa',
-        accent: '#93c5fd',
+        secondary: 'var(--k-accent)',
+        accent: 'var(--k-accent-line)',
         background: '#ffffff',
         text: '#111827',
         bannerBackground: 'var(--k-accent)',
         bannerText: '#ffffff',
         heroBackground: 'rgba(96, 165, 250, 0.8)',
         heroText: '#ffffff',
-        buttonBackground: '#60a5fa',
+        buttonBackground: 'var(--k-accent)',
         buttonText: '#ffffff',
     }),
 });
@@ -2056,15 +2056,15 @@ function getDefaultContent(type) {
     // Verwende das übergebene colorScheme oder definiere Standardwerte
     const scheme = props.colorScheme || {
         primary: 'var(--k-accent)',
-        secondary: '#60a5fa',
-        accent: '#93c5fd',
+        secondary: 'var(--k-accent)',
+        accent: 'var(--k-accent-line)',
         background: '#ffffff',
         text: '#111827',
         bannerBackground: 'var(--k-accent)',
         bannerText: '#ffffff',
         heroBackground: 'rgba(96, 165, 250, 0.8)',
         heroText: '#ffffff',
-        buttonBackground: '#60a5fa',
+        buttonBackground: 'var(--k-accent)',
         buttonText: '#ffffff'
     };
     
@@ -3153,7 +3153,7 @@ function scanWebsite(blockIndex) {
 
 .color-scheme-item.selected {
     border-color: var(--k-accent);
-    background-color: rgba(59, 130, 246, 0.1);
+    background-color: var(--k-accent-weak);
 }
 
 .scheme-colors {

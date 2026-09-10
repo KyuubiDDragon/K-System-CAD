@@ -918,7 +918,7 @@ onMounted(async () => {
 /* Highlight animation for entries when navigated to via ID */
 .highlight-entry {
     animation: highlightPulse 0.5s ease-in-out 3;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6) !important;
+    box-shadow: 0 0 20px var(--k-accent-line) !important;
 }
 
 @keyframes highlightPulse {
@@ -928,7 +928,7 @@ onMounted(async () => {
     }
     50% {
         transform: translateY(-2px) scale(1.02);
-        box-shadow: 0 0 25px rgba(59, 130, 246, 0.8);
+        box-shadow: 0 0 25px var(--k-accent);
     }
     100% {
         transform: translateY(-2px) scale(1);
@@ -973,7 +973,7 @@ onMounted(async () => {
 }
 
 .pinned-entry {
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    border: 1px solid var(--k-accent-line);
     background-color: rgba(30, 64, 175, 0.05) !important;
 }
 
@@ -1004,13 +1004,13 @@ onMounted(async () => {
 }
 
 .entry-content :deep(a) {
-    color: #60a5fa;
+    color: var(--k-accent);
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .entry-content :deep(a:hover) {
-    color: #93c5fd;
+    color: var(--k-accent-line);
     text-decoration: underline;
 }
 

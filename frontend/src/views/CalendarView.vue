@@ -1198,9 +1198,6 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 .main-container {
   min-height: 89vh;
   background-color: var(--k-canvas);
-  background-image:
-      radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-      radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
   color: #e2e8f0;
 }
 
@@ -1221,7 +1218,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 
 .action-button:hover {
     transform: var(--button-hover-translate);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Calendar Card */
@@ -1329,8 +1326,8 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
     cursor: pointer;
     padding: 4px 8px;
     margin-top: 4px;
-    background: rgba(59, 130, 246, 0.1);
-    color: #60a5fa;
+    background: var(--k-accent-weak);
+    color: var(--k-accent);
     border-radius: 4px;
     font-size: 0.85rem;
     text-align: center;
@@ -1338,7 +1335,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .show-more:hover {
-    background: rgba(59, 130, 246, 0.2);
+    background: var(--k-accent-weak);
 }
 
 /* Event List in Popup */
@@ -1356,7 +1353,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .event-list::-webkit-scrollbar-thumb {
-    background-color: rgba(59, 130, 246, 0.5);
+    background-color: var(--k-accent-line);
     border-radius: 3px;
 }
 
@@ -1372,7 +1369,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .event-list-item:hover {
-    background: rgba(59, 130, 246, 0.1);
+    background: var(--k-accent-weak);
 }
 
 /* Form Sections */
@@ -1416,7 +1413,7 @@ watch(() => selectedEvent.value.group_id, (newVal) => {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent));
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent));
     color: var(--k-ink);
     padding: 16px;
 }

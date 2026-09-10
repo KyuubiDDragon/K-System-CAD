@@ -428,9 +428,6 @@ const kCols = useTableColumns('ReportStatusView', () => unref(statusHeaders) as 
   .main-container {
 	  min-height: 89vh;
 	  background-color: var(--k-canvas);
-	  background-image:
-		  radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-		  radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
 	  color: #e2e8f0;
   }
   
@@ -451,7 +448,7 @@ const kCols = useTableColumns('ReportStatusView', () => unref(statusHeaders) as 
   
   .action-button:hover {
 	  transform: var(--button-hover-translate);
-	  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+	  box-shadow: 0 6px 12px var(--k-accent-weak);
   }
   
   /* Cards */
@@ -475,11 +472,11 @@ const kCols = useTableColumns('ReportStatusView', () => unref(statusHeaders) as 
   }
   
   .sort-order {
-	  background: rgba(59, 130, 246, 0.1);
+	  background: var(--k-accent-weak);
 	  padding: 2px 8px;
 	  border-radius: 12px;
 	  font-size: 0.8rem;
-	  color: #93c5fd;
+	  color: var(--k-accent-line);
 	  font-weight: 500;
   }
   
@@ -547,7 +544,7 @@ const kCols = useTableColumns('ReportStatusView', () => unref(statusHeaders) as 
   }
   
   .dialog-title {
-	  background: linear-gradient(90deg, #1e3a8a, var(--k-accent));
+	  background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent));
 	  color: var(--k-ink);
 	  padding: 16px;
   }

@@ -1305,7 +1305,7 @@ watch(
 }
 
 .additionals-list::-webkit-scrollbar-thumb {
-    background-color: rgba(59, 130, 246, 0.5);
+    background-color: var(--k-accent-line);
     border-radius: 3px;
 }
 
@@ -1362,7 +1362,7 @@ watch(
 
 .action-button:hover {
     transform: var(--button-hover-translate);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 .action-icon {

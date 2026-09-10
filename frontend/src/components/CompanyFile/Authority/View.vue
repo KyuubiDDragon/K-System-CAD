@@ -884,7 +884,7 @@ watch(
 
 .action-button:hover {
     transform: var(--button-hover-translate);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 /* Action Icons */
@@ -911,7 +911,7 @@ watch(
 .close-button:hover,
 .save-button:hover {
     transform: var(--button-hover-translate);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 
 .delete-button:hover {

@@ -1670,7 +1670,7 @@ onMounted(() => {
 }
 
 .settings-title {
-    background: linear-gradient(90deg, rgba(30, 58, 138, 0.7), rgba(37, 99, 235, 0.7));
+    background: linear-gradient(90deg, rgba(30, 58, 138, 0.7), var(--k-accent));
     padding: 16px;
     font-weight: 600;
 }
@@ -1732,7 +1732,7 @@ onMounted(() => {
 }
 
 .primary-preview {
-    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 10px var(--k-accent-line);
 }
 
 .secondary-preview {
@@ -1781,7 +1781,7 @@ onMounted(() => {
 .radius-preview {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, var(--v-theme-primary), rgba(59, 130, 246, 0.7));
+    background: linear-gradient(135deg, var(--v-theme-primary), var(--k-accent));
     border: 1px solid var(--k-line);
 }
 
@@ -1813,7 +1813,7 @@ onMounted(() => {
 }
 
 .preview-title {
-    background: linear-gradient(90deg, rgba(30, 58, 138, 0.8), rgba(37, 99, 235, 0.8));
+    background: linear-gradient(90deg, rgba(30, 58, 138, 0.8), var(--k-accent));
     padding: 16px;
 }
 

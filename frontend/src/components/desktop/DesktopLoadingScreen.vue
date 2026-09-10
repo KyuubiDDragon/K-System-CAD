@@ -123,7 +123,7 @@ onMounted(() => {
     }
     50% {
         transform: scale(1.05);
-        box-shadow: 0 12px 40px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 12px 40px var(--k-accent-line);
     }
 }
 
@@ -171,9 +171,9 @@ onMounted(() => {
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--k-accent), #60a5fa);
+    background: linear-gradient(135deg, var(--k-accent), var(--k-accent));
     animation: dotBounce 1.4s ease-in-out infinite;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 4px 12px var(--k-accent-line);
 }
 
 @keyframes dotBounce {

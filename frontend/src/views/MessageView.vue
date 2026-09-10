@@ -1968,9 +1968,6 @@ const kFilters = useTableFilters(
 /* Base Styles */
 .mail-system-container {
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
     min-height: 100vh;
     color: #e2e8f0;
 }
@@ -1992,7 +1989,7 @@ const kFilters = useTableFilters(
 }
 
 .sidebar-item:hover {
-    background: rgba(59, 130, 246, 0.15);
+    background: var(--k-accent-weak);
 }
 
 .nav-badge {
@@ -2076,7 +2073,7 @@ const kFilters = useTableFilters(
 }
 
 .message-title:hover {
-    color: #60a5fa;
+    color: var(--k-accent);
 }
 
 .message-title::after {
@@ -2086,7 +2083,7 @@ const kFilters = useTableFilters(
     left: 0;
     width: 0;
     height: 1px;
-    background-color: #60a5fa;
+    background-color: var(--k-accent);
     transition: width 0.3s ease;
 }
 
@@ -2096,7 +2093,7 @@ const kFilters = useTableFilters(
 
 .font-weight-bold {
     font-weight: bold !important;
-    color: #60a5fa;
+    color: var(--k-accent);
 }
 
 /* Form Controls */
@@ -2106,7 +2103,7 @@ const kFilters = useTableFilters(
 }
 
 .search-field:focus-within {
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 2px var(--k-accent-line);
 }
 
 .folder-select {
@@ -2172,7 +2169,7 @@ const kFilters = useTableFilters(
 }
 
 .dialog-header {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover)) !important;
 }
 
 /* Message Editor */

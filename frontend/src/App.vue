@@ -1155,7 +1155,7 @@ watch(
     }
 
     &.v-list-item--active {
-        background-color: rgba(59, 130, 246, 0.15);
+        background-color: var(--k-accent-weak);
 
         &::before {
             opacity: 0;
@@ -1273,7 +1273,7 @@ watch(
 
     @keyframes pulse {
         0% {
-            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 0 var(--k-accent-weak);
         }
         70% {
             box-shadow: 0 0 0 6px rgba(59, 130, 246, 0);
@@ -1435,7 +1435,7 @@ watch(
     }
 
     &.active {
-        background-color: rgba(59, 130, 246, 0.15);
+        background-color: var(--k-accent-weak);
         color: var(--primary-light);
     }
 
@@ -1535,7 +1535,7 @@ watch(
     }
 
     &.info {
-        background-color: rgba(59, 130, 246, 0.15);
+        background-color: var(--k-accent-weak);
         color: var(--info);
     }
 }

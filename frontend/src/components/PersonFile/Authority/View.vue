@@ -1119,6 +1119,6 @@ function getRoleColor(role: any) {
 
 .close-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 6px 12px var(--k-accent-weak);
 }
 </style>

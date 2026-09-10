@@ -405,12 +405,12 @@ const dialog = computed({
   }
   
   .add-button {
-	background: linear-gradient(to right, var(--k-accent), #60a5fa);
+	background: linear-gradient(to right, var(--k-accent), var(--k-accent));
   }
   
   .add-button:hover {
 	transform: translateY(-2px);
-	box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+	box-shadow: 0 6px 12px var(--k-accent-line);
   }
   
   /* Animation for Transitions */

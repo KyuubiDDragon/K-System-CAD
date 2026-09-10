@@ -108,7 +108,7 @@ export default {
         site_slogan: 'Eine professionelle Webpräsenz',
         site_description: 'Dies ist eine Beispiel-Website für die Vorschaufunktion.',
         primary_color: 'var(--k-accent)',
-        secondary_color: '#1e3a8a',
+        secondary_color: 'var(--k-accent-hover)',
         background_color: '#ffffff',
         contact_email: 'kontakt@beispiel.de',
         contact_phone: '+49 123 456789',
@@ -129,7 +129,7 @@ export default {
     websiteStyles() {
       return {
         '--primary-color': this.website.primary_color || 'var(--k-accent)',
-        '--secondary-color': this.website.secondary_color || '#1e3a8a',
+        '--secondary-color': this.website.secondary_color || 'var(--k-accent-hover)',
         '--background-color': this.website.background_color || '#ffffff',
         'background-color': this.website.background_color || '#ffffff',
         'color': this.isDarkColor(this.website.background_color) ? '#ffffff' : '#333333'
@@ -502,7 +502,7 @@ export default {
 .hero-section {
   text-align: center;
   padding: 50px 20px;
-  background-color: var(--secondary-color, #1e3a8a);
+  background-color: var(--secondary-color, var(--k-accent-hover));
   color: var(--k-ink);
   margin-bottom: 40px;
   border-radius: 8px;
@@ -578,7 +578,7 @@ export default {
 }
 
 .site-footer {
-  background-color: var(--secondary-color, #1e3a8a);
+  background-color: var(--secondary-color, var(--k-accent-hover));
   color: var(--k-ink);
   padding: 20px;
   text-align: center;

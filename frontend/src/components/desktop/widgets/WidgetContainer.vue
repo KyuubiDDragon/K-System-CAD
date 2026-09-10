@@ -378,9 +378,9 @@ defineExpose({
     box-shadow:
       0 16px 50px rgba(0, 0, 0, 0.35),
       0 8px 20px rgba(0, 0, 0, 0.25),
-      0 0 0 2px rgba(59, 130, 246, 0.3),
+      0 0 0 2px var(--k-accent-line),
       inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    border-color: rgba(59, 130, 246, 0.4);
+    border-color: var(--k-accent-line);
   }
 
   &:hover {

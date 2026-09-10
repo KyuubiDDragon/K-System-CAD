@@ -299,7 +299,7 @@ onUnmounted(() => {
 
 .desktop-icon.selected {
     background: var(--k-accent-weak);
-    border: 1px solid rgba(59, 130, 246, 0.6);
+    border: 1px solid var(--k-accent-line);
     box-shadow: none;
 }
 
@@ -312,7 +312,7 @@ onUnmounted(() => {
         inset 0 1px 0 rgba(255, 255, 255, 0.15);
     cursor: grabbing;
     background: var(--k-raised);
-    border: 1px solid rgba(59, 130, 246, 0.4);
+    border: 1px solid var(--k-accent-line);
     z-index: 10 !important;
 }
 
@@ -436,7 +436,7 @@ onUnmounted(() => {
     right: -2px;
     width: 12px;
     height: 12px;
-    background-color: rgba(59, 130, 246, 0.8);
+    background-color: var(--k-accent);
     border-radius: 50%;
     box-shadow: none;
     border: 1px solid rgba(255, 255, 255, 0.8);

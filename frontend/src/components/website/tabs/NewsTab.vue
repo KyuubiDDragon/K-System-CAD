@@ -361,7 +361,7 @@ function formatDate(dateString: string): string {
 }
 
 .news-category {
-    background-color: #1e40af;
+    background-color: var(--k-accent-hover);
     color: var(--k-ink);
 }
 

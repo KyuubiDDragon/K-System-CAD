@@ -446,9 +446,9 @@ const contactForm = ref({
 const presetColorSchemes: Record<string, any> = {
     // ===== WHITE MODE DESIGNS =====
     'Blue Ocean': {
-        primary: '#3b82f6',
-        secondary: '#60a5fa',
-        accent: '#93c5fd',
+        primary: 'var(--k-accent)',
+        secondary: 'var(--k-accent)',
+        accent: 'var(--k-accent-line)',
         background: '#ffffff',
         text: '#111827',
     },
@@ -483,9 +483,9 @@ const presetColorSchemes: Record<string, any> = {
 
     // ===== DARK MODE DESIGNS =====
     'Dark Blue': {
-        primary: '#3b82f6',
-        secondary: '#60a5fa',
-        accent: '#93c5fd',
+        primary: 'var(--k-accent)',
+        secondary: 'var(--k-accent)',
+        accent: 'var(--k-accent-line)',
         background: '#111827',
         text: '#f9fafb',
     },
@@ -538,9 +538,9 @@ const websiteStyles = computed(() => {
     } else {
         // Fallback to website primary/secondary colors
         colors = {
-            primary: props.website.primary_color || '#3b82f6',
-            secondary: props.website.secondary_color || '#1e3a8a',
-            accent: '#60a5fa',
+            primary: props.website.primary_color || 'var(--k-accent)',
+            secondary: props.website.secondary_color || 'var(--k-accent-hover)',
+            accent: 'var(--k-accent)',
             background: props.website.background_color || '#ffffff',
             text: '#111827',
         };
@@ -847,11 +847,11 @@ function getDividerSettings(section: any): { shape: string; position: string; fl
             flip: settings.dividerFlip || false,
             height: settings.dividerHeight || 80,
             colorMode: settings.dividerColorMode || 'primary',
-            color: settings.dividerColor || '#3b82f6'
+            color: settings.dividerColor || 'var(--k-accent)'
         };
     } catch (e) {
         console.error('Error parsing divider settings:', e);
-        return { shape: 'none', position: 'bottom', flip: false, height: 80, colorMode: 'primary', color: '#3b82f6' };
+        return { shape: 'none', position: 'bottom', flip: false, height: 80, colorMode: 'primary', color: 'var(--k-accent)' };
     }
 }
 
@@ -1658,7 +1658,7 @@ onBeforeUnmount(() => {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px var(--k-accent-weak);
     background: rgba(0, 0, 0, 0.03);
 }
 
@@ -1672,7 +1672,7 @@ onBeforeUnmount(() => {
 .onepager-template[style*="--background-color: #1c1917"] .form-group textarea:focus,
 .onepager-template[style*="--background-color: #0f172a"] .form-group input:focus,
 .onepager-template[style*="--background-color: #0f172a"] .form-group textarea:focus {
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 3px var(--k-accent-weak);
     background: rgba(255, 255, 255, 0.08);
 }
 
@@ -2125,12 +2125,12 @@ onBeforeUnmount(() => {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 15px var(--k-accent-line);
 }
 
 .plan-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 25px var(--k-accent-line);
 }
 
 /* Dark mode pricing cards */

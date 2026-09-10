@@ -357,8 +357,8 @@ export default defineComponent({
 
 .unrevealed {
   background-color: var(--k-accent);
-  border-top: 4px solid #60a5fa;
-  border-left: 4px solid #60a5fa;
+  border-top: 4px solid var(--k-accent);
+  border-left: 4px solid var(--k-accent);
   border-right: 4px solid #1d4ed8;
   border-bottom: 4px solid #1d4ed8;
 }
@@ -371,8 +371,8 @@ export default defineComponent({
 
 .flagged {
   background-color: var(--k-accent);
-  border-top: 4px solid #60a5fa;
-  border-left: 4px solid #60a5fa;
+  border-top: 4px solid var(--k-accent);
+  border-left: 4px solid var(--k-accent);
   border-right: 4px solid #1d4ed8;
   border-bottom: 4px solid #1d4ed8;
 }

@@ -859,7 +859,7 @@ watch(() => props.apps, () => {
 
 .list-app:hover,
 .list-app.active {
-    background-color: rgba(59, 130, 246, 0.2);
+    background-color: var(--k-accent-weak);
 }
 
 .list-app-icon {
@@ -934,8 +934,8 @@ watch(() => props.apps, () => {
 }
 
 .settings-button:hover {
-    background-color: rgba(59, 130, 246, 0.2);
-    border-color: rgba(59, 130, 246, 0.3);
+    background-color: var(--k-accent-weak);
+    border-color: var(--k-accent-line);
 }
 
 .power-button:hover {

@@ -593,8 +593,8 @@ onMounted(() => {
 
 .ghost-item {
     opacity: 0.5;
-    background: rgba(59, 130, 246, 0.2) !important;
-    border: 1px dashed rgba(59, 130, 246, 0.5) !important;
+    background: var(--k-accent-weak) !important;
+    border: 1px dashed var(--k-accent-line) !important;
 }
 
 /* Dialog Styling */
@@ -606,7 +606,7 @@ onMounted(() => {
 }
 
 .dialog-title {
-    background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover));
+    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover));
     color: var(--k-ink);
     padding: 16px;
 }

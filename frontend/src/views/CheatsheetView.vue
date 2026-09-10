@@ -557,9 +557,6 @@ onUnmounted(() => {
 .cheatsheet {
     min-height: 89vh;
     background-color: var(--k-canvas);
-    background-image:
-        radial-gradient(circle at 15% 20%, rgba(30, 64, 175, 0.05) 0%, transparent 25%),
-        radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.05) 0%, transparent 30%);
     color: #e2e8f0;
     position: relative;
 }
@@ -583,7 +580,7 @@ onUnmounted(() => {
 }
 
 .gradient-text {
-    background: linear-gradient(90deg, var(--k-accent), #60a5fa);
+    background: linear-gradient(90deg, var(--k-accent), var(--k-accent));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -629,7 +626,7 @@ onUnmounted(() => {
 .preview-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    border-color: rgba(59, 130, 246, 0.2);
+    border-color: var(--k-accent-weak);
 }
 
 .preview-content {
@@ -654,7 +651,7 @@ onUnmounted(() => {
     font-weight: 600;
     background-color: #141c2e !important;
     color: #e2e8f0 !important;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+    border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -681,11 +678,11 @@ onUnmounted(() => {
 }
 
 .preview-resize-handle:hover {
-    background: rgba(59, 130, 246, 0.5);
+    background: var(--k-accent-line);
 }
 
 .preview-resize-handle:active {
-    background: rgba(59, 130, 246, 0.8);
+    background: var(--k-accent);
 }
 
 .preview-data-table tbody tr {
@@ -722,7 +719,7 @@ onUnmounted(() => {
     font-weight: 600;
     background-color: #141c2e !important;
     color: #e2e8f0 !important;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+    border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;

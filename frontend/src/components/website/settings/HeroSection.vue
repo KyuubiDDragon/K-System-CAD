@@ -171,7 +171,7 @@ function triggerFileInput(inputId: string) {
 .form-control:focus {
     outline: none;
     border-color: var(--k-accent);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px var(--k-accent-weak);
 }
 
 .media-selector {

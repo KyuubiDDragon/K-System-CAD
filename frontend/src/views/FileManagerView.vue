@@ -930,16 +930,6 @@ onMounted(() => {
 .file-manager-container {
 	min-height: 90vh;
 	background-color: var(--k-canvas);
-	background-image: radial-gradient(
-			circle at 10% 20%,
-			rgba(30, 64, 175, 0.05) 0%,
-			transparent 25%
-		),
-		radial-gradient(
-			circle at 90% 85%,
-			rgba(59, 130, 246, 0.05) 0%,
-			transparent 35%
-		);
 	position: relative;
 }
 
@@ -956,7 +946,7 @@ onMounted(() => {
 }
 
 .header-icon {
-	filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.4));
+	filter: drop-shadow(0 2px 6px var(--k-accent-line));
 }
 
 .header-actions {
@@ -969,7 +959,7 @@ onMounted(() => {
 }
 
 .search-field:focus-within {
-	box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.3);
+	box-shadow: 0 0 0 1px var(--k-accent-line);
 }
 
 /* Action Bar */
@@ -1004,7 +994,7 @@ onMounted(() => {
 }
 
 .breadcrumb-chip:hover {
-	background-color: rgba(59, 130, 246, 0.2);
+	background-color: var(--k-accent-weak);
 }
 
 /* Loading State */
@@ -1063,7 +1053,7 @@ onMounted(() => {
 .folder-card:hover {
 	transform: translateY(-6px);
 	background: rgba(30, 41, 59, 0.6) !important;
-	border-color: rgba(59, 130, 246, 0.4);
+	border-color: var(--k-accent-line);
 }
 
 .folder-card-content {
@@ -1092,7 +1082,7 @@ onMounted(() => {
 	width: 26px;
 	height: 26px;
 	border-radius: 50%;
-	background: rgba(59, 130, 246, 0.2);
+	background: var(--k-accent-weak);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1119,7 +1109,7 @@ onMounted(() => {
 .file-card:hover {
 	transform: translateY(-6px);
 	background: rgba(30, 41, 59, 0.6) !important;
-	border-color: rgba(59, 130, 246, 0.4);
+	border-color: var(--k-accent-line);
 }
 
 .file-preview {
@@ -1154,8 +1144,8 @@ onMounted(() => {
 .file-icon-wrapper.file-doc {
 	background: linear-gradient(
 		135deg,
-		rgba(59, 130, 246, 0.1),
-		rgba(59, 130, 246, 0.2)
+		var(--k-accent-weak),
+		var(--k-accent-weak)
 	);
 }
 
@@ -1209,13 +1199,13 @@ onMounted(() => {
 	width: 100%;
 	border-radius: 8px;
 	margin-bottom: 8px;
-	background: rgba(59, 130, 246, 0.15);
+	background: var(--k-accent-weak);
 	backdrop-filter: blur(4px);
-	border: 1px solid rgba(59, 130, 246, 0.3);
+	border: 1px solid var(--k-accent-line);
 }
 
 .preview-button:hover {
-	background: rgba(59, 130, 246, 0.3);
+	background: var(--k-accent-line);
 }
 
 /* List View Styles */
@@ -1281,7 +1271,7 @@ onMounted(() => {
 }
 
 .dialog-toolbar {
-	background: linear-gradient(90deg, #1e3a8a, var(--k-accent-hover)) !important;
+	background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover)) !important;
 }
 
 /* Empty State */

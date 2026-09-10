@@ -267,7 +267,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .template-notice i {
     font-size: 2rem;
-    color: #60a5fa;
+    color: var(--k-accent);
 }
 
 .template-notice p {

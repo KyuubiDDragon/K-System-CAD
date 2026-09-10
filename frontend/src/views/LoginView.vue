@@ -1016,7 +1016,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 .login-field :deep(.v-field--focused) {
     background: var(--k-row-hover);
     border-color: var(--authority-primary, var(--k-accent));
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    box-shadow: 0 0 0 3px var(--k-accent-weak);
 }
 
 .login-field :deep(.v-input__prepend-inner) {
@@ -1036,7 +1036,7 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
     animation-delay: 0.7s;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 24px var(--k-accent-line);
 }
 
 @keyframes buttonAppear {
@@ -1052,12 +1052,12 @@ function showSnackbar(message: string, color: 'success' | 'error' | 'info' | 'wa
 
 .login-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 12px 32px var(--k-accent-line);
 }
 
 .login-button:active {
     transform: translateY(0);
-    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 16px var(--k-accent-line);
 }
 
 .login-button::before {

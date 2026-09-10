@@ -655,8 +655,8 @@ watch(searchQuery, () => {
 
 .filter-chip.active {
   background: var(--k-accent-weak);
-  border-color: rgba(59, 130, 246, 0.4);
-  color: #60a5fa;
+  border-color: var(--k-accent-line);
+  color: var(--k-accent);
   box-shadow: none;
 }
 
@@ -737,8 +737,8 @@ watch(searchQuery, () => {
 }
 
 .result-item.active {
-  background: rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.3);
+  background: var(--k-accent-weak);
+  border-color: var(--k-accent-line);
   box-shadow: none;
 }
 
@@ -816,8 +816,8 @@ watch(searchQuery, () => {
 }
 
 .result-view-more:hover {
-  background: rgba(59, 130, 246, 0.1);
-  color: #60a5fa;
+  background: var(--k-accent-weak);
+  color: var(--k-accent);
 }
 
 /* Suchvorschläge Styling */
@@ -850,8 +850,8 @@ watch(searchQuery, () => {
 }
 
 .clear-history:hover {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  background: var(--k-accent-weak);
+  color: var(--k-accent);
 }
 
 .suggestion-item {

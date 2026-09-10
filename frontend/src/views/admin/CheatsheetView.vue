@@ -1620,8 +1620,8 @@ onUnmounted(() => {
 }
 
 .category-item:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: rgba(59, 130, 246, 0.3);
+    background: var(--k-accent-weak);
+    border-color: var(--k-accent-line);
 }
 
 .items-panel {
@@ -1649,7 +1649,7 @@ onUnmounted(() => {
     font-weight: 600;
     background-color: #141c2e !important;
     color: #e2e8f0 !important;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+    border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1676,11 +1676,11 @@ onUnmounted(() => {
 }
 
 .resize-handle:hover {
-    background: rgba(59, 130, 246, 0.5);
+    background: var(--k-accent-line);
 }
 
 .resize-handle:active {
-    background: rgba(59, 130, 246, 0.8);
+    background: var(--k-accent);
 }
 
 .items-table tbody tr {
@@ -1695,8 +1695,8 @@ onUnmounted(() => {
 }
 
 .items-table tbody tr.drag-over {
-    background: rgba(59, 130, 246, 0.2) !important;
-    border-top: 2px solid rgb(59, 130, 246);
+    background: var(--k-accent-weak) !important;
+    border-top: 2px solid var(--k-accent);
 }
 
 .items-table tbody tr td {
@@ -1764,7 +1764,7 @@ onUnmounted(() => {
 .preview-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    border-color: rgba(59, 130, 246, 0.2);
+    border-color: var(--k-accent-weak);
 }
 
 /* Vue Grid Layout Styles */
@@ -1855,7 +1855,7 @@ onUnmounted(() => {
     font-weight: 600;
     background-color: #141c2e !important;
     color: #e2e8f0 !important;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+    border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -1882,11 +1882,11 @@ onUnmounted(() => {
 }
 
 .preview-resize-handle:hover {
-    background: rgba(59, 130, 246, 0.5);
+    background: var(--k-accent-line);
 }
 
 .preview-resize-handle:active {
-    background: rgba(59, 130, 246, 0.8);
+    background: var(--k-accent);
 }
 
 /* Hide resize handles and drag controls during screenshot capture */
@@ -1934,7 +1934,7 @@ onUnmounted(() => {
     font-weight: 600;
     background-color: #141c2e !important;
     color: #e2e8f0 !important;
-    border-bottom: 1px solid rgba(59, 130, 246, 0.1) !important;
+    border-bottom: 1px solid var(--k-accent-weak) !important;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
