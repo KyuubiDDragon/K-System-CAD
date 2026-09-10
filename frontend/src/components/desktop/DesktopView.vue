@@ -3000,11 +3000,20 @@ const SPALTE = 130;   // waagerechter Abstand zweier Symbole
 const ZEILE = 140;    // senkrechter Abstand
 const RAND = 20;
 
+const NAEHE = 70;     // ab hier ueberdecken sich zwei Symbole sichtbar
+
 const berechnetePositionen = computed(() => {
     const gespeichert = iconPositions.value || {};
-    const belegt = new Set(
-        Object.values(gespeichert).map(pos => `${pos.x}|${pos.y}`),
-    );
+    // Belegt sind die gespeicherten Plaetze - und zwar nach Abstand, nicht
+    // nach exakter Koordinate: gespeicherte Positionen liegen selten genau
+    // auf dem Raster, und ein Vergleich auf Gleichheit haette sie dann
+    // uebersehen.
+    const belegt = Object.values(gespeichert).map(pos => ({ x: pos.x, y: pos.y }));
+    const istFrei = platz =>
+        !belegt.some(
+            b => Math.abs(b.x - platz.x) < NAEHE && Math.abs(b.y - platz.y) < NAEHE,
+        );
+
     const zeilenProSpalte = Math.max(
         1,
         Math.floor((window.innerHeight - 120) / ZEILE),
@@ -3014,15 +3023,16 @@ const berechnetePositionen = computed(() => {
     let n = 0;
     for (const app of desktopApps.value) {
         if (gespeichert[app.id]) continue;
-        // Den naechsten Platz suchen, der noch niemandem gehoert.
         let platz;
+        let versuche = 0;
         do {
             const spalte = Math.floor(n / zeilenProSpalte);
             const zeile = n % zeilenProSpalte;
             platz = { x: RAND + spalte * SPALTE, y: RAND + zeile * ZEILE };
             n += 1;
-        } while (belegt.has(`${platz.x}|${platz.y}`));
-        belegt.add(`${platz.x}|${platz.y}`);
+            versuche += 1;
+        } while (!istFrei(platz) && versuche < 200);
+        belegt.push(platz);
         ergebnis[app.id] = platz;
     }
     return ergebnis;
