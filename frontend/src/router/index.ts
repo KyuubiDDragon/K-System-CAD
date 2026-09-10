@@ -160,7 +160,9 @@ router.beforeEach(async (to, from, next) => {
             if (!authStore.isLoading) {
                 console.log('🚀 Performing initial auth status check...');
                 try {
-                    await authStore.checkAuthStatus(); // Warten bis abgeschlossen
+                    // force: beim ersten Laden immer serverseitig pruefen, sonst
+                    // wird ein Nutzer aus abgelaufener Sitzung stillschweigend akzeptiert.
+                    await authStore.checkAuthStatus(true); // Warten bis abgeschlossen
                 } catch (e) {
                     console.error("Initial auth check failed:", e);
                     // Fehler wird hier behandelt, der State (isLoggedIn=false) führt ggf. unten zum Redirect

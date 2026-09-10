@@ -23,7 +23,7 @@ export function currentLocale(): string {
     const active =
         raw && typeof raw === 'object' && 'value' in raw
             ? (raw as { value: string }).value
-            : (raw as string) ?? 'de';
+            : ((raw as string) ?? 'de');
     return LOCALES[String(active)] ?? 'de-DE';
 }
 

@@ -341,8 +341,18 @@ export const useAuthStore = defineStore('auth', {
         },
 
 
-        async checkAuthStatus() {
-            if (this.user || this.isLoading) {
+        /**
+         * Prueft die Sitzung serverseitig.
+         *
+         * @param force Erzwingt die Pruefung, auch wenn bereits ein Nutzer im
+         *   Store steht. Der Router nutzt das beim ersten Laden einer Seite:
+         *   Ein Nutzer aus einer abgelaufenen Sitzung ueberlebt das Neuladen im
+         *   Store, der Server wurde aber nie gefragt. Der Guard sah dadurch
+         *   einen angemeldeten Nutzer, liess die geschuetzte Route zu, und die
+         *   Ansicht blieb nach dem 401 leer stehen - ohne Hinweis.
+         */
+        async checkAuthStatus(force = false) {
+            if ((this.user && !force) || this.isLoading) {
                 return;
             }
 
