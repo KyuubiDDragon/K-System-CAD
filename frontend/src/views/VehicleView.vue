@@ -11,6 +11,8 @@ import KBulkBar from '@/components/table/KBulkBar.vue';
 import { useTableColumns } from '@/composables/useTableColumns';
 import { exportRowsAsCsv } from '@/utils/tableExport';
 import { useTableFilters } from '@/composables/useTableFilters';
+import KMetricRow, { type KMetric } from '@/components/layout/KMetricRow.vue';
+import KContextPanel from '@/components/layout/KContextPanel.vue';
 // Define props for desktop window mode
 interface Props {
   meta?: Record<string, any>
@@ -399,6 +401,47 @@ function kExportSelection() {
 }
 
 /**
+ * Kennzahlenreihe ueber der Liste. Der Entwurf zeigt sie nicht nur auf dem
+ * Dashboard: man soll den Bestand sehen, bevor man in die Liste schaut. Die
+ * Liste beantwortet dann das "welche", nicht mehr das "wie viele".
+ */
+const kMetrics = computed<KMetric[]>(() => {
+    const all = (unref(vehicles) as any[]) ?? [];
+    const damaged = all.filter((v: any) => Number(v.damage) === 1).length;
+    const assigned = all.filter((v: any) => v.dispatch_id != null).length;
+    return [
+        {
+            cap: t('vehicle.metricTotal'),
+            val: all.length,
+            sub: t('vehicle.metricAssignedSub', { n: assigned }),
+        },
+        {
+            cap: t('vehicle.metricAvailable'),
+            val: all.length - damaged,
+            unit: `/ ${all.length}`,
+            sub: t('vehicle.metricDamagedSub', { n: damaged }),
+        },
+        {
+            cap: t('vehicle.metricDamaged'),
+            val: damaged,
+        },
+    ];
+});
+
+/**
+ * Die dritte Zone: der Zusammenhang zum ausgewaehlten Fahrzeug. Bei mehreren
+ * Haken zeigt sie die Auswahl als Ganzes, bei einem das einzelne Fahrzeug -
+ * sonst muesste man raten, worauf sich die Angaben beziehen.
+ */
+const kContextRows = computed<any[]>(() => {
+    const rows = (unref(kFilters.filtered) as any[]) ?? [];
+    return rows.filter((v: any) => kSelected.value.includes(v.id));
+});
+const kContextOne = computed<any | null>(() =>
+    kContextRows.value.length === 1 ? kContextRows.value[0] : null,
+);
+
+/**
  * Filter der Leiste. Schalter tragen eine feste Bedingung,
  * Facetten holen ihre Werte aus dem Bestand - nicht aus einer
  * gepflegten Liste, die am Tag ihrer Einfuehrung veraltet waere.
@@ -601,6 +644,9 @@ const kFilters = useTableFilters(
 			</v-btn>
 		  </div>
 		
+		<!-- Bestand zuerst, dann die Liste. -->
+		<KMetricRow :metrics="kMetrics" />
+
 		<!-- Datentabelle -->
 		<v-card class="main-table-card" elevation="3">
 		  <!-- Filterleiste: Anzahl rechts, daneben die Spaltenauswahl. -->
@@ -772,6 +818,37 @@ const kFilters = useTableFilters(
 		      </template>
 		  </KBulkBar>
 		</v-card>
+
+		<!--
+		  Dritte Zone. Sie erscheint nur bei Auswahl - ohne Auswahl gaebe es
+		  nichts zu zeigen, und eine leere Spalte kostet nur Platz.
+		-->
+		<template v-if="kContextRows.length">
+		  <KContextPanel v-if="kContextOne" :label="kContextOne.title">
+			<dl class="k-kv-list">
+			  <div class="k-kv"><dt>{{ t('vehicle.headers.numberplate') }}</dt><dd class="k-mono">{{ kContextOne.numberplate || '—' }}</dd></div>
+			  <div class="k-kv"><dt>{{ t('vehicle.headers.rank') }}</dt><dd>{{ kContextOne.rank || '—' }}</dd></div>
+			  <div class="k-kv"><dt>{{ t('vehicle.contextState') }}</dt>
+				<dd>
+				  <v-chip size="x-small" variant="tonal" :color="Number(kContextOne.damage) === 1 ? 'error' : 'success'">
+					{{ Number(kContextOne.damage) === 1 ? t('vehicle.stateDamaged') : t('vehicle.stateOk') }}
+				  </v-chip>
+				</dd>
+			  </div>
+			  <div class="k-kv"><dt>{{ t('vehicle.contextUnit') }}</dt><dd>{{ kContextOne.dispatch_id != null ? kContextOne.dispatch_id : t('vehicle.notAssigned') }}</dd></div>
+			</dl>
+			<p v-if="Number(kContextOne.damage) === 1 && kContextOne.damage_description" class="k-context-note">
+			  {{ kContextOne.damage_description }}
+			</p>
+		  </KContextPanel>
+
+		  <KContextPanel v-else :label="t('vehicle.contextSelection')">
+			<dl class="k-kv-list">
+			  <div class="k-kv"><dt>{{ t('vehicle.contextSelected') }}</dt><dd>{{ kContextRows.length }}</dd></div>
+			  <div class="k-kv"><dt>{{ t('vehicle.stateDamaged') }}</dt><dd>{{ kContextRows.filter((v: any) => Number(v.damage) === 1).length }}</dd></div>
+			</dl>
+		  </KContextPanel>
+		</template>
 		</template>
 		
 		<!-- Dialoge -->

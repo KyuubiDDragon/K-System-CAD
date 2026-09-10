@@ -24,24 +24,65 @@
         @logout="handleLogout"
       />
 
-      <!-- Router View (aktuelle Seite) -->
-      <v-container fluid class="content-container pa-6">
-        <transition name="fade-slide" mode="out-in">
-          <router-view />
-        </transition>
-      </v-container>
+      <!--
+        Drei Zonen, wie im Entwurf: links wo man ist, in der Mitte die Arbeit,
+        rechts der Zusammenhang zum ausgewaehlten Datensatz. Die Kontextspalte
+        erscheint nur, wenn die aktuelle Ansicht etwas hineingeschrieben hat -
+        eine leere 210-px-Spalte waere schlimmer als keine.
+      -->
+      <div class="work-area">
+        <v-container fluid class="content-container pa-6">
+          <transition name="fade-slide" mode="out-in">
+            <router-view />
+          </transition>
+        </v-container>
+
+        <aside v-show="contextHasContent" class="k-aside" :class="{ 'k-aside--closed': !contextOpen }">
+          <div class="k-aside__bar">
+            <span v-show="contextOpen" class="k-aside__bar-title">{{ t('context.title') }}</span>
+            <v-btn
+              icon
+              variant="text"
+              size="x-small"
+              :aria-label="contextOpen ? t('context.collapse') : t('context.expand')"
+              @click="toggleContext"
+            >
+              <v-icon size="16">
+                {{ contextOpen ? 'mdi-chevron-right' : 'mdi-chevron-left' }}
+              </v-icon>
+            </v-btn>
+          </div>
+          <!--
+            Das Ziel bleibt im Baum, auch wenn die Spalte zugeklappt ist:
+            wuerde es verschwinden, verloere der Teleport der Ansicht sein
+            Ziel und der Inhalt waere beim Aufklappen weg.
+          -->
+          <div v-show="contextOpen" :id="CONTEXT_TARGET_ID" class="k-aside__body"></div>
+        </aside>
+      </div>
     </v-main>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '@/stores/auth';
 import { useUIStore } from '@/stores/ui';
 import { useMenuItems } from '@/composables/useMenuItems';
+import { CONTEXT_TARGET_ID, useContextAside } from '@/composables/useContextAside';
 import NavigationSidebar from './NavigationSidebar.vue';
 import TopBar from './TopBar.vue';
 import type { Breadcrumb } from '@/types/Menu';
+
+const { t } = useI18n();
+
+// Dritte Zone: der Zusammenhang zum ausgewaehlten Datensatz.
+const {
+  hasContent: contextHasContent,
+  isOpen: contextOpen,
+  toggle: toggleContext,
+} = useContextAside();
 
 const route = useRoute();
 const router = useRouter();
@@ -256,9 +297,74 @@ onMounted(async () => {
   background-color: var(--background);
 }
 
+.work-area {
+  display: flex;
+  align-items: stretch;
+  min-height: calc(100vh - var(--k-bar-height, 44px));
+}
+
 .content-container {
-  min-height: calc(100vh - 64px);
+  flex: 1;
+  min-width: 0;
+  min-height: calc(100vh - var(--k-bar-height, 44px));
   background-color: rgb(var(--v-theme-background));
+}
+
+/* 210 px wie im Entwurf. Zugeklappt bleibt nur der Griff stehen, damit der
+   Weg zurueck sichtbar ist - eine Spalte, die spurlos verschwindet, findet
+   man nicht wieder.
+
+   Ohne Uebergang: die Breite zu animieren zwingt die Tabelle daneben in
+   jedem Bild zu einem neuen Umbruch. Der Entwurf laesst Bewegung nur zu, wo
+   sie etwas klaert - hier klaert sie nichts und kostet Ruhe. */
+.k-aside {
+  width: 210px;
+  flex: none;
+  border-left: 1px solid var(--k-line, #e2e5ea);
+  background: var(--k-surface, #fff);
+  overflow-y: auto;
+}
+
+.k-aside--closed {
+  width: 34px;
+  overflow: hidden;
+}
+
+.k-aside__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 4px 0 12px;
+  border-bottom: 1px solid var(--k-line, #e2e5ea);
+  background: var(--k-sunken, #fafbfc);
+}
+
+.k-aside__bar-title {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--k-ink-faint, #7d8794);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.k-aside__bar :deep(.v-btn) {
+  margin-inline-start: auto;
+}
+
+.k-aside__body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Auf schmalen Fenstern hat die dritte Zone keinen Platz - der Zusammenhang
+   steht dann in der Ansicht selbst, nicht daneben. */
+@media (max-width: 1100px) {
+  .k-aside {
+    display: none;
+  }
 }
 
 // Smooth transitions für Content-Wechsel

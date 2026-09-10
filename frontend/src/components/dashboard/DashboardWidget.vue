@@ -6,7 +6,7 @@
       'has-error': hasError,
       'is-loading': isLoading
     }"
-    elevation="2"
+    :elevation="0"
   >
     <!-- Widget Header -->
     <v-card-title class="widget-header d-flex justify-space-between align-center pa-3">
@@ -123,9 +123,13 @@
       </Suspense>
 
       <!-- Error State -->
+      <!--
+        Fehlerzustand in einer Zeile statt als Block: ein 48-px-Symbol traegt
+        keine Information, die Meldung schon.
+      -->
       <div v-if="hasError" class="widget-error">
-        <v-icon size="48" color="error">mdi-alert-circle-outline</v-icon>
-        <p class="text-body-2 mt-2">{{ errorMessage }}</p>
+        <v-icon size="20" color="error">mdi-alert-circle-outline</v-icon>
+        <p class="text-body-2">{{ errorMessage }}</p>
         <v-btn
           size="small"
           variant="text"
@@ -293,16 +297,25 @@ watch(
 .dashboard-widget {
   position: relative;
   height: 100%;
-  min-height: 200px;
+  /*
+    Kein min-height von 200 px mehr. Der Entwurf ist hier deutlich: "Ein
+    Leerzustand darf nicht mehr Platz beanspruchen als der gefuellte Zustand -
+    sonst ist der Bildschirm am leersten, wenn am meisten los ist." Eine
+    Kachel mit einem Satz Inhalt streckte sich vorher auf volle Hoehe.
+  */
+  min-height: 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: rgba(var(--v-theme-surface));
+  background: var(--k-surface);
   border: 1px solid var(--k-line);
-  transition: all 0.3s ease;
+  border-radius: 6px;
+  /* Kein Schatten: nur was schwebt (Menue, Dialog, Fenster) wirft einen. */
+  box-shadow: none !important;
+  transition: border-color 150ms cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    border-color: var(--k-ink);
+    border-color: var(--k-line-strong);
   }
 
   &.edit-mode {
@@ -314,7 +327,7 @@ watch(
     }
 
     &:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      border-color: var(--k-accent);
     }
   }
 
@@ -327,12 +340,25 @@ watch(
   }
 }
 
+/*
+  Kopfzeile eines Panels, nicht einer Karte.
+
+  Vorher: 48 px hoch und mit 8 % Akzentfarbe hinterlegt. Der Akzent markiert
+  im System aber genau zwei Dinge - wo man gerade ist und was die Hauptaktion
+  ist. Sieben Kachelkoepfe nebeneinander in Akzentfarbe sagen weder das eine
+  noch das andere; sie faerben nur.
+
+  Jetzt: 34 px auf gesenkter Flaeche, wie jede andere Panel-Kopfzeile. Das
+  spart pro Kachel 14 px, was auf einem Dashboard mit sieben Kacheln knapp
+  hundert Pixel Inhalt zurueckgibt.
+*/
 .widget-header {
   flex-shrink: 0;
-  background: rgba(var(--v-theme-primary), 0.08);
-  border-bottom: 1px solid rgba(var(--v-theme-primary), 0.12);
-  min-height: 48px !important;
-  padding: 8px 12px !important;
+  background: var(--k-sunken, #fafbfc);
+  border-bottom: 1px solid var(--k-line, #e2e5ea);
+  min-height: 34px !important;
+  height: 34px;
+  padding: 0 12px !important;
 }
 
 .widget-title-container {
@@ -341,7 +367,9 @@ watch(
 }
 
 .widget-title {
+  font-size: 12px !important;
   font-weight: 600;
+  color: var(--k-ink);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -396,18 +424,24 @@ watch(
 }
 
 .widget-loading,
+/* Eine Zeile, kein Block. Vorher: 200 px Mindesthoehe und 2 rem Rand um ein
+   Symbol herum - der Fehlerzustand nahm mehr Platz als der gefuellte. */
 .widget-error {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  padding: 2rem;
-  text-align: center;
-}
+  gap: 10px;
+  padding: 10px 0;
+  text-align: left;
+  color: var(--k-critical);
 
-.widget-error {
-  color: rgba(var(--v-theme-error));
+  p {
+    margin: 0;
+    font-size: 12.5px;
+  }
+
+  .v-btn {
+    margin-left: auto;
+  }
 }
 
 .widget-loading-overlay {

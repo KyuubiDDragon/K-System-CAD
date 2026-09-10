@@ -20,6 +20,8 @@ import KBulkBar from '@/components/table/KBulkBar.vue';
 import { useTableColumns, type KColumn } from '@/composables/useTableColumns';
 import { useTableFilters } from '@/composables/useTableFilters';
 import { exportRowsAsCsv } from '@/utils/tableExport';
+import KMetricRow, { type KMetric } from '@/components/layout/KMetricRow.vue';
+import KContextPanel from '@/components/layout/KContextPanel.vue';
 
 const { t } = useI18n();
 
@@ -165,6 +167,47 @@ const allHeaders = computed<KColumn[]>(() => [
 const columns = useTableColumns('employees', allHeaders);
 
 /* ------------------------------------------------------------------
+   Kennzahlen über der Liste
+   ------------------------------------------------------------------ */
+
+/**
+ * Der Entwurf zeigt die Kennzahlenreihe nicht nur auf dem Dashboard, sondern
+ * über dem Arbeitsbereich. Der Bestand steht dann da, bevor man in die Liste
+ * schaut — die Liste beantwortet danach das „welche", nicht mehr das
+ * „wie viele".
+ *
+ * Gezählt wird auf dem ganzen Bestand, nicht auf der gefilterten Liste: eine
+ * Kennzahl, die sich mit jedem Chip ändert, ist keine Kennzahl mehr.
+ */
+const kMetrics = computed<KMetric[]>(() => {
+    const all = alleMitarbeiter.value;
+    const leaving = all.filter((e: any) => !!e.leavedate).length;
+    const absent = all.filter((e: any) => !!getCurrentVacation(e)).length;
+    const ranks = new Set(all.map((e: any) => e.rankName));
+    const rankCount = (props.ranks ?? []).length;
+
+    return [
+        {
+            cap: t('employeeTable.metricTotal'),
+            val: all.filter((e: any) => !e.is_terminated).length,
+            unit: `/ ${all.length}`,
+            sub: t('employeeTable.metricLeavingSub', { n: leaving }),
+        },
+        {
+            cap: t('employeeTable.metricAbsent'),
+            val: absent,
+            sub: t('employeeTable.metricOnDutySub', { n: all.length - absent }),
+        },
+        {
+            cap: t('employeeTable.metricRanks'),
+            val: ranks.size,
+            unit: `/ ${rankCount}`,
+            sub: t('employeeTable.metricVacantSub', { n: Math.max(0, rankCount - ranks.size) }),
+        },
+    ];
+});
+
+/* ------------------------------------------------------------------
    Auswahl und Massenaktionen
    ------------------------------------------------------------------ */
 
@@ -266,6 +309,9 @@ const handleEdit = (employee: any) => {
 
 <template>
     <div class="employee-table-view">
+        <!-- Bestand zuerst, dann die Liste. -->
+        <KMetricRow :metrics="kMetrics" />
+
         <!--
             Eine Tabelle statt einer je Rang. Vorher standen neun Tabellen
             untereinander, jede mit eigenem Kopf und eigener Fusszeile - der
@@ -498,6 +544,57 @@ const handleEdit = (employee: any) => {
                 </template>
             </KBulkBar>
         </div>
+
+        <!--
+            Dritte Zone: der Zusammenhang zum ausgewaehlten Mitarbeiter.
+            Ohne Auswahl gibt es nichts zu zeigen, dann bleibt die Spalte weg.
+        -->
+        <template v-if="selectedEmployees.length">
+            <KContextPanel v-if="selectedEmployees.length === 1" :label="selectedEmployees[0].name">
+                <dl class="k-kv-list">
+                    <div class="k-kv">
+                        <dt class="id">#{{ selectedEmployees[0].servicenumber }}</dt>
+                        <dd>{{ selectedEmployees[0].rankName }}</dd>
+                    </div>
+                    <div class="k-kv">
+                        <dt>{{ t('employeeTable.phone') }}</dt>
+                        <dd class="k-mono">{{ selectedEmployees[0].phonenumber || '—' }}</dd>
+                    </div>
+                    <div class="k-kv">
+                        <dt>{{ t('employeeTable.entrydate') }}</dt>
+                        <dd class="k-mono">{{ formatDate(selectedEmployees[0].entrydate) }}</dd>
+                    </div>
+                    <div v-if="selectedEmployees[0].leavedate" class="k-kv">
+                        <dt>{{ t('employeeTable.leavedate') }}</dt>
+                        <dd class="k-mono">{{ formatDate(selectedEmployees[0].leavedate) }}</dd>
+                    </div>
+                    <div class="k-kv">
+                        <dt>{{ t('employeeTable.status') }}</dt>
+                        <dd>
+                            <v-chip size="x-small" variant="tonal" :color="getStatusInfo(selectedEmployees[0]).color">
+                                {{ getStatusInfo(selectedEmployees[0]).text }}
+                            </v-chip>
+                        </dd>
+                    </div>
+                </dl>
+                <p v-if="!selectedEmployees[0].phonenumber" class="k-context-note">
+                    {{ t('employeeTable.noPhone') }}
+                </p>
+            </KContextPanel>
+
+            <KContextPanel v-else :label="t('employeeTable.contextSelection')">
+                <dl class="k-kv-list">
+                    <div class="k-kv">
+                        <dt>{{ t('employeeTable.contextSelected') }}</dt>
+                        <dd>{{ selectedEmployees.length }}</dd>
+                    </div>
+                    <div class="k-kv">
+                        <dt>{{ t('employeeTable.filterLeaving') }}</dt>
+                        <dd>{{ selectedEmployees.filter((e: any) => !!e.leavedate).length }}</dd>
+                    </div>
+                </dl>
+            </KContextPanel>
+        </template>
     </div>
 </template>
 

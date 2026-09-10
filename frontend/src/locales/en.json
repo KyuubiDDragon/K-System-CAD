@@ -2891,7 +2891,19 @@
     "noun": "vehicles",
     "filterDamaged": "Damaged",
     "filterAssigned": "Assigned",
-    "withoutRank": "Without rank"
+    "withoutRank": "Without rank",
+    "metricTotal": "Vehicles",
+    "metricAvailable": "Ready",
+    "metricDamaged": "Damaged",
+    "metricAssignedSub": "{n} assigned",
+    "metricDamagedSub": "{n} damaged",
+    "contextState": "Condition",
+    "contextUnit": "Unit",
+    "contextSelection": "Selection",
+    "contextSelected": "Selected",
+    "stateDamaged": "Damaged",
+    "stateOk": "OK",
+    "notAssigned": "Not assigned"
   },
   "person": {
     "headers": {
@@ -3158,7 +3170,16 @@
     "addVacation": "Add leave",
     "stopVacation": "End leave",
     "edit": "Edit",
-    "exportSelection": "Export"
+    "exportSelection": "Export",
+    "metricTotal": "On duty",
+    "metricAbsent": "Absent",
+    "metricRanks": "Ranks filled",
+    "metricLeavingSub": "{n} with leave date",
+    "metricOnDutySub": "{n} available",
+    "metricVacantSub": "{n} vacant",
+    "contextSelection": "Selection",
+    "contextSelected": "Selected",
+    "noPhone": "No phone number on file."
   },
   "dispatch": {
     "title": "Dispatch",
@@ -3190,5 +3211,11 @@
     "filterInspectionDue": "Inspection due",
     "type": "Type",
     "withoutType": "Without type"
+  },
+  "context": {
+    "title": "Context",
+    "collapse": "Collapse column",
+    "expand": "Expand column",
+    "nothingSelected": "Nothing selected."
   }
 }

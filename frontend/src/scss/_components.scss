@@ -249,6 +249,50 @@
 }
 
 /* ============================================================
+   KONTEXTSPALTE
+   Merkmal links, Wert rechts. Beide auf einer Zeile, damit die
+   Spalte schmal bleiben kann: bei 210 px ist Untereinander
+   Verschwendung.
+   ============================================================ */
+.k-kv-list {
+    margin: 0;
+}
+
+.k-kv {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    padding: 3px 0;
+}
+
+.k-kv dt {
+    color: var(--k-ink-faint, #7d8794);
+    flex: none;
+}
+
+.k-kv dd {
+    margin: 0;
+    font-weight: 500;
+    text-align: right;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Eine Kennung als Merkmal steht in Festbreite und in voller Farbe - sie ist
+   der Bezug, nicht die Beschriftung. */
+.k-kv dt.id {
+    color: var(--k-ink, #171b22);
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+.k-context-note {
+    font-size: 11.5px;
+    color: var(--k-ink-muted, #5c6675);
+    margin: 8px 0 0;
+}
+
+/* ============================================================
    TASTATURFOKUS
    Wer mit der Tastatur arbeitet, muss sehen, wo er ist.
    ============================================================ */

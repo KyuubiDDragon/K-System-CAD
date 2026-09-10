@@ -2903,7 +2903,19 @@
     "noun": "Fahrzeuge",
     "filterDamaged": "Beschädigt",
     "filterAssigned": "Zugewiesen",
-    "withoutRank": "Ohne Rang"
+    "withoutRank": "Ohne Rang",
+    "metricTotal": "Fahrzeuge",
+    "metricAvailable": "Einsatzbereit",
+    "metricDamaged": "Beschädigt",
+    "metricAssignedSub": "{n} zugewiesen",
+    "metricDamagedSub": "{n} beschädigt",
+    "contextState": "Zustand",
+    "contextUnit": "Einheit",
+    "contextSelection": "Auswahl",
+    "contextSelected": "Ausgewählt",
+    "stateDamaged": "Beschädigt",
+    "stateOk": "In Ordnung",
+    "notAssigned": "Nicht zugewiesen"
   },
   "person": {
     "headers": {
@@ -3170,7 +3182,16 @@
     "addVacation": "Urlaub hinzufügen",
     "stopVacation": "Urlaub beenden",
     "edit": "Bearbeiten",
-    "exportSelection": "Exportieren"
+    "exportSelection": "Exportieren",
+    "metricTotal": "Im Dienst",
+    "metricAbsent": "Abwesend",
+    "metricRanks": "Ränge besetzt",
+    "metricLeavingSub": "{n} mit Austrittsdatum",
+    "metricOnDutySub": "{n} verfügbar",
+    "metricVacantSub": "{n} unbesetzt",
+    "contextSelection": "Auswahl",
+    "contextSelected": "Ausgewählt",
+    "noPhone": "Keine Telefonnummer hinterlegt."
   },
   "dispatch": {
     "title": "Leitstelle",
@@ -3202,5 +3223,11 @@
     "filterInspectionDue": "Prüfung fällig",
     "type": "Art",
     "withoutType": "Ohne Art"
+  },
+  "context": {
+    "title": "Zusammenhang",
+    "collapse": "Spalte einklappen",
+    "expand": "Spalte ausklappen",
+    "nothingSelected": "Nichts ausgewählt."
   }
 }
