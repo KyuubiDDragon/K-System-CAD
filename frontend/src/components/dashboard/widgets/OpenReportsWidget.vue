@@ -36,7 +36,21 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+/*
+   maxItems aus der Vorlage wird jetzt beachtet.
+
+   Die Vorlagen setzen die Laenge bewusst unterschiedlich - der Zettel des
+   Mitarbeiters zeigt eine Ankuendigung, das Leitstellen-Dashboard fuenf, die
+   Nachrichten fuenf oder zehn. Der Baustein schnitt die Liste bisher auf eine
+   fest verdrahtete Zahl zu und die Einstellung lief ins Leere.
+*/
+const grenze = () => {
+    const n = Number(props.config?.maxItems);
+    return Number.isFinite(n) && n > 0 ? Math.floor(n) : 5;
+};
+
 
 const router = useRouter()
 const loading = ref(true)
@@ -46,7 +60,7 @@ async function loadReports() {
   loading.value = true
   try {
     const response = await apiClientAuth.get('/report/?action=getOpenReports')
-    reports.value = (response.data || []).slice(0, 5)
+    reports.value = (response.data || []).slice(0, grenze())
   } catch (err) {
     console.error('Failed to load reports:', err)
   } finally {

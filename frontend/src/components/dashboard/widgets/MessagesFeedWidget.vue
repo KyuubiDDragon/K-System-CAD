@@ -62,7 +62,21 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+/*
+   maxItems aus der Vorlage wird jetzt beachtet.
+
+   Die Vorlagen setzen die Laenge bewusst unterschiedlich - der Zettel des
+   Mitarbeiters zeigt eine Ankuendigung, das Leitstellen-Dashboard fuenf, die
+   Nachrichten fuenf oder zehn. Der Baustein schnitt die Liste bisher auf eine
+   fest verdrahtete Zahl zu und die Einstellung lief ins Leere.
+*/
+const grenze = () => {
+    const n = Number(props.config?.maxItems);
+    return Number.isFinite(n) && n > 0 ? Math.floor(n) : 10;
+};
+
 
 interface Message {
   id: number
@@ -86,7 +100,7 @@ async function loadMessages() {
 
   try {
     const response = await apiClientAuth.get('/user/?action=getLast5Messages')
-    messages.value = response.data || []
+    messages.value = (response.data || []).slice(0, grenze())
   } catch (err: any) {
     console.error('Failed to load messages:', err)
     error.value = err.response?.data?.error || 'Failed to load messages'
