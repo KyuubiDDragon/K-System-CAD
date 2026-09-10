@@ -1257,19 +1257,25 @@ export function useMenuItems() {
 
   /** Welcher Punkt gehoert zu welchem Bereich - nach Gruppen- bzw. Punkt-ID. */
   const BEREICH_JE_ID: Record<string, keyof typeof BEREICHSFARBEN> = {
+    // Einsatz & Kommunikation
     'dispatch-group': 'einsatz',
     'blackboard-group': 'einsatz',
     'authorities-group': 'einsatz',
     map: 'einsatz',
+    // Akten
     'akten-group': 'akten',
-    'employee-group': 'akten',
-    'company-group': 'akten',
-    'invoice-group': 'akten',
-    'report-group': 'akten',
-    'document-group': 'akten',
-    'organisation-group': 'organisation',
+    'employees-group': 'akten',
+    'companies-group': 'akten',
+    'invoices-group': 'akten',
+    'reports-group': 'akten',
+    'documents-group': 'akten',
+    // Organisation
+    'organization-group': 'organisation',
+    'files-group': 'organisation',
     filemanager: 'organisation',
     'training-group': 'organisation',
+    // Verwaltung und Sonstiges
+    'misc-group': 'verwaltung',
     templates: 'verwaltung',
     companywebsite: 'verwaltung',
     admin: 'verwaltung',
