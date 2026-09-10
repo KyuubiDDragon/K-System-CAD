@@ -205,45 +205,58 @@ $scrollbar-track-color: transparent;
   box-shadow: var(--shadow-elevation);
 }
 
-.terminated-employee {
-  background: var(--terminated-bg) !important;
-  border: 1px solid rgba(244, 67, 54, 0.3);
+/* ============================================================
+   ZUSTAND EINER PERSONENKARTE
+
+   Vorher: die ganze Karte in eingefaerbter Flaeche (gruen fuer
+   Urlaub, rot fuer Austritt), dazu ein 4-px-Verlaufsstreifen
+   oben und ein zweiter Farbton im Banner - drei Traeger fuer
+   eine einzige Aussage, alle aus fremden Paletten
+   (#ef4444 Tailwind, rgba(76,175,80) Material).
+
+   Jetzt traegt die Aussage das Banner, und zwar so, wie jeder
+   Zustand im System aussieht: schwache Bedeutungsflaeche,
+   Bedeutungsfarbe als Schrift. Die Karte selbst bleibt eine
+   Karte - eine flaechig eingefaerbte Kachel schreit, wo ein
+   Hinweis genuegt.
+   ============================================================ */
+.terminated-employee,
+.vacation-employee {
   position: relative;
+  /* Nur die Kante traegt Farbe, nicht die ganze Flaeche. */
+  border: 1px solid var(--k-line);
 }
 
-.terminated-employee::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ef4444, #b91c1c);
-  z-index: 5;
+.terminated-employee {
+  border-inline-start: 2px solid var(--k-critical);
 }
 
 .vacation-employee {
-  background: var(--vacation-bg) !important;
-  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-inline-start: 2px solid var(--k-warning);
 }
 
 /* Status Banner */
 .status-banner {
   display: flex;
   align-items: center;
-  padding: 6px 12px;
-  background: rgba(0, 0, 0, 0.2);
+  gap: 8px;
+  min-height: 26px;
+  padding: 4px 12px;
+  background: var(--k-sunken);
   border-bottom: 1px solid var(--k-line);
   position: relative;
   z-index: 3;
+  font-size: 12px;
 }
 
 .terminated-employee .status-banner {
-  background: rgba(239, 68, 68, 0.2);
+  background: var(--k-critical-weak);
+  color: var(--k-critical);
 }
 
 .vacation-employee .status-banner {
-  background: var(--k-accent-weak);
+  background: var(--k-warning-weak);
+  color: var(--k-warning);
 }
 
 .status-icon {

@@ -345,6 +345,59 @@
 }
 
 /* ============================================================
+   REITER
+   Ein Reiter sagt, wo man gerade ist - also traegt der aktive
+   den Akzent, und zwar als Schrift plus Strich darunter. Mehr
+   braucht es nicht: eine gefuellte Flaeche waere ein Knopf,
+   kein Reiter.
+
+   Vuetify gibt ihnen sonst 48 px Hoehe und Versalien. Auf einer
+   kleinen Navigation ueber einer Tabelle ist das eine zweite
+   Kopfleiste, die mit der ersten konkurriert.
+   ============================================================ */
+.v-tabs {
+    min-height: 34px;
+    background: var(--k-sunken, #fafbfc);
+    border-bottom: 1px solid var(--k-line, #e2e5ea);
+}
+
+.v-tab.v-tab {
+    min-height: 34px;
+    height: 34px;
+    min-width: 0;
+    padding-inline: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--k-ink-muted, #5c6675);
+    opacity: 1;
+}
+
+.v-tab.v-tab:hover {
+    color: var(--k-ink, #171b22);
+    background: var(--k-row-hover, #f5f7fa);
+}
+
+.v-tab.v-tab--selected {
+    color: var(--k-accent, #2b62c4);
+    font-weight: 550;
+}
+
+/* Der Strich unter dem aktiven Reiter: 2 px, in Akzentfarbe. */
+.v-tabs .v-tab__slider {
+    height: 2px;
+    background: var(--k-accent, #2b62c4);
+    opacity: 1;
+}
+
+/* Symbole im Reiter ordnen sich der Schrift unter. */
+.v-tab .v-icon {
+    font-size: 16px;
+    margin-inline-end: 6px;
+}
+
+/* ============================================================
    DIALOGE
    Ein Dialog schwebt - er ist das einzige neben Menue und Fenster,
    das im System einen Schatten wirft. Radius 6-7 px, Flaeche

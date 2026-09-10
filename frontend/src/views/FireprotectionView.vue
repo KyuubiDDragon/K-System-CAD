@@ -123,9 +123,12 @@ function showSnackbarHelper(
 const fetchLastFiles = async () => {
     loadingFiles.value = true;
     try {
-        const response = await apiClientAuth.post<{ data: UploadedFile[] }>(
+        // GET, nicht POST: der Endpunkt beantwortet getLastFiles nur auf GET
+        // und schickt sonst ein 405 zurueck. Das fiel bisher nicht auf, weil
+        // schon die Behoerdenpruefung davor mit 403 abbrach.
+        const response = await apiClientAuth.get<{ data: UploadedFile[] }>(
             'fireprotection/?action=getLastFiles'
-        ); // Adjust path/method if needed
+        );
         uploadedFiles.value = response.data.data || response.data || [];
     } catch (error: any) {
         console.error('Error fetching last files:', error);
