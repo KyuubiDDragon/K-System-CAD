@@ -5,6 +5,7 @@ import { useUIStore } from '@/stores/ui';
 import { usePermissionRefresh } from '@/composables/usePermissionRefresh';
 import { useModulePermission } from '@/composables/useModulePermission';
 import { apiClientAuth } from '@/api';
+import { einrichtungNoetig } from './einrichtung';
 
 // Nur die wichtigsten Views statisch importieren
 import LoginView from '@/views/LoginView.vue';
@@ -22,6 +23,7 @@ import TodoView from '@/views/TodoView.vue';
 // --- Routen Definitionen ---
 const routes: Array<RouteRecordRaw> = [
     { path: "/", name: "login", component: LoginView },
+    { path: "/setup", name: "setup", component: () => import('@/views/SetupView.vue') },
     { path: "/home", redirect: "/desktop" }, // Redirect home to desktop
     { path: "/dashboard", name: "dashboard", component: DashboardView, meta: { requiresAuth: true } },
     { path: "/desktop", name: "desktop", component: () => import('@/components/desktop/DesktopView.vue'), meta: { requiresAuth: true } },
@@ -133,6 +135,27 @@ router.beforeEach(async (to, from, next) => {
         console.log('🪟 App window route detected, allowing direct access to:', to.path);
         next();
         return; // Stop further processing
+    }
+
+    /*
+       Ersteinrichtung.
+
+       Solange die Datenbank keinen einzigen Benutzer kennt, fuehrt jeder Weg
+       zur Einrichtung - eine Anmeldemaske waere dort sinnlos, es gibt ja noch
+       nichts, womit man sich anmelden koennte. Ist sie erledigt, fuehrt kein
+       Weg mehr hin.
+
+       Die Antwort wird je Seitenaufruf einmal geholt; faellt die Abfrage aus,
+       gilt die Anlage als eingerichtet und der Waechter laeuft normal weiter.
+    */
+    const musseingerichtetWerden = await einrichtungNoetig();
+    if (musseingerichtetWerden && to.name !== 'setup') {
+        next({ name: 'setup' });
+        return;
+    }
+    if (!musseingerichtetWerden && to.name === 'setup') {
+        next({ name: 'login' });
+        return;
     }
 
     // --- Initialer Authentifizierungscheck (für geschützte Routen UND Login-Route) ---

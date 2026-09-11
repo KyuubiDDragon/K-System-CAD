@@ -106,7 +106,7 @@ docker-compose -f docker-compose.dev.yml up -d
 # Frontend:      http://localhost:5173
 # Backend API:   http://localhost:8080
 # Socket Server: http://localhost:3001
-# Default login: admin / password
+# First start: the app opens /setup and asks for the first account
 ```
 
 ### Docker - Production (with Traefik)
@@ -157,15 +157,24 @@ mysql -u root -p -e "CREATE DATABASE ksystems CHARACTER SET utf8mb4 COLLATE utf8
 mysql -u root -p ksystems < database/database.sql
 ```
 
-### Default Login
+### First-time setup
 
-| Field | Value |
+The database ships **without any user account**. On first start the application
+opens a setup screen at `/setup`:
+
+| Field | Notes |
 |-------|-------|
-| **Username** | `admin` |
-| **Password** | `password` |
-| **Email** | `admin@example.com` |
+| **Username** | free choice |
+| **Email** | must be a valid address |
+| **Password** | at least 12 characters |
 
-> **Important:** Change the default password immediately after first login!
+The account created there receives the `System Administrator` role and with it
+every permission, so it can configure the rest of the system. The setup screen
+is reachable only while no user exists — once one does, it refuses.
+
+> Earlier versions shipped a fixed `admin` / `password` account. Every
+> installation would have been open with the same publicly known credentials,
+> so it is gone.
 
 ---
 

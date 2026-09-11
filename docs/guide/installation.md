@@ -225,55 +225,20 @@ docker-compose exec db mysql -u root -p -e "SHOW DATABASES;"
 ### Step 6: Create First Authority & Admin User
 
 ```bash
-# Access MySQL
-docker-compose exec db mysql -u root -p ksystems
-```
+The database ships with everything the application needs: all tables, the
+permissions, the roles, the module features, the base settings and the
+dashboard templates. It ships **without any user account**.
 
-```sql
--- Create first organization/authority
-INSERT INTO kdd_authorities (name, active, created_at)
-VALUES ('Your Organization Name', 1, NOW());
+On first start the application opens the setup screen at `/setup` and asks for
+a username, an email address and a password of at least twelve characters. The
+account created there receives the `System Administrator` role and with it
+every permission, so it can set up the rest from inside the application.
 
--- Create admin user (password: admin123)
-INSERT INTO kdd_users (username, password, email, authority_id, created_at)
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-        'admin@yourorganization.com', 1, NOW());
+Once a user exists, the setup screen refuses — there is nothing to do by hand.
 
--- Create admin role
-INSERT INTO kdd_roles (name, description, authority_id, power)
-VALUES ('Super Admin', 'Full system access', 1, 999);
-
--- Get permission ID for ALL_PERMISSIONS
-SET @perm_id = (SELECT id FROM kdd_permissions WHERE name = 'ALL_PERMISSIONS');
-
--- Assign ALL_PERMISSIONS to admin role
-INSERT INTO kdd_role_permissions (role_id, permission_id)
-VALUES (1, @perm_id);
-
--- Assign admin role to user
-INSERT INTO kdd_user_roles (user_id, role_id, authority_id)
-VALUES (1, 1, 1);
-
--- Enable all features for admin user
-INSERT INTO kdd_user_features (user_id, feature, enabled)
-VALUES
-  (1, 'employee', 1),
-  (1, 'document', 1),
-  (1, 'reports', 1),
-  (1, 'calendar', 1),
-  (1, 'dispatch', 1),
-  (1, 'training', 1),
-  (1, 'mail', 1),
-  (1, 'map', 1),
-  (1, 'whiteboard', 1),
-  (1, 'todo', 1),
-  (1, 'blackboard', 1),
-  (1, 'invoice', 1),
-  (1, 'filemanager', 1),
-  (1, 'person_file', 1),
-  (1, 'vehicle_file', 1),
-  (1, 'apartment_file', 1);
-```
+> Earlier versions documented an SQL block here that inserted an `admin`
+> account with a hardcoded hash. That hash belongs to a widely known default
+> password, so every installation following this guide would have been open.
 
 ### Step 7: Configure Reverse Proxy (Production)
 

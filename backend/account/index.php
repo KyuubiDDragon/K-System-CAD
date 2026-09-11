@@ -180,28 +180,59 @@ function registerUser(PDO $pdo): void {
         // Hash the password
         $hashed_password = password_hash($password, PASSWORD_DEFAULT); // Use PASSWORD_DEFAULT
 
-        // --- INSERT User Logic ---
-        // This needs to be adapted to your EXACT kdd_users table structure
-        $sqlInsert = "INSERT INTO kdd_users (authority_id, username, email, password, authority, created_at, updated_at)
-                      VALUES (?, ?, ?, ?, ?, NOW(), NOW())";
-        $stmtInsert = $pdo->prepare($sqlInsert);
+        /*
+           Zwei Fehler steckten hier.
 
-        $success = $stmtInsert->execute([$authorityId, $username, $email, $hashed_password, $authority]);
+           Erstens schrieb das INSERT in eine Spalte updated_at, die kdd_users
+           nicht hat - jede Registrierung brach mit "Unknown column" ab.
 
-        if ($success) {
-            $newUserId = $pdo->lastInsertId();
-            // Maybe automatically assign default roles/permissions here?
-            // Maybe log the registration? logDatabaseChange(...)
-            http_response_code(201); // Created
-            echo json_encode(["message" => "User registered successfully.", "userId" => $newUserId]);
-        } else {
-             http_response_code(500);
-             echo json_encode(["error" => "Failed to register user."]);
+           Zweitens stand an der Stelle, wo die Rolle vergeben wird, nur die
+           Frage "Maybe automatically assign default roles/permissions here?".
+           Ein Konto ohne Rolle traegt kein einziges Recht, nicht einmal
+           CAN_LOGIN - es konnte sich also nicht anmelden. Neu angelegte
+           Konten bekommen jetzt MEMBER.
+
+           Der allererste Zugang einer Anlage laeuft nicht hierher, sondern
+           ueber backend/setup/. Diese Funktion setzt ein gueltiges Token
+           voraus, das es vor dem ersten Konto nicht geben kann.
+        */
+        $pdo->beginTransaction();
+        try {
+            $stmtInsert = $pdo->prepare(
+                "INSERT INTO kdd_users (authority_id, username, email, password, authority, created_at)
+                 VALUES (?, ?, ?, ?, ?, NOW())"
+            );
+            $stmtInsert->execute([$authorityId, $username, $email, $hashed_password, $authority]);
+            $newUserId = (int)$pdo->lastInsertId();
+
+            // MEMBER ist die Grundrolle aus dem Grundstock der Datenbank.
+            $stmtRolle = $pdo->prepare(
+                "SELECT id FROM kdd_roles WHERE authority_id = ? AND name = 'MEMBER' AND is_deleted = 0 LIMIT 1"
+            );
+            $stmtRolle->execute([$authorityId]);
+            $rolleId = $stmtRolle->fetchColumn();
+
+            if ($rolleId === false) {
+                throw new \RuntimeException("Die Rolle MEMBER fehlt in Behoerde {$authorityId}.");
+            }
+
+            $stmtZuweisung = $pdo->prepare(
+                "INSERT INTO kdd_user_roles (user_id, role_id, authority_id) VALUES (?, ?, ?)"
+            );
+            $stmtZuweisung->execute([$newUserId, (int)$rolleId, $authorityId]);
+
+            $pdo->commit();
+        } catch (\Throwable $e) {
+            $pdo->rollBack();
+            throw $e;
         }
-        // --- End INSERT ---
 
-    } catch (\PDOException $e) {
-        error_log("Database error during registration: " . $e->getMessage());
+        http_response_code(201); // Created
+        echo json_encode(["message" => "User registered successfully.", "userId" => $newUserId]);
+
+    } catch (\Throwable $e) {
+        error_log("Fehler bei der Registrierung: " . get_class($e) . ' ' . $e->getMessage()
+            . ' @ ' . $e->getFile() . ':' . $e->getLine());
         http_response_code(500); echo json_encode(["error" => "An internal error occurred during registration."]);
     }
 }

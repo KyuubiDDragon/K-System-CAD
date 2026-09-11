@@ -3229,5 +3229,27 @@
     "collapse": "Collapse column",
     "expand": "Expand column",
     "nothingSelected": "Nothing selected."
+  },
+  "setup": {
+    "title": "First-time setup",
+    "lede": "This installation has no user yet. Create the first account here — it receives every permission and sets up everything else from there.",
+    "onceOnly": "This step appears exactly once. As soon as an account exists, it can no longer be reached.",
+    "formTitle": "Create the first account",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least {n} characters",
+    "passwordRepeat": "Repeat password",
+    "submit": "Create account",
+    "done": "The account is ready. Continuing to sign-in …",
+    "rightsNote": "The account receives the “System Administrator” role and with it every permission.",
+    "errors": {
+      "usernameRequired": "Please enter a username.",
+      "emailRequired": "Please enter an email address.",
+      "emailInvalid": "This email address is not valid.",
+      "passwordShort": "The password needs at least {n} characters.",
+      "passwordMismatch": "The two passwords do not match.",
+      "failed": "Setup failed."
+    }
   }
 }

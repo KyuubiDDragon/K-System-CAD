@@ -165,25 +165,20 @@ INSERT INTO kdd_authorities (name, active, created_at)
 VALUES ('Standard Organisation', 1, NOW());
 ```
 
-### Admin-Benutzer erstellen
+### Ersten Zugang anlegen
 
-```sql
--- Passwort wird 'admin123' sein
-INSERT INTO kdd_users (username, password, email, authority_id, created_at)
-VALUES ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@example.com', 1, NOW());
+Von Hand ist hier nichts mehr zu tun. Der Grundstock der Datenbank liefert
+bewusst kein Konto mit; beim ersten Aufruf oeffnet die Anwendung stattdessen
+die Ersteinrichtung unter `/setup` und fragt nach Benutzername, E-Mail und
+einem Passwort von mindestens zwoelf Zeichen.
 
--- Admin-Rolle erstellen
-INSERT INTO kdd_roles (name, description, authority_id)
-VALUES ('Super Admin', 'Vollständiger Systemzugriff', 1);
+Der dort angelegte Zugang bekommt die Rolle `System Administrator` und damit
+saemtliche Rechte. Sobald ein Benutzer existiert, verweigert die Einrichtung
+den Dienst.
 
--- ALL_PERMISSIONS der Rolle zuweisen
-INSERT INTO kdd_role_permissions (role_id, permission_id)
-SELECT 1, id FROM kdd_permissions WHERE name = 'ALL_PERMISSIONS';
-
--- Rolle dem Benutzer zuweisen
-INSERT INTO kdd_user_roles (user_id, role_id, authority_id)
-VALUES (1, 1, 1);
-```
+> Frueher stand an dieser Stelle ein SQL-Block, der ein Konto `admin` mit einem
+> fest eingetragenen Hash anlegte. Der Hash gehoert zu einem allgemein
+> bekannten Standardpasswort - jede Anlage waere damit offen gewesen.
 
 ## Erste Anmeldung
 

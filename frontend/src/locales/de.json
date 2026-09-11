@@ -3241,5 +3241,27 @@
     "collapse": "Spalte einklappen",
     "expand": "Spalte ausklappen",
     "nothingSelected": "Nichts ausgewählt."
+  },
+  "setup": {
+    "title": "Ersteinrichtung",
+    "lede": "Diese Anlage kennt noch keinen Benutzer. Lege hier den ersten Zugang an – er bekommt sämtliche Rechte und richtet von dort aus alles Weitere ein.",
+    "onceOnly": "Dieser Schritt erscheint genau einmal. Sobald ein Zugang besteht, ist er nicht mehr erreichbar.",
+    "formTitle": "Ersten Zugang anlegen",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "passwordHint": "Mindestens {n} Zeichen",
+    "passwordRepeat": "Passwort wiederholen",
+    "submit": "Zugang anlegen",
+    "done": "Der Zugang steht. Weiter zur Anmeldung …",
+    "rightsNote": "Der Zugang erhält die Rolle „System Administrator“ und damit alle Rechte.",
+    "errors": {
+      "usernameRequired": "Bitte einen Benutzernamen angeben.",
+      "emailRequired": "Bitte eine E-Mail-Adresse angeben.",
+      "emailInvalid": "Diese E-Mail-Adresse ist nicht gültig.",
+      "passwordShort": "Das Passwort braucht mindestens {n} Zeichen.",
+      "passwordMismatch": "Die beiden Passwörter stimmen nicht überein.",
+      "failed": "Die Einrichtung ist fehlgeschlagen."
+    }
   }
 }
