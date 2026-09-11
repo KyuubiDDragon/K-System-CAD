@@ -16,9 +16,58 @@
 
 ---
 
-**[Deutsch](#deutsch)** | **[English](#english)** | **[Quick Start](#-quick-start)** | **[Documentation](docs/)**
+**[Einblick](#einblick--a-look-inside)** | **[Deutsch](#deutsch)** | **[English](#english)** | **[Quick Start](#quick-start)** | **[Documentation](docs/)**
 
 </div>
+
+---
+
+## Einblick / A look inside
+
+Alle Aufnahmen stammen aus einer frisch aufgesetzten Anlage mit Beispieldaten.
+*All screenshots are from a freshly installed instance with sample data.*
+
+### Arbeitsbereich — Listen, Kennzahlen, Filter
+
+![Mitarbeiterverwaltung als Tabelle](docs/screenshots/tabelle.png)
+
+Kennzahlen über der Liste, Filter als Schalter mit Inhalt statt bloßer Zähler,
+frei wählbare Spalten, Auswahlspalte für Sammelaktionen. Bedeutung steht links,
+Zahlen rechts und in Festbreite, damit sie untereinander vergleichbar bleiben.
+
+### Leitstelle — Einheiten, Besatzung, Fahrzeuge
+
+![Leitstelle](docs/screenshots/leitstelle.png)
+
+Belegte und freie Einheiten im Kopf, jede Einheit mit Statusmarke. Mitarbeiter
+und Fahrzeuge werden per Ziehen zugewiesen.
+
+### Fenster-Modus — der zweite Rahmen
+
+![Fenster-Modus](docs/screenshots/fenster-modus.jpg)
+
+Dieselben Tokens wie die Seitenleisten-Ansicht, nur ein anderer Rahmen: frei
+anordbare Fenster, Taskleiste, Startmenü, Widgets auf der Arbeitsfläche. Das
+aktive Fenster erkennt man an der Titelleiste.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/startmenue.jpg" alt="Startmenü"><br><sub><b>Startmenü</b> — Suche, Kacheln, vollständige Programmliste</sub></td>
+<td width="50%"><img src="docs/screenshots/befehlspalette.png" alt="Befehlspalette"><br><sub><b>Befehlspalette</b> (Strg+K) — Personen, Berichte, Dokumente, Ansichten</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/screenshots/dashboard.png" alt="Dashboard"><br><sub><b>Dashboard</b> — Bausteine aus sechs Vorlagen, frei anordbar</sub></td>
+<td width="50%"><img src="docs/screenshots/heller-modus.png" alt="Heller Modus"><br><sub><b>Heller Modus</b> — dieselbe Ansicht, umgeschaltet</sub></td>
+</tr>
+</table>
+
+### Ersteinrichtung
+
+![Ersteinrichtung](docs/screenshots/ersteinrichtung.png)
+
+Die Datenbank wird ohne Benutzerkonto ausgeliefert. Beim ersten Start öffnet
+die Anwendung diesen Schritt; der dort angelegte Zugang bekommt sämtliche
+Rechte. Sobald ein Konto besteht, ist der Schritt nicht mehr erreichbar.
 
 ---
 
@@ -28,26 +77,23 @@ K-Systems is a comprehensive, multi-tenant enterprise management platform featur
 
 ### Features
 
-| Category | Features |
-|----------|----------|
-| **Desktop Interface** | Windows-style desktop with draggable windows, taskbar, start menu, desktop icons, widgets, and mini-games |
-| **Employee Management** | Profiles, departments, ranks, licenses, training, certifications, vacation management |
-| **Communication** | Internal messaging, group chats, real-time notifications via Socket.io |
-| **Calendar & Events** | Event management, recurring events, groups, RSVP, vacation calendar |
-| **Documents & Reports** | Document areas, report templates, custom fields, status workflows, PDF generation |
-| **Invoices & Billing** | Invoice management, line items, payment tracking, PDF export |
-| **File Management** | File manager with folders, upload/download, per-authority storage |
-| **Person & Vehicle Files** | Contact management, vehicle records, maintenance tracking, GPS data |
-| **Dispatch & Operations** | Dispatch management, unit tracking, GPS integration, status updates |
-| **Crew Management** | Shift planning, personnel assignment, qualifications, overtime tracking |
-| **Map Integration** | Leaflet-based maps with custom markers, categories, and GPS tracking |
-| **Collaboration** | Whiteboard (real-time collaborative), blackboard (announcements), todo lists |
-| **Company Management** | Company profiles, types, contacts, documents, website builder |
-| **Applications** | Applicant management, custom forms, evaluation workflow |
-| **Multi-Tenant** | Complete data isolation per authority, custom branding, feature flags |
-| **Permission System** | Bitmask-based roles & permissions, 200+ fine-grained permissions |
-| **Multilingual** | Full German and English support (i18n) |
-| **Mail System** | Internal mail with real-time sync across tabs |
+Grouped the way the navigation is. Every module can be switched on or off per
+authority.
+
+| Group | What it covers |
+|-------|----------------|
+| **Dispatch & Communication** | Dispatch centre with units, crew and vehicle assignment by drag and drop, status codes; blackboard; authority directory; internal messaging and mail with real-time sync |
+| **Records** | Employee management (ranks, departments, licences, training, absences), person files, vehicle files, apartment files, companies, invoices with line items, reports with templates, custom fields and status workflows, document areas with versioning |
+| **Organisation** | Organisation chart, file manager, training and tests, calendar with recurring events, applications with custom forms, shift planning, vacation calendar |
+| **Administration** | Users, roles and 204 fine-grained permissions, authority branding, feature switches, global settings, module and report configuration |
+| **Other** | Templates, website builder for authorities, Leaflet map with custom markers and categories, to-do lists, collaborative whiteboard, weather, small games |
+| **Dashboard** | Six role templates (dispatcher, HR, reports, member, employee, admin) built from 19 widgets, freely arrangeable, saved per user |
+| **Two layouts** | Sidebar for focused work, window mode with draggable windows, taskbar, start menu and desktop widgets — same tokens, same density, only a different frame |
+| **Command palette** | Ctrl+K searches people, reports, documents, vehicles, views and more, with recently used items on top |
+| **Multi-tenant** | Full data isolation per authority, own branding, own feature set, own settings |
+| **First-run setup** | The database ships without an account; the first one created receives every permission |
+| **Bilingual** | German and English throughout, including dates, numbers and currency |
+| **Light and dark** | Both modes are first-class, driven by one token set |
 
 ### Tech Stack
 
@@ -56,7 +102,7 @@ K-Systems is a comprehensive, multi-tenant enterprise management platform featur
 | **Frontend** | Vue 3, TypeScript, Vuetify 3, Pinia, Vue Router |
 | **Backend** | PHP 8.1+, JWT Authentication, REST API (50+ modules) |
 | **Socket Server** | Node.js, Socket.io, Express |
-| **Database** | MariaDB / MySQL with 100+ tables |
+| **Database** | MariaDB / MySQL, 149 tables, shipped as a ready baseline |
 | **Infrastructure** | Docker, Traefik, Nginx/Apache |
 
 ---
@@ -67,26 +113,23 @@ K-Systems ist eine umfassende, mandantenfähige Enterprise-Management-Plattform 
 
 ### Funktionen
 
-| Kategorie | Funktionen |
-|-----------|------------|
-| **Desktop-Oberfläche** | Windows-ähnlicher Desktop mit verschiebbaren Fenstern, Taskleiste, Startmenü, Desktop-Icons, Widgets und Mini-Games |
-| **Mitarbeiterverwaltung** | Profile, Abteilungen, Dienstgrade, Lizenzen, Schulungen, Zertifizierungen, Urlaubsverwaltung |
-| **Kommunikation** | Internes Messaging, Gruppenchats, Echtzeit-Benachrichtigungen via Socket.io |
-| **Kalender & Events** | Eventmanagement, wiederkehrende Ereignisse, Gruppen, RSVP, Urlaubskalender |
-| **Dokumente & Berichte** | Dokumentenbereiche, Berichtsvorlagen, benutzerdefinierte Felder, Status-Workflows, PDF-Generierung |
-| **Rechnungen** | Rechnungsverwaltung, Positionen, Zahlungsverfolgung, PDF-Export |
-| **Dateiverwaltung** | Dateimanager mit Ordnern, Upload/Download, Authority-basierter Speicher |
-| **Personen- & Fahrzeugakten** | Kontaktverwaltung, Fahrzeugdaten, Wartung, GPS-Daten |
-| **Einsatzverwaltung** | Einsatzleitung, Einheitenverfolgung, GPS-Integration, Statusaktualisierungen |
-| **Mannschaftsverwaltung** | Schichtplanung, Personalzuweisung, Qualifikationen, Überstunden |
-| **Kartenintegration** | Leaflet-basierte Karten mit benutzerdefinierten Markern, Kategorien und GPS-Tracking |
-| **Zusammenarbeit** | Whiteboard (Echtzeit), Schwarzes Brett, Aufgabenlisten |
-| **Firmenverwaltung** | Firmenprofile, Typen, Kontakte, Dokumente, Website-Builder |
-| **Bewerbungen** | Bewerbungsmanagement, individuelle Formulare, Bewertungs-Workflow |
-| **Mandantenfähigkeit** | Vollständige Datenisolierung pro Authority, eigenes Branding, Feature-Flags |
-| **Berechtigungssystem** | Bitmask-basierte Rollen & Berechtigungen, 200+ feingranulare Berechtigungen |
-| **Mehrsprachig** | Vollständige Deutsch- und Englischunterstützung (i18n) |
-| **Mail-System** | Internes Mailsystem mit Echtzeit-Synchronisation über mehrere Tabs |
+Gegliedert wie die Navigation. Jedes Modul lässt sich je Behörde ein- und
+ausschalten.
+
+| Bereich | Was dazugehört |
+|---------|----------------|
+| **Einsatz & Kommunikation** | Leitstelle mit Einheiten, Besatzung und Fahrzeugen per Ziehen zuweisen, Statuscodes; Schwarzes Brett; Behördenverzeichnis; internes Messaging und Mailsystem mit Echtzeit-Abgleich |
+| **Akten** | Mitarbeiterverwaltung (Ränge, Abteilungen, Lizenzen, Schulungen, Abwesenheiten), Personen-, Fahrzeug- und Wohnungsakten, Firmen, Rechnungen mit Positionen, Berichte mit Vorlagen, eigenen Feldern und Statusabläufen, Dokumentbereiche mit Versionierung |
+| **Organisation** | Organigramm, Dateimanager, Schulungen und Tests, Kalender mit Wiederholungen, Bewerbungen mit eigenen Formularen, Schichtplanung, Urlaubskalender |
+| **Verwaltung** | Benutzer, Rollen und 204 einzelne Rechte, Behörden-Branding, Modulschalter, Grundeinstellungen, Berichts- und Modulkonfiguration |
+| **Sonstiges** | Vorlagen, Website-Baukasten für Behörden, Leaflet-Karte mit eigenen Markern und Kategorien, Aufgabenlisten, gemeinsames Whiteboard, Wetter, kleine Spiele |
+| **Dashboard** | Sechs Rollenvorlagen (Leitstelle, Personal, Berichte, Mitglied, Mitarbeiter, Verwaltung) aus 19 Bausteinen, frei anordbar, je Benutzer gespeichert |
+| **Zwei Layouts** | Seitenleiste für konzentriertes Arbeiten, Fenster-Modus mit frei anordbaren Fenstern, Taskleiste, Startmenü und Widgets — dieselben Tokens, dieselbe Dichte, nur ein anderer Rahmen |
+| **Befehlspalette** | Strg+K durchsucht Personen, Berichte, Dokumente, Fahrzeuge, Ansichten und mehr, zuletzt Benutztes zuoberst |
+| **Mandantenfähig** | Vollständig getrennte Daten je Behörde, eigenes Branding, eigener Modulumfang, eigene Einstellungen |
+| **Ersteinrichtung** | Die Datenbank wird ohne Konto ausgeliefert; das erste angelegte bekommt sämtliche Rechte |
+| **Zweisprachig** | Deutsch und Englisch durchgehend, samt Datum, Zahlen und Beträgen |
+| **Hell und dunkel** | Beide Modi gleichrangig, aus einem Satz Merker gespeist |
 
 ---
 
