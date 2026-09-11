@@ -61,6 +61,13 @@
        sind es 122 px, und nichts wird mehr gekuerzt. Der Abstand zum Symbol
        kommt aus der Regel darueber.
     */
+    /* Vuetifys eigene Regel lautet
+       ".v-list-item__prepend > .v-icon ~ .v-list-item__spacer" und wiegt damit
+       schwerer als ein blosses ".v-list-item__spacer" - dieselbe Form mit dem
+       Praefix der Navigation davor gewinnt, ohne !important zu brauchen. */
+    .v-list-item__prepend > .v-icon ~ .v-list-item__spacer,
+    .v-list-item__prepend > .v-badge ~ .v-list-item__spacer,
+    .v-list-item__spacer ~ .v-icon,
     .v-list-item__spacer {
         width: 0;
     }
