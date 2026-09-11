@@ -885,7 +885,9 @@
         "imageUrl": "Bild-URL",
         "showHeaders": "Tabellen-Header anzeigen",
         "autoHeight": "Höhe automatisch anpassen",
-        "order": "Reihenfolge"
+        "order": "Reihenfolge",
+        "heightHint": "Die Höhe richtet sich nach der Zahl der Einträge.",
+        "orderHint": "Kleinere Zahlen stehen weiter oben."
       },
       "confirmDelete": "Löschen bestätigen",
       "deleteWarning": "Möchtest du wirklich",

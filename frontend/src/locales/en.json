@@ -885,7 +885,9 @@
         "imageUrl": "Image URL",
         "showHeaders": "Show Table Headers",
         "autoHeight": "Auto-fit Height",
-        "order": "Order"
+        "order": "Order",
+        "heightHint": "The height follows the number of entries.",
+        "orderHint": "Lower numbers come first."
       },
       "confirmDelete": "Confirm Delete",
       "deleteWarning": "Are you sure you want to delete this",

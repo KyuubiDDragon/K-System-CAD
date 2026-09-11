@@ -1408,7 +1408,7 @@ onUnmounted(() => {
                                 v-model="editingCategory.auto_height"
                                 :label="t('admin.cheatsheet.form.autoHeight') || 'Auto-fit Height'"
                                 color="primary"
-                                hint="Table height adapts to number of entries"
+                                :hint="$t('admin.cheatsheet.form.heightHint')"
                                 persistent-hint
                             ></v-switch>
                         </v-col>
@@ -1447,7 +1447,7 @@ onUnmounted(() => {
                                 type="number"
                                 variant="outlined"
                                 density="comfortable"
-                                hint="Lower numbers appear first"
+                                :hint="$t('admin.cheatsheet.form.orderHint')"
                                 persistent-hint
                             ></v-text-field>
                         </v-col>

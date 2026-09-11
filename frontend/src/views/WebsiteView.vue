@@ -896,7 +896,7 @@
             <pre>IsBlockContent: {{ isBlockContent }}</pre>
             <pre>HasContent: {{ !!selectedContent }}</pre>
             <pre>BlocksCount: {{ parsedBlocks.length }}</pre>
-            <button @click="debugMode = false">Close Debug</button>
+            <button @click="debugMode = false">{{ $t('common.close') }}</button>
         </div>
     </div>
 </template>

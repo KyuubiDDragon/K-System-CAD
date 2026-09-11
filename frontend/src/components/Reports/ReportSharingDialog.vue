@@ -127,8 +127,7 @@
                         <!-- External sharing with other authorities that have SHARE_REPORTS feature -->
                         <v-card variant="outlined">
                             <v-card-title class="text-subtitle-1 py-2">
-                                <v-icon class="mr-2">mdi-share-variant</v-icon> Share with Other
-                                Authorities
+                                <v-icon class="mr-2">mdi-share-variant</v-icon> {{ $t('reportSharing.shareWithOthers') }}
                             </v-card-title>
                             <v-card-text>
                                 <p class="text-body-2 mb-2">
