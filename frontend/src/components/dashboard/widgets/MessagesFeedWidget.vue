@@ -30,7 +30,7 @@
               {{ message.from_name }}
             </div>
             <div class="message-time text-caption text-medium-emphasis">
-              {{ formatDate(message.created_at) }}
+              {{ formatRelative(message.created_at) }}
             </div>
           </div>
           <v-chip v-if="!message.read" size="x-small" color="primary">New</v-chip>
@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatDate } from '@/utils/datetime';
+import { formatRelative } from '@/utils/datetime';
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -116,17 +116,15 @@ function getInitials(name: string): string {
   return name.substring(0, 2).toUpperCase()
 }
 
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+/*
+   Die Zeitangabe kommt aus utils/datetime.
 
-  if (diffHours < 1) return 'Just now'
-  if (diffHours < 24) return `${diffHours}h ago`
-  if (diffHours < 48) return 'Yesterday'
-  return formatDate(date)
-}
+   Hier stand eine eigene Fassung, die sich am Ende selbst aufrief - der
+   Baustein stuerzte beim Zeichnen mit "Maximum call stack size exceeded" ab,
+   sobald eine Nachricht da war. Ausserdem waren ihre Texte fest auf Englisch
+   ("Just now", "2h ago", "Yesterday") und standen damit mitten in einer
+   deutschen Oberflaeche. formatRelative leistet dasselbe uebersetzt.
+*/
 
 function getPreview(body: string): string {
   const plainText = body.replace(/<[^>]*>/g, '')

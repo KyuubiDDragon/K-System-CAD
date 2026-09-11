@@ -38,17 +38,45 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const router = useRouter()
 const loading = ref(true)
 const events = ref<any[]>([])
 
+/*
+   daysAhead und maxItems aus der Vorlage werden jetzt beachtet.
+
+   Der Baustein heisst in den Vorlagen "Meine Termine" und bekommt dort
+   daysAhead: 7 mit - er soll die naechste Woche zeigen, nicht die naechsten
+   fuenf Eintraege, egal wie weit die in der Zukunft liegen. Beides lief
+   bisher ins Leere: geladen wurde alles und stumpf auf fuenf gekuerzt.
+*/
+const grenze = () => {
+    const n = Number(props.config?.maxItems);
+    return Number.isFinite(n) && n > 0 ? Math.floor(n) : 5;
+};
+
+const imZeitfenster = (alle: any[]) => {
+    const tage = Number(props.config?.daysAhead);
+    if (!Number.isFinite(tage) || tage <= 0) return alle;
+
+    const grenzwert = new Date();
+    grenzwert.setDate(grenzwert.getDate() + Math.floor(tage));
+    grenzwert.setHours(23, 59, 59, 999);
+
+    return alle.filter((e) => {
+        const start = new Date(e.start);
+        // Was sich nicht lesen laesst, bleibt lieber stehen als zu verschwinden.
+        return isNaN(start.getTime()) ? true : start <= grenzwert;
+    });
+};
+
 async function loadEvents() {
   loading.value = true
   try {
     const response = await apiClientAuth.get('/calendar/?action=getEvents')
-    events.value = (response.data || []).slice(0, 5)
+    events.value = imZeitfenster(response.data || []).slice(0, grenze())
   } catch (err) {
     console.error('Failed to load events:', err)
   } finally {
@@ -56,9 +84,14 @@ async function loadEvents() {
   }
 }
 
-function formatDateTime(dateString: string): string {
-  return formatDateTime(dateString)
-}
+/*
+   Die Zeitangabe kommt aus utils/datetime.
+
+   Hier stand eine gleichnamige oertliche Funktion, die nichts tat als sich
+   selbst aufzurufen - der Baustein stuerzte beim Zeichnen mit
+   "Maximum call stack size exceeded" ab, sobald eine Zeile mit Datum kam.
+   Live nachgewiesen am Kalender-Baustein: vier Termine geladen, Kachel leer.
+*/
 
 function goToCalendar() {
   router.push('/calendar')

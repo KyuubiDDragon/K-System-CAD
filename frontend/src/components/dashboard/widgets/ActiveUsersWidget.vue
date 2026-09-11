@@ -16,7 +16,7 @@
           <div class="text-body-2">{{ user.name }}</div>
           <div class="text-caption text-medium-emphasis">{{ user.role }}</div>
         </div>
-        <v-icon size="small" color="success">mdi-circle</v-icon>
+        <v-icon v-if="props.config?.showStatus !== false" size="small" color="success">mdi-circle</v-icon>
       </div>
     </div>
   </div>
@@ -31,7 +31,12 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+/*
+   showStatus aus der Vorlage wird jetzt beachtet: der Punkt rechts zeigt an, dass jemand angemeldet ist.
+   Ohne die Angabe bleibt er stehen, showStatus: false blendet ihn aus.
+*/
 
 const loading = ref(true)
 const users = ref<any[]>([])

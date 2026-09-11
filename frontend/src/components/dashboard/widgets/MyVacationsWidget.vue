@@ -12,7 +12,7 @@
     </div>
 
     <!-- No Vacations -->
-    <div v-else-if="vacations.length === 0" class="no-data pa-4 text-center">
+    <div v-else-if="sichtbareAbwesenheiten.length === 0" class="no-data pa-4 text-center">
       <v-icon size="48" color="grey">mdi-beach</v-icon>
       <p class="text-body-2 mt-2">{{ $t('dashboard.noCurrentVacation') }}</p>
       <v-btn
@@ -30,7 +30,7 @@
     <!-- Vacations List -->
     <div v-else class="vacations-list">
       <div
-        v-for="vacation in vacations"
+        v-for="vacation in sichtbareAbwesenheiten"
         :key="vacation.id"
         class="vacation-item mb-3 pa-3"
         :class="{ 'active-vacation': isActive(vacation) }"
@@ -151,7 +151,7 @@
 
 <script setup lang="ts">
 import { formatDate } from '@/utils/datetime';
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiClientAuth } from '@/api'
 import { useToast } from 'vue-toastification'
@@ -161,7 +161,7 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 interface Vacation {
   id: number
@@ -196,6 +196,26 @@ const vacationTypes = computed(() => [
   { value: 'training', label: t('dashboard.vacationTypes.training') },
   { value: 'other', label: t('dashboard.vacationTypes.other') }
 ])
+
+/*
+   showHistory aus der Vorlage wird jetzt beachtet.
+
+   Die Vorlagen setzen showHistory: false - der Zettel soll zeigen, was
+   laeuft und was ansteht, nicht das Archiv. Der Baustein zeigte trotzdem
+   jede jemals eingetragene Abwesenheit.
+*/
+const sichtbareAbwesenheiten = computed(() => {
+    if (props.config?.showHistory) return vacations.value;
+
+    const heute = new Date();
+    heute.setHours(0, 0, 0, 0);
+
+    return vacations.value.filter((v: any) => {
+        const ende = new Date(v.end);
+        // Ohne lesbares Ende gilt die Abwesenheit als laufend.
+        return isNaN(ende.getTime()) ? true : ende >= heute;
+    });
+});
 
 /**
  * Load vacations
@@ -280,10 +300,14 @@ function isActive(vacation: Vacation): boolean {
 /**
  * Format date
  */
-function formatDate(dateString: string): string {
-  const date = new Date(dateString)
-  return formatDate(date)
-}
+/*
+   Die Zeitangabe kommt aus utils/datetime.
+
+   Hier stand eine gleichnamige oertliche Funktion, die nichts tat als sich
+   selbst aufzurufen - der Baustein stuerzte beim Zeichnen mit
+   "Maximum call stack size exceeded" ab, sobald eine Zeile mit Datum kam.
+   Live nachgewiesen am Kalender-Baustein: vier Termine geladen, Kachel leer.
+*/
 
 /**
  * Get duration in days

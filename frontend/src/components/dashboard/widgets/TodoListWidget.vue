@@ -19,7 +19,7 @@
     </div>
 
     <div v-else class="todos-list">
-      <div v-for="todo in todos" :key="todo.id" class="todo-item mb-2">
+      <div v-for="todo in sichtbareTodos" :key="todo.id" class="todo-item mb-2">
         <v-checkbox
           :model-value="todo.completed"
           @update:model-value="toggleTodo(todo.id, $event)"
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { formatDate } from '@/utils/datetime';
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { apiClientAuth } from '@/api'
 
@@ -72,7 +72,7 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const { t: $t } = useI18n()
 
@@ -89,6 +89,18 @@ const todos = ref<Todo[]>([])
 const showAddDialog = ref(false)
 const adding = ref(false)
 const newTodo = ref({ title: '', due_date: '' })
+
+/*
+   showCompleted aus der Vorlage wird jetzt beachtet.
+
+   Die Vorlagen setzen showCompleted: false - erledigte Aufgaben sollen den
+   Zettel nicht fuellen. Der Baustein zeigte trotzdem alle und strich die
+   erledigten nur durch.
+*/
+const sichtbareTodos = computed(() => {
+    if (props.config?.showCompleted) return todos.value;
+    return todos.value.filter((t: any) => !t.completed);
+});
 
 async function loadTodos() {
   loading.value = true
@@ -127,9 +139,14 @@ async function addTodo() {
   }
 }
 
-function formatDate(dateString: string): string {
-  return formatDate(dateString)
-}
+/*
+   Die Zeitangabe kommt aus utils/datetime.
+
+   Hier stand eine gleichnamige oertliche Funktion, die nichts tat als sich
+   selbst aufzurufen - der Baustein stuerzte beim Zeichnen mit
+   "Maximum call stack size exceeded" ab, sobald eine Zeile mit Datum kam.
+   Live nachgewiesen am Kalender-Baustein: vier Termine geladen, Kachel leer.
+*/
 
 onMounted(() => loadTodos())
 defineExpose({ refresh: loadTodos })

@@ -42,7 +42,7 @@
       <v-divider class="my-2" />
 
       <!-- Crew Members (Information Tiles) -->
-      <div class="crew-members-tiles">
+      <div v-if="props.config?.showMembers !== false" class="crew-members-tiles">
         <div
           v-for="member in crewInfo.members"
           :key="member.id"
@@ -116,6 +116,21 @@ interface CrewInfo {
   status: string
   members: CrewMember[]
 }
+
+interface Props {
+  widgetId: string
+  config: any
+}
+
+/*
+   Der Baustein nahm bisher gar keine Eigenschaften entgegen, obwohl das
+   Dashboard ihm widgetId und config uebergibt.
+
+   showMembers aus der Vorlage wird jetzt beachtet: die Kachelreihe der
+   Mitglieder. Ohne die Angabe bleibt sie stehen, showMembers: false zeigt nur
+   den Kopf mit Einheit, Zustand und Anzahl.
+*/
+const props = defineProps<Props>()
 
 const router = useRouter()
 const { t } = useI18n()

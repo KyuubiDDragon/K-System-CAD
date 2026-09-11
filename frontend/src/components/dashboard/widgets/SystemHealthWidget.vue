@@ -10,8 +10,8 @@
         </v-icon>
         <div class="text-h5 mt-2">{{ $t('dashboard.widget.systemHealth.system') }} {{ health.status }}</div>
       </div>
-      <v-divider class="my-2" />
-      <div class="metrics">
+      <v-divider v-if="props.config?.showMetrics !== false" class="my-2" />
+      <div v-if="props.config?.showMetrics !== false" class="metrics">
         <div class="metric-item d-flex align-center justify-space-between mb-2">
           <span class="text-body-2">{{ $t('dashboard.widget.systemHealth.cpuUsage') }}</span>
           <v-chip size="small" :color="getMetricColor(health.cpu)">{{ health.cpu }}%</v-chip>
@@ -42,7 +42,13 @@ interface Props {
   config: any
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+/*
+   showMetrics aus der Vorlage wird jetzt beachtet: die Reihe aus Prozessor, Speicher, Platte und
+   Laufzeit. Ohne die Angabe bleibt sie stehen, showMetrics: false zeigt nur
+   den Gesamtzustand.
+*/
 
 const loading = ref(true)
 const health = ref({ status: 'healthy', cpu: 0, memory: 0, disk: 0, uptime: '0d 0h' })

@@ -68,9 +68,14 @@ async function loadReports() {
   }
 }
 
-function formatDate(dateString: string): string {
-  return formatDate(dateString)
-}
+/*
+   Die Zeitangabe kommt aus utils/datetime.
+
+   Hier stand eine gleichnamige oertliche Funktion, die nichts tat als sich
+   selbst aufzurufen - der Baustein stuerzte beim Zeichnen mit
+   "Maximum call stack size exceeded" ab, sobald eine Zeile mit Datum kam.
+   Live nachgewiesen am Kalender-Baustein: vier Termine geladen, Kachel leer.
+*/
 
 function openReport(report: any) {
   router.push(`/report/${report.id}`)

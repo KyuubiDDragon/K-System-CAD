@@ -77,9 +77,14 @@ function getFileIcon(type: string): string {
   return icons[type] || 'mdi-file-document-outline'
 }
 
-function formatDate(dateString: string): string {
-  return formatDate(dateString)
-}
+/*
+   Die Zeitangabe kommt aus utils/datetime.
+
+   Hier stand eine gleichnamige oertliche Funktion, die nichts tat als sich
+   selbst aufzurufen - der Baustein stuerzte beim Zeichnen mit
+   "Maximum call stack size exceeded" ab, sobald eine Zeile mit Datum kam.
+   Live nachgewiesen am Kalender-Baustein: vier Termine geladen, Kachel leer.
+*/
 
 function openDocument(doc: any) {
   window.open(doc.url, '_blank')
