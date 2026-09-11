@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { hoverTextFuerAbgeschnittenes } from '@/utils/abgeschnittenerText';
 import type { App as VueApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App.vue';
@@ -234,6 +235,14 @@ app.provide('socket', socketService);
 if (typeof window !== 'undefined') {
     window.__VUE_APP__ = app;
 }
+
+/*
+   Wo eine Beschriftung mit "…" endet, steht der volle Text beim Zeigen als
+   Hover-Text darueber. Ein Zuhoerer am Dokument, der beim Zeigen prueft, ob
+   das Element wirklich kuerzt - je Komponente waere das nicht zu machen, weil
+   das Kuerzen von Inhalt und Fensterbreite abhaengt, nicht von der Komponente.
+*/
+hoverTextFuerAbgeschnittenes();
 
 // 🟢 App starten
 app.mount('#app');
