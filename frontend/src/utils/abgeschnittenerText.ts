@@ -51,22 +51,33 @@ function findeGekuerztes(start: Element | null): HTMLElement | null {
     return null;
 }
 
+/**
+ * Nimmt eigene Hover-Texte zurueck, wo wieder Platz ist.
+ *
+ * Muss vor dem Setzen laufen und unabhaengig davon: sonst bleibt ein alter
+ * Text stehen, sobald weiter oben ein anderes Element kuerzt und die Suche
+ * dort endet. Genau das war der Fall - das Fenster wurde breiter, die
+ * Beschriftung passte wieder, und der Hover-Text von vorhin blieb.
+ */
+function raeumeAuf(start: Element): void {
+    let el: Element | null = start;
+    for (let i = 0; i <= EBENEN && el instanceof HTMLElement; i++) {
+        if (el.hasAttribute(VON_UNS) && !istGekuerzt(el)) {
+            el.removeAttribute('title');
+            el.removeAttribute(VON_UNS);
+        }
+        el = el.parentElement;
+    }
+}
+
 function beiZeigen(ereignis: Event): void {
     const ziel = ereignis.target;
     if (!(ziel instanceof Element)) return;
 
-    const gekuerzt = findeGekuerztes(ziel);
+    raeumeAuf(ziel);
 
-    if (!gekuerzt) {
-        // Was wir frueher gesetzt haben, gilt vielleicht nicht mehr: das
-        // Fenster wurde breiter, der Inhalt kuerzer.
-        const alt = ziel.closest(`[${VON_UNS}]`);
-        if (alt instanceof HTMLElement && !istGekuerzt(alt)) {
-            alt.removeAttribute('title');
-            alt.removeAttribute(VON_UNS);
-        }
-        return;
-    }
+    const gekuerzt = findeGekuerztes(ziel);
+    if (!gekuerzt) return;
 
     // Ein vorhandener Hover-Text, den jemand anders gesetzt hat, bleibt.
     if (gekuerzt.hasAttribute('title') && !gekuerzt.hasAttribute(VON_UNS)) return;
