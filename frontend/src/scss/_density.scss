@@ -53,6 +53,22 @@
         font-size: 17px;
     }
 
+    /*
+       Vuetify schiebt hinter das Symbol und vor den Pfeil je einen
+       Platzhalter von 32 px. In einer 210 px breiten Navigation gingen damit
+       108 der 181 px an zwei Symbole, fuer die Beschriftung blieben 57 -
+       "Mitarbeiter" brach ab, "Schwarzes Brett" ebenso. Ohne die Platzhalter
+       sind es 122 px, und nichts wird mehr gekuerzt. Der Abstand zum Symbol
+       kommt aus der Regel darueber.
+    */
+    .v-list-item__spacer {
+        width: 0;
+    }
+
+    .v-list-item__append > .v-icon {
+        font-size: 16px;
+    }
+
     .v-list-item-title {
         font-size: 12.5px;
         line-height: 1.3;

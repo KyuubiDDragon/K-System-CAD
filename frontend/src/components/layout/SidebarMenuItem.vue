@@ -12,7 +12,12 @@
     class="text-overline font-weight-bold"
     :class="{ 'text-center': collapsed }"
   >
-    <v-icon v-if="!collapsed" size="small" class="mr-2">{{ item.icon }}</v-icon>
+    <!--
+      Ohne Symbol: der Entwurf zeigt fuer die Gruppenzeile nur den gesperrten
+      Text in Versalien. Das Symbol nahm mitsamt Abstand 25 px, weshalb
+      "EINSATZ & KOMMUNIKATION" als einzige Zeile noch abbrach - und es ordnet
+      nichts, was die Beschriftung nicht schon sagt.
+    -->
     <span v-if="!collapsed">{{ item.title }}</span>
   </v-list-subheader>
 
