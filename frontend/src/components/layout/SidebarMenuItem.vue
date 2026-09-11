@@ -1,8 +1,15 @@
 <template>
-  <!-- Section Header -->
+  <!--
+    Section Header
+
+    Ohne mt-4 mb-2: die beiden Hilfsklassen setzten 16 px Luft oben und 8 unten
+    und gewannen damit gegen die Regel des Systems, die 12 und 4 vorgibt. Die
+    fuenf Gruppen trieben dadurch auseinander und lasen sich wie fuenf Inseln
+    statt wie eine Liste. Der Abstand kommt jetzt aus scss/_density.scss.
+  -->
   <v-list-subheader
     v-if="item.isSectionHeader"
-    class="text-overline font-weight-bold mt-4 mb-2"
+    class="text-overline font-weight-bold"
     :class="{ 'text-center': collapsed }"
   >
     <v-icon v-if="!collapsed" size="small" class="mr-2">{{ item.icon }}</v-icon>
