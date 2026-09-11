@@ -452,11 +452,11 @@ const formattedReportsCount = computed(() => {
 // Mock data for apps - in a real implementation, this would be passed down
 // Commented out because we're now receiving allApps from props
 // const allApps = ref([
-//     { id: 'dashboard', title: t('dashboard'), icon: 'mdi-view-dashboard', color: 'var(--k-accent)' },
+//     { id: 'dashboard', title: t('tabs.dashboard'), icon: 'mdi-view-dashboard', color: 'var(--k-accent)' },
 //     { id: 'users', title: t('users'), icon: 'mdi-account-multiple', color: '#10b981' },
 //     { id: 'messages', title: t('messages'), icon: 'mdi-email', color: '#f59e0b' },
-//     { id: 'calendar', title: t('calendar'), icon: 'mdi-calendar', color: '#ef4444' },
-//     { id: 'files', title: t('fileManager'), icon: 'mdi-folder', color: '#8b5cf6' },
+//     { id: 'calendar', title: t('tabs.calendar'), icon: 'mdi-calendar', color: '#ef4444' },
+//     { id: 'files', title: t('tabs.fileManager'), icon: 'mdi-folder', color: '#8b5cf6' },
 //     { id: 'reports', title: t('reports'), icon: 'mdi-file-document', color: '#ec4899' },
 //     { id: 'settings', title: t('settings'), icon: 'mdi-cog', color: '#64748b' },
 // ]);

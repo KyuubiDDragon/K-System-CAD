@@ -187,11 +187,11 @@ const recentSearches = ref([
 
 // Schnellzugriff-Apps
 const quickAccessApps = ref([
-  { id: 'calendar', title: t('calendar'), icon: 'mdi-calendar', color: '#ef4444', action: 'open' },
+  { id: 'calendar', title: t('tabs.calendar'), icon: 'mdi-calendar', color: '#ef4444', action: 'open' },
   { id: 'messages', title: t('messages'), icon: 'mdi-email', color: '#f59e0b', action: 'open' },
   { id: 'reports', title: t('reports'), icon: 'mdi-file-document', color: '#ec4899', action: 'open' },
-  { id: 'files', title: t('fileManager'), icon: 'mdi-folder', color: '#8b5cf6', action: 'open' },
-  { id: 'employee', title: t('employee'), icon: 'mdi-account-group', color: '#0ea5e9', action: 'open' },
+  { id: 'files', title: t('tabs.fileManager'), icon: 'mdi-folder', color: '#8b5cf6', action: 'open' },
+  { id: 'employee', title: t('tabs.employee'), icon: 'mdi-account-group', color: '#0ea5e9', action: 'open' },
   { id: 'settings', title: t('settings'), icon: 'mdi-cog', color: '#64748b', action: 'open' }
 ]);
 

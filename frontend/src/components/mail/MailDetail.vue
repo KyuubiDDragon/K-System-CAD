@@ -174,7 +174,7 @@ function downloadAttachment(attachment: MailAttachment) {
         @click="moveToFolder"
       >
         <v-icon>mdi-folder-outline</v-icon>
-        <v-tooltip activator="parent" location="bottom">Move to folder</v-tooltip>
+        <v-tooltip activator="parent" location="bottom">{{ $t('mail.moveToFolder') }}</v-tooltip>
       </v-btn>
 
       <v-divider vertical class="mx-2" />
@@ -194,7 +194,7 @@ function downloadAttachment(attachment: MailAttachment) {
         @click="handleReplyAll"
       >
         <v-icon>mdi-reply-all</v-icon>
-        <v-tooltip activator="parent" location="bottom">Reply all</v-tooltip>
+        <v-tooltip activator="parent" location="bottom">{{ $t('mail.replyAll') }}</v-tooltip>
       </v-btn>
 
       <v-btn
@@ -288,7 +288,7 @@ function downloadAttachment(attachment: MailAttachment) {
         <!-- Toggle for viewing raw HTML (for debugging) -->
         <v-switch
           v-model="showRawHtml"
-          label="Show raw HTML"
+          :label="$t('mail.showRawHtml')"
           density="compact"
           hide-details
           class="mb-2"
@@ -312,7 +312,7 @@ function downloadAttachment(attachment: MailAttachment) {
         <!-- No Content -->
         <div v-if="!mail.body_html && !mail.body_text" class="text-grey text-center py-8">
           <v-icon size="48" color="grey-lighten-1">mdi-email-outline</v-icon>
-          <p class="mt-2">No content</p>
+          <p class="mt-2">{{ $t('mail.noContent') }}</p>
         </div>
       </div>
     </v-card-text>
@@ -333,7 +333,7 @@ function downloadAttachment(attachment: MailAttachment) {
         prepend-icon="mdi-reply-all"
         @click="handleReplyAll"
       >
-        Reply All
+        {{ $t('mail.replyAll') }}
       </v-btn>
       <v-btn
         variant="text"

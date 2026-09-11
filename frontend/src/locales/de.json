@@ -160,7 +160,17 @@
     "hoursAgo": "{count} Stunde vor | {count} Stunden vor",
     "show": "Anzeigen",
     "hide": "Ausblenden",
-    "entries": "{n} Einträge"
+    "entries": "{n} Einträge",
+    "cancel": "Abbrechen",
+    "clear": "Leeren",
+    "close": "Schließen",
+    "confirmClear": "Wirklich alles leeren?",
+    "delete": "Löschen",
+    "download": "Herunterladen",
+    "loading": "Wird geladen …",
+    "no": "Nein",
+    "save": "Speichern",
+    "yes": "Ja"
   },
   "desktop": {
     "start": "Start",
@@ -254,7 +264,8 @@
     "wind": "Wind",
     "noWarnings": "Keine Warnungen",
     "noData": "Keine Daten",
-    "noAppsFound": "Kein Programm passt zu „{q}“."
+    "noAppsFound": "Kein Programm passt zu „{q}“.",
+    "settings": "Einstellungen"
   },
   "menu": {
     "search": "Suchen",
@@ -873,7 +884,8 @@
         "contentText": "Inhalt (Text)",
         "imageUrl": "Bild-URL",
         "showHeaders": "Tabellen-Header anzeigen",
-        "autoHeight": "Höhe automatisch anpassen"
+        "autoHeight": "Höhe automatisch anpassen",
+        "order": "Reihenfolge"
       },
       "confirmDelete": "Löschen bestätigen",
       "deleteWarning": "Möchtest du wirklich",
@@ -901,7 +913,13 @@
       "exportAsImage": "Als Bild exportieren",
       "exportingImage": "Generiere Bild...",
       "imageExported": "Bild erfolgreich exportiert",
-      "exportImageError": "Fehler beim Exportieren des Bildes"
+      "exportImageError": "Fehler beim Exportieren des Bildes",
+      "copyUrl": "Adresse kopieren",
+      "generateShareable": "Teilbare Adresse erzeugen",
+      "noItems": "Keine Einträge vorhanden",
+      "screenshotSaved": "Das Bild wurde gespeichert.",
+      "shareableUrl": "Teilbare Adresse",
+      "urlCopied": "Die Adresse liegt in der Zwischenablage."
     }
   },
   "whiteboard": {
@@ -1054,7 +1072,8 @@
     "noun": "Dokumente",
     "category": "Kategorie",
     "creator": "Ersteller",
-    "withoutCreator": "Ohne Ersteller"
+    "withoutCreator": "Ohne Ersteller",
+    "documentArea": "Dokumentbereich"
   },
   "documentEditor": {
     "newDocument": "Neues Dokument",
@@ -1225,7 +1244,8 @@
     "noContent": "Diese Seite hat noch keinen Inhalt.",
     "contentUnavailable": "Inhalt nicht verfügbar für {title}.",
     "linkPlaceholder": "Diese Seite enthält einen Link zu: {url}",
-    "backToManager": "Zurück zum Manager"
+    "backToManager": "Zurück zum Manager",
+    "labelWebsite": "Website"
   },
   "invoiceView": {
     "title": "Rechnungsverwaltung",
@@ -1434,7 +1454,8 @@
     "copyError": "Fehler beim Kopieren des Links",
     "shareNotFound": "Share-Link nicht gefunden oder abgelaufen",
     "shareExpired": "Share-Link ist abgelaufen",
-    "shareLoadError": "Fehler beim Laden der geteilten Karte"
+    "shareLoadError": "Fehler beim Laden der geteilten Karte",
+    "categories": "Kategorien"
   },
   "logsView": {
     "title": "Systemprotokolle",
@@ -1517,7 +1538,9 @@
     "filterOpen": "Offen",
     "withoutCategory": "Ohne Kategorie",
     "withoutStatus": "Ohne Status",
-    "withoutCreator": "Ohne Ersteller"
+    "withoutCreator": "Ohne Ersteller",
+    "edit": "Bearbeiten",
+    "view": "Ansehen"
   },
   "reportTemplateView": {
     "title": "Templates verwalten",
@@ -1609,7 +1632,34 @@
       "addSuccess": "Status erfolgreich hinzugefügt.",
       "deleteSuccess": "Status erfolgreich gelöscht.",
       "deleteError": "Fehler beim Löschen des Status.",
-      "loadError": "Fehler beim Laden der Status."
+      "loadError": "Fehler beim Laden der Status.",
+      "statusAdded": "Der Status wurde angelegt.",
+      "statusDeleted": "Der Status wurde gelöscht.",
+      "statusUpdated": "Der Status wurde gespeichert."
+    },
+    "actions": {
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "save": "Speichern"
+    },
+    "deleteDialog": {
+      "confirmText": "Diesen Status wirklich löschen?",
+      "title": "Status löschen",
+      "warningText": "Berichte mit diesem Status verlieren ihre Zuordnung."
+    },
+    "errors": {
+      "deletingStatus": "Der Status konnte nicht gelöscht werden.",
+      "loadingStatuses": "Die Status konnten nicht geladen werden.",
+      "savingStatus": "Der Status konnte nicht gespeichert werden."
+    },
+    "table": {
+      "actions": "Aktionen",
+      "name": "Name",
+      "sortOrder": "Reihenfolge"
+    },
+    "validation": {
+      "required": "Dieses Feld wird benötigt."
     }
   },
   "reportAdditionalView": {
@@ -1687,7 +1737,8 @@
     "authorityBranding": "Authority Branding",
     "messages": "Nachrichten",
     "message": "Nachricht",
-    "mail": "Mail"
+    "mail": "Mail",
+    "notes": "Notizen"
   },
   "personForm": {
     "addTitle": "Neue Person hinzufügen",
@@ -1729,7 +1780,17 @@
     "requiredField": "Dieses Feld ist erforderlich."
   },
   "personView": {
-    "newPerson": "Neue Person"
+    "newPerson": "Neue Person",
+    "allergies": "Allergien",
+    "authorityDataSection": "Angaben der Behörde",
+    "bloodType": "Blutgruppe",
+    "emergencyContact": "Notfallkontakt",
+    "firstAid": "Erste Hilfe",
+    "gangAffiliation": "Gruppenzugehörigkeit",
+    "insured": "Versichert",
+    "lastKnownLocation": "Zuletzt bekannter Aufenthalt",
+    "personInfoTab": "Angaben zur Person",
+    "vehiclesTab": "Fahrzeuge"
   },
   "vehicleForm": {
     "addTitle": "Neues Fahrzeug hinzufügen",
@@ -1964,7 +2025,8 @@
     "close": "Schließen"
   },
   "notifications": {
-    "showMore": "Mehr anzeigen"
+    "showMore": "Mehr anzeigen",
+    "defaultTitle": "Hinweis"
   },
   "trainingView": {
     "title": "Schulungsverwaltung",
@@ -2169,7 +2231,12 @@
     "responseCodes": "Response Codes",
     "vehicles": "Fahrzeuge",
     "ranks": "Dienstgrade",
-    "nato": "NATO-Alphabet"
+    "nato": "NATO-Alphabet",
+    "exportAsImage": "Als Bild ausgeben",
+    "exportImageError": "Das Bild konnte nicht erzeugt werden.",
+    "exportingImage": "Bild wird erzeugt …",
+    "imageExported": "Das Bild ist fertig.",
+    "loadError": "Der Spickzettel konnte nicht geladen werden."
   },
   "calendarView": {
     "title": "Kalender",
@@ -2230,7 +2297,12 @@
     "messages": {
       "addRankError": "Fehler beim Hinzufügen des Rangs.",
       "deleteRankError": "Fehler beim Löschen des Rangs."
-    }
+    },
+    "company": "Firma",
+    "deleteConfirm": "Diesen Mitarbeiter wirklich löschen?",
+    "deleteTitle": "Mitarbeiter löschen",
+    "department": "Abteilung",
+    "jobrole": "Funktion"
   },
   "userView": {
     "statusAll": "Alle Benutzer",
@@ -2268,7 +2340,25 @@
   "authorityView": {
     "title": "Behördenverwaltung",
     "new": "Neue Behörde",
-    "createTitle": "Neue Behörde erstellen"
+    "createTitle": "Neue Behörde erstellen",
+    "noneFound": "Keine Behörden gefunden.",
+    "loading": "Behörden werden geladen …",
+    "adminAccount": "Zugang für die Verwaltung",
+    "edit": "Behörde bearbeiten",
+    "loadingFeatures": "Module werden geladen …",
+    "saveFeatures": "Module speichern",
+    "confirmDelete": "Löschen bestätigen",
+    "deleteQuestion": "Diese Behörde wirklich löschen:",
+    "deleteWarning": "Der Schritt lässt sich nicht rückgängig machen und betrifft alle Benutzer dieser Behörde.",
+    "search": "Behörde suchen",
+    "displayName": "Anzeigename",
+    "createAdmin": "Zugang für die Verwaltung anlegen",
+    "adminUsername": "Benutzername",
+    "adminUsernameHint": "Damit meldet sich die Verwaltung an.",
+    "adminEmail": "E-Mail",
+    "adminEmailHint": "E-Mail-Adresse der Verwaltung",
+    "adminPassword": "Passwort",
+    "searchFeatures": "Modul suchen"
   },
   "applicationView": {
     "title": "Bewerberverwaltung",
@@ -2498,7 +2588,16 @@
       "quantityLabel": "Standardmenge",
       "requiredField": "Dieses Feld ist erforderlich.",
       "nonNegativeValue": "Wert darf nicht negativ sein.",
-      "positiveInteger": "Muss eine positive ganze Zahl sein."
+      "positiveInteger": "Muss eine positive ganze Zahl sein.",
+      "defaultQuantity": "Standardmenge",
+      "description": "Beschreibung",
+      "itemName": "Bezeichnung",
+      "price": "Preis",
+      "validation": {
+        "nonNegative": "Der Wert darf nicht negativ sein.",
+        "positiveInteger": "Bitte eine ganze Zahl größer als null angeben.",
+        "required": "Dieses Feld wird benötigt."
+      }
     },
     "dialog": {
       "deleteTitle": "Item löschen",
@@ -2525,7 +2624,8 @@
     "loading": {
       "items": "Lade Items...",
       "saving": "Speichern...",
-      "deleting": "Löschen..."
+      "deleting": "Löschen...",
+      "loadingItems": "Positionen werden geladen …"
     }
   },
   "waterduckApp": {
@@ -2674,7 +2774,11 @@
     "copyHtmlTagSuccess": "HTML Tag kopiert!",
     "copyLinkSuccess": "Direkter Link kopiert!",
     "serverConnectionFailed": "Verbindung zum Server fehlgeschlagen. Bitte lade die Seite neu.",
-    "serverDisconnected": "Verbindung zum Server wurde getrennt. Bitte melde dich erneut an."
+    "serverDisconnected": "Verbindung zum Server wurde getrennt. Bitte melde dich erneut an.",
+    "iconsSaveError": "Die Symbole konnten nicht gespeichert werden.",
+    "permissionsRefreshFailed": "Die Rechte konnten nicht neu geladen werden.",
+    "permissionsUpdated": "Die Rechte wurden aktualisiert.",
+    "vehicleNotFound": "Das Fahrzeug wurde nicht gefunden."
   },
   "documentAreasView": {
     "title": "Dokumentenbereiche verwalten",
@@ -3273,7 +3377,16 @@
     "noun": "Firmen",
     "filterInspectionDue": "Prüfung fällig",
     "type": "Art",
-    "withoutType": "Ohne Art"
+    "withoutType": "Ohne Art",
+    "headers": {
+      "actions": "Aktionen",
+      "ceo": "Geschäftsführung",
+      "controlCenter": "Leitstelle",
+      "fireExtinguishers": "Feuerlöscher",
+      "lastInspection": "Letzte Prüfung",
+      "name": "Name",
+      "nextInspection": "Nächste Prüfung"
+    }
   },
   "context": {
     "title": "Zusammenhang",
@@ -3302,5 +3415,52 @@
       "failed": "Die Einrichtung ist fehlgeschlagen."
     },
     "passwordWithLength": "Passwort (mindestens {n} Zeichen)"
+  },
+  "actions": "Aktionen",
+  "category": "Kategorie",
+  "clear": "Leeren",
+  "loading": "Wird geladen …",
+  "messages": "Nachrichten",
+  "name": "Name",
+  "noDescription": "Keine Beschreibung",
+  "open": "Öffnen",
+  "reports": "Berichte",
+  "requiredField": "Dieses Feld wird benötigt.",
+  "saveChanges": "Änderungen speichern",
+  "settings": "Einstellungen",
+  "sortOrder": "Reihenfolge",
+  "title": "Titel",
+  "users": "Benutzer",
+  "weather": "Wetter",
+  "confirmDeleteTitle": "Wirklich löschen?",
+  "deleteWarning": "Dieser Schritt lässt sich nicht rückgängig machen.",
+  "reportSharing": {
+    "whoCanSee": "Lege fest, wer diesen Bericht innerhalb der Behörde sehen darf:",
+    "noRoles": "Es gibt noch keine Rollen. Lege zuerst welche an.",
+    "selectRoles": "Rollen wählen, die Zugriff bekommen:",
+    "shareWithOthers": "Mit anderen Behörden teilen",
+    "shareIntro": "Diesen Bericht mit anderen Behörden teilen:",
+    "writeHint": "erlaubt ihnen, den Bericht zu ändern.",
+    "noOtherAuthorities": "Keine andere Behörde nimmt Freigaben entgegen.",
+    "currentlyShared": "Zurzeit geteilt mit:",
+    "visibilityPublic": "Öffentlich – für alle Mitglieder der Behörde sichtbar",
+    "visibilityPrivate": "Privat – nur für den Verfasser und die Verwaltung",
+    "visibilityRoles": "Bestimmte Rollen – nur für die gewählten Rollen"
+  },
+  "mail": {
+    "moveToFolder": "In Ordner verschieben",
+    "replyAll": "Allen antworten",
+    "noContent": "Kein Inhalt",
+    "showRawHtml": "HTML-Quelltext anzeigen",
+    "bulletList": "Aufzählung",
+    "numberedList": "Nummerierte Liste",
+    "newFolder": "Neuer Ordner",
+    "folderName": "Name des Ordners",
+    "selectAll": "Alle auswählen",
+    "loadingMails": "Nachrichten werden geladen …",
+    "noMails": "Keine Nachrichten",
+    "markAsRead": "Als gelesen markieren",
+    "markAsUnread": "Als ungelesen markieren",
+    "search": "Nachrichten durchsuchen"
   }
 }

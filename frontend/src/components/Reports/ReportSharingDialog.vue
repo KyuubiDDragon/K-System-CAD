@@ -62,7 +62,7 @@
                             </v-card-title>
                             <v-card-text>
                                 <p class="text-body-2 mb-2">
-                                    Control who can see this report within your authority:
+                                    {{ $t('reportSharing.whoCanSee') }}
                                 </p>
 
                                 <v-radio-group
@@ -71,15 +71,15 @@
                                 >
                                     <v-radio
                                         value="public"
-                                        label="Public - Visible to all members of the authority"
+                                        :label="$t('reportSharing.visibilityPublic')"
                                     ></v-radio>
                                     <v-radio
                                         value="private"
-                                        label="Private - Only visible to report creator and administrators"
+                                        :label="$t('reportSharing.visibilityPrivate')"
                                     ></v-radio>
                                     <v-radio
                                         value="specific_roles"
-                                        label="Specific Groups - Only visible to selected groups/roles"
+                                        :label="$t('reportSharing.visibilityRoles')"
                                     ></v-radio>
                                 </v-radio-group>
 
@@ -95,12 +95,12 @@
                                         v-if="!sharingOptions.groups || sharingOptions.groups.length === 0"
                                         class="text-body-2 text-grey"
                                     >
-                                        No groups/roles available. Please create roles first.
+                                        {{ $t('reportSharing.noRoles') }}
                                     </div>
 
                                     <template v-else>
                                         <p class="text-body-2 mb-2">
-                                            Select roles who can access this report:
+                                            {{ $t('reportSharing.selectRoles') }}
                                         </p>
                                         <v-chip-group
                                             v-model="selectedGroups"
@@ -132,20 +132,20 @@
                             </v-card-title>
                             <v-card-text>
                                 <p class="text-body-2 mb-2">
-                                    Share this report with other authorities:
+                                    {{ $t('reportSharing.shareIntro') }}
                                 </p>
                                 
                                 <!-- Helper text for authority sharing -->
                                 <v-alert v-if="sharingChanged" density="compact" type="info" variant="tonal" class="mb-3 text-body-2">
                                     <strong>Note:</strong> When sharing a report, the recipient authority will be able to view it in their shared reports section.
-                                    Setting access level to <strong>Edit</strong> allows them to make changes to the report.
+                                    Setting access level to <strong>Edit</strong> {{ $t('reportSharing.writeHint') }}
                                 </v-alert>
 
                                 <div
                                     v-if="!sharingOptions.authorities || sharingOptions.authorities.length === 0"
                                     class="text-body-2 text-grey"
                                 >
-                                    No other authorities with sharing capability available.
+                                    {{ $t('reportSharing.noOtherAuthorities') }}
                                 </div>
 
                                 <v-data-table
@@ -196,7 +196,7 @@
                                 <div v-if="sharedAuthorityCount > 0" class="mt-4 pa-3 bg-grey-lighten-4 rounded">
                                     <div class="text-subtitle-2 mb-2 d-flex align-center">
                                         <v-icon size="small" class="mr-2">mdi-check-circle</v-icon>
-                                        Currently shared with:
+                                        {{ $t('reportSharing.currentlyShared') }}
                                     </div>
                                     <v-chip
                                         v-for="authority in sharingInfo?.shared_with"

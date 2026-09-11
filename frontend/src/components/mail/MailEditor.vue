@@ -91,7 +91,7 @@
 
       <!-- Lists -->
       <v-btn-toggle v-model="activeFormats" multiple density="compact" divided>
-        <v-tooltip text="Bullet List" location="bottom">
+        <v-tooltip :text="$t('mail.bulletList')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
@@ -105,7 +105,7 @@
           </template>
         </v-tooltip>
 
-        <v-tooltip text="Numbered List" location="bottom">
+        <v-tooltip :text="$t('mail.numberedList')" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"

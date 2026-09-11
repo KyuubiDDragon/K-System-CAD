@@ -34,7 +34,7 @@
                 <v-text-field
                     v-model="search"
                     append-icon="mdi-magnify"
-                    label="Search authorities"
+                    :label="$t('authorityView.search')"
                     single-line
                     hide-details
                     density="compact"
@@ -148,7 +148,7 @@
                 <template v-slot:no-data>
                     <div class="empty-state">
                         <v-icon size="40" color="grey-darken-1" class="mb-2">mdi-shield-off</v-icon>
-                        <span>No authorities found.</span>
+                        <span>{{ $t('authorityView.noneFound') }}</span>
                     </div>
                 </template>
 
@@ -160,7 +160,7 @@
                             size="24"
                             class="mr-2"
                         ></v-progress-circular>
-                        <span>Loading authorities...</span>
+                        <span>{{ $t('authorityView.loading') }}</span>
                     </div>
                 </template>
             </v-data-table>
@@ -195,7 +195,7 @@
                                 <v-col cols="12">
                                     <v-text-field
                                         v-model="newAuthority.display_name"
-                                        label="Display Name"
+                                        :label="$t('authorityView.displayName')"
                                         required
                                         :rules="[(v) => !!v || 'Display name is required']"
                                         variant="outlined"
@@ -235,7 +235,7 @@
                                     <v-divider class="mb-3"></v-divider>
                                     <div class="text-subtitle-1 mb-3">
                                         <v-icon icon="mdi-account-key" class="mr-1"></v-icon>
-                                        Admin Account
+                                        {{ $t('authorityView.adminAccount') }}
                                     </div>
                                     <v-alert
                                         density="comfortable"
@@ -251,7 +251,7 @@
                                 <v-col cols="12">
                                     <v-switch
                                         v-model="newAuthority.create_admin_account"
-                                        label="Create Admin Account"
+                                        :label="$t('authorityView.createAdmin')"
                                         color="primary"
                                         density="comfortable"
                                         inset
@@ -262,7 +262,7 @@
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="newAuthority.admin_username"
-                                            label="Admin Username"
+                                            :label="$t('authorityView.adminUsername')"
                                             required
                                             :rules="[
                                                 (v) => !!v || 'Username is required',
@@ -274,14 +274,14 @@
                                             color="primary"
                                             bg-color="grey-darken-3"
                                             prepend-inner-icon="mdi-account"
-                                            hint="Login username for administrator"
+                                            :hint="$t('authorityView.adminUsernameHint')"
                                         ></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="newAuthority.admin_email"
-                                            label="Admin Email"
+                                            :label="$t('authorityView.adminEmail')"
                                             required
                                             :rules="[
                                                 (v) => !!v || 'Email is required',
@@ -292,14 +292,14 @@
                                             color="primary"
                                             bg-color="grey-darken-3"
                                             prepend-inner-icon="mdi-email"
-                                            hint="Administrator email address"
+                                            :hint="$t('authorityView.adminEmailHint')"
                                         ></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="newAuthority.admin_password"
-                                            label="Admin Password"
+                                            :label="$t('authorityView.adminPassword')"
                                             required
                                             :rules="[
                                                 (v) => !!v || 'Password is required',
@@ -344,7 +344,7 @@
             <v-card class="dialog-card">
                 <v-card-title class="dialog-title">
                     <v-icon icon="mdi-shield-edit" class="mr-2"></v-icon>
-                    Edit Authority
+                    {{ $t('authorityView.edit') }}
                 </v-card-title>
 
                 <v-card-text class="pa-4">
@@ -437,7 +437,7 @@
                 <v-card-text class="pa-4">
                     <v-text-field
                         v-model="featureSearch"
-                        label="Search features"
+                        :label="$t('authorityView.searchFeatures')"
                         append-icon="mdi-magnify"
                         variant="outlined"
                         density="comfortable"
@@ -449,7 +449,7 @@
                     <v-list class="feature-list bg-grey-darken-3 rounded" density="comfortable">
                         <v-list-item v-if="loadingFeatures && features.length === 0">
                             <v-list-item-title class="text-center text-grey">
-                                Loading features...
+                                {{ $t('authorityView.loadingFeatures') }}
                             </v-list-item-title>
                         </v-list-item>
                         <v-list-item v-else-if="filteredFeatures.length === 0">
@@ -494,7 +494,7 @@
                         @click="saveFeatures"
                         :loading="savingItem"
                     >
-                        Save Features
+                        {{ $t('authorityView.saveFeatures') }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -504,16 +504,16 @@
             <v-card class="dialog-card">
                 <v-card-title class="dialog-title">
                     <v-icon color="error" class="mr-2">mdi-delete-alert</v-icon>
-                    Confirm Delete
+                    {{ $t('authorityView.confirmDelete') }}
                 </v-card-title>
 
                 <v-card-text class="pt-4">
                     <p>
-                        Are you sure you want to delete the authority
+                        {{ $t('authorityView.deleteQuestion') }}
                         <span class="font-weight-bold">"{{ selectedAuthority.value.name }}"</span>?
                     </p>
                     <div class="text-caption text-medium-emphasis mt-2">
-                        This action cannot be undone and may affect users with this authority.
+                        {{ $t('authorityView.deleteWarning') }}
                     </div>
                 </v-card-text>
 

@@ -160,7 +160,17 @@
     "hoursAgo": "{count} hour ago | {count} hours ago",
     "show": "Show",
     "hide": "Hide",
-    "entries": "{n} entries"
+    "entries": "{n} entries",
+    "cancel": "Cancel",
+    "clear": "Clear",
+    "close": "Close",
+    "confirmClear": "Really clear everything?",
+    "delete": "Delete",
+    "download": "Download",
+    "loading": "Loading …",
+    "no": "No",
+    "save": "Save",
+    "yes": "Yes"
   },
   "desktop": {
     "start": "Start",
@@ -254,7 +264,8 @@
     "wind": "Wind",
     "noWarnings": "No warnings",
     "noData": "No data",
-    "noAppsFound": "No app matches “{q}”."
+    "noAppsFound": "No app matches “{q}”.",
+    "settings": "Settings"
   },
   "menu": {
     "search": "Search",
@@ -873,7 +884,8 @@
         "contentText": "Content Text",
         "imageUrl": "Image URL",
         "showHeaders": "Show Table Headers",
-        "autoHeight": "Auto-fit Height"
+        "autoHeight": "Auto-fit Height",
+        "order": "Order"
       },
       "confirmDelete": "Confirm Delete",
       "deleteWarning": "Are you sure you want to delete this",
@@ -901,7 +913,13 @@
       "exportAsImage": "Export as Image",
       "exportingImage": "Generating image...",
       "imageExported": "Image exported successfully",
-      "exportImageError": "Failed to export image"
+      "exportImageError": "Failed to export image",
+      "copyUrl": "Copy address",
+      "generateShareable": "Create shareable address",
+      "noItems": "No entries yet",
+      "screenshotSaved": "The image has been saved.",
+      "shareableUrl": "Shareable address",
+      "urlCopied": "The address is on the clipboard."
     }
   },
   "whiteboard": {
@@ -1054,7 +1072,8 @@
     "noun": "documents",
     "category": "Category",
     "creator": "Created by",
-    "withoutCreator": "Without creator"
+    "withoutCreator": "Without creator",
+    "documentArea": "Document area"
   },
   "documentEditor": {
     "newDocument": "New Document",
@@ -1225,7 +1244,8 @@
     "noContent": "This page has no content yet.",
     "contentUnavailable": "Content not available for {title}.",
     "linkPlaceholder": "This page contains a link to: {url}",
-    "backToManager": "Back to manager"
+    "backToManager": "Back to manager",
+    "labelWebsite": "Website"
   },
   "invoiceView": {
     "title": "Invoice Management",
@@ -1434,7 +1454,8 @@
     "copyError": "Error copying link",
     "shareNotFound": "Share link not found or expired",
     "shareExpired": "Share link has expired",
-    "shareLoadError": "Error loading shared map"
+    "shareLoadError": "Error loading shared map",
+    "categories": "Categories"
   },
   "logsView": {
     "title": "System Logs",
@@ -1517,7 +1538,9 @@
     "filterOpen": "Open",
     "withoutCategory": "Without category",
     "withoutStatus": "Without status",
-    "withoutCreator": "Without creator"
+    "withoutCreator": "Without creator",
+    "edit": "Edit",
+    "view": "View"
   },
   "reportTemplateView": {
     "title": "Manage Templates",
@@ -1609,7 +1632,34 @@
       "addSuccess": "Status added successfully.",
       "deleteSuccess": "Status deleted successfully.",
       "deleteError": "Error deleting status.",
-      "loadError": "Error loading statuses."
+      "loadError": "Error loading statuses.",
+      "statusAdded": "The status has been created.",
+      "statusDeleted": "The status has been deleted.",
+      "statusUpdated": "The status has been saved."
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "save": "Save"
+    },
+    "deleteDialog": {
+      "confirmText": "Really delete this status?",
+      "title": "Delete status",
+      "warningText": "Reports carrying this status lose their assignment."
+    },
+    "errors": {
+      "deletingStatus": "The status could not be deleted.",
+      "loadingStatuses": "The statuses could not be loaded.",
+      "savingStatus": "The status could not be saved."
+    },
+    "table": {
+      "actions": "Actions",
+      "name": "Name",
+      "sortOrder": "Sort order"
+    },
+    "validation": {
+      "required": "This field is required."
     }
   },
   "reportAdditionalView": {
@@ -1686,7 +1736,9 @@
     "settings": "Settings",
     "authorityBranding": "Authority Branding",
     "messages": "Messages",
-    "message": "Message"
+    "message": "Message",
+    "mail": "Mail",
+    "notes": "Notes"
   },
   "personForm": {
     "addTitle": "Add Person",
@@ -1728,7 +1780,17 @@
     "requiredField": "This field is required."
   },
   "personView": {
-    "newPerson": "New Person"
+    "newPerson": "New Person",
+    "allergies": "Allergies",
+    "authorityDataSection": "Authority data",
+    "bloodType": "Blood type",
+    "emergencyContact": "Emergency contact",
+    "firstAid": "First aid",
+    "gangAffiliation": "Group affiliation",
+    "insured": "Insured",
+    "lastKnownLocation": "Last known location",
+    "personInfoTab": "Personal details",
+    "vehiclesTab": "Vehicles"
   },
   "vehicleForm": {
     "addTitle": "Add Vehicle",
@@ -1963,7 +2025,8 @@
     "close": "Close"
   },
   "notifications": {
-    "showMore": "Show more"
+    "showMore": "Show more",
+    "defaultTitle": "Notice"
   },
   "trainingView": {
     "title": "Training Management",
@@ -2168,7 +2231,12 @@
     "responseCodes": "Response codes",
     "vehicles": "Vehicles",
     "ranks": "Ranks",
-    "nato": "NATO alphabet"
+    "nato": "NATO alphabet",
+    "exportAsImage": "Export as image",
+    "exportImageError": "The image could not be created.",
+    "exportingImage": "Creating image …",
+    "imageExported": "The image is ready.",
+    "loadError": "The cheatsheet could not be loaded."
   },
   "calendarView": {
     "title": "Calendar",
@@ -2229,7 +2297,12 @@
     "messages": {
       "addRankError": "Error adding rank.",
       "deleteRankError": "Error deleting rank."
-    }
+    },
+    "company": "Company",
+    "deleteConfirm": "Really delete this employee?",
+    "deleteTitle": "Delete employee",
+    "department": "Department",
+    "jobrole": "Job role"
   },
   "userView": {
     "statusAll": "All Users",
@@ -2267,7 +2340,25 @@
   "authorityView": {
     "title": "Authority Management",
     "new": "New Authority",
-    "createTitle": "Create New Authority"
+    "createTitle": "Create New Authority",
+    "noneFound": "No authorities found.",
+    "loading": "Loading authorities …",
+    "adminAccount": "Administrator account",
+    "edit": "Edit authority",
+    "loadingFeatures": "Loading modules …",
+    "saveFeatures": "Save modules",
+    "confirmDelete": "Confirm deletion",
+    "deleteQuestion": "Really delete this authority:",
+    "deleteWarning": "This step cannot be undone and affects every user of this authority.",
+    "search": "Search authorities",
+    "displayName": "Display name",
+    "createAdmin": "Create administrator account",
+    "adminUsername": "Username",
+    "adminUsernameHint": "The administrator signs in with this.",
+    "adminEmail": "Email",
+    "adminEmailHint": "Email address of the administrator",
+    "adminPassword": "Password",
+    "searchFeatures": "Search modules"
   },
   "applicationView": {
     "title": "Applicant Management",
@@ -2431,7 +2522,37 @@
     "nameRequired": "Name is required.",
     "managePermissions": "Manage Permissions",
     "permissionsFor": "Permissions for \"{name}\"",
-    "savePermissions": "Save Permissions"
+    "savePermissions": "Save Permissions",
+    "actions": "Actions",
+    "active": "Active",
+    "areaCreated": "The area has been created.",
+    "areaDeleted": "The area has been deleted.",
+    "areaUpdated": "The area has been saved.",
+    "createArea": "Create area",
+    "customAreas": "Custom areas",
+    "deleteError": "The area could not be deleted.",
+    "editArea": "Edit area",
+    "fieldRequired": "This field is required.",
+    "icon": "Icon",
+    "inactive": "Inactive",
+    "key": "Key",
+    "keyFormatError": "The key may only contain lowercase letters, digits and hyphens.",
+    "loadError": "The areas could not be loaded.",
+    "name": "Name",
+    "newAreaButton": "New area",
+    "noCustomAreas": "There are no custom areas yet.",
+    "permissionsDescription": "Decide which role may read and write in this area.",
+    "permissionsLoadError": "The permissions could not be loaded.",
+    "permissionsSaveError": "The permissions could not be saved.",
+    "permissionsTitle": "Area permissions",
+    "permissionsUpdated": "The permissions have been saved.",
+    "read": "Read",
+    "role": "Role",
+    "rolesLoadError": "The roles could not be loaded.",
+    "saveError": "The area could not be saved.",
+    "status": "Status",
+    "unexpectedResponse": "The server responded unexpectedly.",
+    "write": "Write"
   },
   "companyTypeView": {
     "title": "Manage Company Types",
@@ -2486,7 +2607,16 @@
       "quantityLabel": "Default Quantity",
       "requiredField": "This field is required.",
       "nonNegativeValue": "Value must not be negative.",
-      "positiveInteger": "Must be a positive integer."
+      "positiveInteger": "Must be a positive integer.",
+      "defaultQuantity": "Default quantity",
+      "description": "Description",
+      "itemName": "Name",
+      "price": "Price",
+      "validation": {
+        "nonNegative": "The value must not be negative.",
+        "positiveInteger": "Please enter a whole number greater than zero.",
+        "required": "This field is required."
+      }
     },
     "dialog": {
       "deleteTitle": "Delete Item",
@@ -2513,7 +2643,8 @@
     "loading": {
       "items": "Loading items...",
       "saving": "Saving...",
-      "deleting": "Deleting..."
+      "deleting": "Deleting...",
+      "loadingItems": "Loading items …"
     }
   },
   "waterduckApp": {
@@ -2662,7 +2793,11 @@
     "deleteSuccess": "{type} deleted successfully.",
     "deleteError": "Error deleting {type}.",
     "serverConnectionFailed": "Connection to server failed. Please reload.",
-    "serverDisconnected": "Connection to server lost. Please log in again."
+    "serverDisconnected": "Connection to server lost. Please log in again.",
+    "iconsSaveError": "The icons could not be saved.",
+    "permissionsRefreshFailed": "The permissions could not be reloaded.",
+    "permissionsUpdated": "The permissions have been updated.",
+    "vehicleNotFound": "The vehicle was not found."
   },
   "documentAreasView": {
     "title": "Manage Document Areas",
@@ -3261,7 +3396,16 @@
     "noun": "companies",
     "filterInspectionDue": "Inspection due",
     "type": "Type",
-    "withoutType": "Without type"
+    "withoutType": "Without type",
+    "headers": {
+      "actions": "Actions",
+      "ceo": "Management",
+      "controlCenter": "Control centre",
+      "fireExtinguishers": "Fire extinguishers",
+      "lastInspection": "Last inspection",
+      "name": "Name",
+      "nextInspection": "Next inspection"
+    }
   },
   "context": {
     "title": "Context",
@@ -3290,5 +3434,52 @@
       "failed": "Setup failed."
     },
     "passwordWithLength": "Password (at least {n} characters)"
+  },
+  "actions": "Actions",
+  "category": "Category",
+  "clear": "Clear",
+  "loading": "Loading …",
+  "messages": "Messages",
+  "name": "Name",
+  "noDescription": "No description",
+  "open": "Open",
+  "reports": "Reports",
+  "requiredField": "This field is required.",
+  "saveChanges": "Save changes",
+  "settings": "Settings",
+  "sortOrder": "Sort order",
+  "title": "Title",
+  "users": "Users",
+  "weather": "Weather",
+  "confirmDeleteTitle": "Really delete?",
+  "deleteWarning": "This step cannot be undone.",
+  "reportSharing": {
+    "whoCanSee": "Decide who may see this report within the authority:",
+    "noRoles": "There are no roles yet. Create some first.",
+    "selectRoles": "Select the roles that get access:",
+    "shareWithOthers": "Share with other authorities",
+    "shareIntro": "Share this report with other authorities:",
+    "writeHint": "lets them change the report.",
+    "noOtherAuthorities": "No other authority accepts shared reports.",
+    "currentlyShared": "Currently shared with:",
+    "visibilityPublic": "Public — visible to everyone in the authority",
+    "visibilityPrivate": "Private — only for the author and administrators",
+    "visibilityRoles": "Specific roles — only for the selected roles"
+  },
+  "mail": {
+    "moveToFolder": "Move to folder",
+    "replyAll": "Reply all",
+    "noContent": "No content",
+    "showRawHtml": "Show raw HTML",
+    "bulletList": "Bullet list",
+    "numberedList": "Numbered list",
+    "newFolder": "New folder",
+    "folderName": "Folder name",
+    "selectAll": "Select all",
+    "loadingMails": "Loading mails …",
+    "noMails": "No mails",
+    "markAsRead": "Mark as read",
+    "markAsUnread": "Mark as unread",
+    "search": "Search mail"
   }
 }

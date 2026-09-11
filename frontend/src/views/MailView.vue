@@ -300,7 +300,7 @@ watch(() => mailStore.currentFolder, () => {
             <v-text-field
               v-model="searchQuery"
               prepend-inner-icon="mdi-magnify"
-              label="Search mail"
+              :label="$t('mail.search')"
               single-line
               hide-details
               density="compact"
@@ -339,7 +339,7 @@ watch(() => mailStore.currentFolder, () => {
               @click="handleBulkMarkRead(true)"
             >
               <v-icon>mdi-email-open-outline</v-icon>
-              <v-tooltip activator="parent" location="bottom">Mark as read</v-tooltip>
+              <v-tooltip activator="parent" location="bottom">{{ $t('mail.markAsRead') }}</v-tooltip>
             </v-btn>
             <v-btn
               icon="mdi-email-outline"
@@ -348,7 +348,7 @@ watch(() => mailStore.currentFolder, () => {
               @click="handleBulkMarkRead(false)"
             >
               <v-icon>mdi-email-outline</v-icon>
-              <v-tooltip activator="parent" location="bottom">Mark as unread</v-tooltip>
+              <v-tooltip activator="parent" location="bottom">{{ $t('mail.markAsUnread') }}</v-tooltip>
             </v-btn>
             <v-btn
               icon="mdi-delete-outline"
@@ -368,7 +368,7 @@ watch(() => mailStore.currentFolder, () => {
                   v-bind="props"
                 >
                   <v-icon>mdi-folder-outline</v-icon>
-                  <v-tooltip activator="parent" location="bottom">Move to folder</v-tooltip>
+                  <v-tooltip activator="parent" location="bottom">{{ $t('mail.moveToFolder') }}</v-tooltip>
                 </v-btn>
               </template>
               <v-list>

@@ -187,9 +187,9 @@ const openApp = (app: any) => {
 // Schnellzugriff-Apps
 const quickAccessApps = [
   { id: 'settings', title: t('settings'), icon: 'mdi-cog', color: '#64748b' },
-  { id: 'calendar', title: t('calendar'), icon: 'mdi-calendar', color: '#ef4444' },
+  { id: 'calendar', title: t('tabs.calendar'), icon: 'mdi-calendar', color: '#ef4444' },
   { id: 'messages', title: t('messages'), icon: 'mdi-email', color: '#f59e0b' },
-  { id: 'files', title: t('fileManager'), icon: 'mdi-folder', color: '#8b5cf6' },
+  { id: 'files', title: t('tabs.fileManager'), icon: 'mdi-folder', color: '#8b5cf6' },
   { id: 'weather', title: t('weather'), icon: 'mdi-weather-partly-cloudy', color: '#0ea5e9' },
   { id: 'reports', title: t('reports'), icon: 'mdi-file-document', color: '#ec4899' }
 ];

@@ -5,7 +5,7 @@
         <v-btn @click="goBack" icon color="primary" class="back-button">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        <span class="whiteboard-title">{{ whiteboardName || $t('whiteboard') }}</span>
+        <span class="whiteboard-title">{{ whiteboardName || $t('tabs.whiteboard') }}</span>
       </div>
       
       <div class="toolbar-group">

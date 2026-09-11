@@ -266,7 +266,7 @@ onMounted(() => {
             class="ml-2"
           >
             <v-icon>mdi-plus</v-icon>
-            <v-tooltip activator="parent" location="right">New folder</v-tooltip>
+            <v-tooltip activator="parent" location="right">{{ $t('mail.newFolder') }}</v-tooltip>
           </v-btn>
         </v-list-subheader>
 
@@ -334,7 +334,7 @@ onMounted(() => {
           <template v-slot:prepend>
             <v-icon>mdi-folder-plus</v-icon>
           </template>
-          <v-list-item-title>New Folder</v-list-item-title>
+          <v-list-item-title>{{ $t('mail.newFolder') }}</v-list-item-title>
         </v-list-item>
       </template>
 
@@ -363,7 +363,7 @@ onMounted(() => {
         <v-card-text class="pa-3">
           <v-text-field
             v-model="folderName"
-            label="Folder name"
+            :label="$t('mail.folderName')"
             variant="outlined"
             density="compact"
             autofocus

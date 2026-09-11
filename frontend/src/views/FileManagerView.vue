@@ -334,7 +334,7 @@ onMounted(() => {
 						class="mr-3 text-primary header-icon"
 					></v-icon>
                                         <h1 class="text-h5 font-weight-medium mb-0">
-                                                {{ $t('fileManager') }}
+                                                {{ $t('tabs.fileManager') }}
                                         </h1>
 				</div>
 

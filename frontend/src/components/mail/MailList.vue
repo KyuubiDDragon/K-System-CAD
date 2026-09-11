@@ -114,20 +114,20 @@ function getSenderName(mail: MailWithRecipient): string {
         color="primary"
       />
       <span class="ml-2 text-caption text-grey-darken-1">
-        Select all
+        {{ $t('mail.selectAll') }}
       </span>
     </div>
 
     <!-- Loading State -->
     <div v-if="loading" class="loading-container">
       <v-progress-circular indeterminate color="primary" />
-      <p class="text-grey mt-4">Loading mails...</p>
+      <p class="text-grey mt-4">{{ $t('mail.loadingMails') }}</p>
     </div>
 
     <!-- Empty State -->
     <div v-else-if="mails.length === 0" class="empty-container">
       <v-icon size="64" color="grey-lighten-1">mdi-email-outline</v-icon>
-      <p class="text-grey mt-4">No mails found</p>
+      <p class="text-grey mt-4">{{ $t('mail.noMails') }}</p>
     </div>
 
     <!-- Mail List with Virtual Scroll -->
