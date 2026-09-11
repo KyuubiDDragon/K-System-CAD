@@ -4,13 +4,14 @@
     <p class="text-body-1 font-weight-medium">{{ title }}</p>
     <p class="text-caption text-grey">{{ description }}</p>
     <v-chip size="small" color="info" variant="outlined" class="mt-2">
-      Coming Soon
+      {{ $t('dashboard.widget.placeholder.comingSoon') }}
     </v-chip>
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useWidgetRegistry } from '@/composables/useWidgetRegistry'
 
 interface Props {
@@ -22,13 +23,16 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const { t } = useI18n()
 const { getWidgetDefinition } = useWidgetRegistry()
 
 const widgetDef = computed(() => getWidgetDefinition(props.config.type))
 
 const icon = computed(() => widgetDef.value?.icon || 'mdi-widgets')
-const title = computed(() => props.config.title || 'Widget')
-const description = computed(() => widgetDef.value?.description || 'Widget content will appear here')
+const title = computed(() => props.config.title || t('dashboard.widget.placeholder.fallbackTitle'))
+const description = computed(() => widgetDef.value?.description
+    ? t(widgetDef.value.description)
+    : t('dashboard.widget.placeholder.fallbackDescription'))
 </script>
 
 <style scoped lang="scss">

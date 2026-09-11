@@ -34,7 +34,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'welcome-banner': {
     key: 'welcome-banner',
     name: 'dashboard.widget.names.welcome-banner',
-    description: 'Personalized welcome message with quick stats',
+    description: 'dashboard.widget.descriptions.welcome-banner',
     icon: 'mdi-home',
     category: 'personal',
     component: () => import('@/components/dashboard/widgets/WelcomeBannerWidget.vue'),
@@ -54,8 +54,8 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
 
   'my-vacations': {
     key: 'my-vacations',
-    name: 'My Vacations',
-    description: 'Your vacation and absence overview with quick add',
+    name: 'dashboard.widget.names.my-vacations',
+    description: 'dashboard.widget.descriptions.my-vacations',
     icon: 'mdi-beach',
     category: 'personal',
     component: () => import('@/components/dashboard/widgets/MyVacationsWidget.vue'),
@@ -76,7 +76,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'todo-list': {
     key: 'todo-list',
     name: 'dashboard.widget.names.todo-list',
-    description: 'Your tasks and todos with quick add',
+    description: 'dashboard.widget.descriptions.todo-list',
     icon: 'mdi-checkbox-marked-circle-outline',
     category: 'personal',
     component: () => import('@/components/dashboard/widgets/TodoListWidget.vue'),
@@ -100,7 +100,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'messages-feed': {
     key: 'messages-feed',
     name: 'dashboard.widget.names.messages-feed',
-    description: 'Recent messages and notifications with unread indicators',
+    description: 'dashboard.widget.descriptions.messages-feed',
     icon: 'mdi-message-text',
     category: 'communication',
     component: () => import('@/components/dashboard/widgets/MessagesFeedWidget.vue'),
@@ -121,7 +121,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'blackboard-feed': {
     key: 'blackboard-feed',
     name: 'dashboard.widget.names.blackboard-feed',
-    description: 'Latest blackboard announcements',
+    description: 'dashboard.widget.descriptions.blackboard-feed',
     icon: 'mdi-bulletin-board',
     category: 'communication',
     component: () => import('@/components/dashboard/widgets/BlackboardFeedWidget.vue'),
@@ -157,8 +157,8 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
 
   'calendar-widget': {
     key: 'calendar-widget',
-    name: 'Calendar',
-    description: 'Upcoming events and schedule overview',
+    name: 'dashboard.widget.names.calendar-widget',
+    description: 'dashboard.widget.descriptions.calendar-widget',
     icon: 'mdi-calendar',
     category: 'information',
     component: () => import('@/components/dashboard/widgets/CalendarWidget.vue'),
@@ -178,8 +178,8 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
 
   'weather-widget': {
     key: 'weather-widget',
-    name: 'Weather',
-    description: 'Current weather and 7-day forecast',
+    name: 'dashboard.widget.names.weather-widget',
+    description: 'dashboard.widget.descriptions.weather-widget',
     icon: 'mdi-weather-partly-cloudy',
     category: 'information',
     component: () => import('@/components/dashboard/widgets/WeatherWidget.vue'),
@@ -199,7 +199,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'active-users': {
     key: 'active-users',
     name: 'dashboard.widget.names.active-users',
-    description: 'Currently logged in users with status',
+    description: 'dashboard.widget.descriptions.active-users',
     icon: 'mdi-account-multiple',
     category: 'information',
     component: () => import('@/components/dashboard/widgets/ActiveUsersWidget.vue'),
@@ -213,7 +213,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'recent-documents': {
     key: 'recent-documents',
     name: 'dashboard.widget.names.recent-documents',
-    description: 'Recently modified documents',
+    description: 'dashboard.widget.descriptions.recent-documents',
     icon: 'mdi-file-document-multiple',
     category: 'information',
     component: () => import('@/components/dashboard/widgets/RecentDocumentsWidget.vue'),
@@ -229,7 +229,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'employee-overview': {
     key: 'employee-overview',
     name: 'dashboard.widget.names.employee-overview',
-    description: 'Employee statistics with charts',
+    description: 'dashboard.widget.descriptions.employee-overview',
     icon: 'mdi-account-group',
     category: 'analytics',
     component: () => import('@/components/dashboard/widgets/EmployeeOverviewWidget.vue'),
@@ -243,7 +243,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'report-analytics': {
     key: 'report-analytics',
     name: 'dashboard.widget.names.report-analytics',
-    description: 'Report statistics and trends with charts',
+    description: 'dashboard.widget.descriptions.report-analytics',
     icon: 'mdi-chart-line',
     category: 'analytics',
     component: () => import('@/components/dashboard/widgets/ReportAnalyticsWidget.vue'),
@@ -265,7 +265,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'open-reports': {
     key: 'open-reports',
     name: 'dashboard.widget.names.open-reports',
-    description: 'List of open reports by status',
+    description: 'dashboard.widget.descriptions.open-reports',
     icon: 'mdi-file-document-alert',
     category: 'analytics',
     component: () => import('@/components/dashboard/widgets/OpenReportsWidget.vue'),
@@ -279,7 +279,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'vacation-calendar': {
     key: 'vacation-calendar',
     name: 'dashboard.widget.names.vacation-calendar',
-    description: 'Team vacation overview and timeline',
+    description: 'dashboard.widget.descriptions.vacation-calendar',
     icon: 'mdi-calendar-account',
     category: 'analytics',
     component: () => import('@/components/dashboard/widgets/VacationCalendarWidget.vue'),
@@ -295,7 +295,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'quick-dispatch': {
     key: 'quick-dispatch',
     name: 'dashboard.widget.names.quick-dispatch',
-    description: 'Dispatch control board with crew and vehicle status',
+    description: 'dashboard.widget.descriptions.quick-dispatch',
     icon: 'mdi-truck-fast',
     category: 'operational',
     component: () => import('@/components/dashboard/widgets/QuickDispatchWidget.vue'),
@@ -309,7 +309,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'my-crew': {
     key: 'my-crew',
     name: 'dashboard.widget.names.my-crew',
-    description: 'Your assigned crew/unit with members and status',
+    description: 'dashboard.widget.descriptions.my-crew',
     icon: 'mdi-shield-account',
     category: 'operational',
     component: () => import('@/components/dashboard/widgets/MyCrewWidget.vue'),
@@ -323,7 +323,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'vehicle-status': {
     key: 'vehicle-status',
     name: 'dashboard.widget.names.vehicle-status',
-    description: 'Current vehicle availability and status',
+    description: 'dashboard.widget.descriptions.vehicle-status',
     icon: 'mdi-car-multiple',
     category: 'operational',
     component: () => import('@/components/dashboard/widgets/VehicleStatusWidget.vue'),
@@ -339,7 +339,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'system-health': {
     key: 'system-health',
     name: 'dashboard.widget.names.system-health',
-    description: 'System status and performance metrics',
+    description: 'dashboard.widget.descriptions.system-health',
     icon: 'mdi-heart-pulse',
     category: 'administration',
     component: () => import('@/components/dashboard/widgets/SystemHealthWidget.vue'),
@@ -353,7 +353,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'user-activity': {
     key: 'user-activity',
     name: 'dashboard.widget.names.user-activity',
-    description: 'Recent user activity and login statistics',
+    description: 'dashboard.widget.descriptions.user-activity',
     icon: 'mdi-account-clock',
     category: 'administration',
     component: () => import('@/components/dashboard/widgets/UserActivityWidget.vue'),
@@ -367,7 +367,7 @@ export const WIDGET_REGISTRY: Record<string, WidgetDefinition> = {
   'recent-logs': {
     key: 'recent-logs',
     name: 'dashboard.widget.names.recent-logs',
-    description: 'System logs and audit trail',
+    description: 'dashboard.widget.descriptions.recent-logs',
     icon: 'mdi-text-box-multiple',
     category: 'administration',
     component: () => import('@/components/dashboard/widgets/RecentLogsWidget.vue'),

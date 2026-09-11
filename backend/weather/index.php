@@ -147,11 +147,18 @@ function getCurrentWeather(PDO $pdo, string $authority, int $authorityId): void 
         $weatherData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (empty($weatherData)) {
-            // No weather data available
+            /*
+               Kein Anzeigetext aus der Schnittstelle.
+
+               Hier stand 'No data available' - ein englischer Satz, der in der
+               deutschen Oberflaeche unter dem Wetterbaustein erschien. Die
+               Abwesenheit von Daten ist ein Zustand, kein Text: temperature
+               null genuegt, den Leerzustand zeichnet die Oberflaeche selbst.
+            */
             http_response_code(200);
             echo json_encode([
                 'temperature' => null,
-                'condition' => 'No data available',
+                'condition' => null,
                 'forecast' => []
             ]);
             return;

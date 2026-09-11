@@ -103,7 +103,7 @@ async function loadMessages() {
     messages.value = (response.data || []).slice(0, grenze())
   } catch (err: any) {
     console.error('Failed to load messages:', err)
-    error.value = err.response?.data?.error || 'Failed to load messages'
+    error.value = err.response?.data?.error || t('dashboard.widget.messages.loadError')
   } finally {
     loading.value = false
   }

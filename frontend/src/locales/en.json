@@ -534,7 +534,6 @@
         "messages-feed": "Messages",
         "blackboard-feed": "Announcements",
         "my-crew": "My Crew",
-        "calendar": "Calendar",
         "recent-documents": "Recent Documents",
         "employee-overview": "Employee Overview",
         "report-analytics": "Report Analytics",
@@ -544,7 +543,6 @@
         "vehicle-status": "Vehicle Status",
         "vacation-calendar": "Vacation Calendar",
         "recent-logs": "System Logs",
-        "weather": "Weather",
         "quick-dispatch": "Quick Dispatch",
         "active-users": "Active Users",
         "calendar-widget": "Calendar",
@@ -588,7 +586,10 @@
         "dueDate": "Due Date",
         "addError": "Failed to add task",
         "updateError": "Failed to update task",
-        "loadError": "Failed to load tasks"
+        "loadError": "Failed to load tasks",
+        "cancel": "Cancel",
+        "save": "Save",
+        "failed": "Could not load the tasks"
       },
       "systemHealth": {
         "title": "System",
@@ -597,11 +598,12 @@
         "diskUsage": "Disk Usage",
         "uptime": "Uptime",
         "status": {
-          "healthy": "Healthy",
-          "warning": "Warning",
-          "critical": "Critical"
+          "healthy": "healthy",
+          "warning": "warning",
+          "critical": "critical"
         },
-        "loadError": "Failed to load system data"
+        "loadError": "Failed to load system data",
+        "system": "System"
       },
       "dispatch": {
         "activeCrews": "Active Crews",
@@ -669,6 +671,43 @@
         "noLogs": "No logs available",
         "viewAllLogs": "View all logs",
         "loadError": "Failed to load logs"
+      },
+      "descriptions": {
+        "welcome-banner": "Greeting with name and date",
+        "my-vacations": "Current and planned absences, with quick entry",
+        "todo-list": "Your own tasks, with quick entry",
+        "messages-feed": "Latest messages, unread ones highlighted",
+        "blackboard-feed": "Latest posts from the blackboard",
+        "calendar-widget": "Upcoming events over the next days",
+        "weather-widget": "Current weather and forecast",
+        "active-users": "Who is currently signed in",
+        "recent-documents": "Recently edited documents",
+        "employee-overview": "Employee figures at a glance",
+        "report-analytics": "Reports by period and category",
+        "open-reports": "Reports that are still open",
+        "vacation-calendar": "The team's absences at a glance",
+        "quick-dispatch": "Units, vehicles and running incidents in figures",
+        "my-crew": "Your own unit with crew and status",
+        "vehicle-status": "Availability and status of the vehicles",
+        "system-health": "System status: processor, memory, disk, uptime",
+        "user-activity": "Sign-ins and recent user activity",
+        "recent-logs": "The latest entries in the system log"
+      },
+      "weather": {
+        "noData": "No weather data configured"
+      },
+      "vacation": {
+        "loadError": "Could not load absences",
+        "datesRequired": "Please provide a start and an end date."
+      },
+      "errors": {
+        "loadFailed": "This widget could not be loaded.",
+        "invalidConfig": "This widget's configuration is not valid."
+      },
+      "placeholder": {
+        "comingSoon": "In progress",
+        "fallbackTitle": "Widget",
+        "fallbackDescription": "There is no view for this widget yet."
       }
     },
     "messages": {

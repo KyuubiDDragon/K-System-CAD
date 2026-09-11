@@ -229,7 +229,7 @@ async function loadVacations() {
     vacations.value = response.data || []
   } catch (err: any) {
     console.error('Failed to load vacations:', err)
-    error.value = err.response?.data?.error || 'Failed to load vacations'
+    error.value = err.response?.data?.error || t('dashboard.widget.vacation.loadError')
   } finally {
     loading.value = false
   }
@@ -240,7 +240,7 @@ async function loadVacations() {
  */
 async function addVacation() {
   if (!newVacation.value.start || !newVacation.value.end) {
-    toast.error('Please select start and end dates')
+    toast.error(t('dashboard.widget.vacation.datesRequired'))
     return
   }
 

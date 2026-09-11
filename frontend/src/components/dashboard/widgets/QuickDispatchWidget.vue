@@ -7,20 +7,20 @@
       <div class="stats-grid mb-3">
         <div class="stat-card pa-2">
           <div class="text-h4">{{ stats.activeCrews }}</div>
-          <div class="text-caption">Active Crews</div>
+          <div class="text-caption">{{ $t('dashboard.widget.dispatch.activeCrews') }}</div>
         </div>
         <div class="stat-card pa-2">
           <div class="text-h4">{{ stats.availableVehicles }}</div>
-          <div class="text-caption">Available Vehicles</div>
+          <div class="text-caption">{{ $t('dashboard.widget.dispatch.availableVehicles') }}</div>
         </div>
         <div class="stat-card pa-2">
           <div class="text-h4">{{ stats.activeIncidents }}</div>
-          <div class="text-caption">Active Incidents</div>
+          <div class="text-caption">{{ $t('dashboard.widget.dispatch.activeIncidents') }}</div>
         </div>
       </div>
       <v-btn block color="primary" @click="goToDispatch">
         <v-icon start>mdi-truck-fast</v-icon>
-        Open Dispatch Center
+        {{ $t('dashboard.widget.dispatch.openDispatchCenter') }}
       </v-btn>
     </div>
   </div>

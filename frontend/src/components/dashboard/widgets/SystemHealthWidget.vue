@@ -8,7 +8,15 @@
         <v-icon :color="getHealthColor(health.status)" size="64">
           {{ getHealthIcon(health.status) }}
         </v-icon>
-        <div class="text-h5 mt-2">{{ $t('dashboard.widget.systemHealth.system') }} {{ health.status }}</div>
+        <!--
+            Der Zustand kam als Codewort aus der Schnittstelle - "healthy",
+            "warning", "critical" - und stand damit auf Englisch in der
+            Oberflaeche. Uebersetzt wird er hier, wo er gezeigt wird.
+        -->
+        <div class="text-h5 mt-2">
+          {{ $t('dashboard.widget.systemHealth.system') }}
+          {{ $t('dashboard.widget.systemHealth.status.' + health.status) }}
+        </div>
       </div>
       <v-divider v-if="props.config?.showMetrics !== false" class="my-2" />
       <div v-if="props.config?.showMetrics !== false" class="metrics">

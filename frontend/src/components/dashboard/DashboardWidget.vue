@@ -228,13 +228,13 @@ const widgetComponent = computed(() => {
       onError(error) {
         console.error(`Failed to load widget ${props.widgetConfig.type}:`, error)
         hasError.value = true
-        errorMessage.value = 'Failed to load widget'
+        errorMessage.value = t('dashboard.widget.errors.loadFailed')
       }
     })
   } catch (error) {
     console.error('Error creating widget component:', error)
     hasError.value = true
-    errorMessage.value = 'Invalid widget configuration'
+    errorMessage.value = t('dashboard.widget.errors.invalidConfig')
     return null
   }
 })

@@ -3,7 +3,15 @@
     <div v-if="loading" class="text-center pa-4">
       <v-progress-circular indeterminate size="32" />
     </div>
-    <div v-else-if="weather" class="weather-content pa-2">
+    <!--
+        Ohne Temperatur gibt es nichts zu zeigen. Vorher wurde hier der Satz
+        gezeichnet, den die Schnittstelle mitschickte - auf Englisch.
+    -->
+    <div v-else-if="!weather || weather.temperature === null" class="no-data pa-4 text-center">
+      <v-icon size="48" color="grey">mdi-weather-cloudy-alert</v-icon>
+      <p class="text-body-2 mt-2">{{ $t('dashboard.widget.weather.noData') }}</p>
+    </div>
+    <div v-else class="weather-content pa-2">
       <div class="current-weather text-center mb-3">
         <v-icon :icon="getWeatherIcon(weather.condition)" size="64" :color="getWeatherColor(weather.condition)" />
         <div class="temperature text-h3">{{ weather.temperature }}°</div>

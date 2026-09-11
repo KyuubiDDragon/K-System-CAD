@@ -534,7 +534,6 @@
         "messages-feed": "Nachrichten",
         "blackboard-feed": "Schwarzes Brett",
         "my-crew": "Meine Einheit",
-        "calendar": "Kalender",
         "recent-documents": "Aktuelle Dokumente",
         "employee-overview": "Mitarbeiterübersicht",
         "report-analytics": "Meldungsanalysen",
@@ -544,7 +543,6 @@
         "vehicle-status": "Fahrzeugstatus",
         "vacation-calendar": "Urlaubskalender",
         "recent-logs": "Systemlogs",
-        "weather": "Wetter",
         "quick-dispatch": "Schnelleinsatz",
         "active-users": "Aktive Nutzer",
         "calendar-widget": "Kalender",
@@ -588,7 +586,10 @@
         "dueDate": "Fälligkeitsdatum",
         "addError": "Fehler beim Hinzufügen der Aufgabe",
         "updateError": "Fehler beim Aktualisieren der Aufgabe",
-        "loadError": "Fehler beim Laden der Aufgaben"
+        "loadError": "Fehler beim Laden der Aufgaben",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "failed": "Fehler beim Laden der Aufgaben"
       },
       "systemHealth": {
         "title": "System",
@@ -597,11 +598,12 @@
         "diskUsage": "Festplattennutzung",
         "uptime": "Laufzeit",
         "status": {
-          "healthy": "Gesund",
-          "warning": "Warnung",
-          "critical": "Kritisch"
+          "healthy": "in Ordnung",
+          "warning": "auffällig",
+          "critical": "kritisch"
         },
-        "loadError": "Fehler beim Laden der Systemdaten"
+        "loadError": "Fehler beim Laden der Systemdaten",
+        "system": "System"
       },
       "dispatch": {
         "activeCrews": "Aktive Einheiten",
@@ -669,6 +671,43 @@
         "noLogs": "Keine Logs vorhanden",
         "viewAllLogs": "Alle Logs anzeigen",
         "loadError": "Fehler beim Laden der Logs"
+      },
+      "descriptions": {
+        "welcome-banner": "Begrüßung mit Namen und Datum",
+        "my-vacations": "Laufende und geplante Abwesenheiten, mit Schnelleintrag",
+        "todo-list": "Eigene Aufgaben, mit Schnelleintrag",
+        "messages-feed": "Zuletzt eingegangene Nachrichten, ungelesene hervorgehoben",
+        "blackboard-feed": "Neueste Aushänge vom Schwarzen Brett",
+        "calendar-widget": "Anstehende Termine der nächsten Tage",
+        "weather-widget": "Aktuelles Wetter und Vorhersage",
+        "active-users": "Wer gerade angemeldet ist",
+        "recent-documents": "Zuletzt bearbeitete Dokumente",
+        "employee-overview": "Mitarbeiterzahlen auf einen Blick",
+        "report-analytics": "Berichte nach Zeitraum und Kategorie",
+        "open-reports": "Berichte, die noch offen sind",
+        "vacation-calendar": "Abwesenheiten des Teams im Überblick",
+        "quick-dispatch": "Einheiten, Fahrzeuge und laufende Einsätze in Zahlen",
+        "my-crew": "Die eigene Einheit mit Besatzung und Zustand",
+        "vehicle-status": "Verfügbarkeit und Zustand der Fahrzeuge",
+        "system-health": "Zustand des Systems: Prozessor, Speicher, Platte, Laufzeit",
+        "user-activity": "Anmeldungen und letzte Aktivität der Benutzer",
+        "recent-logs": "Die letzten Einträge im Systemprotokoll"
+      },
+      "weather": {
+        "noData": "Keine Wetterdaten hinterlegt"
+      },
+      "vacation": {
+        "loadError": "Fehler beim Laden der Abwesenheiten",
+        "datesRequired": "Bitte Beginn und Ende angeben."
+      },
+      "errors": {
+        "loadFailed": "Der Baustein konnte nicht geladen werden.",
+        "invalidConfig": "Die Einstellungen dieses Bausteins sind ungültig."
+      },
+      "placeholder": {
+        "comingSoon": "In Arbeit",
+        "fallbackTitle": "Baustein",
+        "fallbackDescription": "Für diesen Baustein gibt es noch keine Ansicht."
       }
     },
     "messages": {

@@ -7,19 +7,19 @@
       <div class="stats-grid mb-3">
         <div class="stat-card pa-2">
           <div class="text-h5">{{ analytics.total }}</div>
-          <div class="text-caption">Total Reports</div>
+          <div class="text-caption">{{ $t('dashboard.widget.reportAnalytics.totalReports') }}</div>
         </div>
         <div class="stat-card pa-2">
           <div class="text-h5">{{ analytics.thisMonth }}</div>
-          <div class="text-caption">This Month</div>
+          <div class="text-caption">{{ $t('dashboard.widget.reportAnalytics.thisMonth') }}</div>
         </div>
         <div class="stat-card pa-2">
           <div class="text-h5">{{ analytics.open }}</div>
-          <div class="text-caption">Open</div>
+          <div class="text-caption">{{ $t('dashboard.widget.reportAnalytics.open') }}</div>
         </div>
         <div class="stat-card pa-2">
           <div class="text-h5">{{ analytics.closed }}</div>
-          <div class="text-caption">Closed</div>
+          <div class="text-caption">{{ $t('dashboard.widget.reportAnalytics.closed') }}</div>
         </div>
       </div>
       <div class="categories">
