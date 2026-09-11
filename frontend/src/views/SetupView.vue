@@ -64,13 +64,11 @@
 
                     <v-text-field
                         v-model="passwort"
-                        :label="$t('setup.password')"
+                        :label="$t('setup.passwordWithLength', { n: MINDESTLAENGE })"
                         :type="passwortSichtbar ? 'text' : 'password'"
                         variant="outlined"
                         density="compact"
                         autocomplete="new-password"
-                        :hint="$t('setup.passwordHint', { n: MINDESTLAENGE })"
-                        persistent-hint
                         :append-inner-icon="passwortSichtbar ? 'mdi-eye-off' : 'mdi-eye'"
                         :error-messages="fehlerFeld.password"
                         @click:append-inner="passwortSichtbar = !passwortSichtbar"
@@ -84,7 +82,6 @@
                         density="compact"
                         autocomplete="new-password"
                         :error-messages="fehlerFeld.passwordRepeat"
-                        class="mt-4"
                     />
 
                     <v-btn
@@ -121,6 +118,16 @@ import { useI18n } from 'vue-i18n';
 import { apiClientPublic } from '@/api';
 import { einrichtungNeuPruefen } from '@/router/einrichtung';
 
+/*
+   Die Mindestlaenge steht in der Beschriftung des Feldes, nicht als Hinweis
+   darunter.
+
+   Ein Hinweis unter dem Feld stiess mit der Beschriftung des naechsten
+   zusammen: das System setzt Beschriftungen ueber das Feld, und die dafuer
+   reservierten 20 px reichen nicht zusaetzlich fuer eine Hinweiszeile.
+   Gemessen blieben drei Pixel zwischen "Mindestens 12 Zeichen" und
+   "Passwort wiederholen".
+*/
 const MINDESTLAENGE = 12;
 
 const router = useRouter();

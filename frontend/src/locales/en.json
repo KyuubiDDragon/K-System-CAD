@@ -3238,7 +3238,6 @@
     "username": "Username",
     "email": "Email",
     "password": "Password",
-    "passwordHint": "At least {n} characters",
     "passwordRepeat": "Repeat password",
     "submit": "Create account",
     "done": "The account is ready. Continuing to sign-in …",
@@ -3250,6 +3249,7 @@
       "passwordShort": "The password needs at least {n} characters.",
       "passwordMismatch": "The two passwords do not match.",
       "failed": "Setup failed."
-    }
+    },
+    "passwordWithLength": "Password (at least {n} characters)"
   }
 }

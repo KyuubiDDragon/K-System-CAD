@@ -3250,7 +3250,6 @@
     "username": "Benutzername",
     "email": "E-Mail",
     "password": "Passwort",
-    "passwordHint": "Mindestens {n} Zeichen",
     "passwordRepeat": "Passwort wiederholen",
     "submit": "Zugang anlegen",
     "done": "Der Zugang steht. Weiter zur Anmeldung …",
@@ -3262,6 +3261,7 @@
       "passwordShort": "Das Passwort braucht mindestens {n} Zeichen.",
       "passwordMismatch": "Die beiden Passwörter stimmen nicht überein.",
       "failed": "Die Einrichtung ist fehlgeschlagen."
-    }
+    },
+    "passwordWithLength": "Passwort (mindestens {n} Zeichen)"
   }
 }
