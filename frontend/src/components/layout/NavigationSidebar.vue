@@ -112,7 +112,16 @@ const authStore = useAuthStore();
 
 // Local state
 const searchQuery = ref('');
-const sidebarWidth = 280;
+/*
+   210 px, nicht 280.
+
+   Der Entwurf gibt der Navigation 190 px; 210 ist der Wert, den auch die
+   Kontextspalte rechts traegt, damit beide Seiten dieselbe Breite haben. Die
+   70 px, die hier wegfallen, gewinnt der Arbeitsbereich - die laengste
+   Beschriftung ("Einsatz & Kommunikation") steht in der Gruppenzeile und
+   bricht dort ohnehin um.
+*/
+const sidebarWidth = 210;
 const logoError = ref(false);
 
 // Authority display name from authority_branding (preferred) or fallback to user fields
@@ -201,8 +210,18 @@ function findItemByRoute(route: string): MenuItem | null {
 </script>
 
 <style lang="scss" scoped>
+/*
+   Die Navigation liegt hinter dem Arbeitsbereich.
+
+   Sie trug bisher --k-surface, dieselbe Flaeche wie die Karten und die
+   Kopfleiste: drei verschiedene Rollen auf einer Ebene, und nichts wirkte
+   vorn oder hinten. Der Entwurf gibt ihr --k-sunken und eine Linie zur
+   Trennung. Damit staffelt sich die Oberflaeche von hinten nach vorn:
+   Arbeitsflaeche (canvas), Navigation (sunken), Karten (surface).
+*/
 .sidebar-drawer {
-  border-right: 1px solid rgba(var(--v-border-color), 0.12);
+  background: var(--k-sunken) !important;
+  border-right: 1px solid var(--k-line);
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   :deep(.v-navigation-drawer__content) {

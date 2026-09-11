@@ -118,10 +118,27 @@ watch(
 </script>
 
 <style scoped lang="scss">
+/*
+   Der Aussenrand des Rasters.
+
+   vue-grid-layout legt seinen Abstand von 16 px zwischen die Kacheln, aber
+   nicht an den Rand - die linke Spalte klebte an der Kante des
+   Arbeitsbereichs, waehrend zwischen den Spalten 16 px standen. Gemessen
+   begannen die Spalten bei 0, 328 und 336: der Aussenrand fehlte, die
+   waagerechte Luecke war mal 8, mal 16.
+
+   Der negative Rand zieht den Rasterabstand nach aussen, das Polster gibt ihn
+   als gleichen Wert zurueck. Damit steht ringsum und dazwischen dasselbe.
+*/
 .dashboard-grid-container {
   width: 100%;
   min-height: 400px;
   position: relative;
+  padding: 0 8px;
+}
+
+:deep(.vue-grid-layout) {
+  margin: 0 -8px;
 }
 
 .grid-item-wrapper {
@@ -187,16 +204,8 @@ watch(
   opacity: 0.7;
 }
 
-// Responsive adjustments
-@media (max-width: 960px) {
-  .dashboard-grid-container {
-    padding: 0 8px;
-  }
-
-  :deep(.vue-grid-layout) {
-    margin: -8px;
-  }
-}
+/* Der Aussenrand gilt jetzt in jeder Breite - die Medienabfrage, die ihn
+   frueher nur auf schmalen Bildschirmen setzte, ist damit hinfaellig. */
 
 @media (max-width: 600px) {
   :deep(.vue-grid-item) {

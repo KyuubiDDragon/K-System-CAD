@@ -63,6 +63,10 @@
     .v-list-subheader.v-list-subheader {
         min-height: 22px;
         padding-inline: 12px;
+        /* 12 oben, 4 unten - so steht die Ueberschrift bei ihrer Gruppe.
+           Vuetify gibt ihr 16 und 8; damit trieben die fuenf Gruppen
+           auseinander und lasen sich wie fuenf Inseln statt einer Liste. */
+        margin: 12px 0 4px;
         font-size: 10px;
         font-weight: 650;
         letter-spacing: 0.09em;
@@ -130,6 +134,19 @@
 /* ---------- Leisten ---------- */
 .v-app-bar .v-toolbar__content {
     height: var(--k-bar-height) !important;
+}
+
+/*
+   Die Symbolknoepfe der Kopfleiste waren 42 px hoch - genau so hoch wie die
+   Leiste selbst - und stiessen oben wie unten an. Mit der Bedienhoehe des
+   Systems bleibt ringsum Luft, und die Leiste bekommt einen Rhythmus.
+*/
+.v-app-bar .v-toolbar__content > .v-btn.v-btn--icon,
+.v-app-bar .v-toolbar__content .v-btn.v-btn--icon {
+    width: var(--k-control-height);
+    height: var(--k-control-height);
+    min-width: var(--k-control-height);
+    border-radius: 5px;
 }
 
 /* ---------- Karten und Kacheln ---------- */
