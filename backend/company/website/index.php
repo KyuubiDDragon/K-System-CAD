@@ -132,6 +132,7 @@ $permissions_map = [
     'createWebsite'         => 'WRITE_COMPANY_WEBSITES',
     'saveWebsite'           => 'WRITE_COMPANY_WEBSITES',
     'updateWebsite'         => 'WRITE_COMPANY_WEBSITES', // Alias for saveWebsite
+    'setWebsitePublished'   => 'WRITE_COMPANY_WEBSITES',
     'saveConfig'            => 'WRITE_COMPANY_WEBSITES',
     // Page permissions
     'getPages'              => 'READ_COMPANY_WEBSITES',
@@ -270,6 +271,10 @@ if ($has_permission || $is_public_action) {
         case 'saveWebsite':
         case 'updateWebsite': // Alias for frontend compatibility
             if ($is_post_request) saveWebsite($pdo, $userId, $authority, $authorityId);
+            else MethodNotAllowed();
+            break;
+        case 'setWebsitePublished':
+            if ($is_post_request) setWebsitePublished($pdo, $userId, $authorityId);
             else MethodNotAllowed();
             break;
         case 'saveConfig':
@@ -2326,6 +2331,67 @@ function createWebsite(PDO $pdo, int $userId, string $authority, int $authorityI
 /**
  * Save website details
  */
+/**
+ * Schaltet die Website oeffentlich oder nimmt sie wieder vom Netz.
+ *
+ * Eine eigene Aktion, weil saveWebsite() jede Spalte der Zeile ueberschreibt.
+ * Ueber sie zu schalten hiesse, beim Umlegen des Schalters nebenbei den ganzen
+ * Formularstand mitzuschreiben - auch das, was der Benutzer gerade nur
+ * angetippt hat. Hier wird genau ein Feld angefasst.
+ */
+function setWebsitePublished(PDO $pdo, int $userId, int $authorityId): void
+{
+    try {
+        $inputData = getInputData();
+        $websiteId = (int)($inputData['website_id'] ?? $inputData['websiteId'] ?? 0);
+
+        if (!$websiteId) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Website ID is required']);
+            return;
+        }
+
+        if (!array_key_exists('is_active', $inputData)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'is_active is required']);
+            return;
+        }
+        $istOeffentlich = filter_var($inputData['is_active'], FILTER_VALIDATE_BOOLEAN) ? 1 : 0;
+
+        // Die Behoerde muss zur Website passen - sonst schaltet jemand eine
+        // fremde Website ab.
+        $stmt = $pdo->prepare("SELECT id FROM kdd_website_config WHERE id = ? AND authority_id = ?");
+        $stmt->execute([$websiteId, $authorityId]);
+        if (!$stmt->fetchColumn()) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Website not found or access denied']);
+            return;
+        }
+
+        $stmt = $pdo->prepare("
+            UPDATE kdd_website_config
+            SET is_active = ?, updated_at = CURRENT_TIMESTAMP
+            WHERE id = ? AND authority_id = ?
+        ");
+        $stmt->execute([$istOeffentlich, $websiteId, $authorityId]);
+
+        try {
+            logDatabaseChange($authorityId, $pdo, 'UPDATE', 'kdd_website_config', $websiteId, $userId, [
+                ['column_name' => 'is_active', 'old_value' => $istOeffentlich ? '0' : '1', 'new_value' => (string)$istOeffentlich],
+            ]);
+        } catch (\Throwable $e) {
+            error_log('Schaltvorgang nicht protokolliert: ' . $e->getMessage());
+        }
+
+        echo json_encode(['success' => true, 'is_active' => (bool)$istOeffentlich]);
+    } catch (\Throwable $e) {
+        error_log('setWebsitePublished fehlgeschlagen: ' . get_class($e) . ' ' . $e->getMessage()
+            . ' @ ' . $e->getFile() . ':' . $e->getLine());
+        http_response_code(500);
+        echo json_encode(['error' => 'Der Schaltvorgang ist fehlgeschlagen.']);
+    }
+}
+
 function saveWebsite(PDO $pdo, int $userId, string $authority, int $authorityId): void
 {
     try {

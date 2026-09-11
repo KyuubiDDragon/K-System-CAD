@@ -1275,7 +1275,14 @@
     "tabMedia": "Media",
     "tabContact": "Enquiries",
     "tabSettings": "Settings",
-    "tabHelp": "Help"
+    "tabHelp": "Help",
+    "istOeffentlich": "Published",
+    "istEntwurf": "Not published",
+    "veroeffentlichen": "Publish",
+    "offlineNehmen": "Take offline",
+    "jetztOeffentlich": "The website is now publicly reachable.",
+    "jetztEntwurf": "The website is offline. Only you can still see it.",
+    "schaltenFehlgeschlagen": "Could not change the publication state."
   },
   "invoiceView": {
     "title": "Invoice Management",

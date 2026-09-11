@@ -42,6 +42,13 @@ const apartment = ref<ApartmentWithRelations>(props.apartmentToView ? {
 		: [],
 } : {} as ApartmentWithRelations);
 
+/*
+   Stand bisher ganz unten. personHeaders ruft t() gleich darunter auf, und
+   const liegt bis zu seiner Deklaration in der temporalen Totzone: die
+   Komponente warf beim Aufbau einen ReferenceError, noch bevor etwas erschien.
+*/
+const { t } = useI18n();
+
 const persons = ref<PersonFile[]>([]);
 const personHeaders = [
 	{ title: t('personForm.name'), value: "name" },
@@ -127,7 +134,6 @@ const viewPersonClose = () => {
 };
 
 const currentTab = ref(0);
-const { t } = useI18n();
 </script>
 
 <template>

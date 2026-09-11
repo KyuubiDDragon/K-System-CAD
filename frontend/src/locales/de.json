@@ -1275,7 +1275,14 @@
     "tabMedia": "Medien",
     "tabContact": "Kontaktanfragen",
     "tabSettings": "Einstellungen",
-    "tabHelp": "Hilfe"
+    "tabHelp": "Hilfe",
+    "istOeffentlich": "Veröffentlicht",
+    "istEntwurf": "Nicht veröffentlicht",
+    "veroeffentlichen": "Veröffentlichen",
+    "offlineNehmen": "Offline nehmen",
+    "jetztOeffentlich": "Die Website ist jetzt öffentlich erreichbar.",
+    "jetztEntwurf": "Die Website ist offline. Nur du siehst sie noch.",
+    "schaltenFehlgeschlagen": "Der Schaltvorgang ist fehlgeschlagen."
   },
   "invoiceView": {
     "title": "Rechnungsverwaltung",

@@ -15,20 +15,6 @@
             <label class="checkbox-label">
                 <input
                     type="checkbox"
-                    v-model="localSettings.is_active"
-                    @change="emitChange"
-                />
-                <span>Website aktiv</span>
-            </label>
-            <small class="form-text"
-                >Wenn aktiviert, ist Ihre Website öffentlich zugänglich.</small
-            >
-        </div>
-
-        <div class="form-group">
-            <label class="checkbox-label">
-                <input
-                    type="checkbox"
                     v-model="localSettings.maintenance_mode"
                     @change="emitChange"
                 />

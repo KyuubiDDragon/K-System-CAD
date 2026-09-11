@@ -20,6 +20,30 @@
                 </select>
             </div>
 
+            <!--
+                Der Schalter, der die Website sichtbar macht, stand bisher als
+                Kontrollkaestchen "Website aktiv" im Block mit den Kontaktdaten,
+                ganz unten in einer langen Rolle. Neue Websites entstehen
+                unsichtbar - man konnte sie also fuellen, die Vorschau ansehen
+                und nie erfahren, dass niemand sie sieht. Jetzt steht der
+                Zustand dort, wo man ohnehin hinschaut.
+            -->
+            <div class="veroeffentlichung" v-if="hasWebsite && !isPreviewMode">
+                <span class="veroeff-punkt" :class="{ live: istOeffentlich }"></span>
+                <span class="veroeff-text">
+                    {{ istOeffentlich ? t('website.istOeffentlich') : t('website.istEntwurf') }}
+                </span>
+                <button
+                    type="button"
+                    class="btn veroeff-knopf"
+                    :class="istOeffentlich ? 'veroeff-zurueck' : 'btn-success'"
+                    :disabled="schaltetGerade"
+                    @click="veroeffentlichungUmschalten"
+                >
+                    {{ istOeffentlich ? t('website.offlineNehmen') : t('website.veroeffentlichen') }}
+                </button>
+            </div>
+
             <div class="action-buttons">
                 <button v-if="isPreviewMode" class="btn btn-secondary" @click="togglePreviewMode">
                     <i class="mdi mdi-pencil"></i> {{ t('website.backToEditor') }}
@@ -1436,6 +1460,40 @@ async function updateNavigationOrder(items: any[]) {
 }
 
 // Save and Load
+/*
+   Eigene Aktion statt saveAll: updateWebsite schreibt jede Spalte der Zeile.
+   Ueber den Schalter zu speichern hiesse, beim Umlegen nebenbei den ganzen
+   Formularstand festzuschreiben - auch halbfertige Eingaben.
+*/
+const istOeffentlich = computed(() => Boolean(websiteSettings.is_active));
+const schaltetGerade = ref(false);
+
+async function veroeffentlichungUmschalten() {
+    if (schaltetGerade.value || !selectedWebsiteId.value) return;
+
+    const neuerWert = !istOeffentlich.value;
+    schaltetGerade.value = true;
+    try {
+        const response = await apiClientAuth.post('/company/website/', {
+            action: 'setWebsitePublished',
+            website_id: selectedWebsiteId.value,
+            is_active: neuerWert,
+        });
+
+        if (response.data.success) {
+            websiteSettings.is_active = neuerWert;
+            showSuccess(neuerWert ? t('website.jetztOeffentlich') : t('website.jetztEntwurf'));
+        } else {
+            showError(response.data.error || t('website.schaltenFehlgeschlagen'));
+        }
+    } catch (error) {
+        console.error('Error toggling website visibility:', error);
+        showError(t('website.schaltenFehlgeschlagen'));
+    } finally {
+        schaltetGerade.value = false;
+    }
+}
+
 async function saveAll() {
     try {
         const response = await apiClientAuth.post('/company/website/', {
@@ -2034,5 +2092,55 @@ watch(selectedWebsiteId, (newId) => {
     justify-content: flex-end;
     gap: 8px;
     padding: 14px 20px 16px;
+}
+
+/* --- Zustand der Veroeffentlichung ------------------------------------- */
+
+.veroeffentlichung {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    padding-right: 14px;
+}
+
+.veroeff-punkt {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--k-ink-faint);
+    flex: none;
+}
+
+.veroeff-punkt.live {
+    background: var(--k-success);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--k-success) 22%, transparent);
+}
+
+.veroeff-text {
+    font-size: 12.5px;
+    color: var(--k-ink-muted);
+    white-space: nowrap;
+}
+
+.veroeff-knopf {
+    font-size: 12px;
+    padding: 5px 11px;
+}
+
+/*
+   Der Weg zurueck ist kein Aufruf zum Handeln - ein Umriss genuegt.
+   btn-secondary waere naheliegend gewesen, setzt aber --k-ink-nahen Text auf
+   eine mittelgraue Flaeche: rund 2,5:1, zu wenig zum Lesen.
+*/
+.veroeff-zurueck {
+    background: transparent;
+    border: 1px solid var(--k-line-strong);
+    color: var(--k-ink-muted);
+}
+
+.veroeff-zurueck:hover {
+    border-color: var(--k-ink-faint);
+    color: var(--k-ink);
 }
 </style>

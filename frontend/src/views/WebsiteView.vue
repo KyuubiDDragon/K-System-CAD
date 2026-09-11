@@ -977,6 +977,13 @@ const categories = ref(props.previewMode ? props.categories || [] : []);
 const sections = ref(props.previewMode ? props.sections || [] : []);
 const news = ref(props.previewMode ? props.news || [] : []);
 const currentPost = ref(null);
+/*
+   Die Datei hat zwei Beitragsansichten: 'single-post' arbeitet mit
+   currentPost, 'blog-post' mit selectedPost. Letzterer wurde nie angelegt -
+   die Vorlage las ihn, loadPost() schrieb ihn, und beides lief in einen
+   ReferenceError. Damit war der Weg /website/<id>/blog/<slug> nie begehbar.
+*/
+const selectedPost = ref(null);
 const currentPage = ref(null);
 const countdownInterval = ref(null);
 const blogPosts = ref([]);
@@ -2682,6 +2689,49 @@ function loadPost(slug) {
     }
 }
 
+/**
+ * Oeffnet den Inhalt, der zu einem Slug aus der Adresse gehoert.
+ *
+ * Die Route /website/<id>/<slug> rief bisher loadContentBySlug() auf - eine
+ * Funktion, die es nie gab. Jeder Aufruf mit Slug brach also mit einem
+ * ReferenceError ab, noch bevor etwas erschien.
+ *
+ * Gesucht wird in derselben Reihenfolge wie beim Klick auf einen Link im
+ * Inhalt: erst ein Menuepunkt, dann die festen Ziele, zuletzt eine Seite
+ * direkt.
+ */
+function oeffneInhaltZuSlug(slug) {
+    const menuepunkt = navigationItems.value.find((item) => {
+        if (item.id === slug) return true;
+        if (item.page_id) {
+            const seite = pages.value.find((p) => p.id === item.page_id);
+            if (seite && seite.slug === slug) return true;
+        }
+        return false;
+    });
+
+    if (menuepunkt) {
+        handleNavigationClick(menuepunkt);
+        return;
+    }
+    if (slug === 'contact') {
+        loadContact();
+        return;
+    }
+    if (slug === 'blog') {
+        goBackToBlog();
+        return;
+    }
+
+    const seite = pages.value.find((p) => p.slug === slug);
+    if (seite) {
+        loadPage({ id: `temp-${seite.id}`, title: seite.title, page_id: seite.id });
+        return;
+    }
+
+    console.warn('Kein Inhalt zum Slug gefunden:', slug);
+}
+
 function handleRoute() {
     console.log('Handling route change:', route.path);
     
@@ -2714,8 +2764,7 @@ function handleRoute() {
         // Load the website
         loadWebsite().then(() => {
             if (pageSlug) {
-                // If a specific slug is in the URL, load that content
-                loadContentBySlug(pageSlug);
+                oeffneInhaltZuSlug(pageSlug);
             }
         });
     }
@@ -2805,16 +2854,18 @@ function handleFeatureLink(feature) {
                 console.warn('No navigation item or page found for slug:', slug);
             }
         }
-    } else if (plan.buttonUrl.includes('/blog/')) {
-        // Handle blog post links
-        const blogPostMatch = plan.buttonUrl.match(/\/blog\/([^\/]+)/);
+    } else if (feature.linkUrl.includes('/blog/')) {
+        const blogPostMatch = feature.linkUrl.match(/\/blog\/([^\/]+)/);
         if (blogPostMatch) {
-            const postSlug = blogPostMatch[1];
-            loadPost(postSlug);
+            loadPost(blogPostMatch[1]);
         }
     } else {
-        // External link
-        window.open(plan.buttonUrl, plan.buttonTarget || '_blank');
+        /*
+           Hier stand der Bezeichner plan - aus getPlanStyle() heruebergezogen.
+           Der Parameter heisst feature, plan gab es nicht: jeder aeussere Link
+           an einem Merkmal warf einen ReferenceError statt sich zu oeffnen.
+        */
+        window.open(feature.linkUrl, '_blank');
     }
 }
 

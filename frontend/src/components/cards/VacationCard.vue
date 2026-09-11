@@ -208,9 +208,9 @@
           } else {
               return 'mdi-calendar-blank';
           }
-      } else if (showRecentReturns.value && lastVacation.value) {
+      } else if (props.showRecentReturns && lastVacation.value) {
           return 'mdi-account-arrow-left';
-      } else if (showRecentVacations.value && upcomingVacation.value.length > 0) {
+      } else if (props.showRecentVacations && upcomingVacation.value.length > 0) {
           return 'mdi-calendar-clock';
       }
       return 'mdi-calendar-blank';
@@ -225,9 +225,9 @@
           } else {
               return 'grey';
           }
-      } else if (showRecentReturns.value && lastVacation.value) {
+      } else if (props.showRecentReturns && lastVacation.value) {
           return 'success';
-      } else if (showRecentVacations.value && upcomingVacation.value.length > 0) {
+      } else if (props.showRecentVacations && upcomingVacation.value.length > 0) {
           return 'primary';
       }
       return 'grey';

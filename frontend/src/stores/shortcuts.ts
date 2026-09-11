@@ -274,9 +274,12 @@ export const useShortcutsStore = defineStore('shortcuts', {
      * Remove a shortcut (soft delete)
      */
     async removeShortcut(shortcutId: number): Promise<void> {
+      // Muss ausserhalb des try stehen - der catch nimmt die Aenderung damit
+      // zurueck, und im try deklariert war sie dort nicht sichtbar. Die
+      // Ruecknahme warf also selbst einen ReferenceError und verdeckte den
+      // eigentlichen Fehler.
+      const originalShortcuts = [...this.shortcuts];
       try {
-        // Optimistic update
-        const originalShortcuts = [...this.shortcuts];
         this.shortcuts = this.shortcuts.filter((s) => s.id !== shortcutId);
         this.rebuildIndex();
 
@@ -304,9 +307,9 @@ export const useShortcutsStore = defineStore('shortcuts', {
      * Reorder shortcuts
      */
     async reorderShortcuts(shortcuts: Array<{ id: number; sort_order: number }>): Promise<void> {
+      // Siehe removeShortcut: die Ruecknahme braucht sie im aeusseren Bereich.
+      const originalShortcuts = [...this.shortcuts];
       try {
-        // Optimistic update
-        const originalShortcuts = [...this.shortcuts];
 
         shortcuts.forEach((item) => {
           const shortcut = this.shortcuts.find((s) => s.id === item.id);

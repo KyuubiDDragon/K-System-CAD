@@ -50,8 +50,13 @@ watch(() => props.personToView, (newPerson) => {
     console.log('🔄 personToView prop changed:', newPerson);
     if (newPerson) {
         person.value = { ...newPerson };
-        // Fetch related data when person changes
-        fetchLinkedReports();
+        /*
+           Hier stand fetchLinkedReports() - eine Funktion, die es nie gab. Der
+           Aufruf warf einen ReferenceError, also liefen auch die drei darunter
+           nie: bei jedem Personenwechsel blieben Fahrzeuge, Wohnungen und
+           Behoerdenfelder leer. Verknuepfte Berichte holt bislang kein
+           Endpunkt, deshalb faellt der Aufruf ersatzlos weg.
+        */
         fetchVehicles();
         fetchApartments();
         fetchAuthorityFields();
@@ -62,7 +67,6 @@ watch(() => props.personToView, (newPerson) => {
 watch(() => props.modelValue, (newValue) => {
     console.log('🔄 modelValue changed in View component:', newValue);
 });
-const linkedReports = ref<any[]>([]);
 const vehicles = ref<VehicleFile[]>([]);
 const apartments = ref<ApartmentWithRelations[]>([]);
 const viewVehicleDialog = ref(false);

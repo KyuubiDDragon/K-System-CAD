@@ -195,6 +195,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, reactive, computed } from 'vue';
+import type { Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { apiClientAuth } from "@/api"; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store

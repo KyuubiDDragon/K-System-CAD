@@ -2940,6 +2940,12 @@ const fixWidgetPositions = (positions: Record<string, any>) => {
     const screenHeight = window.innerHeight;
     const rightPadding = 20; // Distance from right screen edge
     const padding = 20;
+    /*
+       Stand vorher nur in calculateSmartWidgetPositions() und war hier nicht
+       sichtbar: die Notfallposition unten warf einen ReferenceError, statt ein
+       verrutschtes Fenster einzufangen. Gleiche Rechnung wie dort.
+    */
+    const widgetAreaLeft = screenWidth - 320;
     
     // Get smart default positions based on current screen size
     const safeDefaults = calculateSmartWidgetPositions();

@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { apiClientAuth } from '@/api'; // Use configured Axios instance
 import { useAuthStore } from '@/stores/auth'; // Import Pinia Auth Store
+import type { User } from '@/types/User';
 import ErrorSnackbar from '@/components/ErrorSnackbar.vue'; // Import if used (assuming generic snackbar)
 import ActiveSessions from '@/components/sessions/ActiveSessions.vue'; // Session management
 import LoginHistory from '@/components/sessions/LoginHistory.vue'; // Login history

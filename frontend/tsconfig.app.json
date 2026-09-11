@@ -37,8 +37,6 @@
     "noImplicitOverride": false,
     "noPropertyAccessFromIndexSignature": false,
     "noUncheckedIndexedAccess": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "preserveValueImports": true,
     "isolatedModules": true,
     "noImplicitThis": false,
     "useDefineForClassFields": false
