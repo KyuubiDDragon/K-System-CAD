@@ -41,13 +41,15 @@ class MigrationRunner {
                 return true;
             }
             
-            // Get already applied migrations
-            $appliedMigrations = $this->getAppliedMigrations();
-            
-            // Run pending migrations
+            /*
+               Je Datei frisch nachsehen statt einmal vorab.
+               Eine Migration darf eintragen, dass eine andere bereits von Hand
+               angewendet wurde - mit einer einmal vorab geladenen Liste wuerde
+               dieser Eintrag im selben Lauf uebergangen.
+            */
             $pendingCount = 0;
             foreach ($migrations as $migration) {
-                if (!in_array($migration, $appliedMigrations)) {
+                if (!$this->isApplied($migration)) {
                     $this->runMigration($migration);
                     $pendingCount++;
                 }
@@ -94,7 +96,16 @@ class MigrationRunner {
         
         $dir = opendir($this->migrationsDir);
         while (($file = readdir($dir)) !== false) {
-            if (preg_match('/^\d{4}_.*\.sql$/', $file)) {
+            /*
+               Vier Ziffern am Anfang genuegen - der Unterstrich dahinter ist
+               nicht mehr Pflicht. Zuvor lautete das Muster ^\d{4}_ und
+               uebersprang damit stillschweigend jede Datei der Form
+               20251028_... : drei Migrationen liefen deshalb nie automatisch,
+               und der Lauf meldete trotzdem "All migrations are already
+               applied". Dateien ganz ohne Jahreszahl bleiben aussen vor, das
+               sind Hilfsskripte und keine Migrationen.
+            */
+            if (preg_match('/^\d{4}.*\.sql$/', $file)) {
                 $files[] = $file;
             }
         }
@@ -107,6 +118,105 @@ class MigrationRunner {
         return $files;
     }
     
+    /**
+     * Steht diese Datei bereits als angewendet in der Tabelle?
+     */
+    private function isApplied($filename) {
+        $stmt = $this->db->prepare("SELECT 1 FROM {$this->migrationsTable} WHERE filename = ? LIMIT 1");
+        $stmt->execute([$filename]);
+        return (bool)$stmt->fetchColumn();
+    }
+
+    /**
+     * Zerlegt eine Migrationsdatei in einzelne Anweisungen.
+     *
+     * Zuvor stand hier explode(';', $sql). Ein Semikolon in einem Kommentar
+     * oder in einer Zeichenkette zerschnitt damit die Anweisung dahinter - die
+     * Migration lief auf einen Syntaxfehler oder, schlimmer, zur Haelfte durch,
+     * und der Lauf meldete trotzdem Erfolg. Diese Fassung laeuft einmal durch
+     * den Text und trennt nur an Semikolons, die wirklich eine Anweisung
+     * beenden.
+     */
+    private function splitStatements($sql) {
+        $statements = [];
+        $current = '';
+        $len = strlen($sql);
+        $i = 0;
+
+        while ($i < $len) {
+            $c = $sql[$i];
+            $next = ($i + 1 < $len) ? $sql[$i + 1] : '';
+
+            // Zeilenkommentar
+            if (($c === '-' && $next === '-') || $c === '#') {
+                $ende = strpos($sql, "\n", $i);
+                if ($ende === false) { break; }
+                $current .= substr($sql, $i, $ende - $i + 1);
+                $i = $ende + 1;
+                continue;
+            }
+
+            // Blockkommentar
+            if ($c === '/' && $next === '*') {
+                $ende = strpos($sql, '*/', $i + 2);
+                if ($ende === false) { break; }
+                $current .= substr($sql, $i, $ende - $i + 2);
+                $i = $ende + 2;
+                continue;
+            }
+
+            // Zeichenkette oder Bezeichner in Anfuehrungszeichen
+            if ($c === "'" || $c === '"' || $c === '`') {
+                $quote = $c;
+                $current .= $c;
+                $i++;
+                while ($i < $len) {
+                    $z = $sql[$i];
+                    if ($z === '\\' && $i + 1 < $len) {
+                        $current .= $z . $sql[$i + 1];
+                        $i += 2;
+                        continue;
+                    }
+                    $current .= $z;
+                    $i++;
+                    if ($z === $quote) {
+                        // Verdoppeltes Anfuehrungszeichen gehoert noch dazu
+                        if ($i < $len && $sql[$i] === $quote) {
+                            $current .= $quote;
+                            $i++;
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                continue;
+            }
+
+            if ($c === ';') {
+                $statements[] = $current;
+                $current = '';
+                $i++;
+                continue;
+            }
+
+            $current .= $c;
+            $i++;
+        }
+        $statements[] = $current;
+
+        // Was ausser Kommentaren und Leerraum nichts enthaelt, ist keine Anweisung.
+        $echte = [];
+        foreach ($statements as $stmt) {
+            $ohne = preg_replace('#/\*.*?\*/#s', '', $stmt);
+            $ohne = preg_replace('/^\s*(--|\#).*$/m', '', (string)$ohne);
+            if (trim((string)$ohne) !== '') {
+                $echte[] = trim($stmt);
+            }
+        }
+
+        return $echte;
+    }
+
     /**
      * Get list of already applied migrations
      */
@@ -150,11 +260,7 @@ class MigrationRunner {
 
         try {
             // Execute migration SQL
-            // Split by semicolon to handle multiple statements
-            $statements = array_filter(
-                array_map('trim', explode(';', $sql)),
-                function($stmt) { return !empty($stmt); }
-            );
+            $statements = $this->splitStatements($sql);
 
             foreach ($statements as $statement) {
                 if (!empty($statement)) {
