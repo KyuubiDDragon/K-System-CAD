@@ -1,9 +1,9 @@
 <template>
     <div class="pages-tab">
-        <h2>Seiten & Navigation verwalten</h2>
+        <h2>Seiten</h2>
         <p>
-            Hier können Sie Ihre Webseiten und Navigationspunkte erstellen und
-            bearbeiten.
+            Der Aufbau der Website: welche Seiten es gibt und wie man sie
+            erreicht.
         </p>
 
         <div class="tabs-container">
@@ -14,6 +14,20 @@
                     @click="$emit('update:activeSubTab', 'pages')"
                 >
                     <i class="mdi mdi-file-document-outline"></i> Seiten
+                </div>
+                <!--
+                    Abschnitte gab es bis hierher als eigenen Hauptpunkt. Sie
+                    sind aber nichts Eigenes: sie sind der Aufbau der einen
+                    Seite, die der Einseiter hat. Deshalb stehen sie jetzt hier
+                    - und nur dann, wenn die Vorlage sie ueberhaupt kennt.
+                -->
+                <div
+                    v-if="istEinseiter"
+                    class="tab"
+                    :class="{ active: activeSubTab === 'abschnitte' }"
+                    @click="$emit('update:activeSubTab', 'abschnitte')"
+                >
+                    <i class="mdi mdi-view-sequential"></i> Abschnitte
                 </div>
                 <div
                     class="tab"
@@ -71,9 +85,13 @@
                     </div>
                     <div v-else-if="!isPageEditorVisible" class="empty-state">
                         <p>
-                            Keine Seiten vorhanden. Erstellen Sie Ihre erste Seite.
+                            Noch keine Seiten. Leg die erste an – sie wird zur Startseite.
                         </p>
                     </div>
+                </div>
+
+                <div v-else-if="activeSubTab === 'abschnitte'" class="abschnitte-content">
+                    <slot name="abschnitte" />
                 </div>
 
                 <div v-else-if="activeSubTab === 'navigation'" class="navigation-content">
@@ -97,6 +115,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import NavigationTab from './NavigationTab.vue';
 
 interface Page {
@@ -141,9 +160,13 @@ interface Props {
     showNavigationForm?: boolean;
     navigationForm?: NavigationForm;
     categories: any[];
+    /** Vorlage der Website - entscheidet, ob es Abschnitte gibt. */
+    layoutTemplate?: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const istEinseiter = computed(() => props.layoutTemplate === 'onepager');
 
 defineEmits<{
     'create-page': [];
@@ -183,34 +206,42 @@ defineEmits<{
 
 .tabs {
     display: flex;
-    gap: 10px;
-    border-bottom: 2px solid #4a5568;
-    margin-bottom: 20px;
+    gap: 2px;
+    border-bottom: 1px solid var(--k-line);
+    margin-bottom: 18px;
 }
 
+/*
+   Unterreiter fuehren innerhalb eines Bereichs, sie eroeffnen keinen neuen.
+   Deshalb eine Unterstreichung statt einer gefuellten Lasche: der gefuellte
+   Reiter zog mehr Aufmerksamkeit auf sich als die Ueberschrift darueber - und
+   stellte dunkle Schrift auf die Akzentflaeche, wo --k-on-fill hingehoert.
+*/
 .tab {
-    padding: 10px 20px;
+    padding: 8px 14px;
     cursor: pointer;
-    background-color: var(--k-sunken);
-    border: 1px solid var(--k-line);
-    border-bottom: none;
-    border-radius: 4px 4px 0 0;
-    color: var(--k-ink);
-    transition: all 0.3s ease;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-size: 13px;
+    color: var(--k-ink-muted);
+    transition:
+        color 120ms ease,
+        border-color 120ms ease;
 }
 
 .tab:hover {
-    background-color: var(--k-sunken);
+    color: var(--k-ink);
 }
 
 .tab.active {
-    background-color: var(--k-accent);
     color: var(--k-ink);
-    border-color: var(--k-accent);
+    border-bottom-color: var(--k-accent);
 }
 
 .tab i {
-    margin-right: 8px;
+    margin-right: 6px;
 }
 
 .tab-content {
@@ -275,7 +306,7 @@ defineEmits<{
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {

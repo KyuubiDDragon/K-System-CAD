@@ -43,7 +43,7 @@
                     </button>
                     <button
                         class="btn btn-success create-btn"
-                        @click="createNewWebsite"
+                        @click="startOeffnen"
                         v-if="websites.length === 0"
                     >
                         <i class="mdi mdi-plus"></i> {{ t('website.createWebsite') }}
@@ -69,7 +69,6 @@
                     :posts="posts"
                     :categories="categories"
                     :sections="sections"
-                    :news="news"
                     :previewMode="true"
                 />
             </div>
@@ -92,9 +91,9 @@
                 <div class="no-website-message">
                     <i class="mdi mdi-web-off icon"></i>
                     <h3>{{ t('website.noWebsite') }}</h3>
-                    <p>Sie haben noch keine Website erstellt. Jede Authority kann eine Website haben.</p>
+                    <p>{{ t('website.start.hinweisLeer') }}</p>
                     <div class="button-container">
-                        <button type="button" @click="createNewWebsite" class="create-website-btn">
+                        <button type="button" @click="startOeffnen" class="create-website-btn">
                             {{ t('website.createWebsite') }}
                         </button>
                     </div>
@@ -114,42 +113,43 @@
             <div class="app-content main-content" v-else>
                 <!-- Sidebar Navigation -->
                 <div class="sidebar">
+                    <!--
+                        Neun gleichrangige Punkte liessen offen, wo man anfaengt
+                        und was zusammengehoert. Jetzt stehen die beiden Dinge,
+                        die man taeglich anfasst, oben unter "Inhalt" - alles
+                        andere ist Zubehoer und steht darunter.
+
+                        Kategorien liegen jetzt bei den Beitraegen, Abschnitte
+                        bei den Seiten. "News" ist entfallen: die Vorlagen haben
+                        sie nie ausgegeben, es gab also nichts zu sehen.
+                    -->
                     <ul class="nav-menu">
-                        <li
-                            :class="{ active: activeTab === 'settings' }"
-                            @click="activeTab = 'settings'"
-                        >
-                            <i class="mdi mdi-cog"></i> Einstellungen
-                        </li>
+                        <li class="nav-gruppe">{{ t('website.gruppeInhalt') }}</li>
                         <li :class="{ active: activeTab === 'pages' }" @click="activeTab = 'pages'">
-                            <i class="mdi mdi-file-document-outline"></i> Seiten
+                            <i class="mdi mdi-file-document-outline"></i> {{ t('website.tabPages') }}
                         </li>
                         <li :class="{ active: activeTab === 'posts' }" @click="activeTab = 'posts'">
-                            <i class="mdi mdi-newspaper"></i> Beiträge
-                        </li>
-                        <li
-                            :class="{ active: activeTab === 'categories' }"
-                            @click="activeTab = 'categories'"
-                        >
-                            <i class="mdi mdi-tag-multiple"></i> Kategorien
+                            <i class="mdi mdi-newspaper"></i> {{ t('website.tabPosts') }}
                         </li>
                         <li :class="{ active: activeTab === 'media' }" @click="activeTab = 'media'">
-                            <i class="mdi mdi-image-multiple"></i> Medien
+                            <i class="mdi mdi-image-multiple"></i> {{ t('website.tabMedia') }}
                         </li>
-                        <li :class="{ active: activeTab === 'news' }" @click="activeTab = 'news'">
-                            <i class="mdi mdi-newspaper-variant"></i> News
-                        </li>
-                        <li :class="{ active: activeTab === 'sections' }" @click="activeTab = 'sections'">
-                            <i class="mdi mdi-view-sequential"></i> Sections
-                        </li>
+
+                        <li class="nav-gruppe">{{ t('website.gruppeVerwaltung') }}</li>
                         <li
                             :class="{ active: activeTab === 'contact' }"
                             @click="activeTab = 'contact'"
                         >
-                            <i class="mdi mdi-email"></i> Kontaktanfragen
+                            <i class="mdi mdi-email"></i> {{ t('website.tabContact') }}
+                        </li>
+                        <li
+                            :class="{ active: activeTab === 'settings' }"
+                            @click="activeTab = 'settings'"
+                        >
+                            <i class="mdi mdi-cog"></i> {{ t('website.tabSettings') }}
                         </li>
                         <li :class="{ active: activeTab === 'howto' }" @click="activeTab = 'howto'">
-                            <i class="mdi mdi-help-circle"></i> How To
+                            <i class="mdi mdi-help-circle"></i> {{ t('website.tabHelp') }}
                         </li>
                     </ul>
                 </div>
@@ -193,7 +193,20 @@
                         @save-navigation="saveNavigation"
                         @close-navigation-form="closeNavigationForm"
                         @sort-navigation="updateNavigationOrder"
-                    />
+                        :layout-template="websiteSettings.layout_template || 'default'"
+                    >
+                        <template #abschnitte>
+                            <SectionsTab
+                                :sections="sections"
+                                :current-template="websiteSettings.layout_template || 'default'"
+                                @create="createSection"
+                                @edit="editSection"
+                                @delete="deleteSection"
+                                @toggle-active="toggleSectionActive"
+                                @update-order="updateSectionOrder"
+                            />
+                        </template>
+                    </PagesTab>
 
                     <!-- Posts Tab -->
                     <PostsTab
@@ -204,21 +217,21 @@
                         @edit="editPost"
                         @delete="deletePost"
                         @sort="updatePostOrder"
-                    />
-
-                    <!-- Categories Tab -->
-                    <CategoriesTab
-                        v-if="activeTab === 'categories'"
-                        :categories="categories"
-                        :show-form="isCategoryFormVisible"
-                        :form="categoryForm"
-                        @create="createCategory"
-                        @edit="editCategory"
-                        @delete="deleteCategory"
-                        @save="saveCategory"
-                        @close-form="closeCategoryForm"
-                        @sort="updateCategoryOrder"
-                    />
+                    >
+                        <template #kategorien>
+                            <CategoriesTab
+                                :categories="categories"
+                                :show-form="isCategoryFormVisible"
+                                :form="categoryForm"
+                                @create="createCategory"
+                                @edit="editCategory"
+                                @delete="deleteCategory"
+                                @save="saveCategory"
+                                @close-form="closeCategoryForm"
+                                @sort="updateCategoryOrder"
+                            />
+                        </template>
+                    </PostsTab>
 
                     <!-- Media Tab -->
                     <MediaTab
@@ -235,27 +248,6 @@
                         @save="saveMediaItem"
                         @close-edit="closeMediaEditForm"
                         @update:filter="mediaFilter = $event"
-                    />
-
-                    <!-- News Tab -->
-                    <NewsTab
-                        v-if="activeTab === 'news'"
-                        :news="news"
-                        @create="createNews"
-                        @edit="editNews"
-                        @delete="deleteNews"
-                    />
-
-                    <!-- Sections Tab -->
-                    <SectionsTab
-                        v-if="activeTab === 'sections'"
-                        :sections="sections"
-                        :current-template="websiteSettings.layout_template || 'default'"
-                        @create="createSection"
-                        @edit="editSection"
-                        @delete="deleteSection"
-                        @toggle-active="toggleSectionActive"
-                        @update-order="updateSectionOrder"
                     />
 
                     <!-- Contact Tab -->
@@ -275,37 +267,42 @@
 
                     <!-- How To Tab -->
                     <div v-if="activeTab === 'howto'" class="howto-tab">
-                        <h2>Anleitung zur Website-Verwaltung</h2>
+                        <h2>So verwaltest du deine Website</h2>
                         <div class="howto-content">
-                            <h3>1. Website-Einstellungen</h3>
+                            <h3>Seiten</h3>
                             <p>
-                                In den Einstellungen können Sie grundlegende Informationen wie Name,
-                                Slogan und Beschreibung Ihrer Website festlegen.
+                                Der Aufbau deiner Website. Jede Seite hat einen Titel,
+                                eine Adresse und Inhalt. Unter "Navigation" legst du
+                                fest, welche davon im Menü erscheinen und in welcher
+                                Reihenfolge.
                             </p>
-                            <h3>2. Seiten erstellen</h3>
-                            <p>
-                                Erstellen Sie einzelne Seiten für Ihre Website. Jede Seite hat einen
-                                Titel, eine URL (Slug) und Inhalte.
+                            <p v-if="websiteSettings.layout_template === 'onepager'">
+                                Weil deine Website als Einseiter aufgebaut ist, findest
+                                du dort zusätzlich "Abschnitte" – die Blöcke, die
+                                untereinander auf der einen Seite stehen.
                             </p>
-                            <h3>3. Navigation verwalten</h3>
+                            <h3>Beiträge</h3>
                             <p>
-                                Legen Sie fest, welche Seiten in der Navigation angezeigt werden und
-                                in welcher Reihenfolge.
+                                Alles, was mit Datum erscheint: Neuigkeiten, Berichte,
+                                Ankündigungen. Im Unterreiter "Kategorien" ordnest du
+                                sie, damit Besucher nach Thema filtern können.
                             </p>
-                            <h3>4. Beiträge und Kategorien</h3>
+                            <h3>Medien</h3>
                             <p>
-                                Fügen Sie Blog-Beiträge hinzu und organisieren Sie diese in
-                                Kategorien.
+                                Bilder und Dateien, die du in Seiten und Beiträgen
+                                verwendest. Einmal hochladen, überall einsetzen.
                             </p>
-                            <h3>5. Medien hochladen</h3>
+                            <h3>Kontaktanfragen</h3>
                             <p>
-                                Laden Sie Bilder und andere Medien hoch, die Sie in Ihren Seiten und
-                                Beiträgen verwenden können.
+                                Was Besucher über das Kontaktformular schicken, landet
+                                hier. Du kannst es lesen, beantworten und als erledigt
+                                markieren.
                             </p>
-                            <h3>6. Kontaktanfragen</h3>
+                            <h3>Einstellungen</h3>
                             <p>
-                                Sehen Sie eingehende Kontaktanfragen von Besuchern Ihrer Website ein
-                                und antworten Sie darauf.
+                                Name, Slogan, Farben und Kontaktdaten. Hier schaltest du
+                                die Website auch live – vorher sieht sie niemand außer
+                                dir.
                             </p>
                         </div>
                     </div>
@@ -334,14 +331,6 @@
             @cancel="closePostForm"
         />
 
-        <!-- News Editor Modal -->
-        <NewsEditor
-            v-if="isNewsEditorVisible"
-            :news-item="editingNews"
-            @close="closeNewsEditor"
-            @save="saveNews"
-        />
-
         <!-- Section Editor Modal -->
         <SectionEditor
             v-if="isSectionEditorVisible"
@@ -349,6 +338,79 @@
             @close="closeSectionEditor"
             @save="saveSection"
         />
+
+        <!--
+            Gefuehrter Start.
+
+            Vorher legte der Knopf eine leere Website an und liess den Benutzer
+            vor neun Reitern stehen. Jetzt fragt er zwei Dinge und liefert
+            danach eine Website mit Startseite, die sich sofort ansehen laesst.
+        -->
+        <v-dialog v-model="startOffen" max-width="560" :persistent="startLaeuft">
+            <v-card class="start-karte">
+                <div class="start-kopf">
+                    <h2 class="start-titel">{{ t('website.start.titel') }}</h2>
+                    <p class="start-lede">{{ t('website.start.lede') }}</p>
+                </div>
+
+                <div class="start-koerper">
+                    <v-alert
+                        v-if="startFehler"
+                        type="error"
+                        variant="tonal"
+                        density="compact"
+                        class="mb-3"
+                    >{{ startFehler }}</v-alert>
+
+                    <v-text-field
+                        v-model="startName"
+                        :label="t('website.start.name')"
+                        :placeholder="t('website.start.namePlatzhalter')"
+                        variant="outlined"
+                        density="compact"
+                        :error-messages="startNameFehler"
+                        :disabled="startLaeuft"
+                        @keyup.enter="websiteAnlegen"
+                    />
+
+                    <v-text-field
+                        v-model="startSlogan"
+                        :label="t('website.start.slogan')"
+                        :placeholder="t('website.start.sloganPlatzhalter')"
+                        variant="outlined"
+                        density="compact"
+                        :disabled="startLaeuft"
+                        @keyup.enter="websiteAnlegen"
+                    />
+
+                    <div class="start-vorlage-titel">{{ t('website.start.vorlage') }}</div>
+                    <div class="start-vorlagen">
+                        <button
+                            v-for="v in VORLAGEN"
+                            :key="v.wert"
+                            type="button"
+                            class="start-vorlage"
+                            :class="{ gewaehlt: startVorlage === v.wert }"
+                            :disabled="startLaeuft"
+                            @click="startVorlage = v.wert"
+                        >
+                            <i :class="['mdi', v.symbol]"></i>
+                            <span class="start-vorlage-name">{{ t(v.name) }}</span>
+                            <span class="start-vorlage-text">{{ t(v.text) }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="start-fuss">
+                    <v-btn variant="text" :disabled="startLaeuft" @click="startOffen = false">
+                        {{ t('website.start.abbrechen') }}
+                    </v-btn>
+                    <v-btn color="primary" :loading="startLaeuft" @click="websiteAnlegen">
+                        {{ t('website.start.anlegen') }}
+                    </v-btn>
+                </div>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -366,14 +428,12 @@ const PagesTab = defineAsyncComponent(() => import('./website/tabs/PagesTab.vue'
 const PostsTab = defineAsyncComponent(() => import('./website/tabs/PostsTab.vue'));
 const CategoriesTab = defineAsyncComponent(() => import('./website/tabs/CategoriesTab.vue'));
 const MediaTab = defineAsyncComponent(() => import('./website/tabs/MediaTab.vue'));
-const NewsTab = defineAsyncComponent(() => import('./website/tabs/NewsTab.vue'));
 const SectionsTab = defineAsyncComponent(() => import('./website/tabs/SectionsTab.vue'));
 const ContactTab = defineAsyncComponent(() => import('./website/tabs/ContactTab.vue'));
 
 // Lazy load editor components
 const PageEditor = defineAsyncComponent(() => import('./website/editors/PageEditor.vue'));
 const PostEditor = defineAsyncComponent(() => import('./website/editors/PostEditor.vue'));
-const NewsEditor = defineAsyncComponent(() => import('./website/editors/NewsEditor.vue'));
 const SectionEditor = defineAsyncComponent(() => import('./website/editors/SectionEditor.vue'));
 
 // Composables and utilities
@@ -592,7 +652,6 @@ const pages = ref<any[]>([]);
 const posts = ref<any[]>([]);
 const categories = ref<any[]>([]);
 const media = ref<any[]>([]);
-const news = ref<any[]>([]);
 const sections = ref<any[]>([]);
 const contacts = ref<any[]>([]);
 const navigationItems = ref<any[]>([]);
@@ -601,6 +660,23 @@ const socialLinks = ref<any[]>([]);
 // UI State
 const activeTab = ref('settings');
 const activeSubTab = ref('pages');
+
+/*
+   Beim Einseiter gibt es keine Seiten, sondern Abschnitte. Wer dort auf
+   "Seiten" klickt, soll nicht auf eine leere Liste sehen, sondern auf den
+   Aufbau, den seine Vorlage tatsaechlich hat.
+*/
+watch(
+    () => websiteSettings.layout_template,
+    (vorlage) => {
+        if (vorlage === 'onepager' && activeSubTab.value === 'pages') {
+            activeSubTab.value = 'abschnitte';
+        } else if (vorlage !== 'onepager' && activeSubTab.value === 'abschnitte') {
+            activeSubTab.value = 'pages';
+        }
+    },
+    { immediate: true },
+);
 const isDirty = ref(false);
 const changedSections = reactive(new Set());
 const isPreviewMode = ref(false);
@@ -608,11 +684,9 @@ const isPreviewMode = ref(false);
 // Form visibility
 const isPageFormVisible = ref(false);
 const isPostFormVisible = ref(false);
-const isNewsEditorVisible = ref(false);
 const isSectionEditorVisible = ref(false);
 const editingPage = ref<any>(null);
 const editingPost = ref<any>(null);
-const editingNews = ref<any>(null);
 const editingSection = ref<any>(null);
 
 // Category state
@@ -1133,66 +1207,6 @@ async function deleteContact(contact: any) {
     }
 }
 
-// News Management
-function createNews() {
-    editingNews.value = null;
-    isNewsEditorVisible.value = true;
-}
-
-function editNews(newsItem: any) {
-    editingNews.value = newsItem;
-    isNewsEditorVisible.value = true;
-}
-
-function closeNewsEditor() {
-    isNewsEditorVisible.value = false;
-    editingNews.value = null;
-}
-
-async function saveNews(newsData: any) {
-    try {
-        const action = newsData.id ? 'updateNews' : 'createNews';
-
-        const response = await apiClientAuth.post('/company/website/', {
-            action,
-            website_id: selectedWebsiteId.value,
-            ...newsData,
-        });
-
-        if (response.data.success) {
-            showSuccess(newsData.id ? 'News aktualisiert' : 'News erstellt');
-            await loadWebsiteDetails();
-            closeNewsEditor();
-        } else {
-            showError(response.data.error || 'Fehler beim Speichern');
-        }
-    } catch (error) {
-        console.error('Error saving news:', error);
-        showError('Fehler beim Speichern der News');
-    }
-}
-
-async function deleteNews(newsItem: any) {
-    if (!confirm(`Möchten Sie die News "${newsItem.title}" wirklich löschen?`)) return;
-
-    try {
-        const response = await apiClientAuth.post('/company/website/', {
-            action: 'deleteNews',
-            website_id: selectedWebsiteId.value,
-            news_id: newsItem.id,
-        });
-
-        if (response.data.success) {
-            showSuccess('News gelöscht');
-            await loadWebsiteDetails();
-        } else {
-            showError(response.data.error || 'Fehler beim Löschen');
-        }
-    } catch (error) {
-        console.error('Error deleting news:', error);
-        showError('Fehler beim Löschen der News');
-    }
-}
 
 // Sections Management
 function createSection() {
@@ -1478,7 +1492,6 @@ async function loadWebsiteDetails() {
             posts.value = data.posts || [];
             categories.value = data.categories || [];
             media.value = data.media || [];
-            news.value = data.news || [];
 
             // Parse sections settings from JSON strings
             sections.value = (data.sections || []).map((section: any) => {
@@ -1504,23 +1517,87 @@ async function loadWebsiteDetails() {
     }
 }
 
-async function createNewWebsite() {
+/*
+   Zwei Aufbauten stehen zur Wahl. Die Beschreibung sagt, wofuer der eine oder
+   der andere taugt - "Default" und "Onepager" sagten das nicht.
+*/
+const VORLAGEN = [
+    {
+        wert: 'default',
+        symbol: 'mdi-file-document-multiple-outline',
+        name: 'website.start.klassisch',
+        text: 'website.start.klassischText',
+    },
+    {
+        wert: 'onepager',
+        symbol: 'mdi-view-agenda-outline',
+        name: 'website.start.einseiter',
+        text: 'website.start.einseiterText',
+    },
+] as const;
+
+const startOffen = ref(false);
+const startName = ref('');
+const startSlogan = ref('');
+const startVorlage = ref<string>('default');
+const startLaeuft = ref(false);
+const startFehler = ref('');
+const startNameFehler = ref('');
+
+/*
+   Der Hinweis verschwindet, sobald etwas im Feld steht - nicht erst beim
+   naechsten Absenden. Sonst steht "Bitte einen Namen angeben" noch unter einem
+   Feld, in dem der Name laengst drin ist.
+*/
+watch(startName, (wert) => {
+    if (wert.trim()) startNameFehler.value = '';
+});
+
+function startOeffnen() {
+    startName.value = '';
+    startSlogan.value = '';
+    startVorlage.value = 'default';
+    startFehler.value = '';
+    startNameFehler.value = '';
+    startOffen.value = true;
+}
+
+async function websiteAnlegen() {
+    if (startLaeuft.value) return;
+
+    startNameFehler.value = '';
+    startFehler.value = '';
+
+    if (!startName.value.trim()) {
+        startNameFehler.value = t('website.start.nameNoetig');
+        return;
+    }
+
+    startLaeuft.value = true;
     try {
         const response = await apiClientAuth.post('/company/website/', {
             action: 'createWebsite',
+            websiteData: {
+                site_name: startName.value.trim(),
+                site_slogan: startSlogan.value.trim(),
+                layout_template: startVorlage.value,
+            },
         });
 
         if (response.data.success) {
-            showSuccess('Website erstellt');
+            startOffen.value = false;
+            showSuccess(t('website.start.fertig'));
             await loadWebsites();
             selectedWebsiteId.value = response.data.website_id;
             await loadWebsiteDetails();
         } else {
-            showError(response.data.error || 'Fehler beim Erstellen');
+            startFehler.value = response.data.error || t('website.start.fehler');
         }
     } catch (error) {
         console.error('Error creating website:', error);
-        showError('Fehler beim Erstellen der Website');
+        startFehler.value = t('website.start.fehler');
+    } finally {
+        startLaeuft.value = false;
     }
 }
 
@@ -1693,23 +1770,59 @@ watch(selectedWebsiteId, (newId) => {
 }
 
 .nav-menu li {
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
+    padding: 7px 10px;
+    margin-bottom: 2px;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s ease;
+    border-radius: 5px;
+    font-size: 13px;
+    color: var(--k-ink-muted);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 8px;
+    transition:
+        background 120ms ease,
+        color 120ms ease;
 }
 
 .nav-menu li:hover {
     background-color: var(--k-sunken);
+    color: var(--k-ink);
 }
 
+/*
+   Schrift auf einer Akzentflaeche ist --k-on-fill, nie --k-ink: --k-ink kippt
+   mit dem Modus, die Akzentflaeche nicht. Im hellen Modus stand hier helle
+   Schrift auf hellem Blau.
+*/
 .nav-menu li.active {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
+}
+
+.nav-menu li.active .mdi {
+    color: var(--k-on-fill);
+}
+
+/* Gruppenueberschrift - beschriftet, aber nicht anklickbar. */
+.nav-menu li.nav-gruppe {
+    margin: 14px 0 4px;
+    padding: 0 10px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--k-ink-faint);
+    cursor: default;
+    background: none;
+}
+
+.nav-menu li.nav-gruppe:first-child {
+    margin-top: 0;
+}
+
+.nav-menu li.nav-gruppe:hover {
+    background: none;
+    color: var(--k-ink-faint);
 }
 
 .content-area {
@@ -1810,5 +1923,116 @@ watch(selectedWebsiteId, (newId) => {
     .nav-menu li {
         white-space: nowrap;
     }
+}
+/* --- Gefuehrter Start ------------------------------------------------- */
+
+.start-karte {
+    background: var(--k-surface) !important;
+    border: 1px solid var(--k-line);
+    border-radius: 8px;
+}
+
+.start-kopf {
+    padding: 16px 20px 12px;
+    background: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
+}
+
+.start-titel {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+    color: var(--k-ink);
+}
+
+.start-lede {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--k-ink-muted);
+}
+
+.start-koerper {
+    padding: 18px 20px 4px;
+}
+
+.start-vorlage-titel {
+    margin: 2px 0 8px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--k-ink-faint);
+}
+
+.start-vorlagen {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+@media (max-width: 560px) {
+    .start-vorlagen {
+        grid-template-columns: 1fr;
+    }
+}
+
+.start-vorlage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 12px 13px;
+    text-align: left;
+    background: var(--k-sunken);
+    border: 1px solid var(--k-line);
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+        border-color 120ms ease,
+        background 120ms ease;
+}
+
+.start-vorlage:hover:not(:disabled) {
+    border-color: var(--k-line-strong);
+}
+
+.start-vorlage:disabled {
+    cursor: default;
+    opacity: 0.6;
+}
+
+.start-vorlage.gewaehlt {
+    border-color: var(--k-accent);
+    background: color-mix(in srgb, var(--k-accent) 10%, var(--k-sunken));
+}
+
+.start-vorlage .mdi {
+    font-size: 19px;
+    color: var(--k-ink-faint);
+}
+
+.start-vorlage.gewaehlt .mdi {
+    color: var(--k-accent);
+}
+
+.start-vorlage-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--k-ink);
+}
+
+.start-vorlage-text {
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: var(--k-ink-muted);
+}
+
+.start-fuss {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 20px 16px;
 }
 </style>

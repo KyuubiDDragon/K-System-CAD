@@ -1,8 +1,8 @@
 <template>
     <div class="settings-section">
-        <h3>Startseiten-Hero</h3>
+        <h3>Kopfbereich der Startseite</h3>
         <div class="form-group">
-            <label for="hero-image">Hero-Bild (Hintergrundbild für Startseite)</label>
+            <label for="hero-image">Hintergrundbild</label>
             <div class="media-selector">
                 <div v-if="localSettings.hero_image" class="selected-media">
                     <img :src="getMediaUrl(localSettings.hero_image)" alt="Hero-Bild" />
@@ -35,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            <label for="cta-text">Call-to-Action Button Text</label>
+            <label for="cta-text">Beschriftung des Knopfs</label>
             <input
                 type="text"
                 id="cta-text"
@@ -47,7 +47,7 @@
         </div>
 
         <div class="form-group">
-            <label for="cta-url">Call-to-Action URL</label>
+            <label for="cta-url">Wohin der Knopf führt</label>
             <div class="input-group">
                 <select
                     v-model="localSettings.cta_target_type"
@@ -221,7 +221,7 @@ function triggerFileInput(inputId: string) {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {

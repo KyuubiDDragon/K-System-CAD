@@ -459,7 +459,7 @@ function handleBlockImageUpload(data: any) {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {

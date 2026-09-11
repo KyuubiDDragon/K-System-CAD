@@ -1,17 +1,44 @@
 <template>
     <div class="posts-tab">
-        <h2>Beiträge verwalten</h2>
-        <p>Hier können Sie Ihre Blog-Beiträge erstellen und bearbeiten.</p>
+        <h2>Beiträge</h2>
+        <p>Alles, was auf der Website mit Datum erscheint - Neuigkeiten, Berichte, Ankündigungen.</p>
 
+        <!--
+            Kategorien standen bis hierher als eigener Hauptpunkt daneben,
+            obwohl sie ohne Beitraege nichts sind. Jetzt liegen sie dort, wo man
+            sie braucht: eine Handbreit neben den Beitraegen.
+        -->
+        <div class="tabs">
+            <div
+                class="tab"
+                :class="{ active: unterreiter === 'beitraege' }"
+                @click="unterreiter = 'beitraege'"
+            >
+                <i class="mdi mdi-newspaper"></i> Beiträge
+            </div>
+            <div
+                class="tab"
+                :class="{ active: unterreiter === 'kategorien' }"
+                @click="unterreiter = 'kategorien'"
+            >
+                <i class="mdi mdi-tag-multiple"></i> Kategorien
+            </div>
+        </div>
+
+        <div v-if="unterreiter === 'kategorien'" class="kategorien-inhalt">
+            <slot name="kategorien" />
+        </div>
+
+        <template v-else>
         <div class="posts-header">
             <button @click="handleCreate" class="btn btn-primary">
                 <i class="mdi mdi-plus"></i> Neuer Beitrag
             </button>
 
             <div v-if="categories.length > 0" class="category-filter">
-                <label for="category-filter">Filter nach Kategorie:</label>
+                <label for="category-filter">Kategorie:</label>
                 <select id="category-filter" v-model="selectedCategoryFilter" class="form-control">
-                    <option value="">Alle Kategorien</option>
+                    <option value="">Alle</option>
                     <option v-for="category in categories" :key="category.id" :value="category.id">
                         {{ category.name }}
                     </option>
@@ -96,11 +123,12 @@
         <div v-else class="empty-state">
             <p>
                 {{ selectedCategoryFilter
-                    ? 'Keine Beiträge in dieser Kategorie gefunden.'
-                    : 'Keine Beiträge vorhanden. Erstellen Sie Ihren ersten Beitrag.'
+                    ? 'In dieser Kategorie steht noch nichts.'
+                    : 'Noch keine Beiträge. Der erste kann auch nur zwei Sätze lang sein.'
                 }}
             </p>
         </div>
+        </template>
     </div>
 </template>
 
@@ -148,6 +176,7 @@ const emit = defineEmits<{
 }>();
 
 // Local state
+const unterreiter = ref<'beitraege' | 'kategorien'>('beitraege');
 const selectedCategoryFilter = ref<string | number>('');
 const sortedPosts = ref<Post[]>([...props.posts]);
 
@@ -388,7 +417,7 @@ function formatDate(dateString?: string): string {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {
@@ -423,4 +452,49 @@ function formatDate(dateString?: string): string {
 .mr-2 {
     margin-right: 0.5rem;
 }
+
+.tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--k-line);
+    margin-bottom: 18px;
+}
+
+/*
+   Unterreiter fuehren innerhalb eines Bereichs, sie eroeffnen keinen neuen.
+   Deshalb eine Unterstreichung statt einer gefuellten Lasche: der gefuellte
+   Reiter zog mehr Aufmerksamkeit auf sich als die Ueberschrift darueber - und
+   stellte dunkle Schrift auf die Akzentflaeche, wo --k-on-fill hingehoert.
+*/
+.tab {
+    padding: 8px 14px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-size: 13px;
+    color: var(--k-ink-muted);
+    transition:
+        color 120ms ease,
+        border-color 120ms ease;
+}
+
+.tab:hover {
+    color: var(--k-ink);
+}
+
+.tab.active {
+    color: var(--k-ink);
+    border-bottom-color: var(--k-accent);
+}
+
+.tab i {
+    margin-right: 6px;
+}
+
+.kategorien-inhalt {
+    padding-top: 2px;
+}
+
 </style>

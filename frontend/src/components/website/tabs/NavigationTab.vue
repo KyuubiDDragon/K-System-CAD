@@ -62,7 +62,7 @@
         <div v-else class="empty-state">
             <i class="mdi mdi-menu"></i>
             <p>Keine Navigationspunkte vorhanden.</p>
-            <p>Erstellen Sie Ihren ersten Navigationspunkt.</p>
+            <p>Noch kein Menüpunkt. Ohne Menü findet niemand deine Seiten.</p>
         </div>
 
         <!-- Navigation Form Modal -->
@@ -386,7 +386,7 @@ function getIndent(item: NavigationItem): string {
 
 .badge-blog {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .badge-inactive {
@@ -413,7 +413,7 @@ function getIndent(item: NavigationItem): string {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {

@@ -1,7 +1,7 @@
 <template>
     <div class="settings-tab">
         <h2>Website-Einstellungen</h2>
-        <p>Hier können Sie Ihre Website konfigurieren.</p>
+        <p>Name, Farben, Kontaktdaten – und der Schalter, der die Website öffentlich macht.</p>
 
         <!-- Template Selector -->
         <TemplateSelector

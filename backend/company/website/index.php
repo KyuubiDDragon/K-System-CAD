@@ -2192,19 +2192,28 @@ function createWebsite(PDO $pdo, int $userId, string $authority, int $authorityI
         // Get authority name for default site name
         $authorityName = $authority;
         try {
-            $stmt = $pdo->prepare("SELECT name FROM kdd_authority WHERE id = ?");
+            // kdd_authority (einzahl) gibt es nicht - die Tabelle heisst
+            // kdd_authorities. Die Abfrage lief deshalb immer in den catch,
+            // und der Standardname war der Schluessel der Behoerde statt ihres
+            // Anzeigenamens: "firedepartment Website" statt "Fire Department".
+            $stmt = $pdo->prepare("SELECT display_name, name FROM kdd_authorities WHERE id = ?");
             $stmt->execute([$authorityId]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($result) {
-                $authorityName = $result['name'];
+                $authorityName = $result['display_name'] ?: $result['name'];
             }
         } catch (PDOException $e) {
             error_log("Error fetching authority name: " . $e->getMessage());
         }
 
         // Use default values if websiteData is not provided or incomplete
-        $siteName = $websiteData['site_name'] ?? ($authorityName . ' Website');
-        $siteSlogan = $websiteData['site_slogan'] ?? '';
+        // Ein leerer Name ist so gut wie kein Name - sonst steht die Website
+        // spaeter namenlos in der Auswahl.
+        $siteName = trim((string)($websiteData['site_name'] ?? ''));
+        if ($siteName === '') {
+            $siteName = $authorityName . ' Website';
+        }
+        $siteSlogan = trim((string)($websiteData['site_slogan'] ?? ''));
         $siteDescription = $websiteData['site_description'] ?? '';
         $primaryColor = $websiteData['primary_color'] ?? '#3b82f6';
         $secondaryColor = $websiteData['secondary_color'] ?? '#1e3a8a';
@@ -2240,6 +2249,53 @@ function createWebsite(PDO $pdo, int $userId, string $authority, int $authorityI
             $authorityId
         ]);
         $websiteId = $pdo->lastInsertId();
+
+        /*
+           Eine neue Website ist nicht mehr leer.
+
+           Bisher legte das Anlegen nur den Datensatz an; der Benutzer landete
+           in einem Editor mit neun Reitern und nichts darin, ohne Hinweis,
+           womit er anfangen soll. createDefaultSections() gibt es laengst - sie
+           lief nur beim Speichern und nur fuer die Einseiter-Vorlage. Jetzt
+           bekommt jede neue Website die Abschnitte ihrer Vorlage und ist vom
+           ersten Augenblick an ansehbar.
+
+           Schlaegt es fehl, steht die Website trotzdem: ein fehlender
+           Startabschnitt ist kein Grund, das Anlegen scheitern zu lassen.
+        */
+        try {
+            if ($layoutTemplate === 'onepager') {
+                createDefaultSections($pdo, (int)$websiteId, $userId, $authorityId, $layoutTemplate);
+            } else {
+                /*
+                   Die klassische Vorlage arbeitet mit Seiten, nicht mit
+                   Abschnitten. Sie bekommt deshalb eine Startseite mit einem
+                   Satz Text - genug, damit die Vorschau sofort etwas zeigt und
+                   klar ist, wo man weiterschreibt.
+                */
+                $stmtSeite = $pdo->prepare("
+                    INSERT INTO kdd_website_pages
+                        (website_id, title, slug, content, is_published, status, published_at)
+                    VALUES (?, ?, 'startseite', ?, 1, 'published', NOW())
+                ");
+                $stmtSeite->execute([
+                    $websiteId,
+                    'Startseite',
+                    '<p>' . htmlspecialchars($siteSlogan !== '' ? $siteSlogan : $siteName, ENT_QUOTES, 'UTF-8')
+                        . '</p><p>Dieser Text steht auf der Startseite. Ersetze ihn unter "Seiten".</p>',
+                ]);
+
+                // Ohne Eintrag in der Navigation ist die Seite zwar da, aber
+                // nirgends verlinkt.
+                $stmtNavi = $pdo->prepare("
+                    INSERT INTO kdd_website_navigation (website_id, title, url, sort_order, is_active)
+                    VALUES (?, 'Start', '/', 0, 1)
+                ");
+                $stmtNavi->execute([$websiteId]);
+            }
+        } catch (\Throwable $e) {
+            error_log('Startinhalt fuer Website ' . $websiteId . ' nicht angelegt: ' . $e->getMessage());
+        }
 
         // Log the change
         logDatabaseChange($authorityId, $pdo, 'INSERT', 'kdd_website_config', $websiteId, $userId, [
@@ -3991,113 +4047,94 @@ function updateSectionOrder(PDO $pdo, int $userId, string $authority, int $autho
  */
 function createDefaultSections(PDO $pdo, int $websiteId, int $userId, int $authorityId, string $template = 'onepager'): bool
 {
-    error_log("DEBUG: createDefaultSections called with websiteId=$websiteId, userId=$userId, authorityId=$authorityId, template=$template");
+    /*
+       Startinhalt fuer den Einseiter.
+
+       Bewusst kurz und erkennbar vorlaeufig. Vorher stand hier ausformulierter
+       Werbetext ("Wir sind ein engagiertes Team ... erstklassige Loesungen") -
+       der liest sich fertig und bleibt deshalb stehen. Ein halber Satz mit
+       klarer Aufforderung wird ersetzt.
+
+       Angeredet wird wie im uebrigen Website-Bereich: der Besucher mit "ihr",
+       der Bearbeiter mit "du".
+    */
     try {
-        // Check if sections already exist
-        error_log("DEBUG: Checking if sections already exist for website $websiteId");
         $stmt = $pdo->prepare("SELECT COUNT(*) FROM kdd_website_sections WHERE website_id = ?");
         $stmt->execute([$websiteId]);
-        $count = $stmt->fetchColumn();
-        error_log("DEBUG: Found $count existing sections");
-
-        if ($count > 0) {
-            // Sections already exist, don't create defaults
-            error_log("DEBUG: Sections already exist, returning false");
+        if ((int)$stmt->fetchColumn() > 0) {
+            // Schon etwas da - nichts ueberschreiben.
             return false;
         }
 
-        // Get website details for personalization
-        error_log("DEBUG: Fetching website details for personalization");
         $stmt = $pdo->prepare("SELECT site_name, site_slogan, site_description FROM kdd_website_config WHERE id = ?");
         $stmt->execute([$websiteId]);
-        $website = $stmt->fetch(PDO::FETCH_ASSOC);
-        error_log("DEBUG: Website details fetched");
+        $website = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
         $siteName = $website['site_name'] ?? 'Unsere Website';
-        $siteSlogan = $website['site_slogan'] ?? 'Willkommen auf unserer Website';
+        $siteSlogan = $website['site_slogan'] ?? '';
         $siteDescription = $website['site_description'] ?? '';
-        error_log("DEBUG: siteName=$siteName, siteSlogan=$siteSlogan");
 
-        // Define default sections based on template
-        error_log("DEBUG: Defining default sections for template: $template");
-        $defaultSections = [];
-
-        if ($template === 'onepager') {
-            error_log("DEBUG: Creating OnePager default sections");
-            $defaultSections = [
-                [
-                    'section_type' => 'hero',
-                    'title' => $siteName,
-                    'subtitle' => $siteSlogan,
-                    'content' => $siteDescription ?: 'Entdecken Sie unsere Leistungen und erfahren Sie mehr über uns.',
-                    'settings' => json_encode([
-                        'backgroundImage' => null,
-                        'buttonText' => 'Mehr erfahren',
-                        'buttonLink' => '#about'
-                    ]),
-                    'sort_order' => 0,
-                    'is_active' => 1
-                ],
-                [
-                    'section_type' => 'about',
-                    'title' => 'Über uns',
-                    'subtitle' => 'Wer wir sind',
-                    'content' => '<p>Wir sind ein engagiertes Team, das sich darauf spezialisiert hat, erstklassige Lösungen zu liefern. Mit jahrelanger Erfahrung und Leidenschaft für Innovation helfen wir unseren Kunden, ihre Ziele zu erreichen.</p><p>Unsere Mission ist es, durch Qualität und Zuverlässigkeit zu überzeugen.</p>',
-                    'settings' => json_encode([]),
-                    'sort_order' => 1,
-                    'is_active' => 1
-                ],
-                [
-                    'section_type' => 'services',
-                    'title' => 'Unsere Leistungen',
-                    'subtitle' => 'Was wir anbieten',
-                    'content' => null,
-                    'settings' => json_encode([
-                        'items' => [
-                            [
-                                'icon' => 'mdi mdi-cog',
-                                'title' => 'Beratung',
-                                'description' => 'Professionelle Beratung für Ihre individuellen Anforderungen'
-                            ],
-                            [
-                                'icon' => 'mdi mdi-rocket',
-                                'title' => 'Umsetzung',
-                                'description' => 'Schnelle und effiziente Umsetzung Ihrer Projekte'
-                            ],
-                            [
-                                'icon' => 'mdi mdi-shield-check',
-                                'title' => 'Support',
-                                'description' => 'Zuverlässiger Support und Wartung für Ihre Systeme'
-                            ]
-                        ]
-                    ]),
-                    'sort_order' => 2,
-                    'is_active' => 1
-                ],
-                [
-                    'section_type' => 'contact',
-                    'title' => 'Kontakt',
-                    'subtitle' => 'Nehmen Sie Kontakt mit uns auf',
-                    'content' => '<p>Haben Sie Fragen oder möchten Sie mehr über unsere Leistungen erfahren? Wir freuen uns auf Ihre Nachricht!</p>',
-                    'settings' => json_encode([]),
-                    'sort_order' => 3,
-                    'is_active' => 1
-                ]
-            ];
+        if ($template !== 'onepager') {
+            return false;
         }
 
-        // Insert default sections
-        error_log("DEBUG: Preparing to insert " . count($defaultSections) . " sections");
+        $defaultSections = [
+            [
+                'section_type' => 'hero',
+                'title' => $siteName,
+                'subtitle' => $siteSlogan !== '' ? $siteSlogan : 'Hier steht euer Slogan.',
+                'content' => $siteDescription ?: 'Ein oder zwei Sätze darüber, wer ihr seid. Diesen Text kannst du hier ersetzen.',
+                'settings' => json_encode([
+                    'backgroundImage' => null,
+                    'buttonText' => 'Mehr erfahren',
+                    'buttonLink' => '#about',
+                ]),
+                'sort_order' => 0,
+                'is_active' => 1,
+            ],
+            [
+                'section_type' => 'about',
+                'title' => 'Über uns',
+                'subtitle' => 'Wer wir sind',
+                'content' => '<p>Erzählt hier, wofür ihr steht und was euch ausmacht. Zwei Absätze reichen.</p>',
+                'settings' => json_encode([]),
+                'sort_order' => 1,
+                'is_active' => 1,
+            ],
+            [
+                'section_type' => 'services',
+                'title' => 'Unsere Leistungen',
+                'subtitle' => 'Was wir anbieten',
+                'content' => null,
+                'settings' => json_encode([
+                    'items' => [
+                        ['icon' => 'mdi mdi-cog', 'title' => 'Leistung 1', 'description' => 'Ein Satz dazu, was ihr hier anbietet.'],
+                        ['icon' => 'mdi mdi-rocket', 'title' => 'Leistung 2', 'description' => 'Ein Satz dazu, was ihr hier anbietet.'],
+                        ['icon' => 'mdi mdi-shield-check', 'title' => 'Leistung 3', 'description' => 'Ein Satz dazu, was ihr hier anbietet.'],
+                    ],
+                ]),
+                'sort_order' => 2,
+                'is_active' => 1,
+            ],
+            [
+                'section_type' => 'contact',
+                'title' => 'Kontakt',
+                'subtitle' => 'So erreicht ihr uns',
+                'content' => '<p>Schreibt uns – wir melden uns zurück.</p>',
+                'settings' => json_encode([]),
+                'sort_order' => 3,
+                'is_active' => 1,
+            ],
+        ];
+
         $stmt = $pdo->prepare("
             INSERT INTO kdd_website_sections (
                 website_id, section_type, title, subtitle, content,
                 settings, sort_order, is_active, authority_id
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
-        error_log("DEBUG: INSERT statement prepared");
 
-        foreach ($defaultSections as $index => $section) {
-            error_log("DEBUG: Inserting section $index: " . $section['section_type']);
+        foreach ($defaultSections as $section) {
             $stmt->execute([
                 $websiteId,
                 $section['section_type'],
@@ -4107,37 +4144,23 @@ function createDefaultSections(PDO $pdo, int $websiteId, int $userId, int $autho
                 $section['settings'],
                 $section['sort_order'],
                 $section['is_active'],
-                $authorityId
+                $authorityId,
             ]);
-            error_log("DEBUG: Section $index inserted successfully");
         }
-        error_log("DEBUG: All sections inserted");
 
-        // Log the change
-        error_log("DEBUG: Attempting to log database change");
+        // Das Protokoll ist Beiwerk - scheitert es, steht der Startinhalt trotzdem.
         try {
             logDatabaseChange($authorityId, $pdo, 'INSERT', 'kdd_website_sections', 0, $userId, [
-                ['column_name' => 'action', 'old_value' => null, 'new_value' => "Default sections created for template: $template"]
+                ['column_name' => 'action', 'old_value' => null, 'new_value' => "Startabschnitte fuer Vorlage: $template"],
             ]);
-            error_log("DEBUG: Database change logged successfully");
-        } catch (Exception $e) {
-            // Log error but don't fail the section creation
-            error_log("DEBUG: Error logging createDefaultSections change: " . $e->getMessage());
+        } catch (\Throwable $e) {
+            error_log('Startabschnitte nicht protokolliert: ' . $e->getMessage());
         }
 
-        error_log("DEBUG: createDefaultSections returning true");
         return true;
-    } catch (PDOException $e) {
-        error_log("DEBUG: PDOException in createDefaultSections: " . $e->getMessage());
-        error_log("DEBUG: PDO Error trace: " . $e->getTraceAsString());
-        return false;
-    } catch (Exception $e) {
-        error_log("DEBUG: Exception in createDefaultSections (general): " . $e->getMessage());
-        error_log("DEBUG: Error trace: " . $e->getTraceAsString());
-        return false;
-    } catch (Throwable $e) {
-        error_log("DEBUG: Throwable in createDefaultSections: " . $e->getMessage());
-        error_log("DEBUG: Throwable trace: " . $e->getTraceAsString());
+    } catch (\Throwable $e) {
+        error_log('Startabschnitte fuer Website ' . $websiteId . ' fehlgeschlagen: '
+            . get_class($e) . ' ' . $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine());
         return false;
     }
 }

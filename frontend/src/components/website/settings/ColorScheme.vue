@@ -39,7 +39,7 @@
                             :style="{ backgroundColor: scheme.text }"
                         ></div>
                     </div>
-                    <div class="scheme-name">{{ scheme.name }}</div>
+                    <div class="scheme-name">{{ beschriftung(scheme.name) }}</div>
                 </div>
             </div>
         </div>
@@ -195,17 +195,40 @@
                 v-model="localSettings.custom_css"
                 class="form-control code-editor"
                 @input="emitChange"
-                placeholder="Fügen Sie hier Ihr eigenes CSS ein..."
+                placeholder="Eigene CSS-Regeln …"
                 rows="6"
             ></textarea>
             <small class="form-text"
-                >Eigenes CSS für erweiterte Anpassungen Ihrer Website.</small
+                >Nur nötig, wenn die Farbschemata nicht reichen.</small
             >
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+/*
+   Die englischen Namen sind die Schluessel: sie stehen so in der Datenbank
+   (selected_scheme) und die Vorlagen schlagen die Farben damit nach. Umbenennen
+   wuerde bestehende Websites farblos machen. Angezeigt wird deshalb eine
+   Uebersetzung daneben; faellt eine heraus, steht der Schluessel da.
+*/
+const FARBNAMEN: Record<string, string> = {
+    'Blue Ocean': 'Blau',
+    'Forest Green': 'Grün',
+    'Royal Purple': 'Violett',
+    'Sunset Orange': 'Orange',
+    'Rose Pink': 'Rosé',
+    'Dark Blue': 'Blau, dunkel',
+    'Dark Forest': 'Grün, dunkel',
+    'Dark Purple': 'Violett, dunkel',
+    'Dark Amber': 'Bernstein, dunkel',
+    'Dark Slate': 'Schiefer, dunkel',
+};
+
+function beschriftung(name: string): string {
+    return FARBNAMEN[name] ?? name;
+}
+
 import { ref, watch } from 'vue';
 
 interface ColorScheme {
@@ -475,10 +498,20 @@ a:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+/*
+   Die Auswahl war eine gefuellte Akzentflaeche mit heller Schrift darauf -
+   hell auf hell. Jetzt traegt der Rahmen die Auswahl, die Flaeche bleibt
+   ruhig; so bleibt auch sichtbar, welche Farben die Kachel selbst zeigt.
+*/
 .color-scheme-item.selected {
     border-color: var(--k-accent);
-    background-color: var(--k-accent-hover);
-    box-shadow: 0 0 0 3px var(--k-accent-line);
+    background-color: color-mix(in srgb, var(--k-accent) 12%, var(--k-surface));
+    box-shadow: 0 0 0 1px var(--k-accent);
+}
+
+.color-scheme-item.selected .scheme-name {
+    color: var(--k-ink);
+    font-weight: 620;
 }
 
 .scheme-colors {

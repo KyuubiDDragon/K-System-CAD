@@ -1,35 +1,26 @@
 <template>
     <div class="sections-tab">
-        <h2>Sections verwalten</h2>
-        <p>Verwalten Sie die Sections für Ihre One-Pager Website. Ziehen Sie Sections, um die Reihenfolge zu ändern.</p>
+        <p class="abschnitte-lede">Die Blöcke deiner Seite, von oben nach unten. Zieh sie, um die Reihenfolge zu ändern.</p>
 
         <!-- Template Info -->
         <div v-if="currentTemplate !== 'onepager'" class="template-notice">
             <i class="mdi mdi-information"></i>
-            <p>Sections sind nur für One-Pager Websites verfügbar. Wechseln Sie in den Einstellungen zum One-Pager Template.</p>
+            <p>Abschnitte gibt es nur beim Einseiter. Unter "Einstellungen" kannst du den Aufbau umstellen.</p>
         </div>
 
         <!-- Toolbar -->
         <div v-else class="sections-toolbar">
             <button class="btn btn-primary" @click="createSection">
-                <i class="mdi mdi-plus"></i> Neue Section
+                <i class="mdi mdi-plus"></i> Neuer Abschnitt
             </button>
 
             <!-- Filter -->
             <div class="sections-filters">
                 <select v-model="filterType" class="filter-select">
-                    <option value="">Alle Typen</option>
-                    <option value="hero">Hero</option>
-                    <option value="about">About</option>
-                    <option value="services">Services</option>
-                    <option value="portfolio">Portfolio</option>
-                    <option value="team">Team</option>
-                    <option value="testimonials">Testimonials</option>
-                    <option value="contact">Contact</option>
-                    <option value="features">Features</option>
-                    <option value="pricing">Pricing</option>
-                    <option value="cta">Call-to-Action</option>
-                    <option value="custom">Custom</option>
+                    <option value="">Alle Arten</option>
+                    <option v-for="a in ABSCHNITTSARTEN" :key="a.wert" :value="a.wert">
+                        {{ a.name }}
+                    </option>
                 </select>
 
                 <label class="checkbox-label">
@@ -55,7 +46,7 @@
                     <div class="section-info">
                         <i class="mdi mdi-drag-vertical drag-handle"></i>
                         <span class="section-type" :class="`type-${section.section_type}`">
-                            {{ getSectionTypeLabel(section.section_type) }}
+                            {{ nameDerArt(section.section_type) }}
                         </span>
                         <span v-if="!section.is_active" class="inactive-badge">
                             <i class="mdi mdi-eye-off"></i> Inaktiv
@@ -95,13 +86,13 @@
         <!-- Empty State -->
         <div v-else-if="currentTemplate === 'onepager'" class="empty-state">
             <i class="mdi mdi-view-sequential empty-icon"></i>
-            <h3>Keine Sections vorhanden</h3>
+            <h3>Noch keine Abschnitte</h3>
             <p v-if="filterType || showInactiveOnly">
-                Keine Sections gefunden, die den ausgewählten Filtern entsprechen.
+                Kein Abschnitt passt zu diesem Filter.
             </p>
-            <p v-else>Erstellen Sie Ihre erste Section für die One-Pager Website.</p>
+            <p v-else>Leg den ersten Abschnitt an – er wird ganz oben auf der Seite stehen.</p>
             <button v-if="!filterType && !showInactiveOnly" class="btn btn-primary" @click="createSection">
-                <i class="mdi mdi-plus"></i> Erste Section erstellen
+                <i class="mdi mdi-plus"></i> Ersten Abschnitt anlegen
             </button>
         </div>
     </div>
@@ -109,6 +100,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { ABSCHNITTSARTEN, nameDerArt } from '../abschnittsarten';
 
 interface Section {
     id: number;
@@ -170,7 +162,7 @@ function editSection(section: Section) {
 }
 
 function deleteSection(section: Section) {
-    if (confirm(`Möchten Sie die Section "${section.title || section.section_type}" wirklich löschen?`)) {
+    if (confirm(`Abschnitt "${section.title || section.section_type}" wirklich löschen?`)) {
         emit('delete', section);
     }
 }
@@ -179,22 +171,7 @@ function toggleSectionActive(section: Section) {
     emit('toggleActive', section);
 }
 
-function getSectionTypeLabel(type: string): string {
-    const labels: Record<string, string> = {
-        hero: 'Hero',
-        about: 'About',
-        services: 'Services',
-        portfolio: 'Portfolio',
-        team: 'Team',
-        testimonials: 'Testimonials',
-        contact: 'Contact',
-        features: 'Features',
-        pricing: 'Pricing',
-        cta: 'Call-to-Action',
-        custom: 'Custom'
-    };
-    return labels[type] || type;
-}
+
 
 function truncateContent(content: string): string {
     if (!content) return '';
@@ -336,7 +313,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {
@@ -423,7 +400,7 @@ function handleDrop(event: DragEvent, targetSection: Section) {
     font-size: 0.75rem;
     font-weight: 600;
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .type-hero {

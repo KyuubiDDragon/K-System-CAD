@@ -1,7 +1,6 @@
 <template>
     <div class="categories-tab">
-        <h2>Kategorien verwalten</h2>
-        <p>Hier können Sie Kategorien für Ihre Beiträge erstellen und verwalten.</p>
+        <p class="kategorien-lede">Thema und Ordnung für deine Beiträge – Besucher können danach filtern.</p>
         <button @click="$emit('create')" class="btn btn-primary">
             <i class="mdi mdi-plus"></i> Neue Kategorie
         </button>
@@ -66,7 +65,7 @@
                     ></span>
                 </div>
                 <small class="form-text"
-                    >Wählen Sie eine Farbe für diese Kategorie</small
+                    >Farbe dieser Kategorie</small
                 >
             </div>
             <div class="form-actions">
@@ -131,7 +130,7 @@
             </table>
         </div>
         <div v-else-if="!showForm" class="empty-state">
-            <p>Keine Kategorien vorhanden. Erstellen Sie Ihre erste Kategorie.</p>
+            <p>Noch keine Kategorien. Die erste lohnt sich, sobald es mehrere Beiträge gibt.</p>
         </div>
     </div>
 </template>
@@ -224,7 +223,7 @@ function truncateText(text: string, maxLength: number): string {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover {

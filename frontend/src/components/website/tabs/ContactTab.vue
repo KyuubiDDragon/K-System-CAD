@@ -1,10 +1,7 @@
 <template>
     <div class="contact-tab">
         <h2>Kontaktanfragen</h2>
-        <p>
-            Hier können Sie eingehende Kontaktanfragen von Ihrer Website einsehen
-            und verwalten.
-        </p>
+        <p>Was Besucher über das Kontaktformular schicken, landet hier.</p>
 
         <div class="filter-controls">
             <div class="filter-group">

@@ -1,10 +1,7 @@
 <template>
     <div class="media-tab">
-        <h2>Medien verwalten</h2>
-        <p>
-            Hier können Sie Bilder und andere Medien für Ihre Website hochladen und
-            verwalten.
-        </p>
+        <h2>Medien</h2>
+        <p>Bilder und Dateien, die du in Seiten und Beiträgen einsetzt. Einmal hochladen, überall verwenden.</p>
 
         <div class="media-upload-section">
             <div class="media-upload">
@@ -80,7 +77,7 @@
         </div>
         <div v-else class="empty-state">
             <p>
-                Keine Medien vorhanden. Laden Sie Medien hoch, um sie hier zu sehen.
+                Noch nichts hochgeladen.
             </p>
         </div>
 

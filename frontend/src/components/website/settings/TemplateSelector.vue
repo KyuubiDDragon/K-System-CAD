@@ -1,145 +1,48 @@
 <template>
     <div class="settings-section template-selector">
-        <h3>Website-Template</h3>
+        <h3>Aufbau</h3>
         <p class="section-description">
-            Wählen Sie ein Template für Ihre Website. Jedes Template hat ein eigenes Design und Layout.
+            Wie deine Website gegliedert ist. Der Aufbau lässt sich später wechseln – die
+            Inhalte bleiben dabei erhalten.
         </p>
 
+        <!--
+            Hier standen fuenf Vorlagen, drei davon mit "Bald verfuegbar" und
+            ohne Code dahinter. Sie nahmen den groessten Teil der Flaeche ein
+            und waren nicht anklickbar. Geblieben sind die beiden, die es
+            wirklich gibt - benannt wie im Anlegen-Dialog, damit man dieselbe
+            Sache nicht unter zwei Namen wiederfindet.
+        -->
         <div class="template-grid">
-            <!-- Default Template -->
-            <div
+            <button
+                v-for="v in VORLAGEN"
+                :key="v.wert"
+                type="button"
                 class="template-card"
-                :class="{ active: modelValue.layout_template === 'default' }"
-                @click="selectTemplate('default')"
+                :class="{ active: modelValue.layout_template === v.wert }"
+                @click="selectTemplate(v.wert)"
             >
                 <div class="template-preview">
-                    <i class="mdi mdi-web"></i>
+                    <i :class="['mdi', v.symbol]"></i>
                 </div>
                 <div class="template-info">
-                    <h4>Standard Website</h4>
-                    <p>Klassische Multi-Page Website mit Navigation, Seiten und Blog</p>
+                    <h4>{{ v.name }}</h4>
+                    <p>{{ v.text }}</p>
                     <ul class="template-features">
-                        <li><i class="mdi mdi-check"></i> Mehrere Seiten</li>
-                        <li><i class="mdi mdi-check"></i> Blog-System</li>
-                        <li><i class="mdi mdi-check"></i> Navigation</li>
+                        <li v-for="m in v.merkmale" :key="m">
+                            <i class="mdi mdi-check"></i> {{ m }}
+                        </li>
                     </ul>
                 </div>
-                <div v-if="modelValue.layout_template === 'default'" class="active-badge">
+                <div v-if="modelValue.layout_template === v.wert" class="active-badge">
                     <i class="mdi mdi-check-circle"></i> Aktiv
                 </div>
-            </div>
-
-            <!-- One-Pager Template -->
-            <div
-                class="template-card"
-                :class="{ active: modelValue.layout_template === 'onepager' }"
-                @click="selectTemplate('onepager')"
-            >
-                <div class="template-preview onepager">
-                    <i class="mdi mdi-view-sequential"></i>
-                </div>
-                <div class="template-info">
-                    <h4>One-Pager</h4>
-                    <p>Moderne Single-Page mit Smooth-Scroll Sections</p>
-                    <ul class="template-features">
-                        <li><i class="mdi mdi-check"></i> Hero Section</li>
-                        <li><i class="mdi mdi-check"></i> Über uns</li>
-                        <li><i class="mdi mdi-check"></i> Services</li>
-                        <li><i class="mdi mdi-check"></i> Kontakt</li>
-                    </ul>
-                </div>
-                <div v-if="modelValue.layout_template === 'onepager'" class="active-badge">
-                    <i class="mdi mdi-check-circle"></i> Aktiv
-                </div>
-                <div class="new-badge">NEU</div>
-            </div>
-
-            <!-- Landing Page Template -->
-            <div
-                class="template-card"
-                :class="{ active: modelValue.layout_template === 'landing', disabled: true }"
-                @click="selectTemplate('landing')"
-            >
-                <div class="template-preview landing">
-                    <i class="mdi mdi-rocket-launch"></i>
-                </div>
-                <div class="template-info">
-                    <h4>Landing Page</h4>
-                    <p>Conversion-optimiert mit starkem Call-to-Action</p>
-                    <ul class="template-features">
-                        <li><i class="mdi mdi-check"></i> Lead-Capture</li>
-                        <li><i class="mdi mdi-check"></i> Features</li>
-                        <li><i class="mdi mdi-check"></i> Testimonials</li>
-                    </ul>
-                </div>
-                <div class="coming-soon-badge">Bald verfügbar</div>
-            </div>
-
-            <!-- Portfolio Template -->
-            <div
-                class="template-card"
-                :class="{ active: modelValue.layout_template === 'portfolio', disabled: true }"
-                @click="selectTemplate('portfolio')"
-            >
-                <div class="template-preview portfolio">
-                    <i class="mdi mdi-image-multiple"></i>
-                </div>
-                <div class="template-info">
-                    <h4>Portfolio</h4>
-                    <p>Für Kreative & Freelancer mit Projekt-Galerie</p>
-                    <ul class="template-features">
-                        <li><i class="mdi mdi-check"></i> Projekt-Grid</li>
-                        <li><i class="mdi mdi-check"></i> Detailseiten</li>
-                        <li><i class="mdi mdi-check"></i> About/Contact</li>
-                    </ul>
-                </div>
-                <div class="coming-soon-badge">Bald verfügbar</div>
-            </div>
-
-            <!-- Business Template -->
-            <div
-                class="template-card"
-                :class="{ active: modelValue.layout_template === 'business', disabled: true }"
-                @click="selectTemplate('business')"
-            >
-                <div class="template-preview business">
-                    <i class="mdi mdi-briefcase"></i>
-                </div>
-                <div class="template-info">
-                    <h4>Business</h4>
-                    <p>Professionell & Corporate für Unternehmen</p>
-                    <ul class="template-features">
-                        <li><i class="mdi mdi-check"></i> Services</li>
-                        <li><i class="mdi mdi-check"></i> Team</li>
-                        <li><i class="mdi mdi-check"></i> Case Studies</li>
-                    </ul>
-                </div>
-                <div class="coming-soon-badge">Bald verfügbar</div>
-            </div>
-        </div>
-
-        <!-- Template-specific settings -->
-        <div v-if="modelValue.layout_template === 'onepager'" class="template-settings">
-            <h4>One-Pager Einstellungen</h4>
-            <div class="setting-item">
-                <label>
-                    <input type="checkbox" v-model="enableParallax" @change="updateSettings">
-                    Parallax-Effekte aktivieren
-                </label>
-            </div>
-            <div class="setting-item">
-                <label>
-                    <input type="checkbox" v-model="enableScrollSpy" @change="updateSettings">
-                    Scroll-Spy Navigation aktivieren
-                </label>
-            </div>
+            </button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-
 interface TemplateSettings {
     layout_template: string;
     template_settings?: any;
@@ -149,6 +52,28 @@ interface Props {
     modelValue: TemplateSettings;
 }
 
+/*
+   Dieselben zwei Aufbauten wie im Anlegen-Dialog, in derselben Sprache. Die
+   Schluessel bleiben 'default' und 'onepager' - daran haengen die Vorlagen im
+   oeffentlichen Teil.
+*/
+const VORLAGEN = [
+    {
+        wert: 'default',
+        symbol: 'mdi-file-document-multiple-outline',
+        name: 'Mehrere Seiten',
+        text: 'Startseite, Über uns, Kontakt – jede Seite für sich, verbunden über ein Menü.',
+        merkmale: ['Seiten und Menü', 'Beiträge mit Kategorien'],
+    },
+    {
+        wert: 'onepager',
+        symbol: 'mdi-view-agenda-outline',
+        name: 'Eine Seite',
+        text: 'Alles untereinander auf einer Seite, von Abschnitt zu Abschnitt gescrollt.',
+        merkmale: ['Abschnitte statt Seiten', 'Startaufbau: Hero, Über uns, Leistungen, Kontakt'],
+    },
+];
+
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
@@ -156,149 +81,122 @@ const emit = defineEmits<{
     (e: 'change'): void;
 }>();
 
-// One-Pager specific settings
-const enableParallax = ref(false);
-const enableScrollSpy = ref(true);
-
-// Initialize settings from modelValue
-watch(() => props.modelValue.template_settings, (settings) => {
-    if (settings && typeof settings === 'object') {
-        enableParallax.value = settings.enableParallax ?? false;
-        enableScrollSpy.value = settings.enableScrollSpy ?? true;
-    }
-}, { immediate: true });
-
 function selectTemplate(template: string) {
-    // Don't allow selection of disabled templates
-    if (template !== 'default' && template !== 'onepager') {
-        return;
-    }
+    if (template === props.modelValue.layout_template) return;
 
     emit('update:modelValue', {
         ...props.modelValue,
         layout_template: template,
-        template_settings: template === 'onepager' ? {
-            enableParallax: enableParallax.value,
-            enableScrollSpy: enableScrollSpy.value
-        } : null
     });
     emit('change');
-}
-
-function updateSettings() {
-    if (props.modelValue.layout_template === 'onepager') {
-        emit('update:modelValue', {
-            ...props.modelValue,
-            template_settings: {
-                enableParallax: enableParallax.value,
-                enableScrollSpy: enableScrollSpy.value
-            }
-        });
-        emit('change');
-    }
 }
 </script>
 
 <style scoped>
 .settings-section {
-    margin-bottom: 2rem;
-    padding: 1.5rem;
     background-color: var(--k-sunken);
+    padding: 18px 20px;
     border-radius: 8px;
     border: 1px solid var(--k-line);
 }
 
 .settings-section h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-size: 15px;
+    font-weight: 620;
+    letter-spacing: -0.01em;
+    margin-bottom: 4px;
     color: var(--k-ink);
 }
 
 .section-description {
-    color: var(--k-ink-faint);
-    font-size: 0.875rem;
-    margin-bottom: 1.5rem;
+    color: var(--k-ink-muted);
+    font-size: 12.5px;
+    line-height: 1.5;
+    max-width: 62ch;
+    margin-bottom: 16px;
 }
 
 .template-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
 }
 
+/*
+   Die Karte ist ein button, kein div - sie ist anklickbar und muss mit der
+   Tastatur erreichbar sein. Deshalb die Rueckstellungen oben.
+*/
 .template-card {
+    appearance: none;
+    text-align: left;
+    font: inherit;
     background-color: var(--k-surface);
-    border: 2px solid #4a5568;
-    border-radius: 8px;
-    padding: 1.5rem;
+    border: 1px solid var(--k-line);
+    border-radius: 7px;
+    padding: 14px 15px;
     cursor: pointer;
-    transition: all 0.3s ease;
     position: relative;
-    overflow: hidden;
+    transition:
+        border-color 140ms ease,
+        background 140ms ease;
 }
 
-.template-card:hover:not(.disabled) {
-    border-color: var(--k-accent);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--k-accent-weak);
+.template-card:hover {
+    border-color: var(--k-line-strong);
+}
+
+.template-card:focus-visible {
+    outline: 2px solid var(--k-accent);
+    outline-offset: 2px;
 }
 
 .template-card.active {
-    border-color: var(--k-success);
-    background-color: #1f2d28;
+    border-color: var(--k-accent);
+    background-color: color-mix(in srgb, var(--k-accent) 8%, var(--k-surface));
 }
 
-.template-card.disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
+/*
+   Vorher ein 120 px hoher Farbverlauf je Karte - Dekoration ohne Aussage, und
+   in fuenf verschiedenen Verlaeufen. Jetzt ein Symbol, das zeigt, worin die
+   beiden sich unterscheiden: mehrere Blaetter gegen einen Stapel Abschnitte.
+*/
 .template-preview {
-    width: 100%;
-    height: 120px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1rem;
+    width: 38px;
+    height: 38px;
+    border-radius: 7px;
+    background: var(--k-sunken);
+    border: 1px solid var(--k-line);
+    margin-bottom: 11px;
 }
 
 .template-preview i {
-    font-size: 3rem;
-    color: var(--k-ink);
+    font-size: 20px;
+    color: var(--k-ink-faint);
 }
 
-.template-preview.onepager {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+.template-card.active .template-preview {
+    border-color: var(--k-accent);
 }
 
-.template-preview.landing {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-}
-
-.template-preview.portfolio {
-    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-}
-
-.template-preview.business {
-    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+.template-card.active .template-preview i {
+    color: var(--k-accent);
 }
 
 .template-info h4 {
     color: var(--k-ink);
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+    font-size: 13.5px;
+    font-weight: 620;
+    margin-bottom: 4px;
 }
 
 .template-info p {
-    color: var(--k-ink-faint);
-    font-size: 0.875rem;
-    margin-bottom: 1rem;
-    line-height: 1.4;
+    color: var(--k-ink-muted);
+    font-size: 12px;
+    margin-bottom: 10px;
+    line-height: 1.45;
 }
 
 .template-features {
@@ -308,89 +206,37 @@ function updateSettings() {
 }
 
 .template-features li {
-    color: var(--k-ink-muted);
-    font-size: 0.813rem;
-    margin-bottom: 0.5rem;
+    color: var(--k-ink-faint);
+    font-size: 11.5px;
+    margin-bottom: 3px;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 6px;
 }
 
 .template-features i {
     color: var(--k-success);
-    font-size: 0.875rem;
+    font-size: 12px;
 }
 
+/* Schrift auf einer Fuellfarbe ist --k-on-fill, nicht --k-ink. */
 .active-badge {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background-color: var(--k-success);
-    color: var(--k-ink);
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-}
-
-.new-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 12px;
+    right: 12px;
     background-color: var(--k-accent);
-    color: var(--k-ink);
-    padding: 0.25rem 0.75rem;
+    color: var(--k-on-fill);
+    padding: 2px 8px;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 10.5px;
     font-weight: 600;
-}
-
-.coming-soon-badge {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background-color: var(--k-neutral);
-    color: var(--k-ink);
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-}
-
-.template-settings {
-    background-color: var(--k-surface);
-    padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--k-line);
-}
-
-.template-settings h4 {
-    color: var(--k-ink);
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
-
-.setting-item {
-    margin-bottom: 1rem;
-}
-
-.setting-item label {
-    color: var(--k-ink);
-    font-size: 0.875rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
+    gap: 4px;
 }
 
-.setting-item input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
+.active-badge i {
+    font-size: 12px;
 }
 
 @media (max-width: 768px) {

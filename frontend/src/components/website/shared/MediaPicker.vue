@@ -285,7 +285,7 @@ function getFileIcon(fileType: string): string {
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     background: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
     border-radius: 4px;
     cursor: pointer;
     transition: background 0.2s;
@@ -364,7 +364,7 @@ function getFileIcon(fileType: string): string {
     top: 0.5rem;
     right: 0.5rem;
     background: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
     width: 2rem;
     height: 2rem;
     border-radius: 50%;

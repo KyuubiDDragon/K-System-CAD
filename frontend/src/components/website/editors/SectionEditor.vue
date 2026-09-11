@@ -20,29 +20,21 @@
                             required
                             :disabled="isEdit"
                         >
-                            <optgroup label="Basis">
-                                <option value="hero">Hero</option>
-                                <option value="about">About</option>
-                                <option value="contact">Contact</option>
-                                <option value="custom">Custom</option>
-                            </optgroup>
-                            <optgroup label="Content">
-                                <option value="services">Services</option>
-                                <option value="features">Features</option>
-                                <option value="team">Team</option>
-                                <option value="testimonials">Testimonials</option>
-                                <option value="portfolio">Portfolio</option>
-                                <option value="gallery">Gallery</option>
-                                <option value="video">Video</option>
-                            </optgroup>
-                            <optgroup label="Business">
-                                <option value="pricing">Pricing</option>
-                                <option value="statistics">Statistics/Counter</option>
-                                <option value="faq">FAQ</option>
-                                <option value="cta">Call-to-Action</option>
+                            <optgroup
+                                v-for="(name, gruppe) in GRUPPENNAMEN"
+                                :key="gruppe"
+                                :label="name"
+                            >
+                                <option
+                                    v-for="a in artenDerGruppe(gruppe)"
+                                    :key="a.wert"
+                                    :value="a.wert"
+                                >
+                                    {{ a.name }}
+                                </option>
                             </optgroup>
                         </select>
-                        <small v-if="isEdit" class="form-text">Section-Typ kann nach Erstellung nicht geändert werden</small>
+                        <small v-if="isEdit" class="form-text">Die Art lässt sich nachträglich nicht mehr ändern.</small>
                     </div>
 
                     <!-- Title -->
@@ -72,7 +64,7 @@
 
                     <!-- Hero Settings -->
                     <div v-if="formData.section_type === 'hero'" class="section-settings">
-                        <h3>Hero Einstellungen</h3>
+                        <h3>Kopfbereich</h3>
 
                         <div class="form-group">
                             <label for="hero-subtitle">Untertitel</label>
@@ -111,7 +103,7 @@
 
                     <!-- Services Settings -->
                     <div v-if="formData.section_type === 'services'" class="section-settings">
-                        <h3>Services Einstellungen</h3>
+                        <h3>Leistungen</h3>
 
                         <div class="form-group">
                             <label>Service Items (JSON)</label>
@@ -576,6 +568,7 @@
 </template>
 
 <script setup lang="ts">
+import { GRUPPENNAMEN, artenDerGruppe } from '../abschnittsarten';
 import { ref, computed, watch } from 'vue';
 import TiptapEditor from '@/components/TiptapEditor.vue';
 
@@ -991,7 +984,7 @@ textarea.form-control {
 
 .btn-primary {
     background-color: var(--k-accent);
-    color: var(--k-ink);
+    color: var(--k-on-fill);
 }
 
 .btn-primary:hover:not(:disabled) {
