@@ -67,7 +67,8 @@
        Praefix der Navigation davor gewinnt, ohne !important zu brauchen. */
     .v-list-item__prepend > .v-icon ~ .v-list-item__spacer,
     .v-list-item__prepend > .v-badge ~ .v-list-item__spacer,
-    .v-list-item__spacer ~ .v-icon,
+    .v-list-item__append > .v-icon ~ .v-list-item__spacer,
+    .v-list-item__append > .v-badge ~ .v-list-item__spacer,
     .v-list-item__spacer {
         width: 0;
     }
