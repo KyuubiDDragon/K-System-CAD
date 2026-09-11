@@ -288,6 +288,16 @@ async function performLogout() {
         // Only trigger logout if user is currently logged in
         if (authStore.isLoggedIn) {
             console.log('Triggering logout');
+
+            /*
+               Den Erneuerungs-Zeitgeber anhalten, bevor der Zustand faellt.
+               logout() im Store tut das als Erstes, dieser Weg hier tat es
+               nicht: nach dem automatischen Abmelden lief der Zeitgeber weiter
+               und fragte alle zehn Minuten eine Erneuerung an, die nur noch
+               401 zurueckgeben kann.
+            */
+            authStore.stopTokenRefreshInterval();
+
             // Clear auth state without calling backend (already returned 401)
             authStore._setUser(null);
             authStore.isLoading = false;

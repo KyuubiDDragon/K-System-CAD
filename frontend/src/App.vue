@@ -1,7 +1,16 @@
 <template>
     <v-app class="app-container">
-        <!-- Desktop-Modus -->
-        <template v-if="isDesktopMode && !isDesktopWindow">
+        <!--
+            Desktop-Modus.
+
+            Die Abfrage auf isLoggedIn stand nur im Sidebar-Zweig darunter, hier
+            fehlte sie. Beim automatischen Abmelden - Sitzung abgelaufen,
+            waehrend man weg war - wurde der Zustand zwar geleert und zur
+            Anmeldung navigiert, aber diese Bedingung blieb wahr: Schreibtisch,
+            Taskleiste und Widgets standen weiter, bis jemand F5 drueckte. Die
+            Anmeldemaske lag darunter und war nicht zu erreichen.
+        -->
+        <template v-if="isDesktopMode && authStore.isLoggedIn && !isDesktopWindow">
             <desktop-view>
                 <!-- Desktop-Icons im Slot rendern -->
                 <template #desktop-icons>
@@ -173,6 +182,29 @@ const {
 
 const route = useRoute();
 const router = useRouter();
+
+/*
+   Faellt die Anmeldung weg, waehrend jemand auf einer geschuetzten Seite steht.
+
+   Der Waechter im Router greift nur bei einer Navigation. Beim automatischen
+   Abmelden - Sitzung abgelaufen, waehrend man weg war - aendert sich aber nur
+   der Zustand; die Route bleibt, wo sie war. Die Wege, die von sich aus zur
+   Anmeldung navigieren, decken den Normalfall ab, doch jeder andere Weg, der
+   den Zustand leert, liess die geschuetzte Ansicht stehen - ohne Leisten, ohne
+   Daten, bis jemand F5 drueckte.
+
+   Diese Weiche haengt am Zustand statt an einem einzelnen Weg und gilt damit
+   auch fuer die, die es heute noch nicht gibt.
+*/
+watch(
+    () => authStore.isLoggedIn,
+    (angemeldet) => {
+        if (angemeldet) return;
+        if (!route.meta?.requiresAuth) return;
+        if (route.meta?.isAppWindow) return;   // eigenes Fenster, eigener Weg
+        router.push({ name: 'login' });
+    },
+);
 const $route = route as any;
 const { locale, t } = useI18n() as any;
 
