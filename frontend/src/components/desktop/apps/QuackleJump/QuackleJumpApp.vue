@@ -1,267 +1,211 @@
 <template>
-  <div class="quacklejump-app">
-    <!-- Game Header -->
-    <v-card class="game-header mb-3" elevation="4" color="primary">
-      <v-card-title class="d-flex align-center justify-space-between">
-        <div class="d-flex align-center">
-          <v-icon class="mr-2" size="32">mdi-duck</v-icon>
-          <span class="text-h5 font-weight-bold">QuackleJump</span>
-        </div>
-        <div class="game-stats">
-          <v-chip class="mr-2" color="yellow-darken-2" text-color="black">
-            <v-icon start>mdi-star</v-icon>
-            Score: {{ currentScore }}
-          </v-chip>
-          <v-chip color="orange-darken-2" text-color="white">
-            <v-icon start>mdi-trophy</v-icon>
-            High: {{ highScore }}
-          </v-chip>
-        </div>
-      </v-card-title>
-    </v-card>
+  <!--
+    Der Rahmen folgt dem Entwurfssystem, die Spielflaeche nicht.
 
-    <!-- Game Container -->
-    <v-card class="game-container" elevation="8">
-      <div v-if="gameState === 'menu'" class="game-menu">
-        <div class="menu-content">
-          <v-img
-            :src="duckLogo"
-            class="duck-logo mb-4"
-            width="150"
-            height="150"
-            contain
+    Alles um das Spiel herum - Kopf, Menue, Bestenliste, Dialoge - ist normale
+    Oberflaeche und traegt deshalb dieselben Flaechen, Hoehen und Farben wie
+    der Rest der Anwendung. Das Bild im Canvas hat seine eigene Handschrift und
+    bleibt unangetastet; ein Spiel darf aussehen wie ein Spiel.
+
+    Vorher stand hier ein blauer Materialverlauf (#1976D2 auf #42A5F5) mit
+    gelben und orangen Chips, xl-gerundeten Knoepfen und durchgehend englischem
+    Text.
+  -->
+  <div class="qj">
+    <section class="qj-panel">
+      <header class="qj-kopf">
+        <v-icon size="18" class="qj-kopf-symbol">mdi-duck</v-icon>
+        <span class="qj-kopf-titel">{{ $t('games.quacklejump.titel') }}</span>
+
+        <div class="qj-kennzahlen">
+          <div class="qj-kennzahl">
+            <span class="qj-kennzahl-titel">{{ $t('games.quacklejump.punkte') }}</span>
+            <span class="qj-kennzahl-wert">{{ currentScore }}</span>
+          </div>
+          <div class="qj-kennzahl">
+            <span class="qj-kennzahl-titel">{{ $t('games.quacklejump.bestwert') }}</span>
+            <span class="qj-kennzahl-wert">{{ highScore }}</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="qj-buehne">
+        <!-- Menue -->
+        <div v-if="gameState === 'menu'" class="qj-menue">
+          <img :src="duckLogo" alt="" class="qj-logo" width="96" height="96" />
+          <h1 class="qj-titel">{{ $t('games.quacklejump.titel') }}</h1>
+          <p class="qj-untertitel">{{ $t('games.quacklejump.untertitel') }}</p>
+
+          <div class="qj-knoepfe">
+            <v-btn color="primary" variant="flat" @click="startGame">
+              <v-icon start size="16">mdi-play</v-icon>
+              {{ $t('games.quacklejump.starten') }}
+            </v-btn>
+            <v-btn variant="outlined" @click="showScoreboard = true">
+              <v-icon start size="16">mdi-format-list-numbered</v-icon>
+              {{ $t('games.quacklejump.bestenliste') }}
+            </v-btn>
+            <v-btn variant="text" @click="showInstructions = true">
+              <v-icon start size="16">mdi-help-circle-outline</v-icon>
+              {{ $t('games.quacklejump.anleitung') }}
+            </v-btn>
+          </div>
+        </div>
+
+        <!-- Spiel -->
+        <div v-else-if="gameState === 'playing'" class="qj-canvas-rahmen">
+          <canvas
+            ref="gameCanvas"
+            :width="canvasWidth"
+            :height="canvasHeight"
+            @click="handleClick"
           />
-          <h1 class="game-title mb-4">QuackleJump</h1>
-          <p class="game-subtitle mb-6">Help Quackle reach new heights!</p>
-          
           <v-btn
-            size="x-large"
-            color="primary"
-            rounded="xl"
-            @click="startGame"
-            class="play-button mb-3"
-          >
-            <v-icon start>mdi-play</v-icon>
-            Start Game
-          </v-btn>
-          
-          <v-btn
-            size="large"
-            variant="outlined"
-            rounded="xl"
-            @click="showScoreboard = true"
-            class="mb-3"
-          >
-            <v-icon start>mdi-format-list-numbered</v-icon>
-            Scoreboard
-          </v-btn>
-          
-          <v-btn
-            size="large"
-            variant="text"
-            rounded="xl"
-            @click="showInstructions = true"
-          >
-            <v-icon start>mdi-help-circle</v-icon>
-            How to Play
-          </v-btn>
-        </div>
-      </div>
-
-      <div v-else-if="gameState === 'playing'" class="game-canvas-container">
-        <canvas
-          ref="gameCanvas"
-          :width="canvasWidth"
-          :height="canvasHeight"
-          @click="handleClick"
-        />
-        
-        <!-- In-game UI overlay -->
-        <div class="game-overlay">
-          <v-btn
-            icon
+            icon="mdi-pause"
             size="small"
             variant="flat"
-            class="pause-button"
+            class="qj-pause"
             @click="pauseGame"
-          >
-            <v-icon>mdi-pause</v-icon>
-          </v-btn>
+          />
+        </div>
+
+        <!-- Pause -->
+        <div v-else-if="gameState === 'paused'" class="qj-menue">
+          <v-icon size="40" class="qj-zustand-symbol">mdi-pause-circle-outline</v-icon>
+          <h2 class="qj-zustand">{{ $t('games.quacklejump.pausiert') }}</h2>
+          <div class="qj-knoepfe">
+            <v-btn color="primary" variant="flat" @click="resumeGame">
+              <v-icon start size="16">mdi-play</v-icon>
+              {{ $t('games.quacklejump.fortsetzen') }}
+            </v-btn>
+            <v-btn variant="outlined" @click="backToMenu">
+              <v-icon start size="16">mdi-home-outline</v-icon>
+              {{ $t('games.quacklejump.zumMenue') }}
+            </v-btn>
+          </div>
+        </div>
+
+        <!-- Vorbei -->
+        <div v-else-if="gameState === 'gameover'" class="qj-menue">
+          <h2 class="qj-zustand">{{ $t('games.quacklejump.vorbei') }}</h2>
+
+          <div class="qj-ergebnis">
+            <span class="qj-kennzahl-titel">{{ $t('games.quacklejump.deinErgebnis') }}</span>
+            <span class="qj-ergebnis-wert">{{ currentScore }}</span>
+            <span v-if="isNewHighScore" class="qj-bestwert">
+              <v-icon size="12">mdi-star</v-icon>
+              {{ $t('games.quacklejump.neuerBestwert') }}
+            </span>
+          </div>
+
+          <v-text-field
+            v-model="playerName"
+            :label="$t('games.quacklejump.nameEingeben')"
+            :placeholder="$t('games.quacklejump.namePlatzhalter')"
+            variant="outlined"
+            density="compact"
+            class="qj-namensfeld"
+            @keyup.enter="saveScore"
+          />
+
+          <div class="qj-knoepfe">
+            <v-btn color="primary" variant="flat" :disabled="!playerName.trim()" @click="saveScore">
+              <v-icon start size="16">mdi-check</v-icon>
+              {{ $t('games.quacklejump.eintragen') }}
+            </v-btn>
+            <v-btn variant="outlined" @click="playAgain">
+              <v-icon start size="16">mdi-restart</v-icon>
+              {{ $t('games.quacklejump.nochmal') }}
+            </v-btn>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div v-else-if="gameState === 'paused'" class="game-paused">
-        <v-card class="pause-menu" elevation="12">
-          <v-card-title class="text-center">
-            <v-icon size="48" color="primary">mdi-pause-circle</v-icon>
-          </v-card-title>
-          <v-card-text class="text-center">
-            <h2 class="mb-4">Game Paused</h2>
-            <v-btn
-              color="primary"
-              size="large"
-              rounded
-              @click="resumeGame"
-              class="mb-2"
-            >
-              <v-icon start>mdi-play</v-icon>
-              Resume
-            </v-btn>
-            <v-btn
-              variant="outlined"
-              size="large"
-              rounded
-              @click="backToMenu"
-            >
-              <v-icon start>mdi-home</v-icon>
-              Main Menu
-            </v-btn>
-          </v-card-text>
-        </v-card>
-      </div>
-
-      <div v-else-if="gameState === 'gameover'" class="game-over">
-        <v-card class="gameover-card" elevation="12">
-          <v-card-title class="text-center">
-            <h2>Game Over!</h2>
-          </v-card-title>
-          <v-card-text>
-            <div class="score-display text-center mb-4">
-              <p class="text-h6">Your Score</p>
-              <p class="text-h3 font-weight-bold">{{ currentScore }}</p>
-              <v-chip
-                v-if="isNewHighScore"
-                color="yellow"
-                text-color="black"
-                class="mt-2"
-              >
-                <v-icon start>mdi-star</v-icon>
-                New High Score!
-              </v-chip>
-            </div>
-            
-            <v-text-field
-              v-model="playerName"
-              label="Enter your name"
-              placeholder="Quackle Master"
-              variant="outlined"
-              class="mb-4"
-              :rules="[v => !!v || 'Name is required']"
-              @keyup.enter="saveScore"
-            />
-            
-            <div class="d-flex gap-2">
-              <v-btn
-                color="primary"
-                variant="elevated"
-                rounded
-                block
-                @click="saveScore"
-                :disabled="!playerName"
-              >
-                <v-icon start>mdi-content-save</v-icon>
-                Save Score
-              </v-btn>
-              <v-btn
-                variant="outlined"
-                rounded
-                block
-                @click="playAgain"
-              >
-                <v-icon start>mdi-restart</v-icon>
-                Play Again
-              </v-btn>
-            </div>
-          </v-card-text>
-        </v-card>
-      </div>
-    </v-card>
-
-    <!-- Scoreboard Dialog -->
-    <v-dialog v-model="showScoreboard" max-width="600">
+    <!-- Bestenliste -->
+    <v-dialog v-model="showScoreboard" max-width="620">
       <v-card>
-        <v-card-title class="d-flex align-center">
-          <v-icon class="mr-2">mdi-trophy</v-icon>
-          High Scores
+        <v-card-title>
+          <v-icon size="18" class="mr-2">mdi-trophy-outline</v-icon>
+          {{ $t('games.quacklejump.bestenliste') }}
         </v-card-title>
         <v-card-text>
-          <v-table>
+          <p v-if="!highScores.length" class="qj-leer">
+            {{ $t('games.quacklejump.nochKeineEintraege') }}
+          </p>
+          <table v-else class="qj-liste">
             <thead>
               <tr>
-                <th class="text-center">Rank</th>
-                <th>Player</th>
-                <th class="text-right">Score</th>
-                <th class="text-right">Height</th>
-                <th class="text-center">Date</th>
+                <th class="qj-platz">{{ $t('games.quacklejump.spalte.platz') }}</th>
+                <th>{{ $t('games.quacklejump.spalte.name') }}</th>
+                <th class="qj-zahl">{{ $t('games.quacklejump.spalte.punkte') }}</th>
+                <th class="qj-zahl">{{ $t('games.quacklejump.spalte.hoehe') }}</th>
+                <th class="qj-zahl">{{ $t('games.quacklejump.spalte.datum') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(score, index) in highScores" :key="score.id">
-                <td class="text-center">
-                  <v-icon v-if="index === 0" color="yellow">mdi-trophy</v-icon>
-                  <v-icon v-else-if="index === 1" color="grey">mdi-trophy</v-icon>
-                  <v-icon v-else-if="index === 2" color="orange-darken-3">mdi-trophy</v-icon>
-                  <span v-else>{{ index + 1 }}</span>
+              <!--
+                Die ersten drei tragen einen Pokal in der Bedeutungsfarbe, nicht
+                in Gold, Silber und Bronze aus der Materialpalette.
+              -->
+              <tr v-for="(eintrag, i) in highScores" :key="eintrag.id">
+                <td class="qj-platz">
+                  <v-icon v-if="i < 3" size="14" :class="'qj-rang-' + (i + 1)">mdi-trophy</v-icon>
+                  <span v-else class="qj-rangzahl">{{ i + 1 }}</span>
                 </td>
-                <td>{{ score.player_name }}</td>
-                <td class="text-right font-weight-bold">{{ score.score }}</td>
-                <td class="text-right">{{ score.height_reached }}m</td>
-                <td class="text-center">{{ formatDate(score.created_at) }}</td>
+                <td>{{ eintrag.player_name }}</td>
+                <td class="qj-zahl qj-punkte">{{ eintrag.score }}</td>
+                <td class="qj-zahl">{{ $t('games.quacklejump.meter', { n: eintrag.height_reached }) }}</td>
+                <td class="qj-zahl qj-datum">{{ formatDate(eintrag.created_at) }}</td>
               </tr>
             </tbody>
-          </v-table>
+          </table>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="showScoreboard = false">Close</v-btn>
+          <v-spacer />
+          <v-btn variant="text" @click="showScoreboard = false">
+            {{ $t('games.quacklejump.schliessen') }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
 
-    <!-- Instructions Dialog -->
-    <v-dialog v-model="showInstructions" max-width="500">
+    <!-- Anleitung -->
+    <v-dialog v-model="showInstructions" max-width="520">
       <v-card>
-        <v-card-title class="d-flex align-center">
-          <v-icon class="mr-2">mdi-help-circle</v-icon>
-          How to Play
+        <v-card-title>
+          <v-icon size="18" class="mr-2">mdi-help-circle-outline</v-icon>
+          {{ $t('games.quacklejump.anleitung') }}
         </v-card-title>
         <v-card-text>
-          <div class="instructions">
-            <h3 class="mb-2">Controls</h3>
-            <ul class="mb-4">
-              <li><strong>← → Arrow Keys:</strong> Move Quackle left and right</li>
-              <li><strong>Space:</strong> Use power-ups</li>
-            </ul>
-            
-            <h3 class="mb-2">Levels</h3>
-            <ul class="mb-4">
-              <li><strong>Level 1 (0m):</strong> Sky - Easy start</li>
-              <li><strong>Level 2 (200m):</strong> Clouds - More fragile platforms</li>
-              <li><strong>Level 3 (500m):</strong> Space - Windstorms appear</li>
-              <li><strong>Level 4 (1000m):</strong> Fire - Increased difficulty</li>
-              <li><strong>Level 5 (2000m):</strong> Volcano - Lightning strikes!</li>
-            </ul>
-            
-            <h3 class="mb-2">Platforms</h3>
-            <ul class="mb-4">
-              <li><v-icon color="brown" size="small">mdi-square</v-icon> <strong>Normal:</strong> Standard platform</li>
-              <li><v-icon color="red" size="small">mdi-square</v-icon> <strong>Fragile:</strong> Breaks after landing</li>
-              <li><v-icon color="blue" size="small">mdi-square</v-icon> <strong>Moving:</strong> Moves horizontally</li>
-              <li><v-icon color="green" size="small">mdi-square</v-icon> <strong>Spring:</strong> Super jump!</li>
-            </ul>
-            
-            <h3 class="mb-2">Power-Ups</h3>
-            <ul>
-              <li><v-icon color="purple" size="small">mdi-rocket</v-icon> <strong>Jetpack:</strong> Fly for 5 seconds</li>
-              <li><v-icon color="yellow" size="small">mdi-star</v-icon> <strong>Super Jump:</strong> Triple jump height</li>
-              <li><v-icon color="blue" size="small">mdi-shield</v-icon> <strong>Shield:</strong> Protection from enemies</li>
-              <li><v-icon color="pink" size="small">mdi-balloon</v-icon> <strong>Balloon:</strong> Slow fall</li>
-            </ul>
-          </div>
+          <h3 class="qj-abschnitt">{{ $t('games.quacklejump.steuerung') }}</h3>
+          <ul class="qj-punkte-liste">
+            <li>{{ $t('games.quacklejump.steuerungPfeile') }}</li>
+            <li>{{ $t('games.quacklejump.steuerungLeer') }}</li>
+          </ul>
+
+          <h3 class="qj-abschnitt">{{ $t('games.quacklejump.ebenen') }}</h3>
+          <ul class="qj-punkte-liste">
+            <li>{{ $t('games.quacklejump.ebene1') }}</li>
+            <li>{{ $t('games.quacklejump.ebene2') }}</li>
+            <li>{{ $t('games.quacklejump.ebene3') }}</li>
+            <li>{{ $t('games.quacklejump.ebene4') }}</li>
+            <li>{{ $t('games.quacklejump.ebene5') }}</li>
+          </ul>
+
+          <h3 class="qj-abschnitt">{{ $t('games.quacklejump.plattformen') }}</h3>
+          <ul class="qj-punkte-liste qj-plattformen">
+            <li><span class="qj-marke qj-marke-normal"></span>{{ $t('games.quacklejump.plattformNormal') }}</li>
+            <li><span class="qj-marke qj-marke-bruechig"></span>{{ $t('games.quacklejump.plattformBruechig') }}</li>
+            <li><span class="qj-marke qj-marke-beweglich"></span>{{ $t('games.quacklejump.plattformBeweglich') }}</li>
+            <li><span class="qj-marke qj-marke-feder"></span>{{ $t('games.quacklejump.plattformFeder') }}</li>
+          </ul>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn variant="text" @click="showInstructions = false">Got it!</v-btn>
+          <v-spacer />
+          <v-btn variant="text" @click="showInstructions = false">
+            {{ $t('games.quacklejump.schliessen') }}
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -271,6 +215,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue';
 import { useToast } from 'vue-toastification';
+import { useI18n } from 'vue-i18n';
+import { formatDate } from '@/utils/datetime';
 import { apiClientAuth } from '@/api';
 import { GameEngine } from './game/GameEngine';
 
@@ -294,6 +240,7 @@ const isNewHighScore = computed(() => currentScore.value > highScore.value);
 
 // Toast notifications
 const toast = useToast();
+const { t } = useI18n();
 
 // Placeholder duck logo
 const duckLogo = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRDCWMCI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCI+PC9jaXJjbGU+PHBhdGggZD0iTTM1IDYwIHE1IDEwIDE1IDEwIHQxNSAtMTAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIj48L3BhdGg+PHBhdGggZD0iTTM1IDUwIGwxNSA1IGwxNSAtNSIgZmlsbD0iI0ZGNjM0NyI+PC9wYXRoPjwvc3ZnPg==';
@@ -378,18 +325,19 @@ const loadHighScores = async () => {
     }
   } catch (error) {
     console.error('Failed to load high scores:', error);
+    toast.error(t('games.quacklejump.ladeFehler'));
   }
 };
 
 const saveScore = async () => {
-  if (!playerName.value) {
-    toast.warning('Please enter your name!');
+  if (!playerName.value.trim()) {
+    toast.warning(t('games.quacklejump.nameNoetig'));
     return;
   }
   
   try {
     await apiClientAuth.post('/games/quacklejump/?action=saveScore', {
-      player_name: playerName.value,
+      player_name: playerName.value.trim(),
       score: currentScore.value,
       height_reached: Math.floor(currentScore.value / 10), // Simplified height calculation
       play_time: gameEngine.value?.getPlayTime() || 0,
@@ -397,19 +345,23 @@ const saveScore = async () => {
       enemies_defeated: gameEngine.value?.getEnemiesDefeated() || 0
     });
     
-    toast.success('Score saved!');
+    toast.success(t('games.quacklejump.gespeichert'));
     await loadHighScores();
     backToMenu();
   } catch (error) {
     console.error('Failed to save score:', error);
-    toast.error('Failed to save score');
+    toast.error(t('games.quacklejump.speicherFehler'));
   }
 };
 
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString();
-};
+/*
+   Das Datum kommt aus utils/datetime.
+
+   Hier stand eine eigene Fassung mit toLocaleDateString() ohne Sprachangabe -
+   sie richtete sich nach der Spracheinstellung des Browsers, nicht nach der
+   der Anwendung. In neun anderen Bausteinen rief dasselbe Muster sich selbst
+   auf und stuerzte ab.
+*/
 
 // Lifecycle
 onMounted(async () => {
@@ -424,170 +376,289 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.quacklejump-app {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: linear-gradient(to bottom, #87CEEB, #98D8E8);
-  padding: 16px;
+.qj {
+    height: 100%;
+    padding: 12px;
+    background: var(--k-canvas);
+    display: flex;
 }
 
-.game-header {
-  background: linear-gradient(45deg, #1976D2, #42A5F5) !important;
+.qj-panel {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--k-surface);
+    border: 1px solid var(--k-line);
+    border-radius: 6px;
+    overflow: hidden;
 }
 
-.game-container {
-  flex: 1;
-  display: flex;
-  position: relative;
-  background: rgba(255, 255, 255, 0.9);
-  overflow: hidden;
+/* ---------- Kopf ---------- */
+.qj-kopf {
+    height: 34px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px;
+    background: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
 }
 
-/* Menu Styles */
-.game-menu {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom, #1a1a2e, #16213e);
+.qj-kopf-symbol { color: var(--k-ink-faint); }
+
+.qj-kopf-titel {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--k-ink);
 }
 
-.menu-content {
-  text-align: center;
-  padding: 32px;
+/* Punktstand und Bestwert stehen als Kennzahlen im Kopf: Bedeutung klein und
+   gesperrt, die Zahl gross und in Festbreite, damit sie beim Zaehlen nicht
+   springt. */
+.qj-kennzahlen {
+    margin-left: auto;
+    display: flex;
+    gap: 18px;
 }
 
-.duck-logo {
-  margin: 0 auto;
-  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+.qj-kennzahl {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
 }
 
-.game-title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #42A5F5;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+.qj-kennzahl-titel {
+    font-size: 10.5px;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--k-ink-faint);
 }
 
-.game-subtitle {
-  font-size: 1.2rem;
-  color: #B3E5FC;
+.qj-kennzahl-wert {
+    font-family: var(--k-mono);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--k-ink);
 }
 
-.play-button {
-  font-size: 1.2rem;
-  padding: 12px 32px;
+/* ---------- Buehne ---------- */
+.qj-buehne {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--k-canvas);
 }
 
-/* Canvas Styles */
-.game-canvas-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+.qj-menue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 28px;
+    text-align: center;
 }
 
-canvas {
-  border: 4px solid #1976D2;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  cursor: none;
+.qj-logo {
+    image-rendering: auto;
+    margin-bottom: 4px;
 }
 
-.game-overlay {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+.qj-titel {
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--k-ink);
+    margin: 0;
 }
 
-.pause-button {
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.qj-untertitel {
+    font-size: 12.5px;
+    color: var(--k-ink-muted);
+    margin: 0 0 8px;
+    max-width: 34ch;
 }
 
-/* Pause Menu */
-.game-paused {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+.qj-zustand {
+    font-size: 18px;
+    font-weight: 620;
+    color: var(--k-ink);
+    margin: 0;
 }
 
-.pause-menu {
-  min-width: 300px;
-  background: var(--k-sunken) !important;
-  border: 1px solid var(--k-line);
+.qj-zustand-symbol { color: var(--k-ink-faint); }
+
+.qj-knoepfe {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 200px;
 }
 
-/* Game Over */
-.game-over {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+/* ---------- Ergebnis ---------- */
+.qj-ergebnis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin: 4px 0 10px;
 }
 
-.gameover-card {
-  min-width: 400px;
-  background: var(--k-sunken) !important;
-  border: 1px solid var(--k-line);
+.qj-ergebnis-wert {
+    font-size: 25px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--k-ink);
 }
 
-.score-display {
-  padding: 16px;
-  background: var(--k-row-hover);
-  border-radius: 8px;
-  border: 1px solid var(--k-line);
+.qj-bestwert {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 20px;
+    padding: 0 7px;
+    margin-top: 4px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 550;
+    background: var(--k-warning-weak);
+    color: var(--k-warning);
 }
 
-/* Instructions */
-.instructions {
-  line-height: 1.8;
+.qj-namensfeld {
+    width: 260px;
 }
 
-.instructions ul {
-  list-style: none;
-  padding-left: 0;
+/* ---------- Spielflaeche ----------
+   Ab hier hat das Spiel seine eigene Handschrift. Nur der Rahmen um das
+   Canvas folgt noch dem System, damit es im Fenster nicht schwebt. */
+.qj-canvas-rahmen {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.instructions li {
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.qj-canvas-rahmen canvas {
+    border: 1px solid var(--k-line);
+    border-radius: 6px;
+    display: block;
 }
 
-/* Animations */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+.qj-pause {
+    position: absolute;
+    top: 8px;
+    right: 8px;
 }
 
-.duck-logo {
-  animation: bounce 2s infinite;
+/* ---------- Bestenliste ---------- */
+.qj-liste {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-  .game-title {
-    font-size: 2rem;
-  }
-  
-  .gameover-card {
-    min-width: 90%;
-  }
-  
-  canvas {
-    max-width: 100%;
-    height: auto;
-  }
+.qj-liste th {
+    height: 30px;
+    padding: 0 10px;
+    text-align: left;
+    font-size: 10.5px;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--k-ink-faint);
+    background: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
+    white-space: nowrap;
 }
+
+.qj-liste td {
+    height: 36px;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--k-line);
+    white-space: nowrap;
+}
+
+.qj-liste tbody tr:hover { background: var(--k-row-hover); }
+
+/* Zahlen rechts und in Festbreite - so sind Ergebnisse untereinander
+   vergleichbar. */
+.qj-zahl {
+    text-align: right;
+    font-family: var(--k-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+}
+
+.qj-punkte { font-weight: 600; color: var(--k-ink); }
+.qj-datum { color: var(--k-ink-muted); }
+
+.qj-platz {
+    width: 54px;
+    text-align: center;
+}
+
+.qj-rangzahl {
+    font-family: var(--k-mono);
+    font-size: 12px;
+    color: var(--k-ink-faint);
+}
+
+.qj-rang-1 { color: var(--k-warning); }
+.qj-rang-2 { color: var(--k-neutral); }
+.qj-rang-3 { color: var(--k-critical); }
+
+.qj-leer {
+    font-size: 12.5px;
+    color: var(--k-ink-muted);
+    margin: 8px 0;
+}
+
+/* ---------- Anleitung ---------- */
+.qj-abschnitt {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--k-ink);
+    margin: 14px 0 6px;
+}
+
+.qj-abschnitt:first-child { margin-top: 0; }
+
+.qj-punkte-liste {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--k-ink-muted);
+}
+
+.qj-plattformen {
+    list-style: none;
+    padding-left: 0;
+}
+
+.qj-plattformen li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Die Marke zeigt die Farbe, die die Plattform im Spiel traegt - hier als
+   Bedeutungspunkt, wie ueberall sonst in der Anwendung. */
+.qj-marke {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    flex: none;
+}
+
+.qj-marke-normal { background: var(--k-neutral); }
+.qj-marke-bruechig { background: var(--k-critical); }
+.qj-marke-beweglich { background: var(--k-accent); }
+.qj-marke-feder { background: var(--k-success); }
 </style>

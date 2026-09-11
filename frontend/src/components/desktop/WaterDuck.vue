@@ -501,6 +501,16 @@ function updateTabLogo(logo) {
 </script>
 
 <style scoped>
+/*
+   Die Farben des Rahmens kommen aus dem Entwurfssystem.
+
+   Hier standen feste Werte nebeneinander, die zu verschiedenen Modi gehoerten:
+   #e0e0e0 als helle Schrift, #2d2d2d als dunkle Flaeche, #f5f5f5 als helle -
+   in einem Modus war damit immer etwas falsch herum. Abgebildet wurde nach
+   Eigenschaft: dieselbe Farbe heisst als Flaeche etwas anderes als in der
+   Schrift oder auf einer Linie.
+*/
+
 /* Bewusst weiss und nicht aus den Merkern: das hier ist Inhalt, keine
    Bedienoberflaeche. Eine vorschau der Behoerden-Website, ein Whiteboard-Blatt,
    eine Spielkarte oder ein Mailtext folgen nicht dem Modus der Verwaltung -
@@ -534,18 +544,18 @@ function updateTabLogo(logo) {
 .waterduck-browser[class*='dark-mode'],
 .waterduck-browser[class*='dark-mode'] .browser-content {
     background-color: var(--k-surface);
-    color: #e0e0e0;
+    color: var(--k-ink);
 }
 
 .waterduck-browser[class*='dark-mode'] .browser-navigation,
 .waterduck-browser[class*='dark-mode'] .search-bar,
 .waterduck-browser[class*='dark-mode'] .browser-tabs {
-    background-color: #2d2d2d;
+    background-color: var(--k-surface);
     border-color: #444;
 }
 
 .waterduck-browser[class*='dark-mode'] .browser-tab {
-    background-color: #3a3a3a;
+    background-color: var(--k-raised);
     border-color: #444;
 }
 
@@ -559,7 +569,7 @@ function updateTabLogo(logo) {
 }
 
 .waterduck-browser[class*='dark-mode'] .address-bar input {
-    color: #e0e0e0;
+    color: var(--k-ink);
     background-color: transparent;
 }
 
@@ -596,7 +606,7 @@ function updateTabLogo(logo) {
 .waterduck-browser[class*='dark-mode'] .search-bar input,
 .waterduck-browser[class*='dark-mode'] .home-search {
     background-color: #333;
-    color: #e0e0e0;
+    color: var(--k-ink);
     border-color: #444;
 }
 
@@ -608,8 +618,8 @@ function updateTabLogo(logo) {
 .browser-navigation {
     display: flex;
     padding: 8px 16px;
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
     align-items: center;
 }
 
@@ -629,7 +639,7 @@ function updateTabLogo(logo) {
 }
 
 .nav-button:hover:not(:disabled) {
-    background-color: #e0e0e0;
+    background-color: var(--k-line);
 }
 
 .nav-button:disabled {
@@ -674,14 +684,14 @@ function updateTabLogo(logo) {
 }
 
 .action-button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--k-line);
 }
 
 .search-bar {
     display: flex;
     padding: 8px 16px;
-    background-color: #f5f5f5;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: var(--k-sunken);
+    border-bottom: 1px solid var(--k-line);
 }
 
 .search-bar input {
@@ -693,7 +703,7 @@ function updateTabLogo(logo) {
 }
 
 .search-button {
-    background-color: #1976d2;
+    background-color: var(--k-accent);
     color: var(--k-ink);
     border: none;
     border-radius: 0 4px 4px 0;
@@ -706,7 +716,7 @@ function updateTabLogo(logo) {
     top: 56px;
     right: 16px;
     background-color: #fff;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -720,7 +730,7 @@ function updateTabLogo(logo) {
 }
 
 .menu-item:hover {
-    background-color: #f5f5f5;
+    background-color: var(--k-sunken);
 }
 
 .menu-item i {
@@ -729,7 +739,7 @@ function updateTabLogo(logo) {
 
 .browser-tabs {
     display: flex;
-    background-color: #e8e8e8;
+    background-color: var(--k-row-hover);
     padding: 4px 4px 0 4px;
     overflow-x: auto;
     scrollbar-width: none; /* Firefox */
@@ -742,14 +752,14 @@ function updateTabLogo(logo) {
 .browser-tab {
     display: flex;
     align-items: center;
-    background-color: #f5f5f5;
+    background-color: var(--k-sunken);
     border-radius: 4px 4px 0 0;
     padding: 8px 12px;
     margin-right: 4px;
     min-width: 120px;
     max-width: 200px;
     cursor: pointer;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--k-line);
     border-bottom: none;
     position: relative;
 }
@@ -809,7 +819,7 @@ function updateTabLogo(logo) {
 }
 
 .tab-close:hover {
-    background-color: #e0e0e0;
+    background-color: var(--k-line);
     opacity: 1;
 }
 
@@ -852,7 +862,7 @@ function updateTabLogo(logo) {
 .browser-logo h1 {
     margin-top: 12px;
     font-size: 28px;
-    color: #1976d2;
+    color: var(--k-accent);
 }
 
 .search-container {
@@ -873,7 +883,7 @@ function updateTabLogo(logo) {
 }
 
 .home-search-button {
-    background-color: #1976d2;
+    background-color: var(--k-accent);
     color: var(--k-ink);
     border: none;
     border-radius: 0 24px 24px 0;
@@ -909,7 +919,7 @@ function updateTabLogo(logo) {
 }
 
 .quick-link-item:hover {
-    background-color: #f5f5f5;
+    background-color: var(--k-sunken);
 }
 
 .site-icon {
@@ -918,7 +928,7 @@ function updateTabLogo(logo) {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f5f5f5;
+    background-color: var(--k-sunken);
     border-radius: 8px;
     margin-bottom: 8px;
     overflow: hidden;
@@ -951,13 +961,13 @@ function updateTabLogo(logo) {
 
 .browser-error h2 {
     margin: 16px 0;
-    color: #d32f2f;
+    color: var(--k-critical);
 }
 
 .error-back-button {
     margin-top: 16px;
     padding: 8px 16px;
-    background-color: #1976d2;
+    background-color: var(--k-accent);
     color: var(--k-ink);
     border: none;
     border-radius: 4px;

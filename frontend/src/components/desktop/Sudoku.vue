@@ -434,6 +434,19 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/*
+   Die Farben kommen aus dem Entwurfssystem.
+
+   Hier standen die alten Desktop-Variablen: --desktop-text ist fest weiss,
+   --desktop-bg-dark-2 ein festes Dunkelblau. Beide kippen nicht mit dem Modus,
+   im hellen Modus stand damit weisse Schrift auf hellem Grund. Abgebildet
+   wurde nach Bedeutung - Schrift auf --k-ink, Flaechen auf --k-surface und
+   --k-sunken, Linien auf --k-line, der Akzent auf --k-accent.
+
+   Das Spielfeld selbst - die Rasterlinien, die Markierung der Dreierbloecke -
+   behaelt seine Gestalt; es soll wie Sudoku aussehen, nicht wie eine Tabelle.
+*/
+
 .sudoku {
     display: flex;
     flex-direction: column;
@@ -441,7 +454,7 @@ onUnmounted(() => {
     padding: 20px;
     font-family: 'Arial', sans-serif;
     user-select: none;
-    background-color: rgba(var(--desktop-bg-dark-2), 0.2);
+    background-color: color-mix(in srgb, var(--k-sunken) 20%, transparent);
     height: 100%;
     box-sizing: border-box;
 }
@@ -453,7 +466,7 @@ onUnmounted(() => {
     margin-bottom: 20px;
     font-size: 16px;
     font-weight: bold;
-    color: var(--desktop-text);
+    color: var(--k-ink);
 }
 
 .difficulty-selector {
@@ -465,7 +478,7 @@ onUnmounted(() => {
 .difficulty-label {
     margin-bottom: 5px;
     font-size: 14px;
-    color: var(--desktop-text);
+    color: var(--k-ink);
 }
 
 .difficulty-buttons {
@@ -475,9 +488,9 @@ onUnmounted(() => {
 
 .difficulty-button {
     padding: 4px 8px;
-    background-color: rgba(var(--desktop-bg-dark-1), 0.5);
-    color: var(--desktop-text);
-    border: 1px solid var(--desktop-border);
+    background-color: color-mix(in srgb, var(--k-surface) 50%, transparent);
+    color: var(--k-ink);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
@@ -485,11 +498,11 @@ onUnmounted(() => {
 }
 
 .difficulty-button:hover {
-    background-color: rgba(var(--desktop-accent-blue-raw), 0.3);
+    background-color: color-mix(in srgb, var(--k-accent) 30%, transparent);
 }
 
 .difficulty-button.active {
-    background: linear-gradient(45deg, var(--desktop-accent-blue), var(--desktop-accent-purple));
+    background: linear-gradient(45deg, var(--k-accent), var(--k-accent));
     color: var(--k-ink);
     border-color: transparent;
     box-shadow: var(--shadow-small);
@@ -497,7 +510,7 @@ onUnmounted(() => {
 
 .new-game-button {
     padding: 5px 10px;
-    background: linear-gradient(90deg, var(--desktop-accent-blue), var(--desktop-accent-purple));
+    background: linear-gradient(90deg, var(--k-accent), var(--k-accent));
     color: var(--k-ink);
     border: none;
     border-radius: 4px;
@@ -516,7 +529,7 @@ onUnmounted(() => {
     grid-template-columns: repeat(9, 50px);
     grid-template-rows: repeat(9, 50px);
     grid-gap: 0;
-    border: 2px solid var(--desktop-text);
+    border: 2px solid var(--k-ink);
     box-shadow: var(--shadow-medium);
 }
 
@@ -527,46 +540,46 @@ onUnmounted(() => {
     width: 50px;
     height: 50px;
     box-sizing: border-box;
-    border: 1px solid var(--desktop-border);
+    border: 1px solid var(--k-line);
     font-size: 22px;
     font-weight: bold;
     cursor: pointer;
-    background-color: rgba(var(--desktop-bg-dark-1), 0.3);
-    color: var(--desktop-text);
+    background-color: color-mix(in srgb, var(--k-surface) 30%, transparent);
+    color: var(--k-ink);
     position: relative;
     transition: background-color 0.15s;
 }
 
 .box-border-top {
-    border-top: 2px solid var(--desktop-text);
+    border-top: 2px solid var(--k-ink);
 }
 
 .box-border-bottom {
-    border-bottom: 2px solid var(--desktop-text);
+    border-bottom: 2px solid var(--k-ink);
 }
 
 .box-border-left {
-    border-left: 2px solid var(--desktop-text);
+    border-left: 2px solid var(--k-ink);
 }
 
 .box-border-right {
-    border-right: 2px solid var(--desktop-text);
+    border-right: 2px solid var(--k-ink);
 }
 
 .sudoku-cell.original {
-    background-color: rgba(var(--desktop-bg-dark-2), 0.4);
-    color: var(--desktop-text-muted);
+    background-color: color-mix(in srgb, var(--k-sunken) 40%, transparent);
+    color: var(--k-ink-faint);
 }
 
 .sudoku-cell.selected {
-    background-color: rgba(var(--desktop-accent-blue-raw), 0.4);
+    background-color: color-mix(in srgb, var(--k-accent) 40%, transparent);
     color: var(--k-ink);
 }
 
 .sudoku-cell.highlight-row,
 .sudoku-cell.highlight-col,
 .sudoku-cell.highlight-box {
-    background-color: rgba(var(--desktop-accent-blue-raw), 0.15);
+    background-color: color-mix(in srgb, var(--k-accent) 15%, transparent);
 }
 
 .sudoku-cell.selected {
@@ -578,7 +591,7 @@ onUnmounted(() => {
 }
 
 .sudoku-cell.same-value {
-    background-color: rgba(var(--desktop-accent-green-raw), 0.2);
+    background-color: color-mix(in srgb, var(--k-success) 20%, transparent);
 }
 
 .number-pad {
@@ -596,9 +609,9 @@ onUnmounted(() => {
     justify-content: center;
     font-size: 20px;
     font-weight: bold;
-    background-color: rgba(var(--desktop-bg-dark-1), 0.5);
-    color: var(--desktop-text);
-    border: 1px solid var(--desktop-border);
+    background-color: color-mix(in srgb, var(--k-surface) 50%, transparent);
+    color: var(--k-ink);
+    border: 1px solid var(--k-line);
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s;
@@ -606,7 +619,7 @@ onUnmounted(() => {
 }
 
 .number-button:hover {
-    background-color: rgba(var(--desktop-accent-blue-raw), 0.3);
+    background-color: color-mix(in srgb, var(--k-accent) 30%, transparent);
     transform: translateY(-2px);
 }
 
@@ -627,11 +640,11 @@ onUnmounted(() => {
 }
 
 .number-button.notes {
-    background-color: rgba(var(--desktop-accent-green-raw), 0.2);
+    background-color: color-mix(in srgb, var(--k-success) 20%, transparent);
     color: var(--success);
 }
 
 .number-button.notes:hover {
-    background-color: rgba(var(--desktop-accent-green-raw), 0.3);
+    background-color: color-mix(in srgb, var(--k-success) 30%, transparent);
 }
 </style>
