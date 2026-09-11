@@ -32,7 +32,20 @@
       <div class="qj-buehne">
         <!-- Menue -->
         <div v-if="gameState === 'menu'" class="qj-menue">
-          <img :src="duckLogo" alt="" class="qj-logo" width="96" height="96" />
+          <!--
+            Hier stand ein Logo als Base64-Zeichenkette. Sie enthielt mitten im
+            Farbwert ein ungueltiges Byte - dekodiert las sie sich als
+            fill="#FFD0?0" - womit das SVG kaputt war und der Browser das
+            Symbol fuer ein fehlendes Bild zeichnete. Als lesbares SVG faellt so
+            etwas beim Hinsehen auf.
+          -->
+          <svg class="qj-logo" viewBox="0 0 100 100" width="96" height="96" aria-hidden="true">
+            <circle cx="50" cy="52" r="34" fill="#f2c14e" />
+            <circle cx="62" cy="38" r="20" fill="#f6cf6a" />
+            <circle cx="68" cy="34" r="3.2" fill="#2b2118" />
+            <path d="M84 40 l14 4 -14 5 z" fill="#e8894a" />
+            <path d="M30 56 q10 16 26 10" fill="none" stroke="#dfae3c" stroke-width="3" stroke-linecap="round" />
+          </svg>
           <h1 class="qj-titel">{{ $t('games.quacklejump.titel') }}</h1>
           <p class="qj-untertitel">{{ $t('games.quacklejump.untertitel') }}</p>
 
@@ -242,8 +255,6 @@ const isNewHighScore = computed(() => currentScore.value > highScore.value);
 const toast = useToast();
 const { t } = useI18n();
 
-// Placeholder duck logo
-const duckLogo = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgZmlsbD0iI0ZGRDCWMCI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCI+PC9jaXJjbGU+PGNpcmNsZSBjeD0iNjAiIGN5PSI0MCIgcj0iNSIgZmlsbD0iIzAwMCI+PC9jaXJjbGU+PHBhdGggZD0iTTM1IDYwIHE1IDEwIDE1IDEwIHQxNSAtMTAiIHN0cm9rZT0iIzAwMCIgc3Ryb2tlLXdpZHRoPSIyIiBmaWxsPSJub25lIj48L3BhdGg+PHBhdGggZD0iTTM1IDUwIGwxNSA1IGwxNSAtNSIgZmlsbD0iI0ZGNjM0NyI+PC9wYXRoPjwvc3ZnPg==';
 
 // Game methods
 const startGame = () => {
