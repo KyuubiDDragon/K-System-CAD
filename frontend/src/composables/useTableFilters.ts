@@ -60,7 +60,7 @@ function isBlank(value: any): boolean {
 export function useTableFilters(
     items: Ref<any[]> | (() => any[]),
     presets: KPreset[] = [],
-    facets: KFacet[] = [],
+    facets: KFacet[] = []
 ) {
     const source = computed<any[]>(() => {
         const raw = typeof items === 'function' ? items() : items.value;
@@ -88,7 +88,7 @@ export function useTableFilters(
     }
 
     const filtered = computed(() =>
-        source.value.filter(item => matchesPresets(item) && matchesFacetsExcept(item, null)),
+        source.value.filter(item => matchesPresets(item) && matchesFacetsExcept(item, null))
     );
 
     /**
@@ -98,7 +98,7 @@ export function useTableFilters(
      */
     function optionsFor(facet: KFacet): FacetOption[] {
         const pool = source.value.filter(
-            item => matchesPresets(item) && matchesFacetsExcept(item, facet.field),
+            item => matchesPresets(item) && matchesFacetsExcept(item, facet.field)
         );
         const counts = new Map<string, { label: string; count: number }>();
         for (const item of pool) {
@@ -156,7 +156,7 @@ export function useTableFilters(
     const activeCount = computed(
         () =>
             activePresets.value.size +
-            Object.values(activeFacets.value).filter(v => v.length > 0).length,
+            Object.values(activeFacets.value).filter(v => v.length > 0).length
     );
 
     /** Steht die Liste vollständig da, oder ist sie beschnitten? */

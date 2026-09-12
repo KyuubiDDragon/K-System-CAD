@@ -71,6 +71,54 @@ $public_actions = ['getWebsiteDetails', 'getNavigation', 'getPageDetails', 'subm
 // Check if this is a public action
 $is_public_action = in_array($action, $public_actions);
 
+/**
+ * Steht hinter dieser Anfrage jemand Angemeldetes?
+ *
+ * Die oeffentlichen Aktionen laufen ohne auth_check.php - das beendet die
+ * Anfrage bei fehlendem Token. Fuer die Frage "darf diese Anfrage auch
+ * Entwuerfe sehen" braucht es aber eine Antwort, die nicht abbricht.
+ *
+ * Im Zweifel lautet die Antwort nein: ein kaputtes oder fehlendes Token heisst
+ * oeffentlich, und oeffentlich heisst nur Veroeffentlichtes.
+ */
+function anfrageIstAngemeldet(): bool
+{
+    static $bekannt = null;
+    if ($bekannt !== null) return $bekannt;
+
+    $bekannt = false;
+    try {
+        require_once __DIR__ . '/../../jwt.php';
+
+        $jwt = null;
+        $kopfzeilen = function_exists('getallheaders') ? (getallheaders() ?: []) : [];
+        if ($kopfzeilen) {
+            $jwt = getBearerToken($kopfzeilen);
+        }
+        if (!$jwt && isset($_COOKIE['auth_token'])) {
+            $jwt = $_COOKIE['auth_token'];
+        }
+        if ($jwt) {
+            decode_jwt($jwt);          // wirft, wenn ungueltig oder abgelaufen
+            $bekannt = true;
+        }
+    } catch (\Throwable $e) {
+        $bekannt = false;
+    }
+
+    return $bekannt;
+}
+
+/**
+ * Bedingung, die Entwuerfe aussen vor laesst - fuer alle, die nicht angemeldet
+ * sind. Als Textbaustein, weil zwei Abfragen sie brauchen.
+ */
+function nurVeroeffentlichtesFilter(string $alias = 'p'): string
+{
+    if (anfrageIstAngemeldet()) return '';
+    return " AND ({$alias}.is_published = 1 OR {$alias}.status = 'published') ";
+}
+
 // Only require authentication for non-public actions
 if (!$is_public_action) {
     // --- Authentication ---
@@ -978,7 +1026,7 @@ function getPosts(PDO $pdo, string $authority, int $authorityId): void
             FROM kdd_website_posts p
             LEFT JOIN kdd_website_post_category_rel pc ON p.id = pc.post_id
             LEFT JOIN kdd_website_categories c ON pc.category_id = c.id
-            WHERE p.website_id = ?
+            WHERE p.website_id = ?" . nurVeroeffentlichtesFilter('p') . "
             GROUP BY p.id
             ORDER BY p.sort_order ASC, p.created_at DESC
         ";
@@ -2106,7 +2154,9 @@ function getWebsiteDetails(PDO $pdo, string $authority, int $authorityId): void
         $pages = $pagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Get posts
-        $postsStmt = $pdo->prepare("SELECT * FROM kdd_website_posts WHERE website_id = ? ORDER BY sort_order ASC");
+        $postsStmt = $pdo->prepare("SELECT * FROM kdd_website_posts WHERE website_id = ?"
+            . nurVeroeffentlichtesFilter('kdd_website_posts')
+            . " ORDER BY sort_order ASC");
         $postsStmt->execute([$websiteId]);
         $posts = $postsStmt->fetchAll(PDO::FETCH_ASSOC);
 

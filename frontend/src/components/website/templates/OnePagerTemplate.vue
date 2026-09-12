@@ -124,6 +124,46 @@
                     </div>
                 </div>
 
+                <!--
+                    Neuigkeiten.
+
+                    Wird nicht angelegt, sondern erscheint, sobald es einen
+                    veroeffentlichten Beitrag gibt - siehe activeSections.
+                -->
+                <div v-else-if="section.section_type === 'posts'" class="section-content posts-content">
+                    <div class="container">
+                        <h2 class="section-title">{{ section.title }}</h2>
+                        <div class="posts-grid">
+                            <article
+                                v-for="beitrag in sichtbareBeitraege"
+                                :key="beitrag.id"
+                                class="post-card"
+                                :class="{ offen: offenerBeitrag === beitrag.id }"
+                            >
+                                <div
+                                    v-if="beitrag.featured_image"
+                                    class="post-card-bild"
+                                    :style="{ backgroundImage: `url(${getMediaUrl(beitrag.featured_image)})` }"
+                                ></div>
+
+                                <div class="post-card-inhalt">
+                                    <time v-if="datumVon(beitrag)" class="post-card-datum">
+                                        {{ datumVon(beitrag) }}
+                                    </time>
+                                    <h3 class="post-card-titel">{{ beitrag.title }}</h3>
+
+                                    <div v-if="offenerBeitrag === beitrag.id" class="post-card-text" v-html="beitrag.content"></div>
+                                    <p v-else class="post-card-anriss">{{ anrissVon(beitrag) }}</p>
+
+                                    <button type="button" class="post-card-mehr" @click="beitragUmschalten(beitrag.id)">
+                                        {{ offenerBeitrag === beitrag.id ? 'Weniger anzeigen' : 'Weiterlesen' }}
+                                    </button>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Team Section -->
                 <div v-else-if="section.section_type === 'team'" class="section-content team-content">
                     <div class="container">
@@ -418,14 +458,19 @@ import SectionDivider from '@/components/website/SectionDivider.vue';
 interface Props {
     website: any;
     sections?: any[];
-    news?: any[];
+    /*
+       Beitraege wurden vom TemplateRouter laengst hierher gereicht, nur nahm
+       die Vorlage sie nie entgegen. Stattdessen stand hier news - eine Prop,
+       die nie ausgegeben wurde. Die ist mitsamt dem Reiter entfallen.
+    */
+    posts?: any[];
     previewMode?: boolean;
     getMediaUrl?: (fileName: string | null) => string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     sections: () => [],
-    news: () => [],
+    posts: () => [],
     previewMode: false,
     getMediaUrl: (fileName) => fileName || ''
 });
@@ -520,8 +565,50 @@ const presetColorSchemes: Record<string, any> = {
 };
 
 // Computed
+/** Nur was veroeffentlicht ist, und das Neueste zuerst. */
+const sichtbareBeitraege = computed(() => {
+    return [...props.posts]
+        .filter((b) => b.is_published == 1 || b.status === 'published')
+        .sort((a, b) => {
+            const da = new Date(a.published_at || a.publish_date || a.created_at || 0).getTime();
+            const db = new Date(b.published_at || b.publish_date || b.created_at || 0).getTime();
+            return db - da;
+        })
+        .slice(0, HOECHSTZAHL_BEITRAEGE);
+});
+
+/** So viele Beitraege zeigt der Einseiter - mehr wuerde die eine Seite sprengen. */
+const HOECHSTZAHL_BEITRAEGE = 6;
+
+/*
+   Die Abschnitte der Seite, und dazwischen die Neuigkeiten.
+
+   Der Abschnitt wird nicht angelegt, sondern eingehaengt: sobald es einen
+   veroeffentlichten Beitrag gibt, steht er da - ohne dass jemand vorher etwas
+   einrichten muss. Verschwinden die Beitraege wieder, verschwindet auch der
+   Abschnitt.
+
+   Er kommt vor den Kontakt, weil der Kontakt eine Seite ueblicherweise
+   abschliesst. Gibt es keinen Kontaktabschnitt, haengt er hinten an.
+
+   Weil der Kopf sein Menue aus derselben Liste baut, erscheint der Menuepunkt
+   von allein mit.
+*/
 const activeSections = computed(() => {
-    return props.sections.filter(s => s.is_active !== 0);
+    const echte = props.sections.filter((s) => s.is_active !== 0);
+    if (sichtbareBeitraege.value.length === 0) return echte;
+
+    const neuigkeiten = {
+        id: 'neuigkeiten',
+        section_type: 'posts',
+        title: 'Neuigkeiten',
+        subtitle: '',
+        is_active: 1,
+    };
+
+    const kontakt = echte.findIndex((s) => s.section_type === 'contact');
+    if (kontakt === -1) return [...echte, neuigkeiten];
+    return [...echte.slice(0, kontakt), neuigkeiten, ...echte.slice(kontakt)];
 });
 
 const websiteStyles = computed(() => {
@@ -825,6 +912,31 @@ function parsePortfolio(section: any): { items: any[]; columns: number } {
     }
 }
 
+/** Welcher Beitrag gerade ausgeklappt ist - der Einseiter hat keine Unterseiten. */
+const offenerBeitrag = ref<number | null>(null);
+
+function beitragUmschalten(id: number) {
+    offenerBeitrag.value = offenerBeitrag.value === id ? null : id;
+}
+
+function datumVon(beitrag: any): string {
+    const roh = beitrag.published_at || beitrag.publish_date || beitrag.created_at;
+    if (!roh) return '';
+    const d = new Date(roh);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+/*
+   Der Anriss, notfalls aus dem Inhalt gewonnen. Die Auszeichnungen muessen
+   raus, sonst stehen spitze Klammern in der Kachel.
+*/
+function anrissVon(beitrag: any): string {
+    if (beitrag.excerpt) return beitrag.excerpt;
+    const nurText = String(beitrag.content || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    return nurText.length > 160 ? nurText.slice(0, 160).trimEnd() + ' …' : nurText;
+}
+
 function toggleFAQ(index: number) {
     const idx = openFAQs.value.indexOf(index);
     if (idx > -1) {
@@ -908,38 +1020,28 @@ function getDividerColor(section: any, position: 'top' | 'bottom'): string {
     return 'var(--primary-color)';
 }
 
-function scrollToSection(sectionId: number) {
-    console.log('📍 scrollToSection called for section:', sectionId);
+function scrollToSection(sectionId: number | string) {
     const element = document.getElementById(`section-${sectionId}`);
-
     if (!element) {
-        console.error('❌ Section element not found:', `section-${sectionId}`);
+        console.error('Abschnitt nicht gefunden:', `section-${sectionId}`);
         return;
     }
 
-    console.log('✅ Element found:', element);
-    const headerHeight = 80; // Height of fixed header
+    /*
+       Vorher rechnete diese Funktion eine Zielposition aus und gab sie an
+       window.scrollTo() bzw. den Vorschau-Container. Im eingebetteten Zustand
+       scrollt aber keines von beiden - gemessen: kein einziger Menuepunkt
+       bewegte die Seite, auch die vorhandenen nicht.
 
-    if (props.previewMode && scrollContainer.value) {
-        console.log('🔍 Preview mode - scrolling container');
-        const offsetPosition = element.offsetTop - headerHeight;
-        console.log('📊 Scrolling container to:', offsetPosition);
+       scrollIntoView() fragt nicht, wer scrollt, sondern laesst das den Browser
+       entscheiden. Der Abstand zum festen Kopf steckt als scroll-margin-top am
+       Abschnitt, statt hier als Zahl.
 
-        scrollContainer.value.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-    } else {
-        console.log('🌐 Production mode - scrolling window');
-        // In production mode, scroll the window
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-    }
+       Ohne behavior: 'smooth' - gemessen im eingebetteten Zustand bewegt sich
+       damit nichts, ohne springt es sauber. Ein Sprung, der ankommt, ist mehr
+       wert als eine weiche Bewegung, die ausbleibt.
+    */
+    element.scrollIntoView({ block: 'start' });
 }
 
 function scrollToTop() {
@@ -2402,5 +2504,126 @@ onBeforeUnmount(() => {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Neuigkeiten ------------------------------------------------------- */
+
+.onepager-section {
+    /* Platz fuer den festen Kopf, wenn ein Menuepunkt hierher springt. */
+    scroll-margin-top: 80px;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    text-align: left;
+}
+
+.post-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.post-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/*
+   Ist ein Beitrag ausgeklappt, wird das Raster einspaltig.
+
+   Zuerst hatte nur die offene Karte grid-column: 1 / -1. Damit stand der Text
+   zwar breit, aber die uebrigen Karten blieben in schmalen Spalten daneben
+   haengen - bei zwei Beitraegen ein Drittel Breite und viel Leere rechts.
+   Einspaltig steht der offene Beitrag oben und der Rest als Liste darunter.
+*/
+.posts-grid:has(.post-card.offen) {
+    grid-template-columns: 1fr;
+}
+
+.post-card.offen {
+    transform: none;
+}
+
+.post-card-bild {
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    flex: none;
+}
+
+.post-card.offen .post-card-bild {
+    height: 280px;
+}
+
+.post-card-inhalt {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6rem;
+    padding: 1.6rem;
+}
+
+.post-card-datum {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.post-card-titel {
+    margin: 0;
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+
+.post-card-anriss,
+.post-card-text {
+    margin: 0;
+    line-height: 1.6;
+    opacity: 0.85;
+}
+
+.post-card-mehr {
+    margin-top: 0.4rem;
+    padding: 0;
+    background: none;
+    border: none;
+    font: inherit;
+    font-weight: 600;
+    color: var(--primary-color);
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.post-card-mehr:hover {
+    border-bottom-color: var(--primary-color);
+}
+
+/* Dunkle Farbschemata - dieselben Grundfarben wie bei den Leistungskarten. */
+.onepager-template[style*="--background-color: #111827"] .post-card,
+.onepager-template[style*="--background-color: #0f1419"] .post-card,
+.onepager-template[style*="--background-color: #1e1b2e"] .post-card,
+.onepager-template[style*="--background-color: #1c1917"] .post-card,
+.onepager-template[style*="--background-color: #0f172a"] .post-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
 }
 </style>

@@ -21,7 +21,7 @@ export async function einrichtungNoetig(): Promise<boolean> {
 
     laufendeAbfrage = apiClientPublic
         .get('/setup/?action=status')
-        .then((antwort) => {
+        .then(antwort => {
             bekannt = antwort?.data?.needsSetup === true;
             return bekannt;
         })

@@ -51,7 +51,9 @@ function writeStored(storageKey: string, value: Record<string, boolean>): void {
 
 /** Spalten, die Vuetify selbst einzieht und die nie im Menü stehen dürfen. */
 function isStructural(col: KColumn): boolean {
-    return col.key === 'actions' || col.key === 'data-table-select' || col.key === 'data-table-expand';
+    return (
+        col.key === 'actions' || col.key === 'data-table-select' || col.key === 'data-table-expand'
+    );
 }
 
 export function useTableColumns(storageKey: string, source: Ref<KColumn[]> | (() => KColumn[])) {
@@ -69,7 +71,7 @@ export function useTableColumns(storageKey: string, source: Ref<KColumn[]> | (()
 
     /** Nur die Spalten, die im Menü zur Wahl stehen. */
     const selectable = computed<KColumn[]>(() =>
-        all.value.filter(col => !col.locked && !isStructural(col) && col.key),
+        all.value.filter(col => !col.locked && !isStructural(col) && col.key)
     );
 
     const visible = computed<KColumn[]>(() => all.value.filter(isVisible));

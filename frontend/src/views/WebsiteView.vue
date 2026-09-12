@@ -963,7 +963,8 @@ let isComponentMounted = true; // Use a simple boolean variable
 const website = ref(props.previewMode ? props.website || {} : {});
 const loading = ref(!props.previewMode);
 const error = ref(null);
-const navigationItems = ref(props.previewMode ? props.navigationItems || [] : []);
+const navigationRoh = ref(props.previewMode ? props.navigationItems || [] : []);
+
 const activeNavigationId = ref('home');
 const selectedContent = ref(null);
 const parsedBlocks = ref([]);
@@ -973,6 +974,55 @@ const contactForm = ref({});
 const submitting = ref(false);
 const pages = ref(props.previewMode ? props.pages || [] : []);
 const posts = ref(props.previewMode ? props.posts || [] : []);
+
+/** Nur was veroeffentlicht ist - der Rest geht niemanden ausser der Redaktion an. */
+const veroeffentlichteBeitraege = computed(() =>
+    (posts.value || []).filter((b) => b.is_published == 1 || b.status === 'published'),
+);
+
+/*
+   Die Menuepunkte der Website, und darin die Neuigkeiten.
+
+   Beitraege waren bisher nur zu erreichen, wenn jemand von Hand einen
+   Menuepunkt anlegte und dort das Haekchen "ist Blog" setzte. Wer das nicht
+   wusste - und der gefuehrte Start legt so einen Punkt nicht an -, konnte
+   Beitraege schreiben und veroeffentlichen, ohne dass sie je jemand sah.
+
+   Jetzt haengt der Punkt an den Beitraegen: sobald einer veroeffentlicht ist,
+   steht "Neuigkeiten" im Menue. Hat jemand bereits einen eigenen Blog-Punkt
+   eingerichtet, bleibt es bei seinem - zwei waeren einer zu viel.
+
+   Abgeleitet statt in die Rohliste geschrieben, damit die Ergaenzung nicht
+   versehentlich mitgespeichert wird.
+*/
+const navigationItems = computed(() => {
+    const punkte = (Array.isArray(navigationRoh.value) ? [...navigationRoh.value] : [])
+        .sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+    if (veroeffentlichteBeitraege.value.length === 0) return punkte;
+    if (punkte.some((p) => p.is_blog)) return punkte;
+
+    return [
+        ...punkte,
+        {
+            /*
+               Die Kennung 'blog-overview' ist nicht beliebig: getNavigationItemTitle()
+               schlaegt damit die Ueberschrift der Seite nach, und loadBlogOverview()
+               setzt sie als aktive Ansicht. Mit einer eigenen Kennung hiess der
+               Menuepunkt "Neuigkeiten" und die Seite darunter "Blog".
+            */
+            id: 'blog-overview',
+            title: 'Neuigkeiten',
+            url: null,
+            page_id: null,
+            parent_id: null,
+            sort_order: 9999,
+            target: '_self',
+            is_active: 1,
+            is_blog: true,
+            blog_categories: null,
+        },
+    ];
+});
 const categories = ref(props.previewMode ? props.categories || [] : []);
 const sections = ref(props.previewMode ? props.sections || [] : []);
 const news = ref(props.previewMode ? props.news || [] : []);
@@ -1680,9 +1730,12 @@ function goBackToBlogOverview() {
     // Find the navigation item that is marked as a blog overview
     const blogNav = navigationItems.value.find(item => item.is_blog);
     if (blogNav) {
+        /*
+           loadBlogOverview() setzt die Kennung auf 'blog-overview' - genau
+           darauf prueft die Vorlage. Sie danach auf die Kennung des
+           Menuepunkts umzubiegen nahm die Uebersicht wieder weg.
+        */
         loadBlogOverview(blogNav);
-        // Set the active navigation ID back to the blog overview item
-        activeNavigationId.value = blogNav.id; // Set ID to the blog nav item for active state in menu
     } else {
         // Fallback if no blog navigation item is found
         loadHome();
@@ -1898,11 +1951,11 @@ async function loadWebsite() {
 
         // Process navigation
         if (navResponse.data.success) {
-            navigationItems.value = navResponse.data.navigation || [];
-            // Sort navigation items - simple sort by sort_order for display
-            navigationItems.value.sort((a, b) => a.sort_order - b.sort_order);
+            // Sortiert wird in der Ableitung - hier stand ein sort() auf dem
+            // abgeleiteten Wert, das nichts Dauerhaftes bewirkt haette.
+            navigationRoh.value = navResponse.data.navigation || [];
         } else {
-            navigationItems.value = [];
+            navigationRoh.value = [];
             console.error('Failed to load navigation:', navResponse.data.error);
         }
 
@@ -2429,7 +2482,7 @@ watch(() => props.website, (newValue) => {
 watch(() => props.navigationItems, (newValue) => {
     if (props.previewMode && newValue) {
         console.log('Preview navigation items changed');
-        navigationItems.value = newValue;
+        navigationRoh.value = newValue;
     }
 }, { deep: true });
 

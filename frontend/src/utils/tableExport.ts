@@ -34,7 +34,10 @@ export function plainCell(item: any, key: string): string {
 
     if (raw === null || raw === undefined) return '';
     if (Array.isArray(raw)) return raw.map(v => plainValue(v)).join(' / ');
-    if (typeof raw === 'object') return Object.values(raw).map(v => plainValue(v)).join(' / ');
+    if (typeof raw === 'object')
+        return Object.values(raw)
+            .map(v => plainValue(v))
+            .join(' / ');
     if (typeof raw === 'boolean') return raw ? 'ja' : 'nein';
     return String(raw);
 }
@@ -60,7 +63,7 @@ export interface ExportOptions {
 export function exportRowsAsCsv(
     columns: KColumn[],
     rows: any[],
-    options: ExportOptions = {},
+    options: ExportOptions = {}
 ): number {
     const cols = columns.filter(isExportable);
     if (!cols.length || !rows.length) return 0;
