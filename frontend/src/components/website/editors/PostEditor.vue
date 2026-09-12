@@ -124,28 +124,52 @@
                 </div>
             </div>
 
+            <!--
+                Der Zustand des Beitrags.
+
+                Vorher: ein Haekchen "Veroeffentlicht" und daneben ein Feld
+                "Veroeffentlichungsdatum" mit dem Hinweis, man koenne ein
+                zukuenftiges Datum setzen. Das Haekchen schrieb in is_published
+                - eine Spalte, die in der Datenbank als veraltet markiert ist -
+                und das Datum bewirkte nichts, weil status nie gesetzt wurde.
+            -->
             <div class="form-group">
-                <label for="publish-date">Veröffentlichungsdatum</label>
+                <span class="feld-beschriftung">{{ t('post.zustand') }}</span>
+                <div class="zustand-auswahl">
+                    <button
+                        v-for="z in ZUSTAENDE"
+                        :key="z.wert"
+                        type="button"
+                        class="zustand-knopf"
+                        :class="{ gewaehlt: form.status === z.wert }"
+                        @click="form.status = z.wert"
+                    >
+                        <i :class="['mdi', z.symbol]"></i>
+                        <span class="zustand-name">{{ t(z.name) }}</span>
+                        <span class="zustand-text">{{ t(z.text) }}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-group" v-if="form.status === 'scheduled'">
+                <label for="scheduled-at">{{ t('post.terminLabel') }}</label>
                 <input
                     type="datetime-local"
-                    id="publish-date"
-                    v-model="form.publish_date"
+                    id="scheduled-at"
+                    v-model="form.scheduled_at"
+                    :min="fruehesterTermin"
                     class="form-control"
                 />
                 <small class="form-text">
-                    Optional: Legen Sie ein zukünftiges Datum für die geplante Veröffentlichung fest
+                    {{ terminHinweis }}
                 </small>
             </div>
 
             <div class="form-group">
                 <div class="checkbox-group">
                     <label class="checkbox-label">
-                        <input type="checkbox" v-model="form.is_published" />
-                        <span>Veröffentlicht</span>
-                    </label>
-                    <label class="checkbox-label">
                         <input type="checkbox" v-model="form.is_featured" />
-                        <span>Hervorgehoben</span>
+                        <span>{{ t('post.hervorgehoben') }}</span>
                     </label>
                 </div>
             </div>
@@ -162,7 +186,37 @@
 
 <script setup lang="ts">
 import { ref, reactive, watch, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 import TiptapEditor from '@/components/TiptapEditor.vue';
+
+const { t } = useI18n();
+
+/*
+   Die vier Zustaende der Spalte status. Die Schluessel sind die Werte in der
+   Datenbank und bleiben englisch; uebersetzt wird nur, was dasteht.
+
+   'archived' ist bewusst dabei: es ist der Weg, einen alten Beitrag von der
+   Website zu nehmen, ohne ihn zu loeschen.
+*/
+const ZUSTAENDE = [
+    { wert: 'draft', symbol: 'mdi-pencil-outline', name: 'post.entwurf', text: 'post.entwurfText' },
+    { wert: 'published', symbol: 'mdi-earth', name: 'post.veroeffentlicht', text: 'post.veroeffentlichtText' },
+    { wert: 'scheduled', symbol: 'mdi-clock-outline', name: 'post.geplant', text: 'post.geplantText' },
+    { wert: 'archived', symbol: 'mdi-archive-outline', name: 'post.archiviert', text: 'post.archiviertText' },
+] as const;
+
+/**
+ * Wandelt einen Zeitstempel aus der Datenbank in das Format, das ein
+ * datetime-local-Feld versteht. Es akzeptiert nur "JJJJ-MM-TTTHH:MM".
+ */
+function fuerEingabefeld(wert: string | null | undefined): string {
+    if (!wert) return '';
+    const d = new Date(String(wert).replace(' ', 'T'));
+    if (Number.isNaN(d.getTime())) return '';
+    const zwei = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${zwei(d.getMonth() + 1)}-${zwei(d.getDate())}T${zwei(d.getHours())}:${zwei(d.getMinutes())}`;
+}
+
 
 // Interfaces
 export interface Post {
@@ -172,7 +226,10 @@ export interface Post {
     excerpt: string;
     content: string;
     featured_image: string | null;
-    is_published: boolean;
+    /* Aus der Datenbank: status ist massgeblich, is_published nur noch Altlast. */
+    status?: 'draft' | 'published' | 'scheduled' | 'archived';
+    scheduled_at?: string | null;
+    is_published?: boolean | number;
     is_featured: boolean;
     categories?: Category[];
     published_at?: string;
@@ -197,12 +254,12 @@ interface PostForm {
     excerpt: string;
     content: string;
     featured_image: string | null;
-    is_published: boolean;
+    status: 'draft' | 'published' | 'scheduled' | 'archived';
+    scheduled_at: string;
     is_featured: boolean;
     selectedCategories: number[];
     reading_time: string;
     gallery_images: string[];
-    publish_date: string;
 }
 
 // Props
@@ -234,12 +291,23 @@ const form = reactive<PostForm>({
     excerpt: '',
     content: '',
     featured_image: null,
-    is_published: true,
+    status: 'draft',
+    scheduled_at: '',
     is_featured: false,
     selectedCategories: [],
     reading_time: '',
     gallery_images: [],
-    publish_date: '',
+});
+
+/** Ein Termin in der Vergangenheit ist keiner - das Feld begrenzt sich selbst. */
+const fruehesterTermin = computed(() => fuerEingabefeld(new Date().toISOString()));
+
+const terminHinweis = computed(() => {
+    if (!form.scheduled_at) return t('post.terminFehlt');
+    const d = new Date(form.scheduled_at);
+    if (Number.isNaN(d.getTime())) return t('post.terminFehlt');
+    if (d.getTime() <= Date.now()) return t('post.terminVergangen');
+    return t('post.terminHinweis');
 });
 
 // Computed
@@ -256,14 +324,22 @@ watch(
             form.excerpt = newPost.excerpt || '';
             form.content = newPost.content || '';
             form.featured_image = newPost.featured_image || null;
-            form.is_published = !!newPost.is_published;
+            /*
+               Beitraege aus der Zeit vor der Zustandsspalte tragen dort noch
+               den Vorgabewert 'draft', obwohl das Haekchen gesetzt war. Ein
+               veroeffentlichter Beitrag soll nach dem Oeffnen nicht als
+               Entwurf dastehen - deshalb im Zweifel aus is_published ableiten.
+            */
+            form.status = ZUSTAENDE.some((z) => z.wert === newPost.status)
+                ? (newPost.status as PostForm['status'])
+                : (newPost.is_published ? 'published' : 'draft');
+            form.scheduled_at = fuerEingabefeld(newPost.scheduled_at);
             form.is_featured = !!newPost.is_featured;
             form.selectedCategories = newPost.categories
                 ? newPost.categories.map(cat => cat.id)
                 : [];
             form.reading_time = newPost.reading_time || calculateReadingTimeFromContent(newPost.content || '');
             form.gallery_images = newPost.gallery_images || [];
-            form.publish_date = newPost.publish_date || '';
         } else {
             resetForm();
         }
@@ -279,12 +355,12 @@ function resetForm() {
     form.excerpt = '';
     form.content = '';
     form.featured_image = null;
-    form.is_published = true;
+    form.status = 'draft';
+    form.scheduled_at = '';
     form.is_featured = false;
     form.selectedCategories = [];
     form.reading_time = '';
     form.gallery_images = [];
-    form.publish_date = '';
 }
 
 function onTitleChange() {
@@ -625,5 +701,73 @@ textarea.form-control {
 
 .btn-secondary:hover {
     background-color: var(--k-neutral);
+}
+
+/* --- Zustand des Beitrags ---------------------------------------------- */
+
+.feld-beschriftung {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--k-ink);
+}
+
+.zustand-auswahl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 8px;
+}
+
+.zustand-knopf {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 10px 12px;
+    text-align: left;
+    background: var(--k-sunken);
+    border: 1px solid var(--k-line);
+    border-radius: 6px;
+    cursor: pointer;
+    font: inherit;
+    transition:
+        border-color 120ms ease,
+        background 120ms ease;
+}
+
+.zustand-knopf:hover {
+    border-color: var(--k-line-strong);
+}
+
+.zustand-knopf:focus-visible {
+    outline: 2px solid var(--k-accent);
+    outline-offset: 2px;
+}
+
+.zustand-knopf.gewaehlt {
+    border-color: var(--k-accent);
+    background: color-mix(in srgb, var(--k-accent) 10%, var(--k-sunken));
+}
+
+.zustand-knopf .mdi {
+    font-size: 17px;
+    color: var(--k-ink-faint);
+}
+
+.zustand-knopf.gewaehlt .mdi {
+    color: var(--k-accent);
+}
+
+.zustand-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--k-ink);
+}
+
+.zustand-text {
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: var(--k-ink-muted);
 }
 </style>

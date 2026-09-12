@@ -1018,6 +1018,8 @@ function getPosts(PDO $pdo, string $authority, int $authorityId): void
             return;
         }
 
+        faelligeBeitraegeVeroeffentlichen($pdo, (int)$websiteId);
+
         // Get all posts for this website with their categories
         $query = "
             SELECT p.*, 
@@ -1076,6 +1078,105 @@ function getPosts(PDO $pdo, string $authority, int $authorityId): void
 /**
  * Save a post
  */
+/**
+ * Schaltet faellige Termine live.
+ *
+ * Kein Cron - im Container laeuft keiner, die Skripte unter backend/cron/ ruft
+ * niemand auf. Stattdessen beim Ausliefern: wer die Website aufruft, loest die
+ * faelligen Beitraege mit aus. Ruft sie niemand auf, sieht auch niemand, dass
+ * noch nichts geschaltet ist.
+ *
+ * Der Schreibvorgang trifft nur Zeilen, die wirklich faellig sind; im
+ * Regelfall aendert er nichts und kostet eine Abfrage.
+ */
+function faelligeBeitraegeVeroeffentlichen(PDO $pdo, int $websiteId): void
+{
+    try {
+        $stmt = $pdo->prepare("
+            UPDATE kdd_website_posts
+               SET status = 'published',
+                   is_published = 1,
+                   published_at = COALESCE(published_at, scheduled_at),
+                   publish_date = COALESCE(publish_date, scheduled_at),
+                   scheduled_at = NULL,
+                   updated_at = NOW()
+             WHERE website_id = ?
+               AND status = 'scheduled'
+               AND scheduled_at IS NOT NULL
+               AND scheduled_at <= NOW()
+        ");
+        $stmt->execute([$websiteId]);
+    } catch (\Throwable $e) {
+        // Ein fehlgeschlagener Termin darf die Website nicht lahmlegen.
+        error_log('Faellige Beitraege nicht geschaltet: ' . $e->getMessage());
+    }
+}
+
+/**
+ * Ermittelt Zustand, Veroeffentlichungs- und Planzeitpunkt aus der Eingabe.
+ *
+ * Gibt [status, published_at, scheduled_at] zurueck.
+ *
+ * Zwei Regeln stecken darin:
+ * - published_at wird beim ersten Veroeffentlichen gesetzt und danach nicht
+ *   mehr angefasst. Sonst springt das Datum eines Beitrags bei jeder
+ *   Korrektur nach vorn, und die Reihenfolge auf der Website waere die der
+ *   letzten Bearbeitung statt die des Erscheinens.
+ * - scheduled_at gilt nur fuer 'scheduled'. Liegt der Zeitpunkt in der
+ *   Vergangenheit oder fehlt er, ist es kein Termin, sondern ein Entwurf.
+ *
+ * Aeltere Clients schicken weiterhin nur is_published - das bleibt gueltig.
+ */
+function zustandAusEingabe(array $postData, PDO $pdo, int $websiteId): array
+{
+    /*
+       Die vier Zustaende als lokales Array, nicht als const auf Dateiebene:
+       Funktionen werden beim Einlesen bekannt, const-Anweisungen erst, wenn
+       die Ausfuehrung ihre Zeile erreicht. Der Verteiler oben in dieser Datei
+       ruft savePost() aber vorher auf - die Konstante war zu dem Zeitpunkt
+       noch nicht definiert.
+    */
+    $erlaubt = ['draft', 'published', 'scheduled', 'archived'];
+
+    $status = (string)($postData['status'] ?? '');
+
+    if (!in_array($status, $erlaubt, true)) {
+        // Kein (gueltiger) Zustand geschickt: aus dem alten Haekchen ableiten.
+        $status = !empty($postData['is_published']) ? 'published' : 'draft';
+    }
+
+    $scheduledAt = null;
+    if ($status === 'scheduled') {
+        $roh = trim((string)($postData['scheduled_at'] ?? ''));
+        $zeit = $roh !== '' ? strtotime($roh) : false;
+        if ($zeit === false || $zeit <= time()) {
+            $status = 'draft';
+        } else {
+            $scheduledAt = date('Y-m-d H:i:s', $zeit);
+        }
+    }
+
+    if ($status !== 'published') {
+        // Ein zurueckgezogener Beitrag behaelt sein urspruengliches Datum.
+        return [$status, bisherigesVeroeffentlichungsdatum($pdo, $postData, $websiteId), $scheduledAt];
+    }
+
+    $bisher = bisherigesVeroeffentlichungsdatum($pdo, $postData, $websiteId);
+    return [$status, $bisher ?? date('Y-m-d H:i:s'), null];
+}
+
+/** Das bereits gespeicherte published_at, falls der Beitrag schon existiert. */
+function bisherigesVeroeffentlichungsdatum(PDO $pdo, array $postData, int $websiteId): ?string
+{
+    if (empty($postData['id'])) return null;
+
+    $stmt = $pdo->prepare("SELECT published_at FROM kdd_website_posts WHERE id = ? AND website_id = ?");
+    $stmt->execute([(int)$postData['id'], $websiteId]);
+    $wert = $stmt->fetchColumn();
+
+    return $wert ?: null;
+}
+
 function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): void
 {
     // Get post data from the request
@@ -1136,9 +1237,21 @@ function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): v
         $excerpt = $postData['excerpt'] ?? '';
         $content = $postData['content'] ?? '';
         $featuredImage = $postData['featured_image'] ?? null;
-        $isPublished = !empty($postData['is_published']) ? 1 : 0;
         $isFeatured = !empty($postData['is_featured']) ? 1 : 0;
-        $publishedAt = $isPublished ? date('Y-m-d H:i:s') : null;
+
+        /*
+           Der Zustand kommt aus status, nicht mehr aus einem Haekchen.
+
+           is_published traegt in der Datenbank den Kommentar "DEPRECATED: Use
+           status column instead" - geschrieben wurde trotzdem nur dorthin, und
+           status blieb auf seinem Vorgabewert 'draft' stehen. Damit gab es
+           weder Geplantes noch Archiviertes, obwohl beides vorgesehen war.
+
+           is_published wird weiter mitgeschrieben, abgeleitet aus status: es
+           steht in bestehenden Abfragen und in Daten, die es schon gibt.
+        */
+        [$status, $publishedAt, $scheduledAt] = zustandAusEingabe($postData, $pdo, (int)$websiteId);
+        $isPublished = $status === 'published' ? 1 : 0;
 
         // Debug log for featured image
         error_log("Featured image value before save: " . ($featuredImage ?: 'NULL'));
@@ -1162,10 +1275,13 @@ function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): v
                     excerpt = ?,
                     content = ?,
                     featured_image = ?,
+                    status = ?,
                     is_published = ?,
                     is_featured = ?,
-                    updated_at = NOW(),
-                    publish_date = CASE WHEN is_published = 0 AND ? = 1 THEN NOW() WHEN publish_date IS NULL AND ? = 1 THEN NOW() ELSE publish_date END
+                    published_at = ?,
+                    scheduled_at = ?,
+                    publish_date = ?,
+                    updated_at = NOW()
                 WHERE id = ? AND website_id = ?
             ";
 
@@ -1176,10 +1292,12 @@ function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): v
                 $excerpt,
                 $content,
                 $featuredImage,
+                $status,
                 $isPublished,
                 $isFeatured,
-                $isPublished,
-                $isPublished,
+                $publishedAt,
+                $scheduledAt,
+                $publishedAt,
                 $postData['id'],
                 $websiteId
             ]);
@@ -1196,14 +1314,14 @@ function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): v
             // Insert new post
             $query = "
                 INSERT INTO kdd_website_posts (
-                    website_id, title, slug, excerpt, content, 
-                    featured_image, is_published, is_featured, 
-                    created_at, updated_at, publish_date,
+                    website_id, title, slug, excerpt, content,
+                    featured_image, status, is_published, is_featured,
+                    created_at, updated_at, published_at, scheduled_at, publish_date,
                     created_by, authority_id, sort_order
                 ) VALUES (
-                    ?, ?, ?, ?, ?, 
-                    ?, ?, ?, 
-                    NOW(), NOW(), ?,
+                    ?, ?, ?, ?, ?,
+                    ?, ?, ?, ?,
+                    NOW(), NOW(), ?, ?, ?,
                     ?, ?, ?
                 )
             ";
@@ -1216,8 +1334,11 @@ function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): v
                 $excerpt,
                 $content,
                 $featuredImage,
+                $status,
                 $isPublished,
                 $isFeatured,
+                $publishedAt,
+                $scheduledAt,
                 $publishedAt,
                 $userId,
                 $authorityId,
@@ -1259,10 +1380,18 @@ function savePost(PDO $pdo, int $userId, string $authority, int $authorityId): v
         error_log("Retrieved post after save - featured_image: " . ($post['featured_image'] ?: 'NULL'));
 
         echo json_encode(['success' => true, 'post' => $post, 'message' => 'Beitrag erfolgreich gespeichert']);
-    } catch (Exception $e) {
-        $pdo->rollBack();
-        error_log('Error in savePost: ' . $e->getMessage());
-        echo json_encode(['success' => false, 'error' => 'Datenbankfehler beim Speichern des Beitrags: ' . $e->getMessage()]);
+    } catch (\Throwable $e) {
+        /*
+           Throwable statt Exception: ein TypeError ist ein Error, keine
+           Exception, und lief hier ungefangen durch - die Anfrage endete mit
+           einem 500 ohne Rumpf, ohne Eintrag im Protokoll, ohne Hinweis worauf.
+        */
+        if ($pdo->inTransaction()) {
+            $pdo->rollBack();
+        }
+        error_log('Fehler in savePost: ' . get_class($e) . ' ' . $e->getMessage()
+            . ' @ ' . $e->getFile() . ':' . $e->getLine());
+        echo json_encode(['success' => false, 'error' => 'Der Beitrag konnte nicht gespeichert werden.']);
     }
 }
 
@@ -2154,6 +2283,8 @@ function getWebsiteDetails(PDO $pdo, string $authority, int $authorityId): void
         $pages = $pagesStmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Get posts
+        faelligeBeitraegeVeroeffentlichen($pdo, (int)$websiteId);
+
         $postsStmt = $pdo->prepare("SELECT * FROM kdd_website_posts WHERE website_id = ?"
             . nurVeroeffentlichtesFilter('kdd_website_posts')
             . " ORDER BY sort_order ASC");

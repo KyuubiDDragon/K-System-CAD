@@ -1282,7 +1282,11 @@
     "offlineNehmen": "Take offline",
     "jetztOeffentlich": "The website is now publicly reachable.",
     "jetztEntwurf": "The website is offline. Only you can still see it.",
-    "schaltenFehlgeschlagen": "Could not change the publication state."
+    "schaltenFehlgeschlagen": "Could not change the publication state.",
+    "beitragVeroeffentlicht": "The post is now live on the website.",
+    "beitragGeplant": "The post will appear at the chosen time.",
+    "beitragArchiviert": "The post has been taken off the website.",
+    "beitragEntwurf": "Saved as a draft – not public yet."
   },
   "invoiceView": {
     "title": "Invoice Management",
@@ -3567,5 +3571,21 @@
       "schliessen": "Close",
       "meter": "{n} m"
     }
+  },
+  "post": {
+    "zustand": "State",
+    "entwurf": "Draft",
+    "entwurfText": "Only you can see it.",
+    "veroeffentlicht": "Published",
+    "veroeffentlichtText": "Live on the website.",
+    "geplant": "Scheduled",
+    "geplantText": "Goes live at the set time.",
+    "archiviert": "Archived",
+    "archiviertText": "Taken off the website, not deleted.",
+    "terminLabel": "Goes live on",
+    "terminHinweis": "The post appears once that time is reached.",
+    "terminFehlt": "Without a time the post stays a draft.",
+    "terminVergangen": "That time has passed – it will stay a draft.",
+    "hervorgehoben": "Featured"
   }
 }

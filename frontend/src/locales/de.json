@@ -1282,7 +1282,11 @@
     "offlineNehmen": "Offline nehmen",
     "jetztOeffentlich": "Die Website ist jetzt öffentlich erreichbar.",
     "jetztEntwurf": "Die Website ist offline. Nur du siehst sie noch.",
-    "schaltenFehlgeschlagen": "Der Schaltvorgang ist fehlgeschlagen."
+    "schaltenFehlgeschlagen": "Der Schaltvorgang ist fehlgeschlagen.",
+    "beitragVeroeffentlicht": "Der Beitrag steht jetzt auf der Website.",
+    "beitragGeplant": "Der Beitrag erscheint zum gewählten Zeitpunkt.",
+    "beitragArchiviert": "Der Beitrag wurde von der Website genommen.",
+    "beitragEntwurf": "Als Entwurf gespeichert – noch nicht öffentlich."
   },
   "invoiceView": {
     "title": "Rechnungsverwaltung",
@@ -3548,5 +3552,21 @@
       "schliessen": "Schließen",
       "meter": "{n} m"
     }
+  },
+  "post": {
+    "zustand": "Zustand",
+    "entwurf": "Entwurf",
+    "entwurfText": "Nur ihr seht ihn.",
+    "veroeffentlicht": "Veröffentlicht",
+    "veroeffentlichtText": "Steht auf der Website.",
+    "geplant": "Geplant",
+    "geplantText": "Erscheint zum Termin.",
+    "archiviert": "Archiviert",
+    "archiviertText": "Von der Website genommen, nicht gelöscht.",
+    "terminLabel": "Erscheint am",
+    "terminHinweis": "Der Beitrag erscheint, sobald der Zeitpunkt erreicht ist.",
+    "terminFehlt": "Ohne Zeitpunkt bleibt der Beitrag ein Entwurf.",
+    "terminVergangen": "Der Zeitpunkt liegt in der Vergangenheit – so bleibt es ein Entwurf.",
+    "hervorgehoben": "Hervorgehoben"
   }
 }

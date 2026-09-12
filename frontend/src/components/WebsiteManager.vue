@@ -871,6 +871,19 @@ function closePostForm() {
     editingPost.value = null;
 }
 
+function rueckmeldungZumBeitrag(formData: any): string {
+    switch (formData?.status) {
+        case 'published':
+            return t('website.beitragVeroeffentlicht');
+        case 'scheduled':
+            return t('website.beitragGeplant');
+        case 'archived':
+            return t('website.beitragArchiviert');
+        default:
+            return t('website.beitragEntwurf');
+    }
+}
+
 async function savePost(formData: any) {
     try {
         const action = formData.id ? 'updatePost' : 'createPost';
@@ -881,7 +894,12 @@ async function savePost(formData: any) {
         });
 
         if (response.data.success) {
-            showSuccess(formData.id ? 'Beitrag aktualisiert' : 'Beitrag erstellt');
+            /*
+               Die Rueckmeldung nennt den Zustand, nicht nur "gespeichert".
+               Beim Speichern entscheidet sich, ob der Beitrag oeffentlich ist -
+               das ist die Auskunft, die man an dieser Stelle braucht.
+            */
+            showSuccess(rueckmeldungZumBeitrag(formData));
             await loadWebsiteDetails();
             closePostForm();
         } else {

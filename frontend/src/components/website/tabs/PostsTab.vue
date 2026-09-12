@@ -105,7 +105,13 @@
                                 {{ formatDate(post.published_at || post.created_at) }}
                             </td>
                             <td>
-                                {{ post.is_published ? 'Veröffentlicht' : 'Entwurf' }}
+                                <span class="zustand-marke" :class="'zustand-' + zustandVon(post)">
+                                    <i :class="['mdi', zustandSymbol(post)]"></i>
+                                    {{ zustandName(post) }}
+                                </span>
+                                <div v-if="zustandVon(post) === 'scheduled' && post.scheduled_at" class="zustand-termin">
+                                    {{ formatDate(post.scheduled_at) }}
+                                </div>
                             </td>
                             <td class="actions">
                                 <button @click="handleEdit(post)" class="btn-icon">
@@ -144,7 +150,10 @@ export interface Post {
     excerpt: string;
     content: string;
     featured_image: string | null;
-    is_published: boolean;
+    /* status ist massgeblich; is_published bleibt fuer alte Daten lesbar. */
+    status?: 'draft' | 'published' | 'scheduled' | 'archived';
+    scheduled_at?: string | null;
+    is_published?: boolean | number;
     is_featured: boolean;
     categories?: Category[];
     published_at?: string;
@@ -176,6 +185,39 @@ const emit = defineEmits<{
 }>();
 
 // Local state
+/*
+   Der Zustand eines Beitrags. Beitraege aus der Zeit vor der Zustandsspalte
+   tragen dort noch 'draft', obwohl das Haekchen gesetzt war - deshalb im
+   Zweifel aus is_published ableiten.
+*/
+const ZUSTAND_NAMEN: Record<string, string> = {
+    draft: 'Entwurf',
+    published: 'Veröffentlicht',
+    scheduled: 'Geplant',
+    archived: 'Archiviert',
+};
+
+const ZUSTAND_SYMBOLE: Record<string, string> = {
+    draft: 'mdi-pencil-outline',
+    published: 'mdi-earth',
+    scheduled: 'mdi-clock-outline',
+    archived: 'mdi-archive-outline',
+};
+
+function zustandVon(post: any): string {
+    const s = String(post?.status || '');
+    if (ZUSTAND_NAMEN[s]) return s;
+    return post?.is_published ? 'published' : 'draft';
+}
+
+function zustandName(post: any): string {
+    return ZUSTAND_NAMEN[zustandVon(post)] ?? zustandVon(post);
+}
+
+function zustandSymbol(post: any): string {
+    return ZUSTAND_SYMBOLE[zustandVon(post)] ?? 'mdi-help-circle-outline';
+}
+
 const unterreiter = ref<'beitraege' | 'kategorien'>('beitraege');
 const selectedCategoryFilter = ref<string | number>('');
 const sortedPosts = ref<Post[]>([...props.posts]);
@@ -497,4 +539,52 @@ function formatDate(dateString?: string): string {
     padding-top: 2px;
 }
 
+
+/* --- Zustand in der Liste ---------------------------------------------- */
+
+.zustand-marke {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid transparent;
+}
+
+.zustand-marke .mdi {
+    font-size: 13px;
+}
+
+/* Farbe sagt hier etwas: live, in Arbeit, terminiert, aus dem Verkehr. */
+.zustand-published {
+    color: var(--k-success);
+    border-color: color-mix(in srgb, var(--k-success) 40%, transparent);
+    background: color-mix(in srgb, var(--k-success) 12%, transparent);
+}
+
+.zustand-draft {
+    color: var(--k-ink-muted);
+    border-color: var(--k-line);
+}
+
+.zustand-scheduled {
+    color: var(--k-accent);
+    border-color: color-mix(in srgb, var(--k-accent) 40%, transparent);
+    background: color-mix(in srgb, var(--k-accent) 12%, transparent);
+}
+
+.zustand-archived {
+    color: var(--k-ink-faint);
+    border-color: var(--k-line);
+    background: var(--k-sunken);
+}
+
+.zustand-termin {
+    margin-top: 3px;
+    font-size: 11px;
+    color: var(--k-ink-faint);
+}
 </style>
