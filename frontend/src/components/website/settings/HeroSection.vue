@@ -46,17 +46,30 @@
             />
         </div>
 
-        <div class="form-group">
+        <!--
+            Beim Einseiter gibt es keine Unterseiten - "Zu Seite" waere dort
+            eine Auswahl ohne Auswahl. Der Knopf fuehrt dann zum
+            Kontaktabschnitt, und die Zeile sagt das, statt ein leeres
+            Auswahlfeld anzubieten.
+        -->
+        <div class="form-group" v-if="istEinseiter">
+            <span class="feld-beschriftung">Wohin der Knopf führt</span>
+            <p class="form-text einseiter-hinweis">
+                Zum Kontaktbereich weiter unten auf der Seite.
+            </p>
+        </div>
+
+        <div class="form-group" v-else>
             <label for="cta-url">Wohin der Knopf führt</label>
             <div class="input-group">
                 <select
                     v-model="localSettings.cta_target_type"
                     class="form-control"
-                    style="max-width: 150px"
+                    style="max-width: 170px"
                     @change="emitChange"
                 >
-                    <option value="page">Zu Seite</option>
-                    <option value="contact">Kontaktformular</option>
+                    <option value="page">Zu einer Seite</option>
+                    <option value="contact">Zum Kontaktformular</option>
                 </select>
 
                 <select
@@ -65,17 +78,21 @@
                     class="form-control"
                     @change="emitChange"
                 >
+                    <option :value="null" disabled>Seite wählen …</option>
                     <option v-for="page in pages" :key="page.id" :value="page.id">
                         {{ page.title }}
                     </option>
                 </select>
             </div>
+            <small v-if="localSettings.cta_target_type === 'page' && !localSettings.cta_target_id" class="form-text">
+                Ohne Ziel bleibt der Knopf wirkungslos.
+            </small>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 interface Page {
     id: number;
@@ -92,10 +109,14 @@ interface HeroSettings {
 interface Props {
     modelValue: HeroSettings;
     pages: Page[];
+    /** Vorlage der Website - entscheidet, welche Ziele es ueberhaupt gibt. */
+    layoutTemplate?: string;
     getMediaUrl: (fileName: string | null) => string;
 }
 
 const props = defineProps<Props>();
+
+const istEinseiter = computed(() => props.layoutTemplate === 'onepager');
 
 const emit = defineEmits<{
     (e: 'update:modelValue', value: HeroSettings): void;
@@ -244,5 +265,17 @@ function triggerFileInput(inputId: string) {
 
 .input-group .form-control {
     flex: 1;
+}
+
+.feld-beschriftung {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--k-ink);
+}
+
+.einseiter-hinweis {
+    margin: 0;
 }
 </style>

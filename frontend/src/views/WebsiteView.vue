@@ -2686,17 +2686,53 @@ function toggleFaqItem(item) {
 
 // After the existing functions like formatDate, hexToRgb, etc.
 
+/**
+ * Der Knopf im Kopfbereich der Startseite.
+ *
+ * Er hat in den Einstellungen ein Ziel - "zu einer Seite" mit Auswahl, oder
+ * "zum Kontaktformular". Diese Funktion hat davon nichts gelesen: sie nahm
+ * immer den ersten Menuepunkt, der nicht Startseite oder Kontakt ist. Der
+ * Knopf tat also etwas, nur nie das Eingestellte.
+ *
+ * Zu beachten: fuer die Vorlage 'default' rendert diese Datei ihre eigene
+ * Ansicht - DefaultTemplate.vue kommt dabei gar nicht zum Zug. Wer den Knopf
+ * dort repariert, repariert ihn an der falschen Stelle.
+ */
 function handleCtaClick() {
-    // Find the first navigation item that's not home or contact
-    const firstContentItem = navigationItems.value.find(item => 
-        !item.parent_id && item.id !== 'home' && !item.is_contact
+    const art = website.value.cta_target_type;
+
+    if (art === 'contact') {
+        loadContact();
+        return;
+    }
+
+    if (art === 'page' && website.value.cta_target_id) {
+        const zielId = Number(website.value.cta_target_id);
+
+        // Erst ueber die Navigation - so bleibt der Menuepunkt hervorgehoben.
+        const menuepunkt = navigationItems.value.find((item) => item.page_id === zielId);
+        if (menuepunkt) {
+            handleNavigationClick(menuepunkt);
+            return;
+        }
+
+        const seite = pages.value.find((p) => p.id === zielId);
+        if (seite) {
+            loadPage({ id: `temp-${seite.id}`, title: seite.title, page_id: seite.id });
+            return;
+        }
+    }
+
+    /*
+       Ohne brauchbares Ziel das alte Verhalten: der erste Inhalt, den es gibt.
+       Besser als ein Knopf, der gar nichts tut.
+    */
+    const ersterInhalt = navigationItems.value.find(
+        (item) => !item.parent_id && item.id !== 'home' && !item.is_contact,
     );
-    
-    if (firstContentItem) {
-        // Navigate to the first available content
-        handleNavigationClick(firstContentItem);
+    if (ersterInhalt) {
+        handleNavigationClick(ersterInhalt);
     } else if (website.value.show_contact_form) {
-        // If no content items, go to contact if available
         loadContact();
     }
 }

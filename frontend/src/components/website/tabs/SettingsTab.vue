@@ -1,76 +1,107 @@
 <template>
     <div class="settings-tab">
-        <h2>Website-Einstellungen</h2>
-        <p>Name, Farben, Kontaktdaten – und der Schalter, der die Website öffentlich macht.</p>
+        <h2>Einstellungen</h2>
+        <p>Name, Aussehen und Kontakt. Der Schalter, der die Website öffentlich macht, steht oben im Kopf.</p>
 
-        <!-- Template Selector -->
-        <TemplateSelector
-            :model-value="templateSettings"
-            @update:model-value="updateTemplateSettings"
-            @change="onChange"
-        />
+        <!--
+            Drei Unterreiter statt einer Rolle.
 
-        <!-- Basic Information -->
-        <BasicInfo
-            :model-value="basicInfoSettings"
-            @update:model-value="updateBasicInfo"
-            @change="onChange"
-        />
+            Vorher standen sieben Bloecke mit zusammen rund 2000 Zeilen
+            untereinander: Vorlage, Grunddaten, Kopfbereich, Farben, Bilder,
+            Kontakt, Fusszeile. Wer die Telefonnummer aendern wollte, rollte an
+            zehn Farbschemata und einem Rich-Text-Feld vorbei.
 
-        <!-- Hero Section -->
-        <HeroSection
-            :model-value="heroSettings"
-            :pages="pages"
-            :get-media-url="getMediaUrl"
-            @update:model-value="updateHeroSettings"
-            @change="onChange"
-            @upload-media="handleUploadMedia"
-            @remove-media="handleRemoveMedia"
-        />
+            Geschnitten nach den drei Fragen, die man tatsaechlich hat: wie
+            heisst die Website, wie sieht sie aus, wie erreicht man euch.
+        -->
+        <div class="tabs">
+            <div
+                v-for="r in REITER"
+                :key="r.wert"
+                class="tab"
+                :class="{ active: unterreiter === r.wert }"
+                @click="unterreiter = r.wert"
+            >
+                <i :class="['mdi', r.symbol]"></i> {{ r.name }}
+            </div>
+        </div>
 
-        <!-- Color Scheme -->
-        <ColorScheme
-            :model-value="colorSchemeSettings"
-            :preset-color-schemes="presetColorSchemes"
-            @update:model-value="updateColorScheme"
-            @change="onChange"
-            @select-scheme="handleSelectScheme"
-        />
+        <template v-if="unterreiter === 'allgemein'">
+            <BasicInfo
+                :model-value="basicInfoSettings"
+                @update:model-value="updateBasicInfo"
+                @change="onChange"
+            />
 
-        <!-- Media Settings -->
-        <MediaSettings
-            :model-value="mediaSettings"
-            :get-media-url="getMediaUrl"
-            @update:model-value="updateMediaSettings"
-            @change="onChange"
-            @upload-media="handleUploadMedia"
-            @remove-media="handleRemoveMedia"
-        />
+            <MediaSettings
+                :model-value="mediaSettings"
+                :get-media-url="getMediaUrl"
+                @update:model-value="updateMediaSettings"
+                @change="onChange"
+                @upload-media="handleUploadMedia"
+                @remove-media="handleRemoveMedia"
+            />
 
-        <!-- Social Links -->
-        <SocialLinks
-            :model-value="socialLinksSettings"
-            :social-links="socialLinks"
-            @update:model-value="updateSocialLinks"
-            @change="onChange"
-            @update-social-links="handleUpdateSocialLinks"
-        />
+            <TemplateSelector
+                :model-value="templateSettings"
+                @update:model-value="updateTemplateSettings"
+                @change="onChange"
+            />
+        </template>
 
-        <!-- Contact Settings -->
-        <ContactSettings
-            :model-value="contactSettings"
-            @update:model-value="updateContactSettings"
-            @change="onChange"
-        >
-            <template #contact-form-editor>
-                <slot name="contact-form-editor"></slot>
-            </template>
-        </ContactSettings>
+        <template v-else-if="unterreiter === 'aussehen'">
+            <ColorScheme
+                :model-value="colorSchemeSettings"
+                :preset-color-schemes="presetColorSchemes"
+                @update:model-value="updateColorScheme"
+                @change="onChange"
+                @select-scheme="handleSelectScheme"
+            />
+
+            <HeroSection
+                :model-value="heroSettings"
+                :pages="pages"
+                :layout-template="templateSettings.layout_template"
+                :get-media-url="getMediaUrl"
+                @update:model-value="updateHeroSettings"
+                @change="onChange"
+                @upload-media="handleUploadMedia"
+                @remove-media="handleRemoveMedia"
+            />
+        </template>
+
+        <template v-else>
+            <SocialLinks
+                :model-value="socialLinksSettings"
+                :social-links="socialLinks"
+                @update:model-value="updateSocialLinks"
+                @change="onChange"
+                @update-social-links="handleUpdateSocialLinks"
+            />
+
+            <ContactSettings
+                :model-value="contactSettings"
+                @update:model-value="updateContactSettings"
+                @change="onChange"
+            >
+                <template #contact-form-editor>
+                    <slot name="contact-form-editor"></slot>
+                </template>
+            </ContactSettings>
+        </template>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+
+const REITER = [
+    { wert: 'allgemein', symbol: 'mdi-information-outline', name: 'Allgemein' },
+    { wert: 'aussehen', symbol: 'mdi-palette-outline', name: 'Aussehen' },
+    { wert: 'kontakt', symbol: 'mdi-email-outline', name: 'Kontakt' },
+] as const;
+
+const unterreiter = ref<'allgemein' | 'aussehen' | 'kontakt'>('allgemein');
 import BasicInfo from '../settings/BasicInfo.vue';
 import HeroSection from '../settings/HeroSection.vue';
 import ColorScheme from '../settings/ColorScheme.vue';
@@ -294,5 +325,39 @@ function handleSelectScheme(schemeName: string) {
     font-size: 1rem;
     color: var(--k-ink-faint);
     margin-bottom: 2rem;
+}
+
+.tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--k-line);
+    margin-bottom: 18px;
+}
+
+.tab {
+    padding: 8px 14px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-size: 13px;
+    color: var(--k-ink-muted);
+    transition:
+        color 120ms ease,
+        border-color 120ms ease;
+}
+
+.tab:hover {
+    color: var(--k-ink);
+}
+
+.tab.active {
+    color: var(--k-ink);
+    border-bottom-color: var(--k-accent);
+}
+
+.tab i {
+    margin-right: 6px;
 }
 </style>

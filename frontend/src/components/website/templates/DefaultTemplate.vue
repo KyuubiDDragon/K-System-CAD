@@ -329,6 +329,17 @@ function scrollToTop() {
 function handleCTA() {
     if (props.website.cta_target_type === 'contact') {
         goToContact();
+        return;
+    }
+
+    /*
+       Der Fall 'page' fehlte - und er ist der Vorgabewert. Wer im Kopfbereich
+       einen Knopf beschriftete und eine Seite als Ziel waehlte, bekam einen
+       Knopf, der beim Klick nichts tat.
+    */
+    const ziel = props.pages.find((s: any) => s.id === props.website.cta_target_id);
+    if (ziel) {
+        goToPage(ziel);
     }
 }
 

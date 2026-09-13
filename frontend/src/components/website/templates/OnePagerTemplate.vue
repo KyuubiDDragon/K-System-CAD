@@ -1061,11 +1061,21 @@ function scrollToTop() {
 }
 
 function handleCTA() {
-    if (props.website.cta_target_type === 'contact') {
-        const contactSection = activeSections.value.find(s => s.section_type === 'contact');
-        if (contactSection) {
-            scrollToSection(contactSection.id);
-        }
+    /*
+       Der Einseiter hat keine Unterseiten - jedes Ziel ist ein Abschnitt.
+       Ohne ausdrueckliches Ziel fuehrt der Knopf zum Kontakt, und gibt es
+       keinen Kontaktabschnitt, zum naechsten nach dem Kopfbereich. Ein Knopf,
+       der gar nichts tut, ist die schlechteste aller Antworten.
+    */
+    const kontakt = activeSections.value.find((s) => s.section_type === 'contact');
+    if (kontakt) {
+        scrollToSection(kontakt.id);
+        return;
+    }
+
+    const naechster = activeSections.value.find((s) => s.section_type !== 'hero');
+    if (naechster) {
+        scrollToSection(naechster.id);
     }
 }
 

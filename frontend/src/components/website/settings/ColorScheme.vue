@@ -179,29 +179,13 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label for="custom-css">Benutzerdefiniertes CSS</label>
-            <div class="css-template-actions">
-                <button
-                    type="button"
-                    @click="insertCssTemplate"
-                    class="btn btn-sm btn-secondary"
-                >
-                    <i class="mdi mdi-code"></i> CSS-Template einfügen
-                </button>
-            </div>
-            <textarea
-                id="custom-css"
-                v-model="localSettings.custom_css"
-                class="form-control code-editor"
-                @input="emitChange"
-                placeholder="Eigene CSS-Regeln …"
-                rows="6"
-            ></textarea>
-            <small class="form-text"
-                >Nur nötig, wenn die Farbschemata nicht reichen.</small
-            >
-        </div>
+        <!--
+            Hier stand ein Textfeld fuer eigenes CSS samt Knopf, der eine
+            Vorlage hineinschrieb. Der Wert wurde gespeichert und durchgereicht,
+            aber von keiner Vorlage je in eine Seite eingefuegt - er hat nie
+            etwas bewirkt. Dazu passt er nicht zu einem Bereich, den Leute ohne
+            Webkenntnisse bedienen sollen. Die Spalte bleibt, das Feld ist weg.
+        -->
     </div>
 </template>
 
@@ -305,109 +289,6 @@ function selectColorScheme(schemeName: string) {
     emitChange();
 }
 
-function insertCssTemplate() {
-    const cssTemplate = `/* ===== WEBSITE ANPASSUNGEN ===== */
-/* Dieses Template enthält alle anpassbaren CSS-Eigenschaften für Ihre Website */
-
-/* ===== GRUNDLEGENDE SCHRIFT- UND FARBEINSTELLUNGEN ===== */
-body {
-    /* Hauptschriftart für den gesamten Inhalt */
-    font-family: 'Arial', sans-serif; /* Ersetzen Sie durch Ihre gewünschte Schriftart */
-
-    /* Textfarbe für den allgemeinen Inhalt */
-    color: #333333;
-
-    /* Zeilenhöhe für bessere Lesbarkeit */
-    line-height: 1.6;
-}
-
-/* Schriftgrößen für verschiedene Überschriften */
-h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-}
-
-h2 {
-    font-size: 2rem;
-    font-weight: 600;
-    margin-bottom: 0.8rem;
-}
-
-h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 0.6rem;
-}
-
-/* Links anpassen */
-a {
-    /* Linkfarbe */
-    color: var(--k-accent);
-
-    /* Übergangseffekt bei Hover */
-    transition: color 0.3s ease;
-    text-decoration: none;
-}
-
-a:hover {
-    /* Linkfarbe bei Hover */
-    color: #1d4ed8;
-    text-decoration: underline;
-}
-
-/* ===== HEADER-BEREICH ===== */
-.site-header {
-    /* Zusätzliche Anpassungen für den Header-Bereich */
-    padding: 2rem 1rem;
-}
-
-.site-title {
-    /* Anpassungen für den Website-Titel */
-    font-size: 2.8rem;
-    letter-spacing: 0.5px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-}
-
-.site-slogan {
-    /* Anpassungen für den Slogan */
-    font-size: 1.4rem;
-    font-style: italic;
-    opacity: 0.9;
-}
-
-/* ===== NAVIGATION ===== */
-.site-nav ul {
-    /* Anpassungen für die Navigationsliste */
-    display: flex;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.site-nav li {
-    margin: 0;
-    position: relative;
-}
-
-.site-nav a {
-    /* Anpassungen für die Navigationslinks */
-    color: var(--k-ink);
-    text-decoration: none;
-    display: inline-block;
-    font-weight: 500;
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    background-color: var(--k-row-hover);
-}`;
-
-    localSettings.value.custom_css = cssTemplate;
-    emitChange();
-}
 </script>
 
 <style scoped>
@@ -652,10 +533,6 @@ a:hover {
     color: var(--k-ink-faint);
 }
 
-.css-template-actions {
-    margin-bottom: 0.5rem;
-}
-
 .btn {
     padding: 0.5rem 1rem;
     border: none;
@@ -680,9 +557,4 @@ a:hover {
     background-color: var(--k-neutral);
 }
 
-.code-editor {
-    font-family: 'Courier New', monospace;
-    font-size: 0.875rem;
-    resize: vertical;
-}
 </style>
