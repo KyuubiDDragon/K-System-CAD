@@ -45,6 +45,8 @@ check($view($outsider)['articles'][0]['current']['title']==='Erste Fassung','pub
 $a=$view($writer)['articles'][0];service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$a['revision'],'title'=>'Neue Fassung','body'=>'Entwurf geheim']);
 check($view($outsider)['articles'][0]['draft']===null&&$view($outsider)['articles'][0]['current']['body']==='Öffentlicher Text','editing preserves current published text');
 check(!service($outsider)->dispatch('book','GET',[],['id'=>$book,'q'=>'Entwurf geheim'])['articles'],'search does not leak drafts');
+check(service($root)->dispatch('book','GET',[],['id'=>$book,'view'=>'reader'])['articles'][0]['draft']===null,'reader hides drafts even for system user');
+check(!service($root)->dispatch('search','GET',[],['q'=>'Entwurf geheim','view'=>'reader'])['items'],'system reader search excludes drafts');
 check(count(service()->dispatch('search','GET',[],['q'=>'Entwurf geheim'])['items'])===0,'global search does not expose unpublished text');
 denies(409,fn()=>service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$a['revision']]),'stale draft update is rejected');
 $a=$view($publisher)['articles'][0];service($publisher)->dispatch('publish','POST',['article_id'=>$id,'revision'=>$a['revision']]);

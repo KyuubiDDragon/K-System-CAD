@@ -66,13 +66,13 @@ final class Service {
             if(mb_strlen($query)>200)throw new Error(400,'Suchbegriff ist zu lang.');
             $items=[];
             if($query!=='')foreach($this->all('SELECT id,title FROM kdd_law_books ORDER BY title,id') as $book) {
-                $result=$this->dispatch('book','GET',[],['id'=>$book['id'],'q'=>$query]);
+                $result=$this->dispatch('book','GET',[],['id'=>$book['id'],'q'=>$query,'view'=>$q['view']??'']);
                 foreach($result['articles'] as $article)$items[]=['book_id'=>(int)$book['id'],'book_title'=>$book['title'],'article'=>$article];
             }
             return ['items'=>$items];
         }
         if ($action==='book') {
-            $id=(int)($q['id']??0);$book=$this->book($id);$rights=$this->rights($id);$articles=[];$search=mb_strtolower(trim((string)($q['q']??'')));
+            $id=(int)($q['id']??0);$book=$this->book($id);$rights=($q['view']??'')==='reader'?array_fill_keys(['draft_read','edit','publish','repeal'],false):$this->rights($id);$articles=[];$search=mb_strtolower(trim((string)($q['q']??'')));
             foreach($this->all('SELECT * FROM kdd_law_articles WHERE book_id=? ORDER BY id',[$id]) as $a) {
                 $v=$this->one("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='published' AND effective_at<=UTC_TIMESTAMP() ORDER BY effective_at DESC,id DESC LIMIT 1",[$a['id']]);
                 $draft=$rights['draft_read']?$this->one("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='draft' ORDER BY id DESC LIMIT 1",[$a['id']]):null;
