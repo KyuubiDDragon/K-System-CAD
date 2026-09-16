@@ -15,7 +15,7 @@ final class Policy {
             'theme_colors'=>['light'=>[],'dark'=>[]], 'community'=>'San Andreas', 'operator_name'=>'', 'accent'=>'#087f80', 'icon_set'=>'coastal', 'background_id'=>null, 'logo_id'=>null, 'header_id'=>null,
             'registration'=>'manual', 'registration_hint'=>'Melde dich zur Freigabe bei der Betreiberfirma.', 'guest'=>false,
             'modules'=>['social'=>true,'gram'=>true,'market'=>true,'video'=>true,'messages'=>true],
-            'names'=>['social'=>'Social Media','gram'=>'Gram','market'=>'Marktplatz','video'=>'Video','companies'=>'Unternehmen'],
+            'names'=>['social'=>'Social Media','gram'=>'Gram','market'=>'Marktplatz','video'=>'Video','companies'=>'Unternehmen','laws'=>'Gesetze'],
             'post_categories'=>['Allgemein','Neuigkeiten','Veranstaltungen','Fragen','Unternehmen','Freizeit'], 'icons'=>[], 'links'=>[], 'info_blocks'=>[], 'upload_mb'=>20, 'video_mb'=>200, 'video_seconds'=>600, 'quota_mb'=>1024,
             'accept_template'=>'Guten Tag {name}, Ihre Werbung „{title}“ wurde für {start} bis {end} angenommen. Offen: {amount} RP-Dollar. {instructions}',
             'reject_template'=>'Guten Tag {name}, Ihre Werbung „{title}“ wurde abgelehnt: {reason}',

@@ -9,12 +9,7 @@ services:
       MARIADB_PASSWORD: social-test-only
     tmpfs: /var/lib/mysql
     volumes:
-      - ./base.sql:/docker-entrypoint-initdb.d/01-base.sql:ro
-      - ../../migrations/0018_social_platform.sql:/docker-entrypoint-initdb.d/02-social.sql:ro
-      - ../../migrations/0019_social_discovery.sql:/docker-entrypoint-initdb.d/03-discovery.sql:ro
-      - ../../migrations/0020_social_post_metadata.sql:/docker-entrypoint-initdb.d/04-post-metadata.sql:ro
-      - ../../migrations/0021_social_bookmarks_directory.sql:/docker-entrypoint-initdb.d/05-bookmarks-directory.sql:ro
-      - ../../migrations/0022_social_company_profiles.sql:/docker-entrypoint-initdb.d/06-company-profiles.sql:ro
+      - ../../../database/database.sql:/docker-entrypoint-initdb.d/01-base.sql:ro
     healthcheck:
       test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
       interval: 2s
@@ -22,7 +17,6 @@ services:
       retries: 40
   backend:
     image: kyuubi-social-backend-dev
-    entrypoint: [apache2-foreground]
     ports: ["127.0.0.1:${SOCIAL_TEST_PORT:-8088}:80"]
     depends_on:
       db:
@@ -41,6 +35,9 @@ services:
     volumes:
       - ../:/var/www/html/social:ro
       - ../../bootstrap.php:/var/www/html/bootstrap.php:ro
+      - ../../laws:/var/www/html/laws:ro
+      - ../../helpers:/var/www/html/helpers:ro
+      - ../../admin/roles:/var/www/html/admin/roles:ro
     tmpfs:
       - /var/www/social-private:mode=0777
 

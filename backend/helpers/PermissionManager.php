@@ -56,7 +56,7 @@ class PermissionManager
                 JOIN kdd_role_permissions rp ON rp.authority_id = ur.authority_id AND r.id = rp.role_id
                 JOIN kdd_permissions p ON rp.permission_id = p.id
                 WHERE ur.user_id = ?
-                  AND ur.authority_id = ?";
+                  AND ur.authority_id = ? AND r.is_deleted = 0";
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([$userId, $this->authorityId]);
@@ -135,7 +135,7 @@ class PermissionManager
         $bitmask = $this->cachedPermissions['bitmask'][$module] ?? 0;
         $actionBit = self::ACTION_MAP[$action] ?? 0;
 
-        return ($bitmask & $actionBit) === $actionBit;
+        return $actionBit !== 0 && ($bitmask & $actionBit) === $actionBit;
     }
 
     /**

@@ -44,6 +44,11 @@ if (!hasFeatureAccess($pdo, $authorityId, 'default')) {
     http_response_code(403); echo json_encode(["error" => "This authority doesn't have access to default features."]); exit();
 }
 
+// Resolve current rights from the database; revoked grants must not survive in JWTs.
+require_once __DIR__ . '/../../helpers/PermissionManager.php';
+require_once __DIR__ . '/../../helpers/RoleGuard.php';
+$userPermissions = (new PermissionManager($pdo, (int)$authorityId))->loadUserPermissions((int)$userId);
+
 // --- Authorization & Action Routing ---
 $action = $_REQUEST['action'] ?? '';
 $request_method = $_SERVER['REQUEST_METHOD'];
@@ -233,6 +238,7 @@ function createRole(PDO $pdo, int $requestingUserId, string $authority): void {
 
     try {
         $pdo->beginTransaction();
+        RoleGuard::validate($pdo, $requestingUserId, (int)$authorityId, null, $permissions, $categoryIds);
 
         // 1. Insert Role
         $sqlRole = "INSERT INTO `kdd_roles` (authority_id, name, description, power, sort_order) VALUES (?, ?, ?, ?, ?)";
@@ -270,6 +276,9 @@ function createRole(PDO $pdo, int $requestingUserId, string $authority): void {
         // Log change
         // $changes = ...; logDatabaseChange(...);
 
+    } catch (\DomainException $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        http_response_code(403); echo json_encode(['error'=>$e->getMessage()]);
     } catch (\PDOException | \Exception $e) {
         if ($pdo->inTransaction()) { $pdo->rollBack(); }
          if ($e instanceof \PDOException && $e->getCode() == '23000') { // Unique name?
@@ -323,16 +332,9 @@ function updateRole(PDO $pdo, int $requestingUserId, string $authority): void {
     try {
         $pdo->beginTransaction();
 
-        // Find the correct authority_id for this role
-        $findSql = "SELECT authority_id FROM `kdd_roles` WHERE id = ? AND is_deleted = 0";
-        $findStmt = $pdo->prepare($findSql);
-        $findStmt->execute([$id]);
-        $roleAuthorityId = $findStmt->fetchColumn();
-        
-        if ($roleAuthorityId === false) {
-            throw new \Exception("Role with ID {$id} not found or already deleted.");
-        }
-        
+        RoleGuard::validate($pdo, $requestingUserId, (int)$authorityId, (int)$id, $permissions, $categoryIds);
+        $roleAuthorityId = $authorityId;
+
         // 1. Update Role Details with the role's actual authority_id
         $sqlRole = "UPDATE `kdd_roles` SET name = ?, description = ?, power = ?, sort_order = ? WHERE authority_id = ? AND id = ? AND is_deleted = 0";
         $stmtRole = $pdo->prepare($sqlRole);
@@ -404,6 +406,9 @@ function updateRole(PDO $pdo, int $requestingUserId, string $authority): void {
         // Log change (complex due to permission changes)
         // logDatabaseChange(...);
 
+    } catch (\DomainException $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        http_response_code(403); echo json_encode(['error'=>$e->getMessage()]);
     } catch (\PDOException | \Exception $e) {
         if ($pdo->inTransaction()) { $pdo->rollBack(); }
          if ($e instanceof \PDOException && $e->getCode() == '23000') { // Unique name?
@@ -440,6 +445,7 @@ function deleteRole(PDO $pdo, int $requestingUserId, string $authority): void {
 
     try {
         $pdo->beginTransaction();
+        RoleGuard::validate($pdo, $requestingUserId, (int)$authorityId, (int)$id, [], []);
         
         // 1. Check if any users are assigned to this role
         $sqlCheckUsers = "SELECT COUNT(*) FROM `kdd_user_roles` WHERE authority_id = ? AND role_id = ?";
@@ -494,6 +500,9 @@ function deleteRole(PDO $pdo, int $requestingUserId, string $authority): void {
                 $authorityId = $decoded_jwt->authority_id ?? 0;
                 logDatabaseChange($authorityId, $pdo, 'DELETE', "roles", $id, $requestingUserId, $changes);
         
+    } catch (\DomainException $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        http_response_code(403); echo json_encode(['error'=>$e->getMessage()]);
     } catch (\PDOException | \Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
@@ -522,6 +531,9 @@ function getCategoryRoles(PDO $pdo, string $authority): void {
     }
 
     try {
+        $owner = $pdo->prepare('SELECT id FROM kdd_roles WHERE id=? AND authority_id=? AND is_deleted=0');
+        $owner->execute([$roleId,$authorityId]);
+        if (!$owner->fetchColumn()) { http_response_code(404); echo json_encode(['error'=>'Role not found in current authority.']); return; }
         // Get all categories for this authority with their role assignment status
         $sql = "SELECT 
                     c.*,
