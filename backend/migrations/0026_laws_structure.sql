@@ -1,0 +1,5 @@
+ALTER TABLE kdd_law_versions
+ ADD COLUMN subsections MEDIUMTEXT NULL,
+ ADD COLUMN amount_kind VARCHAR(20) NOT NULL DEFAULT 'fine',
+ ADD COLUMN amount_min DECIMAL(12,2) NULL,
+ ADD COLUMN amount_max DECIMAL(12,2) NULL;

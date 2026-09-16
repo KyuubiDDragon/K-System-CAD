@@ -1638,3 +1638,5 @@ small {
 .topbar input::placeholder {
   color: color-mix(in srgb, var(--nav-text) 70%, transparent);
 }
+
+.auth-public-links{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:28px}.auth-layout{grid-template-rows:auto;min-height:min(760px,calc(100vh - 72px));gap:clamp(24px,6vw,80px)}

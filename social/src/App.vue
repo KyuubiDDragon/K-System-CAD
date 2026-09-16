@@ -905,12 +905,11 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
     </div>
     <LawsApp v-else-if="page === 'laws'" :cad-url="settings.cad_url || ''" />
     <section v-else-if="!me && (!settings.guest || showAuth)" class="auth-layout">
-      <button v-if="settings.laws_enabled" @click="go('laws')">Gesetze ansehen</button>
-      <button v-if="settings.guest" @click="showAuth = false; go('social'); load()">Ohne Anmeldung weiterlesen</button>
       <div class="auth-intro">
         <span class="eyebrow">{{ settings.community }}</span>
         <h1>Deine Stadt.<br />Deine Menschen.</h1>
         <p>Beiträge, Fotos, Videos und Angebote aus deiner Community.</p>
+        <div class="auth-public-links"><button v-if="settings.guest" @click="showAuth = false; go('social'); load()">Ohne Anmeldung weiterlesen</button><button v-if="settings.laws_enabled" class="text-button" @click="go('laws')">Gesetze ansehen ↗</button></div>
       </div>
       <form class="panel auth-form" @submit.prevent="authenticate">
         <h2>
