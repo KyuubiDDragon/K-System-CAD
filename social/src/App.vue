@@ -903,7 +903,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
         error ? "Social konnte nicht geladen werden." : "Social wird geladen …"
       }}<button v-if="error" @click="bootstrap">Erneut versuchen</button>
     </div>
-    <LawsApp v-else-if="page === 'laws'" :cad-url="settings.cad_url || ''" />
+    <LawsApp v-else-if="page === 'laws' || page === 'laws-editor'" :editorial="page === 'laws-editor'" :cad-url="settings.cad_url || ''" />
     <section v-else-if="!me && (!settings.guest || showAuth)" class="auth-layout">
       <div class="auth-intro">
         <span class="eyebrow">{{ settings.community }}</span>

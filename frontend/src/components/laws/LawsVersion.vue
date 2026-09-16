@@ -8,7 +8,7 @@ const amount = (value: string | number) => new Intl.NumberFormat('de-DE', {maxim
   <span class="subsection-number">({{part.number}})</span><div><h4 v-if="part.title">{{part.title}}</h4><div class="version-text">{{part.body}}</div></div>
  </section>
  <div v-if="version.amount_min !== null && version.amount_min !== undefined && version.amount_min !== ''" class="law-amount">
-  <span>{{version.amount_kind==='fee'?'Gebühr':'Geldstrafe'}}</span><strong>{{amount(version.amount_min)}}<template v-if="version.amount_max!==null && version.amount_max!==undefined && version.amount_max!=='' && Number(version.amount_max)!==Number(version.amount_min)"> – {{amount(version.amount_max)}}</template> RP-$</strong>
+  <span>{{version.amount_kind==='fee'?'Gebühr':'Geldstrafe'}}</span><strong>{{amount(version.amount_min)}}<template v-if="version.amount_max!==null && version.amount_max!==undefined && version.amount_max!=='' && Number(version.amount_max)!==Number(version.amount_min)"> – {{amount(version.amount_max)}}</template> $</strong>
  </div>
 </template>
 <style scoped>

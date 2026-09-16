@@ -2132,6 +2132,8 @@ const extractMenuItems = () => {
 const socialAppUrl = import.meta.env.VITE_SOCIAL_ENABLED === 'true' ? import.meta.env.VITE_SOCIAL_URL as string | undefined : undefined;
 const allApps = computed(() => {
     const apps = extractMenuItems();
+    const { hasModulePermission } = useModulePermission();
+    if (hasModulePermission('system','admin') || hasModulePermission('laws.drafts','read') || hasModulePermission('laws.drafts','write') || hasModulePermission('laws.publication','write') || hasModulePermission('laws.repeal','write')) apps.push({id:'laws-editor',title:'Gesetze-Redaktion',icon:'mdi-book-edit-outline',color:'#94703c',route:'/laws-editor',isDesktopApp:true,hideOnDesktop:false});
     apps.push({ id: 'laws', title: 'Gesetze', icon: 'mdi-book-open-page-variant-outline', color: '#94703c', route: '/laws', isDesktopApp: true, hideOnDesktop: false });
     if (socialAppUrl) apps.push({ id: 'social-platform', title: 'Social', icon: 'mdi-forum-outline', color: '#087f80', route: '/social-platform', isDesktopApp: true, hideOnDesktop: false });
     return apps;
@@ -2204,6 +2206,7 @@ const desktopApps = computed(() => {
         'dashboard',
         'social-platform',
         'laws',
+        'laws-editor',
         'admin',
         'map',
         'filemanager',

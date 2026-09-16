@@ -11,6 +11,7 @@ compose=(docker-compose -f backend/social/tests/compose.yml --profile browser)
 trap '"${compose[@]}" down --volumes' EXIT
 command -v docker-compose >/dev/null
 cmp social/src/LawsApp.vue frontend/src/components/laws/LawsApp.vue
+cmp social/src/LawsReader.vue frontend/src/components/laws/LawsReader.vue
 cmp social/src/LawsVersion.vue frontend/src/components/laws/LawsVersion.vue
 docker build -t kyuubi-social-backend-dev backend
 "${compose[@]}" up -d --build --wait
