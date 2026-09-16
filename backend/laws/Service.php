@@ -56,11 +56,21 @@ final class Service {
         return array_merge(array_intersect_key($v,array_flip(['id','article_id','title','chapter','body','state','reason','created_at','published_at','effective_at','repealed_at','repeal_reason'])),['publisher'=>$a['display_name']??$a['name']??'']);
     }
     public function dispatch(string $action,string $method,array $d=[],array $q=[]): array {
-        $reads=['bootstrap','books','book','history','administration'];
+        $reads=['bootstrap','books','book','search','history','administration'];
         if (($method==='GET')!==in_array($action,$reads,true))throw new Error(405,'Methode nicht erlaubt.');
         if ($action==='bootstrap')return ['enabled'=>(bool)$this->settings['enabled'],'guest'=>(bool)$this->settings['guest'],'revision'=>(int)$this->settings['revision'],'admin'=>$this->system,'can_read'=>(bool)($this->actor||$this->socialReader||$this->settings['guest']),'context'=>$this->actor?['authority_id'=>$this->actor['authority_id'],'name'=>$this->one('SELECT display_name FROM kdd_authorities WHERE id=?',[$this->actor['authority_id']])['display_name']]:null];
         $this->reader();
         if ($action==='books')return ['items'=>$this->all('SELECT id,title,description,revision FROM kdd_law_books ORDER BY title,id')];
+        if ($action==='search') {
+            $query=trim((string)($q['q']??''));
+            if(mb_strlen($query)>200)throw new Error(400,'Suchbegriff ist zu lang.');
+            $items=[];
+            if($query!=='')foreach($this->all('SELECT id,title FROM kdd_law_books ORDER BY title,id') as $book) {
+                $result=$this->dispatch('book','GET',[],['id'=>$book['id'],'q'=>$query]);
+                foreach($result['articles'] as $article)$items[]=['book_id'=>(int)$book['id'],'book_title'=>$book['title'],'article'=>$article];
+            }
+            return ['items'=>$items];
+        }
         if ($action==='book') {
             $id=(int)($q['id']??0);$book=$this->book($id);$rights=$this->rights($id);$articles=[];$search=mb_strtolower(trim((string)($q['q']??'')));
             foreach($this->all('SELECT * FROM kdd_law_articles WHERE book_id=? ORDER BY id',[$id]) as $a) {

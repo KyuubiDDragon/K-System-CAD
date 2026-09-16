@@ -38,6 +38,7 @@ check($view($outsider)['articles'][0]['current']['title']==='Erste Fassung','pub
 $a=$view($writer)['articles'][0];service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$a['revision'],'title'=>'Neue Fassung','body'=>'Entwurf geheim']);
 check($view($outsider)['articles'][0]['draft']===null&&$view($outsider)['articles'][0]['current']['body']==='Öffentlicher Text','editing preserves current published text');
 check(!service($outsider)->dispatch('book','GET',[],['id'=>$book,'q'=>'Entwurf geheim'])['articles'],'search does not leak drafts');
+check(count(service()->dispatch('search','GET',[],['q'=>'Entwurf geheim'])['items'])===0,'global search does not expose unpublished text');
 denies(409,fn()=>service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$a['revision']]),'stale draft update is rejected');
 $a=$view($publisher)['articles'][0];service($publisher)->dispatch('publish','POST',['article_id'=>$id,'revision'=>$a['revision']]);
 check(count(service($outsider)->dispatch('history','GET',[],['id'=>$id])['items'])===2,'published versions remain in history');
@@ -49,6 +50,9 @@ $futureArticle=array_values(array_filter($view($root)['articles'],fn($v)=>$v['id
 service($root)->dispatch('publish','POST',['article_id'=>$futureId,'revision'=>$futureArticle['revision'],'effective_at'=>gmdate('Y-m-d\TH:i:s\Z',time()+3600)]);
 $scheduled=array_values(array_filter($view($outsider)['articles'],fn($v)=>$v['id']===$futureId))[0];
 check($scheduled['current']===null&&$scheduled['scheduled']['title']==='Zukünftige Regel','future publication is announced but not yet in force');
+check(service()->dispatch('bootstrap','GET')['can_read'],'laws public by default');
+check(count(service()->dispatch('search','GET',[],['q'=>'Öffentlicher Text'])['items'])>0,'global search finds published content');
+$settings=service($root)->dispatch('bootstrap','GET');service($root)->dispatch('settings','POST',['enabled'=>true,'guest'=>false,'revision'=>$settings['revision']]);
 $settings=service($root)->dispatch('bootstrap','GET');denies(401,fn()=>service()->dispatch('books','GET'),'guest access disabled independently');
 service($root)->dispatch('settings','POST',['enabled'=>true,'guest'=>true,'revision'=>$settings['revision']]);
 check(count(service()->dispatch('books','GET')['items'])===1,'law guest access can be enabled');

@@ -7,6 +7,8 @@ test('laws: CAD publisher interface, safe text, public history and mobile readin
  await page.goto('/#/laws');
  await expect(page.getByRole('heading',{name:'Gesetze',exact:true})).toBeVisible();
  await page.getByText('Community-Verwaltung',{exact:true}).click();
+ await page.getByRole('button',{name:'Straßenverkehrsordnung',exact:true}).click();
+ await expect(page.getByLabel('Titel',{exact:true})).toHaveValue('Straßenverkehrsordnung');
  await page.getByLabel('Titel',{exact:true}).fill('Straßenverkehr');
  await page.getByLabel('Beschreibung',{exact:true}).fill('Regeln für die Straßen');
  await page.getByRole('button',{name:'Gesetzbuch anlegen',exact:true}).click();
@@ -26,6 +28,11 @@ test('laws: CAD publisher interface, safe text, public history and mobile readin
  await expect(page.getByRole('heading',{name:'§ 12 · Vorfahrt'})).toBeVisible();
  await expect(page.getByRole('button',{name:'Änderung entwerfen'})).toHaveCount(0);
  await expect(page.locator('.law-text').first()).toContainText('<script>alert(1)</script>');
+ await page.getByLabel('Alle Gesetzbücher durchsuchen').fill('Vorfahrt');
+ await page.getByRole('button',{name:'Suchen',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'1 Treffer'})).toBeVisible();
+ await page.locator('.law-result').click();
+ await expect(page.getByRole('heading',{name:'§ 12 · Vorfahrt'})).toBeVisible();
  await page.setViewportSize({width:390,height:844});
  await expect.poll(()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBeTruthy();
  await page.screenshot({path:'test-results/laws-mobile.png',fullPage:true});
