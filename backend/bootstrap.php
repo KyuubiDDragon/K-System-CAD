@@ -111,6 +111,15 @@ $GLOBALS['config'] = [
 ];
 
 
+// A Social-only installation must not expose the CAD API through a second host.
+if (!filter_var(getEnvVar('CAD_ENABLED', 'true'), FILTER_VALIDATE_BOOLEAN)
+    && !preg_match('~^/(?:api/)?social(?:/|$)~', parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) ?: '')) {
+    http_response_code(404);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'CAD ist in dieser Installation deaktiviert.']);
+    exit;
+}
+
 // --- 4. Fehler-Reporting basierend auf APP_ENV einstellen ---
 // Nutzt die $appEnv Variable aus der Konfiguration
 if ($appEnv === 'development') {

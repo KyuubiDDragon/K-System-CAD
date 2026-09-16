@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS kdd_social_bookmarks (
+ profile_id INT NOT NULL, post_id INT NOT NULL, created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ PRIMARY KEY(profile_id,post_id), INDEX(post_id)
+) ENGINE=InnoDB;
+ALTER TABLE kdd_social_companies ADD COLUMN IF NOT EXISTS verified TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE kdd_social_companies ADD COLUMN IF NOT EXISTS location VARCHAR(200) NOT NULL DEFAULT '';
+ALTER TABLE kdd_social_companies ADD COLUMN IF NOT EXISTS contact VARCHAR(200) NOT NULL DEFAULT '';

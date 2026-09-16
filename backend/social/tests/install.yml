@@ -1,0 +1,35 @@
+# Fresh full CAD schema, real entrypoint and migrations; isolated from the demo.
+name: kyuubi-social-install
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: install-test-only
+      MARIADB_DATABASE: install_test
+      MARIADB_USER: install_test
+      MARIADB_PASSWORD: install-test-only
+    tmpfs: /var/lib/mysql
+    volumes:
+      - ../../../database/database.sql:/docker-entrypoint-initdb.d/01-base.sql:ro
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 2s
+      timeout: 3s
+      retries: 60
+  backend:
+    image: kyuubi-social-backend-dev
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_DATABASE: install_test
+      DB_USERNAME: install_test
+      DB_PASSWORD: install-test-only
+      SOCIAL_ENABLED: "true"
+      CAD_ENABLED: "false"
+      COOKIE_SECURE: "false"
+      APP_ENV: production
+      JWT_SECRET_KEY: install-test-not-for-production
+    tmpfs:
+      - /var/www/social-private:mode=0777

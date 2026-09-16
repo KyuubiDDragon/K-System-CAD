@@ -111,4 +111,11 @@ Desktop.ini
 $RECYCLE.BIN/
 *.bak
 *.swp
-*~ 
+*~
+# Social build, dependencies and test artifacts
+social/node_modules/
+social/dist/
+social/test-results/
+social/playwright-report/
+
+/social/preview/

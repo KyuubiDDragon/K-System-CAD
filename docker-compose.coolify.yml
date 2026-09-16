@@ -39,7 +39,18 @@ services:
         condition: service_healthy
     volumes:
       - uploads_data:/var/www/html/uploads
+      - social_data:/var/www/social-private
     environment:
+      CAD_ENABLED: ${CAD_ENABLED:-true}
+      SOCIAL_ENABLED: ${SOCIAL_ENABLED:-false}
+      SOCIAL_ORIGIN: ${SOCIAL_ORIGIN:-}
+      SOCIAL_STORAGE_PATH: /var/www/social-private
+      SOCIAL_STORAGE: ${SOCIAL_STORAGE:-local}
+      SOCIAL_S3_ENDPOINT: ${SOCIAL_S3_ENDPOINT:-}
+      SOCIAL_S3_REGION: ${SOCIAL_S3_REGION:-us-east-1}
+      SOCIAL_S3_BUCKET: ${SOCIAL_S3_BUCKET:-}
+      SOCIAL_S3_KEY: ${SOCIAL_S3_KEY:-}
+      SOCIAL_S3_SECRET: ${SOCIAL_S3_SECRET:-}
       DB_HOST: db
       DB_PORT: 3306
       DB_DATABASE: ${DB_DATABASE:-ksystems}
@@ -83,6 +94,8 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
+        VITE_SOCIAL_URL: ${SOCIAL_URL:-}
+        VITE_SOCIAL_ENABLED: ${SOCIAL_ENABLED:-false}
         VITE_API_URL: https://${DOMAIN}/api
         VITE_SOCKET_URL: wss://${DOMAIN}/socket.io
         VITE_REDIRECT_URL: https://${DOMAIN}
@@ -92,6 +105,43 @@ services:
     healthcheck:
       disable: true
 
+  social:
+    profiles: [social]
+    build: ./social
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  social-worker:
+    profiles: [social]
+    build: ./backend
+    restart: unless-stopped
+    # This CLI worker has no Apache process; do not inherit the image HTTP probe.
+    healthcheck:
+      disable: true
+    entrypoint: ["php", "/var/www/html/social/worker.php"]
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - social_data:/var/www/social-private
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: ${DB_DATABASE:-ksystems}
+      DB_USERNAME: ${DB_USERNAME:-ksystems}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD must be set}
+      SOCIAL_ENABLED: ${SOCIAL_ENABLED:-false}
+      SOCIAL_STORAGE_PATH: /var/www/social-private
+      SOCIAL_STORAGE: ${SOCIAL_STORAGE:-local}
+      SOCIAL_S3_ENDPOINT: ${SOCIAL_S3_ENDPOINT:-}
+      SOCIAL_S3_REGION: ${SOCIAL_S3_REGION:-us-east-1}
+      SOCIAL_S3_BUCKET: ${SOCIAL_S3_BUCKET:-}
+      SOCIAL_S3_KEY: ${SOCIAL_S3_KEY:-}
+      SOCIAL_S3_SECRET: ${SOCIAL_S3_SECRET:-}
+
 volumes:
+  social_data:
   db_data:
   uploads_data:

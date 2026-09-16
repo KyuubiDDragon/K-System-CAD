@@ -1,0 +1,1 @@
+ALTER TABLE kdd_social_posts ADD COLUMN IF NOT EXISTS ai_generated TINYINT(1) NOT NULL DEFAULT 0;

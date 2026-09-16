@@ -1,0 +1,7 @@
+# Combine with the chosen base Compose file; COMPOSE_PROFILES=social, CAD_ENABLED=false.
+# Explicitly starting `frontend` still overrides its profile, as with all Compose profiles.
+services:
+  frontend:
+    profiles: [cad]
+  socket-server:
+    profiles: [cad]

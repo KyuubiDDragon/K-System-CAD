@@ -2128,7 +2128,13 @@ const extractMenuItems = () => {
 
 // Verwende die Hilfsfunktion, um alle Menüpunkte zu extrahieren
 // Make allApps reactive to language changes
-const allApps = computed(() => extractMenuItems());
+// The Social entry is installation-wide and never a user-hideable shortcut.
+const socialAppUrl = import.meta.env.VITE_SOCIAL_ENABLED === 'true' ? import.meta.env.VITE_SOCIAL_URL as string | undefined : undefined;
+const allApps = computed(() => {
+    const apps = extractMenuItems();
+    if (socialAppUrl) apps.push({ id: 'social-platform', title: 'Social', icon: 'mdi-forum-outline', color: '#087f80', isDesktopApp: true, hideOnDesktop: false });
+    return apps;
+});
 
 // Computed properties
 const backgroundStyle = computed(() => {
@@ -2195,6 +2201,7 @@ const desktopApps = computed(() => {
     // Define the order of app IDs as you want them to appear
     const appOrder = [
         'dashboard',
+        'social-platform',
         'admin',
         'map',
         'filemanager',
@@ -2440,6 +2447,10 @@ const closeWindow = (windowId: string) => {
 };
 
 const openApp = (app: App) => {
+    if (app.id === 'social-platform' && socialAppUrl) {
+        window.open(socialAppUrl, '_blank', 'noopener,noreferrer');
+        return;
+    }
     console.log('🚀 Opening app:', app);
     console.log('🔍 App action:', app.action);
     console.log('🔍 Widget type:', app.widgetType);

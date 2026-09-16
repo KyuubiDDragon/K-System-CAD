@@ -850,7 +850,7 @@ function getAuthorities(PDO $pdo)
         $stmt = $pdo->prepare("
             SELECT id, display_name, name, logo_url, primary_color, secondary_color, app_title, default_background
             FROM kdd_authorities 
-            WHERE active = 1 
+            WHERE active = 1 AND authority_type <> 'personal'
             ORDER BY display_name
         ");
         $stmt->execute();

@@ -1,0 +1,5 @@
+# Social limits are enforced per file and account by Service.php.
+# Leave room for multipart metadata above the configurable 1024 MiB maximum.
+php_value upload_max_filesize 1024M
+php_value post_max_size 1100M
+LimitRequestBody 1153433600

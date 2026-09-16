@@ -5,6 +5,8 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpng-dev \
+    libjpeg62-turbo-dev \
+    libwebp-dev \
     libonig-dev \
     libxml2-dev \
     libzip-dev \
@@ -12,11 +14,13 @@ RUN apt-get update && apt-get install -y \
     unzip \
     default-mysql-client \
     wget \
+    ffmpeg \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+RUN docker-php-ext-configure gd --with-jpeg --with-webp \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Copy custom PHP configuration for uploads
 COPY uploads.ini /usr/local/etc/php/conf.d/custom-uploads.ini
@@ -56,7 +60,9 @@ COPY docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Anlegen von Uploads-Verzeichnis und Berechtigungen
-RUN mkdir -p /var/www/html/uploads && \
+RUN mkdir -p /var/www/social-private && \
+    chown www-data:www-data /var/www/social-private && \
+    mkdir -p /var/www/html/uploads && \
     mkdir -p /var/www/html/migrations/applied && \
     chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html/uploads && \

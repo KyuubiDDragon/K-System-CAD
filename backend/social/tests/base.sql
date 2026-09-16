@@ -1,0 +1,68 @@
+CREATE TABLE `kdd_authorities` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `display_name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `active` tinyint(1) DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `logo_url` varchar(255) DEFAULT NULL COMMENT 'URL zum Authority-Logo',
+  `primary_color` varchar(7) DEFAULT '#3B82F6' COMMENT 'Haupt-Farbe für Buttons etc.',
+  `secondary_color` varchar(7) DEFAULT '#6B7280' COMMENT 'Sekundär-Farbe für Akzente',
+  `app_title` varchar(100) DEFAULT NULL COMMENT 'Custom App-Titel (z.B. LSFD Los Santos)',
+  `default_background` varchar(255) DEFAULT NULL COMMENT 'Standard-Hintergrund für neue Member',
+  `theme_settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Complete theme configuration as JSON' CHECK (json_valid(`theme_settings`)),
+  `authority_type` enum('faction','company','government','private') DEFAULT 'private',
+  `has_custom_domain` tinyint(1) DEFAULT 0,
+  `mail_domain` varchar(191) DEFAULT NULL,
+  `default_mail_quota` int(11) DEFAULT 5 COMMENT 'Wie viele Mails kann ein User dieser Authority haben?',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `idx_active` (`active`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci;
+CREATE TABLE `kdd_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `mail_header` text DEFAULT NULL,
+  `mail_footer` text DEFAULT NULL,
+  `mail_header_neutral` text DEFAULT NULL,
+  `mail_footer_neutral` text DEFAULT NULL,
+  `signature` text DEFAULT NULL,
+  `last_login` timestamp NULL DEFAULT NULL,
+  `banned` tinyint(1) NOT NULL DEFAULT 0,
+  `documentView` char(50) NOT NULL DEFAULT 'tiles',
+  `linked_employee` int(11) DEFAULT 0,
+  `last_interact` timestamp NULL DEFAULT NULL,
+  `authority` varchar(50) DEFAULT NULL,
+  `authority_id` int(11) DEFAULT NULL,
+  `linked_mail_account_id` int(11) DEFAULT NULL COMMENT 'Verknüpfte Mail-Adresse',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`,`authority`) USING BTREE,
+  UNIQUE KEY `email` (`email`,`authority`) USING BTREE,
+  KEY `idx_users_authority_id` (`authority_id`),
+  KEY `idx_linked_mail` (`linked_mail_account_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `kdd_roles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `sort_order` int(11) DEFAULT 25,
+  `power` int(11) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT 0,
+  `authority_id` int(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_role_per_authority` (`name`,`authority_id`),
+  KEY `fk_roles_authority` (`authority_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `kdd_user_roles` (
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  `authority_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `role_id` (`role_id`),
+  KEY `idx_user_roles_authority_id` (`authority_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

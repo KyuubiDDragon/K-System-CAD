@@ -1,0 +1,53 @@
+name: kyuubi-social-test
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: social-test-only
+      MARIADB_DATABASE: social_test
+      MARIADB_USER: social_test
+      MARIADB_PASSWORD: social-test-only
+    tmpfs: /var/lib/mysql
+    volumes:
+      - ./base.sql:/docker-entrypoint-initdb.d/01-base.sql:ro
+      - ../../migrations/0018_social_platform.sql:/docker-entrypoint-initdb.d/02-social.sql:ro
+      - ../../migrations/0019_social_discovery.sql:/docker-entrypoint-initdb.d/03-discovery.sql:ro
+      - ../../migrations/0020_social_post_metadata.sql:/docker-entrypoint-initdb.d/04-post-metadata.sql:ro
+      - ../../migrations/0021_social_bookmarks_directory.sql:/docker-entrypoint-initdb.d/05-bookmarks-directory.sql:ro
+      - ../../migrations/0022_social_company_profiles.sql:/docker-entrypoint-initdb.d/06-company-profiles.sql:ro
+    healthcheck:
+      test: [CMD, healthcheck.sh, --connect, --innodb_initialized]
+      interval: 2s
+      timeout: 3s
+      retries: 40
+  backend:
+    image: kyuubi-social-backend-dev
+    entrypoint: [apache2-foreground]
+    ports: ["127.0.0.1:${SOCIAL_TEST_PORT:-8088}:80"]
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_DATABASE: social_test
+      DB_USERNAME: social_test
+      DB_PASSWORD: social-test-only
+      SOCIAL_ENABLED: "true"
+      CAD_ENABLED: "true"
+      SOCIAL_STORAGE_PATH: /var/www/social-private
+      COOKIE_SECURE: "false"
+      APP_ENV: production
+      JWT_SECRET_KEY: local-test-not-for-production
+    volumes:
+      - ../:/var/www/html/social:ro
+      - ../../bootstrap.php:/var/www/html/bootstrap.php:ro
+    tmpfs:
+      - /var/www/social-private:mode=0777
+
+  social:
+    profiles: [browser]
+    build: ../../../social
+    ports: ["127.0.0.1:${SOCIAL_TEST_UI_PORT:-5186}:80"]
+    depends_on:
+      backend:
+        condition: service_healthy

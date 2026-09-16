@@ -1,4 +1,12 @@
 RewriteEngine on
+PassEnv CAD_ENABLED
+# Disable all legacy CAD routes in Social-only mode, including entrypoints
+# which do not load bootstrap.php. Social is still served by this backend.
+RewriteCond %{ENV:CAD_ENABLED} =false
+RewriteCond %{REQUEST_URI} !^/(api/)?social(/|$)
+RewriteCond %{REQUEST_URI} !^/(api/)?health\.php$
+RewriteRule ^ - [R=404,L]
+
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
 # Handle /api/ prefix by internally removing it
