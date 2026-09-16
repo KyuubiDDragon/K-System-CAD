@@ -89,6 +89,7 @@ const dialog = ref(""),
   selectedMedia = ref<Row[]>([]),
   uploading = ref(false),
   authMode = ref("login"),
+  showAuth = ref(false),
   recovery = ref(""),
   authForm = reactive({
     handle: "",
@@ -361,7 +362,7 @@ async function authenticate() {
     if (authMode.value === "recover") {
       authMode.value = "login";
       error.value = "Passwort geändert. Bitte anmelden.";
-    } else await bootstrap();
+    } else { showAuth.value = false; await bootstrap(); }
   });
   if (me.value) await load();
 }
@@ -881,7 +882,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
               </div>
             </details></template
           ><button v-else-if="me" @click="logout">Abmelden</button
-          ><button v-else-if="settings.guest || page === 'laws'" @click="settings.guest = false; go('apps')">
+          ><button v-else-if="settings.guest || page === 'laws'" @click="showAuth = true; go('apps')">
             Anmelden
           </button>
         </div>
@@ -903,12 +904,12 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
       }}<button v-if="error" @click="bootstrap">Erneut versuchen</button>
     </div>
     <LawsApp v-else-if="page === 'laws'" :cad-url="settings.cad_url || ''" />
-    <section v-else-if="!me && !settings.guest" class="auth-layout">
-      <button v-if="settings.laws_enabled" @click="go('laws')">Gesetze ansehen</button>
+    <section v-else-if="!me && (!settings.guest || showAuth)" class="auth-layout">
       <div class="auth-intro">
         <span class="eyebrow">{{ settings.community }}</span>
         <h1>Deine Stadt.<br />Deine Menschen.</h1>
         <p>Beiträge, Fotos, Videos und Angebote aus deiner Community.</p>
+        <div class="auth-public-links"><button v-if="settings.guest" @click="showAuth = false; go('social'); load()">Ohne Anmeldung weiterlesen</button><button v-if="settings.laws_enabled" class="text-button" @click="go('laws')">Gesetze ansehen ↗</button></div>
       </div>
       <form class="panel auth-form" @submit.prevent="authenticate">
         <h2>
@@ -2180,6 +2181,12 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             </section>
           </main>
           <aside class="right-rail">
+            <section v-if="!me" class="side-box guest-invitation">
+              <div class="side-heading"><Icon name="user" /><h3>Mach mit</h3></div>
+              <p>Lies mit, was in deiner Stadt passiert. Melde dich an, um Beiträge zu posten, zu kommentieren und dich mit anderen auszutauschen.</p>
+              <button class="primary" @click="authMode = 'login'; showAuth = true; go('apps')">Anmelden</button>
+              <button class="text-button" @click="authMode = 'register'; showAuth = true; go('apps')">Konto erstellen</button>
+            </section>
             <section
               v-if="settings.modules.video"
               class="side-box latest-video"

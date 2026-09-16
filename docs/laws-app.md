@@ -2,36 +2,32 @@
 
 ## Einstieg
 
-- Im CAD-Desktop: **Gesetze**. Alternativ `/laws` auf der CAD-Domain.
-- In Social: **Gesetze** in der Plattformauswahl bzw. auf der Anmeldeseite. `#/laws` öffnet die Leseansicht.
-- CAD und Social zeigen dieselben Gesetzbücher. Redaktionelle Befugnisse kommen ausschließlich aus einer validierten CAD-Sitzung. Ein Social-Administrator wird dadurch nicht zum Gesetzgeber. Die separate Kontoverknüpfung/SSO ist nicht Bestandteil dieser Änderung.
+Im CAD-Desktop über **Gesetze** oder `/laws`; in Social über `#/laws`. Veröffentlichte Fassungen sind standardmäßig ohne Anmeldung lesbar. Die Systemverwaltung kann Gastzugang und Modul unabhängig konfigurieren.
 
-## Einrichtung durch die technische CAD-Administration
+## Zuständigkeit
 
-1. Gesetze öffnen und unter **Community-Verwaltung** ein Gesetzbuch anlegen.
-2. Im Gesetzbuch **Gesetzbuch und Fraktionszuständigkeiten** öffnen. Für jede gewünschte Fraktion Entwürfe lesen, Bearbeiten, Veröffentlichen und/oder Außer Kraft setzen freigeben. Die Freigabe aktiviert auch die CAD-Funktion `laws` für diese Fraktion.
-3. In der bestehenden CAD-Rollenverwaltung die passenden Rechte an Mitarbeiterrollen vergeben: `READ_LAWS_DRAFTS`, `WRITE_LAWS_DRAFTS`, `WRITE_LAWS_PUBLICATION`, `WRITE_LAWS_REPEAL`.
+Das System-CAD mit aktuellem Systemrecht behält vollständigen Zugriff. Unter **Community-Verwaltung → Zugriff auf die gesamte Gesetze-App** vergibt es die App-Zuständigkeit an Behörden: Entwürfe lesen, Bearbeiten, Veröffentlichen und Außer Kraft setzen. Diese Freigabe gilt für alle vorhandenen und zukünftigen Gesetzbücher und aktiviert die CAD-Funktion `laws`.
 
-Eine Rolle allein reicht nicht: Jeder schreibende Zugriff erfordert die Fraktionsfreigabe für genau dieses Gesetzbuch, die aktivierte Funktion und das passende aktuelle Rollenrecht. Eine nicht zuständige Fraktion kann sich über ihre Rollenverwaltung keine Gesetzgebungsbefugnis verschaffen. Rechte werden pro Anfrage aus der Datenbank gelesen.
+Mitarbeiter benötigen zusätzlich die passenden CAD-Rollenrechte (`READ_LAWS_DRAFTS`, `WRITE_LAWS_DRAFTS`, `WRITE_LAWS_PUBLICATION`, `WRITE_LAWS_REPEAL`). Die API prüft aktuelle Rollen, App-Freigabe und aktivierte Funktion bei jeder Anfrage. Social-Rechte erlauben keine Redaktion. Redakteure können keine App-Zugriffe verteilen.
 
-Veröffentlichte Gesetze sind für angemeldete CAD- bzw. aktive Social-Nutzer lesbar. Der separate Schalter **Veröffentlichte Gesetze ohne Anmeldung lesbar** gibt sie zusätzlich Gästen frei; Social-Feed-Gastzugang und Gesetze-Gastzugang sind unabhängig. Gastlesen ist bei Installation ausgeschaltet. Die App lässt sich zentral deaktivieren; Inhalte werden dabei erhalten, öffentliche Direktzugriffe gesperrt, die technische Verwaltung bleibt erreichbar.
+Gesetzbücher und Paragraphen sind gemeinschaftliche Inhalte ohne Behördenzuordnung. Autor und Herausgeber bleiben an den Fassungen zur Nachvollziehbarkeit gespeichert.
 
-## Fassungen
+## Erstellen und lesen
 
-Ein Paragraph besitzt eine feste Nummer innerhalb seines Gesetzbuchs, Kapitel, Titel und Text. Bearbeitungen sind Entwürfe mit Begründung. Sie ersetzen die geltende Fassung erst nach gesonderter Veröffentlichung. Mit einem zukünftigen Gültigkeitsdatum bleibt die bisherige Fassung zunächst in Kraft, die bereits veröffentlichte zukünftige Fassung ist als solche sichtbar. Pro Paragraph ist eine zukünftige Veröffentlichung gleichzeitig möglich.
+Über **Neues Gesetzbuch** legen Redakteure Bücher an, optional anhand der fünf Titel-/Kapitelvorlagen. Es werden keine Musterregeln automatisch veröffentlicht. Links zeigt das Inhaltsverzeichnis Kapitel und natürlich sortierte Paragraphennummern. Die Buchauswahl wechselt zwischen Büchern. Die globale Suche durchsucht sichtbare Paragraphen und Unterparagraphen.
 
-Veröffentlichte Textfassungen können nicht überschrieben oder gelöscht werden. Eine Aufhebung hinterlegt Datum, Begründung und Akteur, ohne eine ältere Fassung wieder in Kraft zu setzen. Solange eine zukünftige Fassung aussteht, ist eine Aufhebung gesperrt. Korrekturen erfolgen über eine neue Fassung. Ein Änderungsprotokoll erfasst die maßgeblichen Aktionen. Parallele Bearbeitungen werden durch Versionsnummern abgesichert und veraltete Schreibversuche abgelehnt.
+Der eigene Paragrapheneditor enthält Kapitel, Nummer, Titel, Grundtext und nummerierte Absätze mit optionalen Zwischenüberschriften. Absätze lassen sich umsortieren. Optional können Geldstrafe oder Gebühr als fester Betrag oder Betragsrahmen in RP-Dollar eingetragen werden. Eine Vorschau zeigt die spätere Darstellung.
 
-Die Suche durchsucht die sichtbaren Paragraphen des gewählten Gesetzbuchs. Direktlinks und frühere Fassungen beachten dieselben Zugriffsregeln. Texte werden als Text ausgegeben, nicht als ausführbares HTML.
+Änderungen werden als Entwurf mit Begründung gespeichert. Veröffentlichung erfordert ein eigenes Recht und kann sofort oder mit zukünftigem Gültigkeitsdatum erfolgen. Text, Absätze und Beträge gehören gemeinsam zur Fassung und bleiben in der Historie erhalten. Aufhebungen sind ausdrücklich sichtbar. Parallele Änderungen werden über Revisionen abgefangen. Inhalte werden als Text ausgegeben, nicht als ausführbares HTML.
 
-## Absicherung der Rollenverwaltung
+## Technisches
 
-Erstellen, Ändern und Löschen von Rollen prüfen aktuelle Rechte statt nur den JWT-Inhalt. Eine fremde Mandantenrolle darf nicht bearbeitet werden. Normale Rollenadministratoren dürfen keine Rechte vergeben, die sie selbst nicht besitzen, und keine höher berechtigten Rollen verändern. Kategoriezuweisungen bleiben ebenfalls im aktuellen Mandanten. Gelöschte Rollen werden beim Laden der Rechte ignoriert; unbekannte Aktionen werden abgewiesen.
+API: `/api/laws/index.php` im CAD und `/api/social/laws.php` in Social. Keine automatische Kontoverknüpfung/SSO. Redaktion benötigt eine gültige CAD-Sitzung.
 
-## Technik und Prüfung
+Migrationen: `0023_laws.sql`, `0024_laws_public.sql`, `0026_laws_structure.sql`, `0027_laws_app_grants.sql`. Die letzte Migration übernimmt bestehende Buchfreigaben mit ihren jeweils stärksten Rechten pro Behörde in `kdd_law_app_grants`; diese gelten anschließend für die gesamte App.
 
-Migration: `0023_laws.sql`. Eigenständige Tabellen `kdd_law_*` bilden das gemeinsame Gesetzbuch ab; es gibt keine Kopie pro Mandant. Die Zuordnungstabelle begrenzt die redaktionellen Zuständigkeiten. API: `/api/laws/index.php` im CAD, `/api/social/laws.php` als Social-Einstieg mit dessen pfadgebundenem Sitzungscookie.
+Die unabhängig gebauten Frontends enthalten identische `LawsApp.vue` und `LawsVersion.vue` in `social/src` und `frontend/src/components/laws`. `social/tests/verify.sh` prüft die Übereinstimmung und führt Integrations-, Rechte- und Browserprüfungen in einer wegwerfbaren Installation aus. Testkonten werden niemals in Produktion angelegt.
 
-Die beiden unabhängig gebauten Frontends enthalten denselben Gesetze-Baustein unter `social/src/LawsApp.vue` und `frontend/src/components/laws/LawsApp.vue`. Bei Änderungen beide synchron halten; `social/tests/verify.sh` prüft die Übereinstimmung. Der CAD-Wrapper verwendet den konfigurierten CAD-API-Endpunkt.
+## CAD-Desktop-Einbettung
 
-`bash social/tests/verify.sh` baut eine wegwerfbare Installation aus dem vollständigen CAD-Grundschema, führt Social-API-Prüfungen, Gesetzes-/Rollenprüfungen und die Browserprüfungen aus. `backend/social/tests/laws.php` verweigert die Ausführung auf anderen Datenbanken als `social_test`. Testkonten und Testsitzungen werden ausschließlich in dieser temporären Installation erzeugt.
+Die Gesetze besitzen einen inneren Abstand von 20 Pixeln und passen ihr Layout per Container Query an die tatsächliche Fensterbreite an. Social öffnet über `social-platform` ein internes Desktop-Fenster mit der konfigurierten Social-Adresse. Die Social-Nginx-Vorlage erlaubt als zusätzlichen Frame-Ursprung ausschließlich `CAD_FRAME_ORIGIN` (in den Compose-Dateien die CAD-Domain). Eine bestehende Social-Sitzung wird bei zulässigen Browser-Cookie-Einstellungen weiterverwendet; eine automatische Übernahme der CAD-Identität/SSO ist damit nicht implementiert.

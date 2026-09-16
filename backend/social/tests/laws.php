@@ -22,13 +22,20 @@ $publisher=actor('publisher',['READ_LAWS_DRAFTS','WRITE_LAWS_PUBLICATION','WRITE
 $outsider=actor('outsider',['READ_LAWS_DRAFTS','WRITE_LAWS_DRAFTS','WRITE_LAWS_PUBLICATION']);
 function service(?array $who=null,bool $social=false): \Kyuubi\Laws\Service {global $pdo;return new \Kyuubi\Laws\Service($pdo,$who,$social);}
 $book=service($root)->dispatch('save_book','POST',['title'=>'Testgesetzbuch','description'=>'Prüfung'])['id'];
-$draft=['book_id'=>$book,'number'=>'1','title'=>'Erste Fassung','chapter'=>'Allgemeines','body'=>'Öffentlicher Text','reason'=>'Erstanlage'];
-denies(403,fn()=>service($writer)->dispatch('save_draft','POST',$draft),'role alone does not grant book access');
-foreach([$writer,$publisher] as $a)service($root)->dispatch('grant','POST',['book_id'=>$book,'authority_id'=>$a['authority_id'],'draft_read'=>true,'edit'=>true,'publish'=>true,'repeal'=>true]);
+$draft=['book_id'=>$book,'number'=>'1','title'=>'Erste Fassung','chapter'=>'Allgemeines','body'=>'Öffentlicher Text','reason'=>'Erstanlage','subsections'=>[['number'=>'1','title'=>'Sorgfalt','body'=>'Besondere Vorsicht im Verkehr']],'amount_kind'=>'fine','amount_min'=>'125.50','amount_max'=>'500'];
+denies(403,fn()=>service($writer)->dispatch('save_draft','POST',$draft),'role alone does not grant app access');
+foreach([$writer,$publisher] as $a)service($root)->dispatch('grant','POST',['authority_id'=>$a['authority_id'],'draft_read'=>true,'edit'=>true,'publish'=>true,'repeal'=>true]);
+$second=service($writer)->dispatch('save_book','POST',['title'=>'Zweites Gesetzbuch','description'=>'App-Zuständigkeit'])['id'];
+check(service($writer)->rights($second)['edit'],'app grant covers all books, including new books');
+denies(403,fn()=>service($writer)->dispatch('grant','POST',['authority_id'=>$outsider['authority_id'],'edit'=>true]),'assigned editor cannot distribute app access');
+check(service($root)->rights($second)['publish'],'system has full app access without assignment');
 $id=service($writer)->dispatch('save_draft','POST',$draft)['id'];
 $view=fn($who)=>service($who)->dispatch('book','GET',[],['id'=>$book]);
 $article=$view($writer)['articles'][0];
 check(!$article['current']&&$article['draft']['title']==='Erste Fassung','new law starts as draft');
+check($article['draft']['subsections'][0]['number']==='1'&&(float)$article['draft']['amount_min']===125.50,'structured draft and RP amount round trip');
+denies(422,fn()=>service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$article['revision'],'amount_max'=>'100']),'inverted amount range rejected');
+denies(422,fn()=>service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$article['revision'],'subsections'=>[$draft['subsections'][0],$draft['subsections'][0]]]),'duplicate subsection numbers rejected');
 check(count($view($outsider)['articles'])===0,'other faction cannot discover draft');
 denies(404,fn()=>service($outsider)->dispatch('history','GET',[],['id'=>$id]),'draft history does not expose article');
 denies(403,fn()=>service($writer)->dispatch('publish','POST',['article_id'=>$id,'revision'=>$article['revision']]),'editing does not imply publication');
@@ -42,6 +49,8 @@ check(count(service()->dispatch('search','GET',[],['q'=>'Entwurf geheim'])['item
 denies(409,fn()=>service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$a['revision']]),'stale draft update is rejected');
 $a=$view($publisher)['articles'][0];service($publisher)->dispatch('publish','POST',['article_id'=>$id,'revision'=>$a['revision']]);
 check(count(service($outsider)->dispatch('history','GET',[],['id'=>$id])['items'])===2,'published versions remain in history');
+check((float)service($outsider)->dispatch('history','GET',[],['id'=>$id])['items'][1]['amount_min']===125.50,'historical amounts preserved');
+check(count(service()->dispatch('search','GET',[],['q'=>'Besondere Vorsicht'])['items'])===1,'global search finds subsection text');
 $a=$view($publisher)['articles'][0];service($publisher)->dispatch('repeal','POST',['article_id'=>$id,'revision'=>$a['revision'],'reason'=>'Aufgehoben']);
 check((bool)$view($outsider)['articles'][0]['current']['repealed_at'],'repeal is explicit and does not restore older version');
 $futureDraft=[...$draft,'number'=>'2','title'=>'Zukünftige Regel'];
@@ -55,11 +64,11 @@ check(count(service()->dispatch('search','GET',[],['q'=>'Öffentlicher Text'])['
 $settings=service($root)->dispatch('bootstrap','GET');service($root)->dispatch('settings','POST',['enabled'=>true,'guest'=>false,'revision'=>$settings['revision']]);
 $settings=service($root)->dispatch('bootstrap','GET');denies(401,fn()=>service()->dispatch('books','GET'),'guest access disabled independently');
 service($root)->dispatch('settings','POST',['enabled'=>true,'guest'=>true,'revision'=>$settings['revision']]);
-check(count(service()->dispatch('books','GET')['items'])===1,'law guest access can be enabled');
+check(count(service()->dispatch('books','GET')['items'])===2,'law guest access can be enabled');
 denies(403,fn()=>service(null,true)->dispatch('settings','POST',['enabled'=>true,'guest'=>true,'revision'=>2]),'Social session cannot administer laws');
-service($root)->dispatch('grant','POST',['book_id'=>$book,'authority_id'=>$writer['authority_id']]);
+service($root)->dispatch('grant','POST',['authority_id'=>$writer['authority_id']]);
 check(!service($writer)->rights($book)['edit'],'revoked jurisdiction takes effect immediately');
-service($root)->dispatch('grant','POST',['book_id'=>$book,'authority_id'=>$writer['authority_id'],'edit'=>true]);
+service($root)->dispatch('grant','POST',['authority_id'=>$writer['authority_id'],'edit'=>true]);
 sql("DELETE rp FROM kdd_role_permissions rp JOIN kdd_permissions p ON p.id=rp.permission_id WHERE rp.role_id=? AND p.name='WRITE_LAWS_DRAFTS'",[$writer['role']]);
 check(!service($writer)->rights($book)['edit'],'revoked CAD role permission takes effect immediately');
 try {RoleGuard::validate($pdo,$root['id'],$root['authority_id'],$writer['role'],[],[]);throw new RuntimeException('cross-tenant role accepted');}catch(DomainException $e){check(true,'role management rejects foreign tenant even for admin');}

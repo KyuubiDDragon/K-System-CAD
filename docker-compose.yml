@@ -149,6 +149,8 @@ services:
   social:
     profiles: [social]
     build: ./social
+    environment:
+      CAD_FRAME_ORIGIN: "https://${DOMAIN}"
     restart: unless-stopped
     depends_on:
       backend:

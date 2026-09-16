@@ -42,23 +42,23 @@ final class Service {
         if(!$this->actor)return $result;
         $feature=$this->one("SELECT 1 FROM kdd_authority_features_rel r JOIN kdd_authority_features f ON f.id=r.feature_id WHERE r.authority_id=? AND f.code='laws'",[$this->actor['authority_id']]);
         if(!$feature)return $result;
-        $grant=$this->one('SELECT * FROM kdd_law_grants WHERE book_id=? AND authority_id=?',[$book,$this->actor['authority_id']]);
+        $grant=$this->one('SELECT * FROM kdd_law_app_grants WHERE authority_id=?',[$this->actor['authority_id']]);
         foreach(['draft_read'=>'laws.drafts.read','edit'=>'laws.drafts.write','publish'=>'laws.publication.write','repeal'=>'laws.repeal.write'] as $key=>$permission) $result[$key]=!empty($grant[$key])&&!empty($this->permissions[$permission]);
         // Anyone able to edit or publish must be able to inspect the draft they act on.
         $result['draft_read']=$result['draft_read']||$result['edit']||$result['publish'];
         return $result;
     }
-    private function requireRight(int $book,string $right): void { if(!$this->rights($book)[$right])throw new Error(403,'Keine Befugnis für dieses Gesetzbuch.'); }
+    private function requireRight(int $book,string $right): void { if(!$this->rights($book)[$right])throw new Error(403,'Keine Befugnis für die Gesetze-App.'); }
     private function book(int $id): array { $b=$this->one('SELECT * FROM kdd_law_books WHERE id=?',[$id]);if(!$b)throw new Error(404,'Gesetzbuch nicht gefunden.');return $b; }
     private function article(int $id): array { $a=$this->one('SELECT * FROM kdd_law_articles WHERE id=?',[$id]);if(!$a)throw new Error(404,'Paragraph nicht gefunden.');return $a; }
     private function versionView(array $v): array {
         $a=$this->one('SELECT display_name,name FROM kdd_authorities WHERE id=?',[$v['authority_id']]);
-        return array_merge(array_intersect_key($v,array_flip(['id','article_id','title','chapter','body','state','reason','created_at','published_at','effective_at','repealed_at','repeal_reason'])),['publisher'=>$a['display_name']??$a['name']??'']);
+        return array_merge(array_intersect_key($v,array_flip(['id','article_id','title','chapter','body','state','reason','created_at','published_at','effective_at','repealed_at','repeal_reason','amount_kind','amount_min','amount_max'])),['subsections'=>json_decode($v['subsections']??'[]',true),'publisher'=>$a['display_name']??$a['name']??'']);
     }
     public function dispatch(string $action,string $method,array $d=[],array $q=[]): array {
         $reads=['bootstrap','books','book','search','history','administration'];
         if (($method==='GET')!==in_array($action,$reads,true))throw new Error(405,'Methode nicht erlaubt.');
-        if ($action==='bootstrap')return ['enabled'=>(bool)$this->settings['enabled'],'guest'=>(bool)$this->settings['guest'],'revision'=>(int)$this->settings['revision'],'admin'=>$this->system,'can_read'=>(bool)($this->actor||$this->socialReader||$this->settings['guest']),'context'=>$this->actor?['authority_id'=>$this->actor['authority_id'],'name'=>$this->one('SELECT display_name FROM kdd_authorities WHERE id=?',[$this->actor['authority_id']])['display_name']]:null];
+        if ($action==='bootstrap')return ['enabled'=>(bool)$this->settings['enabled'],'guest'=>(bool)$this->settings['guest'],'revision'=>(int)$this->settings['revision'],'admin'=>$this->system,'rights'=>$this->rights(0),'can_read'=>(bool)($this->actor||$this->socialReader||$this->settings['guest']),'context'=>$this->actor?['authority_id'=>$this->actor['authority_id'],'name'=>$this->one('SELECT display_name FROM kdd_authorities WHERE id=?',[$this->actor['authority_id']])['display_name']]:null];
         $this->reader();
         if ($action==='books')return ['items'=>$this->all('SELECT id,title,description,revision FROM kdd_law_books ORDER BY title,id')];
         if ($action==='search') {
@@ -78,10 +78,11 @@ final class Service {
                 $draft=$rights['draft_read']?$this->one("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='draft' ORDER BY id DESC LIMIT 1",[$a['id']]):null;
                 $future=$this->one("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='published' AND effective_at>UTC_TIMESTAMP() ORDER BY effective_at,id LIMIT 1",[$a['id']]);
                 if(!$v&&!$draft&&!$future)continue;
-                $haystack=$a['number'].' '.implode(' ',array_map(fn($x)=>$x?($x['title'].' '.$x['chapter'].' '.$x['body']):'',[$v,$draft,$future]));
+                $haystack=$a['number'].' '.implode(' ',array_map(fn($x)=>$x?($x['title'].' '.$x['chapter'].' '.$x['body'].' '.implode(' ',array_map(fn($part)=>$part['number'].' '.$part['title'].' '.$part['body'],json_decode($x['subsections']??'[]',true)))):'',[$v,$draft,$future]));
                 if($search!==''&&!str_contains(mb_strtolower($haystack),$search))continue;
                 $articles[]=['id'=>(int)$a['id'],'number'=>$a['number'],'revision'=>(int)$a['revision'],'current'=>$v?$this->versionView($v):null,'draft'=>$draft?$this->versionView($draft):null,'scheduled'=>$future?$this->versionView($future):null];
             }
+            usort($articles,fn($a,$b)=>strnatcasecmp($a['number'],$b['number']));
             return ['book'=>$book,'rights'=>$rights,'articles'=>$articles];
         }
         if($action==='history') {
@@ -91,7 +92,7 @@ final class Service {
             return ['items'=>array_map(fn($v)=>$this->versionView($v),$rows)];
         }
         if($action==='administration') {
-            $this->admin();return ['authorities'=>$this->all("SELECT id,display_name FROM kdd_authorities WHERE active=1 AND authority_type<>'personal' ORDER BY display_name"),'grants'=>$this->all('SELECT * FROM kdd_law_grants'),'audit'=>$this->all('SELECT id,actor_id,authority_id,action,details,created_at FROM kdd_law_audit ORDER BY id DESC LIMIT 100')];
+            $this->admin();return ['authorities'=>$this->all("SELECT id,display_name FROM kdd_authorities WHERE active=1 AND authority_type<>'personal' ORDER BY display_name"),'grants'=>$this->all('SELECT * FROM kdd_law_app_grants'),'audit'=>$this->all('SELECT id,actor_id,authority_id,action,details,created_at FROM kdd_law_audit ORDER BY id DESC LIMIT 100')];
         }
         $this->db->beginTransaction();
         try {
@@ -106,19 +107,19 @@ final class Service {
             $this->exec('UPDATE kdd_law_settings SET enabled=?,guest=?,revision=revision+1 WHERE id=1',[!empty($d['enabled'])?1:0,!empty($d['guest'])?1:0]);$this->audit('settings',$d);return ['ok'=>true];
         }
         if($action==='save_book') {
-            $this->admin();$id=(int)($d['id']??0);$title=$this->text($d,'title',160);$description=$this->text($d,'description',4000,false);
+            $this->requireRight(0,'edit');$id=(int)($d['id']??0);$title=$this->text($d,'title',160);$description=$this->text($d,'description',4000,false);
             if($id) { $b=$this->one('SELECT * FROM kdd_law_books WHERE id=? FOR UPDATE',[$id]);if(!$b)throw new Error(404,'Gesetzbuch nicht gefunden.');if((int)$b['revision']!==(int)($d['revision']??0))throw new Error(409,'Gesetzbuch wurde inzwischen geändert.');$this->exec('UPDATE kdd_law_books SET title=?,description=?,revision=revision+1 WHERE id=?',[$title,$description,$id]); }
             else { $this->exec('INSERT INTO kdd_law_books(title,description,created_by) VALUES(?,?,?)',[$title,$description,$this->actor['id']]);$id=(int)$this->db->lastInsertId(); }
             $this->audit('save_book',['id'=>$id,'title'=>$title]);return ['id'=>$id];
         }
         if($action==='grant') {
-            $this->admin();$book=(int)($d['book_id']??0);$this->book($book);$authority=(int)($d['authority_id']??0);
+            $this->admin();$authority=(int)($d['authority_id']??0);
             if(!$this->one("SELECT id FROM kdd_authorities WHERE id=? AND active=1 AND authority_type<>'personal'",[$authority]))throw new Error(422,'Fraktion ungültig.');
             $flags=array_map(fn($k)=>!empty($d[$k])?1:0,['draft_read','edit','publish','repeal']);
-            $this->exec('INSERT INTO kdd_law_grants(book_id,authority_id,draft_read,edit,publish,repeal) VALUES(?,?,?,?,?,?) ON DUPLICATE KEY UPDATE draft_read=VALUES(draft_read),edit=VALUES(edit),publish=VALUES(publish),repeal=VALUES(repeal)',[$book,$authority,...$flags]);
+            $this->exec('INSERT INTO kdd_law_app_grants(authority_id,draft_read,edit,publish,repeal) VALUES(?,?,?,?,?) ON DUPLICATE KEY UPDATE draft_read=VALUES(draft_read),edit=VALUES(edit),publish=VALUES(publish),repeal=VALUES(repeal)',[$authority,...$flags]);
             // Grants also activate the editorial feature; role rights remain necessary.
             if(array_sum($flags))$this->exec("INSERT IGNORE INTO kdd_authority_features_rel(authority_id,feature_id) SELECT ?,id FROM kdd_authority_features WHERE code='laws'",[$authority]);
-            $this->audit('grant',['book_id'=>$book,'authority_id'=>$authority,'flags'=>$flags]);return ['ok'=>true];
+            $this->audit('grant',['authority_id'=>$authority,'flags'=>$flags]);return ['ok'=>true];
         }
         $id=(int)($d['article_id']??0);
         if($id) { $article=$this->one('SELECT * FROM kdd_law_articles WHERE id=? FOR UPDATE',[$id]);if(!$article)throw new Error(404,'Paragraph nicht gefunden.');$book=(int)$article['book_id']; }
@@ -129,10 +130,32 @@ final class Service {
         if($article&&(int)$article['revision']!==(int)($d['revision']??0))throw new Error(409,'Paragraph wurde inzwischen geändert. Bitte neu laden.');
         if($action==='save_draft') {
             $title=$this->text($d,'title',200);$chapter=$this->text($d,'chapter',160,false);$body=$this->text($d,'body',100000);$reason=$this->text($d,'reason',4000);
+            $parts=$d['subsections']??[];
+            if(!is_array($parts)||!array_is_list($parts)||count($parts)>100)throw new Error(422,'Maximal 100 Unterparagraphen sind möglich.');
+            $sections=[];$numbers=[];
+            foreach($parts as $part) {
+                if(!is_array($part))throw new Error(422,'Unterparagraph ungültig.');
+                $n=$this->text($part,'number',20);
+                if(in_array($n,$numbers,true))throw new Error(422,'Unterparagraphennummern müssen eindeutig sein.');
+                $numbers[]=$n;$sections[]=['number'=>$n,'title'=>$this->text($part,'title',200,false),'body'=>$this->text($part,'body',10000)];
+            }
+            $sections=json_encode($sections,JSON_UNESCAPED_UNICODE|JSON_THROW_ON_ERROR);
+            if(strlen($sections)>200000)throw new Error(422,'Die Unterparagraphen sind insgesamt zu lang.');
+            $kind=$d['amount_kind']??'fine';
+            if(!in_array($kind,['fine','fee'],true))throw new Error(422,'Betragsart ungültig.');
+            $amounts=[];
+            foreach(['amount_min','amount_max'] as $key) {
+                $value=$d[$key]??null;
+                if($value===null||$value===''){$amounts[]=null;continue;}
+                if(!is_scalar($value)||!preg_match('/^\d{1,10}(\.\d{1,2})?$/D',(string)$value))throw new Error(422,'Beträge müssen positiv sein und maximal zwei Nachkommastellen haben.');
+                $amounts[]=(string)$value;
+            }
+            if($amounts[1]!==null&&($amounts[0]===null||(float)$amounts[1]<(float)$amounts[0]))throw new Error(422,'Der Höchstbetrag muss mindestens dem Mindestbetrag entsprechen.');
             if(!$article) { $number=$this->text($d,'number',40);if($this->one('SELECT id FROM kdd_law_articles WHERE book_id=? AND number=?',[$book,$number]))throw new Error(409,'Diese Paragraphennummer existiert bereits.');$this->exec('INSERT INTO kdd_law_articles(book_id,number) VALUES(?,?)',[$book,$number]);$id=(int)$this->db->lastInsertId(); }
             $draft=$this->one("SELECT id FROM kdd_law_versions WHERE article_id=? AND state='draft'",[$id]);
             if($draft)$this->exec('UPDATE kdd_law_versions SET title=?,chapter=?,body=?,reason=?,author_id=?,authority_id=?,created_at=UTC_TIMESTAMP() WHERE id=?',[$title,$chapter,$body,$reason,$this->actor['id'],$this->actor['authority_id'],$draft['id']]);
             else $this->exec('INSERT INTO kdd_law_versions(article_id,title,chapter,body,reason,author_id,authority_id) VALUES(?,?,?,?,?,?,?)',[$id,$title,$chapter,$body,$reason,$this->actor['id'],$this->actor['authority_id']]);
+            $this->exec("UPDATE kdd_law_versions SET subsections=?,amount_kind=?,amount_min=?,amount_max=? WHERE article_id=? AND state='draft'",[$sections,$kind,...$amounts,$id]);
         } elseif($action==='discard') {
             $this->exec("DELETE FROM kdd_law_versions WHERE article_id=? AND state='draft'",[$id]);
         } elseif($action==='publish') {
