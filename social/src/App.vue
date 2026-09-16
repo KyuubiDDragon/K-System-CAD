@@ -17,6 +17,7 @@ import CompanyMap from "./CompanyMap.vue";
 import CompanyFields from "./CompanyFields.vue";
 import CategoryFilter from "./CategoryFilter.vue";
 import ThemeColors from "./ThemeColors.vue";
+import LawsApp from "./LawsApp.vue";
 import AdCard from "./AdCard.vue";
 const settings = ref<Row>({ modules: {}, names: {}, icons: {}, links: [] }),
   me = ref<Row | null>(null),
@@ -31,7 +32,7 @@ const modules = computed(() =>
     (m) => settings.value.modules[m],
   ),
 );
-const entryApps = computed(() => [...modules.value, "companies"]);
+const entryApps = computed(() => [...modules.value, "companies", ...(settings.value.laws_enabled ? ["laws"] : [])]);
 const searchPosts = ref<Row[]>([]),
   searchCompanies = ref<Row[]>([]);
 const discovery = ref<Row>({ highlights: [], open_companies: [], video: null });
@@ -880,7 +881,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
               </div>
             </details></template
           ><button v-else-if="me" @click="logout">Abmelden</button
-          ><button v-else-if="settings.guest" @click="settings.guest = false">
+          ><button v-else-if="settings.guest || page === 'laws'" @click="settings.guest = false; go('apps')">
             Anmelden
           </button>
         </div>
@@ -901,7 +902,9 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
         error ? "Social konnte nicht geladen werden." : "Social wird geladen …"
       }}<button v-if="error" @click="bootstrap">Erneut versuchen</button>
     </div>
+    <LawsApp v-else-if="page === 'laws'" :cad-url="settings.cad_url || ''" />
     <section v-else-if="!me && !settings.guest" class="auth-layout">
+      <button v-if="settings.laws_enabled" @click="go('laws')">Gesetze ansehen</button>
       <div class="auth-intro">
         <span class="eyebrow">{{ settings.community }}</span>
         <h1>Deine Stadt.<br />Deine Menschen.</h1>
@@ -1024,6 +1027,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                   alt="" /><Icon v-else :name="'app-' + m" /></span
               ><strong>{{ settings.names[m] }}</strong>
             </button>
+            <button v-if="settings.laws_enabled" class="launch-tile" @click="go('laws')"><span class="app-symbol"><img v-if="settings.icons.laws" :src="mediaUrl(settings.icons.laws)" alt=""/><span v-else>§</span></span><strong>{{ settings.names.laws || "Gesetze" }}</strong></button>
             <button class="launch-tile" @click="go('companies')">
               <span class="app-symbol"><Icon name="app-market" /></span
               ><strong>{{ settings.names.companies || "Unternehmen" }}</strong>
@@ -2607,11 +2611,11 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             </div>
             <h3>Plattformen</h3>
             <div
-              v-for="m in ['social', 'gram', 'market', 'video', 'companies']"
+              v-for="m in ['social', 'gram', 'market', 'video', 'companies', 'laws']"
               :key="m"
               class="module-setting"
             >
-              <label v-if="m !== 'companies'" class="check"
+              <label v-if="!['companies', 'laws'].includes(m)" class="check"
                 ><input type="checkbox" v-model="form.modules[m]" />Aktiv</label
               ><label
                 >Anzeigename<input

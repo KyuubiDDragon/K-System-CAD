@@ -98,6 +98,7 @@ const routes: Array<RouteRecordRaw> = [
     { path: '/admin/authorityfields', name: "admin_authorityfields", component: () => import('@/components/Admin/AuthorityFieldManager.vue'), meta: { requiresAuth: true, requiredModule: 'admin.authority.fields', requiredAction: 'admin', requiredFeature: 'person_file' }},
     { path: '/admin/reportfields', name: "admin_reportfields", component: () => import('@/views/admin/ReportFieldsView.vue'), meta: { requiresAuth: true, requiredModule: 'report', requiredAction: 'admin', requiredFeature: 'reports' }},
     { path: '/admin/logs', name: "admin_logs", component: () => import('@/views/admin/LogsView.vue'), meta: { requiresAuth: true, requiredModule: 'system', requiredAction: 'admin', requiredFeature: 'system_admin' }},
+    { path: '/laws', name: 'laws', component: () => import('@/views/LawsView.vue'), meta: { requiresAuth: true }},
     { path: '/map', name: "map", component: MapView, meta: { requiresAuth: true, requiredModule: 'map', requiredAction: 'read', requiredFeature: 'map' }},
     { path: '/map/global', name: "mapglobal", component: MapView, meta: { requiresAuth: true, requiredModule: 'map.global', requiredAction: 'read', requiredFeature: 'authorities', mapType: 'global' }},
     { path: '/map/shared/:token', name: "mapshared", component: MapSharedView, meta: { requiresAuth: false }}, // Public shared map view

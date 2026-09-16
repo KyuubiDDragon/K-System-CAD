@@ -87,7 +87,7 @@ final class Service {
         if($action==='bootstrap') {
             $mine=$this->me?array_diff_key($this->me,array_flip(['recovery_hash','user_id','authority_id'])):null;
             if($mine){$mine['preferences']=json_decode($mine['preferences'],true);$mine['account_notice']=$this->one("SELECT body FROM kdd_social_notifications WHERE profile_id=? AND target='account' ORDER BY id DESC LIMIT 1",[$this->id()])['body']??null;}
-            $public=$this->settings;unset($public['accept_template'],$public['reject_template'],$public['payment_instructions']);
+            $public=$this->settings;$public['laws_enabled']=(bool)($this->one('SELECT enabled FROM kdd_law_settings WHERE id=1')['enabled']??false);$public['cad_url']=(string)\getEnvVar('FRONTEND_URL_PROD','');unset($public['accept_template'],$public['reject_template'],$public['payment_instructions']);
             return ['settings'=>$public,'me'=>$mine,'revision'=>(int)$this->one('SELECT revision FROM kdd_social_settings WHERE id=1')['revision']];
         }
         if(in_array($action,['register','login','recover'],true))return $this->credentials($action,$d);

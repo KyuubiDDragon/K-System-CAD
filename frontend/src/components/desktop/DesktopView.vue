@@ -2132,6 +2132,7 @@ const extractMenuItems = () => {
 const socialAppUrl = import.meta.env.VITE_SOCIAL_ENABLED === 'true' ? import.meta.env.VITE_SOCIAL_URL as string | undefined : undefined;
 const allApps = computed(() => {
     const apps = extractMenuItems();
+    apps.push({ id: 'laws', title: 'Gesetze', icon: 'mdi-book-open-page-variant-outline', color: '#94703c', route: '/laws', isDesktopApp: true, hideOnDesktop: false });
     if (socialAppUrl) apps.push({ id: 'social-platform', title: 'Social', icon: 'mdi-forum-outline', color: '#087f80', isDesktopApp: true, hideOnDesktop: false });
     return apps;
 });
@@ -2202,6 +2203,7 @@ const desktopApps = computed(() => {
     const appOrder = [
         'dashboard',
         'social-platform',
+        'laws',
         'admin',
         'map',
         'filemanager',
