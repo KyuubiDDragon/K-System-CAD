@@ -36,6 +36,7 @@ export const componentsMap: ComponentsMap = {
   'training': () => import('@/views/DocumentView.vue'), // Sonderfall: DocumentView mit Param
   'administration': () => import('@/views/DocumentView.vue'), // Sonderfall: DocumentView mit Param
   'department': () => import('@/views/DocumentView.vue'), // Sonderfall: DocumentView mit Param
+  'social-platform': () => import('@/views/SocialView.vue'),
   'laws': () => import('@/views/LawsView.vue'),
   'map': () => import('@/views/MapView.vue'),
   'company': () => import('@/views/CompanyView.vue'),

@@ -2133,7 +2133,7 @@ const socialAppUrl = import.meta.env.VITE_SOCIAL_ENABLED === 'true' ? import.met
 const allApps = computed(() => {
     const apps = extractMenuItems();
     apps.push({ id: 'laws', title: 'Gesetze', icon: 'mdi-book-open-page-variant-outline', color: '#94703c', route: '/laws', isDesktopApp: true, hideOnDesktop: false });
-    if (socialAppUrl) apps.push({ id: 'social-platform', title: 'Social', icon: 'mdi-forum-outline', color: '#087f80', isDesktopApp: true, hideOnDesktop: false });
+    if (socialAppUrl) apps.push({ id: 'social-platform', title: 'Social', icon: 'mdi-forum-outline', color: '#087f80', route: '/social-platform', isDesktopApp: true, hideOnDesktop: false });
     return apps;
 });
 
@@ -2449,10 +2449,6 @@ const closeWindow = (windowId: string) => {
 };
 
 const openApp = (app: App) => {
-    if (app.id === 'social-platform' && socialAppUrl) {
-        window.open(socialAppUrl, '_blank', 'noopener,noreferrer');
-        return;
-    }
     console.log('🚀 Opening app:', app);
     console.log('🔍 App action:', app.action);
     console.log('🔍 Widget type:', app.widgetType);
