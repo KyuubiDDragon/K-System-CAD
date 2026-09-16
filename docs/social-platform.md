@@ -122,3 +122,5 @@ In derselben Compose-Anwendung `docker-compose.coolify.yml` verwenden und die be
 - Backend, CAD-Frontend, Social und Worker aus demselben Commit neu bauen. Die Desktop-Verknüpfung wird zur Buildzeit konfiguriert.
 - Nach Sicherung die Migrationen beim Backendstart kontrollieren, anschließend HTTPS, Anmeldung, Desktop-Verknüpfung und einen freizugebenden Video-Upload prüfen.
 - Technisches Social-Administratorkonto erst nach Registrierung über `php social/manage.php admin HANDLE` im Backend-Container zuweisen. Es gibt keine automatisch eingerichteten Produktions-Demokonten.
+
+GitHub führt `Social checks` für Änderungen auf `master` und `codex/social-platform` sowie Pull Requests aus. Der Lauf baut Images, prüft API/Browser und die vollständige Datenbankinstallation; er deployt nicht. Die frühere ungültige Workflow-Datei mit Compose-Inhalt liegt zur Nachvollziehbarkeit unter `docs/legacy/docker-image-compose.yml` und ist keine aktuelle Deployment-Anleitung. Coolify bleibt für den eigentlichen Rollout zuständig.

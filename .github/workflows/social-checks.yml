@@ -1,0 +1,51 @@
+name: Social checks
+on:
+  push:
+    branches: [master, codex/social-platform]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: social/package-lock.json
+      - name: Install dependencies and browser
+        run: |
+          npm --prefix social ci
+          cd social
+          npx playwright install --with-deps chromium
+      - name: Provide Compose CLI compatibility
+        run: |
+          mkdir -p "$RUNNER_TEMP/compose-bin"
+          cat > "$RUNNER_TEMP/compose-bin/docker-compose" <<'SH'
+          #!/bin/sh
+          exec docker compose "$@"
+          SH
+          chmod +x "$RUNNER_TEMP/compose-bin/docker-compose"
+          echo "$RUNNER_TEMP/compose-bin" >> "$GITHUB_PATH"
+      - name: Build and verify isolated Social stack
+        run: bash social/tests/verify.sh
+      - name: Full database installation and repeat migration
+        run: |
+          docker-compose -f backend/social/tests/install.yml up -d --wait --wait-timeout 180
+          docker-compose -f backend/social/tests/install.yml exec -T backend php run_migrations.php
+      - name: Installation logs and cleanup
+        if: always()
+        run: |
+          docker-compose -f backend/social/tests/install.yml logs --no-color
+          docker-compose -f backend/social/tests/install.yml down --volumes
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-results
+          path: social/test-results/
+          if-no-files-found: ignore
