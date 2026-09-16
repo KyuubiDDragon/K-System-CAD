@@ -107,3 +107,15 @@ test("real launcher, configurable labels, theme, post and mobile layout", async 
   await expect(page.getByRole("dialog")).not.toBeVisible();
   expect(errors).toEqual([]);
 });
+
+test('guest feed invites participation and login can return to reading', async ({page}) => {
+  await page.goto('/#/social');
+  await expect(page.getByRole('heading', {name:'Mach mit', exact:true})).toBeVisible();
+  await expect(page.getByRole('heading', {name:'Willkommen zurück'})).toHaveCount(0);
+  await page.locator('.guest-invitation').getByRole('button', {name:'Anmelden', exact:true}).click();
+  await expect(page.getByRole('heading', {name:'Willkommen zurück'})).toBeVisible();
+  await page.getByRole('button', {name:'Ohne Anmeldung weiterlesen'}).click();
+  await expect(page.getByRole('heading', {name:'Mach mit', exact:true})).toBeVisible();
+  await page.reload();
+  await expect(page.getByRole('heading', {name:'Mach mit', exact:true})).toBeVisible();
+});
