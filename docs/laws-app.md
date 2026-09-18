@@ -40,3 +40,9 @@ Mobbin-Referenzen:
 - [GitBook – Editor und Vorschau](https://mobbin.com/screens/9ce94944-1ecc-4780-b562-333db92e0936): explizite Trennung zwischen Lesen/Vorschau und Redaktion.
 
 Befund: Die vorherige Ansicht vermischte Recherche, Inhaltserstellung und Rechteverwaltung. Die neue Struktur trennt diese Aufgaben in zwei Anwendungen. In der Redaktion liegen Inhalte sowie Zugriffe/Einstellungen zusätzlich in getrennten Bereichen. Keine Markenelemente oder Screenshots aus Mobbin werden ausgeliefert. Automatisch erzeugte Oberflächentexte und Betragsangaben der Gesetze-App enthalten keine RP-Bezeichnungen. Bereits gespeicherte individuelle Gesetzestexte werden nicht umgeschrieben.
+
+## Bedienung und Veröffentlichung von Büchern
+
+Neue Gesetzbücher starten unveröffentlicht. Erst mit Veröffentlichungsrecht wird das gesamte Buch öffentlich geschaltet; einzelne Paragraphen brauchen weiterhin ihre eigene Veröffentlichung. Zurückziehen entfernt das Buch einschließlich Suche und öffentlich zugänglicher Historie. Bestehende Bücher behalten bei Migration 0028 ihren öffentlichen Status.
+
+Der Leser speichert Buch und Paragraph in der Adresse, unterstützt Neuladen sowie Browser-Zurück/Vorwärts und weiterhin alte Paragraphenlinks. Ungespeicherte Paragraphenänderungen werden beim Abbrechen, Seitenwechsel, Neuladen, Schließen des Desktop-Fensters und Verlassen des Desktop-Modus abgefragt. Entwurf verwerfen benötigt eine Bestätigung.

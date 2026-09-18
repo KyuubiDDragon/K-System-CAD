@@ -90,6 +90,7 @@ const dialog = ref(""),
   uploading = ref(false),
   authMode = ref("login"),
   showAuth = ref(false),
+  authReturn = ref(route.value),
   recovery = ref(""),
   authForm = reactive({
     handle: "",
@@ -211,7 +212,8 @@ function countdown(s: string) {
 function go(p: string) {
   location.hash = "/" + p;
 }
-function hashChange() {
+function hashChange(event?: HashChangeEvent) {
+  if (!window.dispatchEvent(new CustomEvent('cad-before-close',{cancelable:true}))) { if(event)window.history.replaceState(null,'',event.oldURL);return; }
   route.value = location.hash.slice(2) || "apps";
   dialog.value = "";
   search.value = "";
@@ -355,6 +357,8 @@ async function setCompanyOpen(minutes: number) {
     );
   });
 }
+function beginAuth(mode='login') { if(!showAuth.value)authReturn.value=route.value;authMode.value=mode;showAuth.value=true;go('apps'); }
+function resumeBrowsing(){showAuth.value=false;go(authReturn.value);void load();}
 async function authenticate() {
   await run(async () => {
     const r = await api(authMode.value, authForm);
@@ -362,7 +366,7 @@ async function authenticate() {
     if (authMode.value === "recover") {
       authMode.value = "login";
       error.value = "Passwort geändert. Bitte anmelden.";
-    } else { showAuth.value = false; await bootstrap(); }
+    } else { showAuth.value = false; await bootstrap();go(authReturn.value); }
   });
   if (me.value) await load();
 }
@@ -882,7 +886,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
               </div>
             </details></template
           ><button v-else-if="me" @click="logout">Abmelden</button
-          ><button v-else-if="settings.guest || page === 'laws'" @click="showAuth = true; go('apps')">
+          ><button v-else-if="settings.guest || page === 'laws'" @click="beginAuth()">
             Anmelden
           </button>
         </div>
@@ -909,7 +913,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
         <span class="eyebrow">{{ settings.community }}</span>
         <h1>Deine Stadt.<br />Deine Menschen.</h1>
         <p>Beiträge, Fotos, Videos und Angebote aus deiner Community.</p>
-        <div class="auth-public-links"><button v-if="settings.guest" @click="showAuth = false; go('social'); load()">Ohne Anmeldung weiterlesen</button><button v-if="settings.laws_enabled" class="text-button" @click="go('laws')">Gesetze ansehen ↗</button></div>
+        <div class="auth-public-links"><button v-if="settings.guest" @click="resumeBrowsing()">Ohne Anmeldung weiterlesen</button><button v-if="settings.laws_enabled" class="text-button" @click="go('laws')">Gesetze ansehen ↗</button></div>
       </div>
       <form class="panel auth-form" @submit.prevent="authenticate">
         <h2>
@@ -1051,7 +1055,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             title="Beiträge mit Kategorie Werbung oder #Werbung ausblenden. Werbeplätze bleiben sichtbar."
             @click="hideAdPosts = !hideAdPosts"
           >
-            {{ hideAdPosts ? "✓ Ohne Werbung" : "Ohne Werbung" }}
+            {{ hideAdPosts ? "✓ Werbebeiträge ausblenden" : "Werbebeiträge ausblenden" }}
           </button>
         </div>
         <section
@@ -1119,7 +1123,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 ></span>
               </button>
             </section>
-            <section class="side-box topics-box">
+            <section v-if="page === 'market' || Object.keys(tags).length" class="side-box topics-box">
               <template v-if="page === 'market'"
                 ><h3>Kategorien</h3>
                 <button
@@ -1154,15 +1158,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                       min="0" /></label
                   ><button>Filtern</button>
                 </form></template
-              ><template v-else
-                ><label
-                  >Kategorie<select v-model="category" @change="load()">
-                    <option value="">Alle Kategorien</option>
-                    <option v-for="c in settings.post_categories" :key="c">
-                      {{ c }}
-                    </option>
-                  </select></label
-                >
+              ><template v-else>
                 <h3>Themen</h3>
                 <button
                   v-for="(count, tag) in tags"
@@ -1181,7 +1177,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 </p></template
               >
             </section>
-            <section class="side-box">
+            <section v-if="openCompanies.length" class="side-box">
               <div class="side-heading">
                 <span class="live-dot"></span>
                 <h3>Jetzt geöffnet</h3>
@@ -1462,7 +1458,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                   "
                 >
                   Alle Beiträge</button
-                ><button
+                ><button v-if="me"
                   :class="{ active: filter === 'friends' }"
                   @click="
                     filter = 'friends';
@@ -2184,11 +2180,11 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             <section v-if="!me" class="side-box guest-invitation">
               <div class="side-heading"><Icon name="user" /><h3>Mach mit</h3></div>
               <p>Lies mit, was in deiner Stadt passiert. Melde dich an, um Beiträge zu posten, zu kommentieren und dich mit anderen auszutauschen.</p>
-              <button class="primary" @click="authMode = 'login'; showAuth = true; go('apps')">Anmelden</button>
-              <button class="text-button" @click="authMode = 'register'; showAuth = true; go('apps')">Konto erstellen</button>
+              <button class="primary" @click="beginAuth()">Anmelden</button>
+              <button class="text-button" @click="beginAuth('register')">Konto erstellen</button>
             </section>
             <section
-              v-if="settings.modules.video"
+              v-if="settings.modules.video && discovery.video"
               class="side-box latest-video"
             >
               <div class="side-heading">

@@ -2433,6 +2433,7 @@ const focusWindow = (windowId: string) => {
 
 // Window close function
 const closeWindow = (windowId: string) => {
+    if (!window.dispatchEvent(new CustomEvent('cad-before-close', {detail:{windowId},cancelable:true}))) return;
     // Remove the window from the openWindows array
     openWindows.value = openWindows.value.filter(w => w.id !== windowId);
     
@@ -2601,6 +2602,7 @@ const openApp = (app: App) => {
 
 // Function to exit desktop mode and return to normal view
 const exitDesktopMode = () => {
+    if (!window.dispatchEvent(new CustomEvent('cad-before-close', {cancelable:true}))) return;
     // Direktes Update des Stores verwenden
     uiStore.setDesktopMode(false);
 

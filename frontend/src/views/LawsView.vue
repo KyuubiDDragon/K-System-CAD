@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import {onBeforeRouteLeave} from 'vue-router';
 import LawsApp from '@/components/laws/LawsApp.vue';
-defineProps<{editorial?:boolean}>();
+defineProps<{editorial?:boolean;windowId?:string}>();
+onBeforeRouteLeave(()=>window.dispatchEvent(new CustomEvent('cad-before-close',{cancelable:true})));
 const endpoint = (import.meta.env.VITE_API_URL || '/api').replace(/\/$/, '') + '/laws/index.php';
 </script>
-<template><div class="laws-cad-window"><div class="laws-cad-content"><LawsApp :endpoint="endpoint" :editorial="editorial"/></div></div></template>
+<template><div class="laws-cad-window"><div class="laws-cad-content"><LawsApp :endpoint="endpoint" :editorial="editorial" :window-id="windowId"/></div></div></template>
 <style scoped>
 .laws-cad-window{container: laws-window / inline-size;box-sizing:border-box;width:100%;min-width:0;--surface:rgb(var(--v-theme-surface));--text:rgb(var(--v-theme-on-surface));--line:rgba(var(--v-theme-on-surface),.15);--brand:rgb(var(--v-theme-primary))}
 .laws-cad-content{padding:20px;box-sizing:border-box;min-width:0}

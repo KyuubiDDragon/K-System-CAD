@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed,onMounted,ref} from 'vue';
+import {computed,onMounted,onUnmounted,ref} from 'vue';
 import LawsVersion from './LawsVersion.vue';
 type Row=Record<string,any>;
 const props=defineProps<{endpoint:string}>();
@@ -8,13 +8,24 @@ const current=computed(()=>articles.value.find(a=>a.id===active.value));
 const groups=computed(()=>{const map=new Map<string,Row[]>();for(const a of articles.value){const v=a.current||a.scheduled;const key=v?.chapter||'Allgemeine Bestimmungen';map.set(key,[...(map.get(key)||[]),a]);}return [...map].map(([title,items])=>({title,items}));});
 async function api(action:string,q:Row={}){const r=await fetch(props.endpoint+'?'+new URLSearchParams({action,view:'reader',...q}),{credentials:'include'});const d=await r.json();if(!r.ok)throw Error(d.error||'Gesetze konnten nicht geladen werden.');return d;}
 async function run(fn:()=>Promise<void>){if(busy.value)return;busy.value=true;error.value='';try{await fn();}catch(e){error.value=e instanceof Error?e.message:'Anfrage fehlgeschlagen.';}finally{busy.value=false;}}
-async function openBook(id:number,article?:number){const r=await api('book',{id});selected.value=r.book;articles.value=r.articles;active.value=article??r.articles[0]?.id??null;results.value=null;history.value=null;}
-function choose(id:number){active.value=id;history.value=null;}
+async function openBook(id:number,article?:number,record=true){const r=await api('book',{id});selected.value=r.book;articles.value=r.articles;active.value=article??r.articles[0]?.id??null;results.value=null;history.value=null;if(record)recordLocation();}
+function choose(id:number){active.value=id;history.value=null;recordLocation();}
 async function search(){results.value=(await api('search',{q:query.value.trim()})).items;}
-function back(){selected.value=null;active.value=null;results.value=null;history.value=null;query.value='';}
+function back(){selected.value=null;active.value=null;results.value=null;history.value=null;query.value='';recordLocation();}
 const title=(a:Row)=>(a.current||a.scheduled)?.title||'';
-function directLink(id:number){return location.href.split('#')[0]+(location.hash.startsWith('#/laws')?'#/laws/':'#law-')+id;}
-onMounted(()=>run(async()=>{const s=await api('bootstrap');allowed.value=s.can_read;enabled.value=s.enabled;if(!s.enabled||!s.can_read)return;books.value=(await api('books')).items;const id=Number(location.hash.match(/(?:#\/laws\/|#law-)(\d+)/)?.[1]||0);if(id){for(const book of books.value){const r=await api('book',{id:book.id});if(r.articles.some((a:Row)=>a.id===id)){await openBook(book.id,id);break;}}}}));
+function locationFor(book?:number,article?:number){return location.href.split('#')[0]+(location.hash.startsWith('#/') ? '#/laws'+(book?'/book/'+book+(article?'/paragraph/'+article:''):'') : (book?'#law-book-'+book+(article?'-paragraph-'+article:''):''));}
+function recordLocation(){const url=locationFor(selected.value?.id,active.value??undefined);if(url!==location.href)window.history.pushState(null,'',url);}
+function directLink(id:number){return locationFor(selected.value?.id,id);}
+async function restoreLocation(){
+ const book=location.hash.match(/(?:#\/laws\/book\/|#law-book-)(\d+)(?:(?:\/paragraph\/|-paragraph-)(\d+))?/);
+ if(book){await openBook(Number(book[1]),book[2]?Number(book[2]):undefined,false);return;}
+ const legacy=Number(location.hash.match(/(?:#\/laws\/|#law-)(\d+)$/)?.[1]||0);
+ if(legacy){for(const b of books.value){const r=await api('book',{id:b.id});if(r.articles.some((a:Row)=>a.id===legacy)){await openBook(b.id,legacy,false);return;}}}
+ selected.value=null;active.value=null;results.value=null;history.value=null;
+}
+const onHistory=()=>run(restoreLocation);
+onMounted(()=>{window.addEventListener('popstate',onHistory);window.addEventListener('hashchange',onHistory);run(async()=>{const s=await api('bootstrap');allowed.value=s.can_read;enabled.value=s.enabled;if(!s.enabled||!s.can_read)return;books.value=(await api('books')).items;await restoreLocation();});});
+onUnmounted(()=>{window.removeEventListener('popstate',onHistory);window.removeEventListener('hashchange',onHistory);});
 </script>
 <template>
 <section class="law-reader" :aria-busy="busy">
