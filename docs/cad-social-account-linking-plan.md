@@ -1,62 +1,52 @@
-# CAD und Social: Plan zur Kontoverknüpfung
+# CAD und Social: Konten und Zugriffe
 
-Status: Vorschlag zur gemeinsamen Abstimmung, noch nicht implementiert.
+Status: Implementiert im Entwicklungszweig; Migration 0029 und Deployment erforderlich.
 
-## Persönliche Verbindung
+## Eigene Konten
 
-CAD-Einstellungen erhalten „Social-Konto verbinden“. Der Nutzer meldet sich im gewünschten Social-Konto an und bestätigt dort die Verbindung. Beide Seiten zeigen das verbundene Konto und bieten „Verbindung trennen“. Keine automatische Zuordnung anhand gleicher Namen oder E-Mail-Adressen. Registrierung und manuelle Freigabe bleiben erhalten.
+Unter **Konten & Zugriffe** können Nutzer weitere eigene Social-Konten mit deren Passwort anmelden und speichern. Der Wechsel gilt pro Browserfenster/Tab. Servergespeicherte Kontoverweise ersetzen keine Berechtigung: Zu jedem Eintrag muss eine gültige Sitzung bestehen. Passwörter und Sitzungstoken werden nicht im Browser-Speicher abgelegt; dort liegen ausschließlich nicht geheime Profil-IDs. Die Sitzungscookies sind HttpOnly und in Produktion Secure.
 
-Ein Nutzer kann mehrere eigene Social-Konten speichern, mit seinen CAD-Kontextkonten verbinden und gleichzeitig Mitglied mehrerer Unternehmen sein. Jede eigene Kontoverbindung wird separat durch Anmeldung und Bestätigung nachgewiesen. Charaktere werden nicht automatisch zusammengeführt.
+Bereits angemeldete Tabs behalten ihre Identität, auch wenn in einem anderen Tab ein weiteres Konto angemeldet wird. Beim Wechsel werden offene Eingaben nach Bestätigung verworfen, niemals unter einer anderen Identität gesendet. „Aus Liste entfernen“ entfernt einen gespeicherten Zugang auf diesem Browser, ohne das Konto oder Unternehmensmitgliedschaften zu löschen. Eine Abmeldung widerruft die verwendete Sitzung; weitere eigene Konten bleiben verfügbar. Gespeicherte Anmeldungen laufen nach sieben Tagen ab, die Browser-Kontenliste nach 30 Tagen.
 
-Die Kontenübersicht unterscheidet eigene Konten, freigegebene Konten anderer Eigentümer und Unternehmensprofile. „Speichern“ hinterlegt serverseitig die bestätigte Verbindung und Anzeigepräferenzen, keine Passwörter im Browser. Ein gespeicherter Eintrag allein erteilt keine Zugriffsrechte. Das Entfernen eines Eintrags löscht weder das Konto noch eine Unternehmensmitgliedschaft; Verbindung trennen und Mitgliedschaft beenden sind ausdrücklich getrennte Aktionen.
+## Freigegebene Profile und Unternehmen
 
-Beim Öffnen von Social im CAD:
-- Ohne Verbindung: Gastansicht/Anmeldung mit Verbindungshinweis.
-- Mit einer Verbindung oder einem ausdrücklich gewählten Standardkonto, ohne Social-Sitzung: automatische Anmeldung über einen kurzlebigen Einmalcode. Bei mehreren Konten ohne Standard zunächst Kontoauswahl.
-- Bereits richtig angemeldet: Sitzung beibehalten.
-- Bereits unter anderem Profil angemeldet: Auswahl „Als … fortfahren“ oder „Verbundenes Konto verwenden“. Keine stille Ersetzung.
-- Social-Abmeldung verhindert automatisches erneutes Einloggen im aktuellen Fenster. Das Profilmenü zeigt die aktive Identität eindeutig.
+Eigentum, eigene Kontoverbindung und Mitarbeiterzugriff sind getrennt:
 
-## Kontowechsel und aktive Identität
+- Der Haupteigner eines persönlichen Profils ist dessen Kontoinhaber. Ein delegierter Zugang erhält niemals Eigentümerrechte oder das Passwort.
+- Der Haupteigner einer Unternehmensseite kann Mitarbeiter einladen oder entfernen. Mehrere Unternehmensmitgliedschaften mit verschiedenen Rechten sind möglich.
+- Für Profile gibt es **öffentliche Beiträge** und **Profilpflege** (Name, Beschreibung, Bilder). Private Nachrichten, Freundeslisten, private Beiträge, Sicherheitseinstellungen und Administratorrechte werden nicht übertragen.
+- Für Unternehmen gibt es **Beiträge**, **Profil und Öffnungsstatus** sowie **Werbeanfragen**. Unternehmensbeiträge bleiben mit der handelnden Person verbunden. Bei Löschung ihres persönlichen Kontos bleiben Firmenbeiträge und Firmenbilder erhalten; die Person wird als gelöschtes Konto angezeigt.
+- Einladungen und geänderte Rechte müssen vom Empfänger angenommen werden. Bis dahin ist der betreffende Zugriff nicht aktiv. Alte Mitgliedschaften aus der Zeit vor Migration 0029 bleiben mit ihren bisherigen Rechten erhalten.
+- Passwortbestätigung ist für Freigaben, Entzug, Kontotrennung und Eigentümerwechsel erforderlich. Für den Eigentümerwechsel eines Unternehmens muss zusätzlich der neue Eigentümer zustimmen. Bis zur Annahme bleibt der bisherige Eigentümer verantwortlich. Persönliche Konten sind nicht übertragbar.
+- Unternehmen werden zunächst vom Social-Verwalter erstellt; dieser ist zunächst Haupteigner und kann die Übernahme dem Geschäftsleiter anbieten. Das allgemeine Unternehmensformular vergibt keine versteckten Mitarbeiterrechte mehr.
 
-Oben rechts können Nutzer zwischen ihren gespeicherten, aktuell berechtigten Konten und Unternehmen wechseln oder ein weiteres Konto anmelden. Name, Avatar und bei Unternehmen die handelnde Person bleiben eindeutig erkennbar. Ein bevorzugtes Startkonto kann bewusst gespeichert werden.
+Der Rechteentzug wirkt auf die nächste API-Anfrage aller Geräte und Fenster, einschließlich Bearbeiten/Löschen bereits verfasster Firmenbeiträge. Offene Delegationsansichten prüfen den Zugriff zusätzlich im Hintergrund. Die Oberfläche zeigt den Verlust an und sendet keine offenen Eingaben unter einem Ersatzkonto. Andere eigene Konten und Unternehmensmitgliedschaften bleiben erhalten. Bereits heruntergeladene Inhalte können nicht zurückgerufen werden.
 
-Die aktive Identität gilt pro Fenster beziehungsweise Tab. Ein Wechsel verändert nicht stillschweigend andere geöffnete Fenster. Jeder API-Aufruf enthält einen serverseitig geprüften Handlungskontext; eine vom Client übermittelte Profil-ID ist keine Berechtigung. Der Entwurf eines Beitrags oder einer Nachricht bleibt an seine ursprüngliche Identität gebunden und wird bei einem Wechsel nicht unter einem anderen Konto abgeschickt.
+## CAD-Verbindung
 
-## Unternehmen
+Im CAD-Fenster der Social-App öffnet **Kontoverbindungen** die Liste der verbundenen Social-Konten. **Aktuelles Social-Konto verbinden** fordert eine Bestätigung samt Social-Passwort im eingebetteten Social-Fenster an. Gleiche Namen oder E-Mail-Adressen werden niemals automatisch verbunden. Mehrere Social-Konten pro CAD-Konto und mehrere CAD-Kontexte pro Social-Konto sind möglich.
 
-Die technische Verwaltung bestätigt die Verbindung zwischen CAD-Unternehmensmandant und Social-Unternehmensseite. Ein berechtigter Geschäftsleiter vergibt danach Mitarbeiterrechte: Beiträge erstellen/verwalten, Profil und Öffnungsstatus pflegen, Werbeanfragen bearbeiten.
+Bei genau einer Verbindung oder einem ausdrücklich gewählten Startkonto kann Social beim Öffnen automatisch angemeldet werden. Mehrere Verbindungen ohne Startkonto erfordern eine Auswahl. Eine bereits vorhandene Social-Anmeldung wird nur nach sichtbarer Bestätigung ersetzt. Eine bewusste Social-Abmeldung verhindert die automatische Wiederanmeldung im aktuellen Tab; „Konto öffnen“ bleibt als bewusste Aktion verfügbar.
 
-Mitarbeiter handeln mit ihrem persönlichen Konto im Namen der Unternehmensseite; keine gemeinsamen Firmenpasswörter. Eine Firmenfreigabe verknüpft niemals eigenmächtig ein privates Konto und erlaubt keinen Zugriff auf dessen Nachrichten. Eine Person darf gleichzeitig mehrere Unternehmensmitgliedschaften mit unterschiedlichen Rechten besitzen. Firmenrechteentzug wirkt unmittelbar, ohne die private Kontoverbindung oder andere Mitgliedschaften zu löschen.
+Die technische Systemverwaltung kann unter **Unternehmen mit CAD zuordnen** einen CAD-Unternehmensmandanten einer Social-Unternehmensseite zuordnen. Das erteilt noch keine Mitarbeiterrechte. Der Social-Haupteigner sieht danach bereits verknüpfte CAD-Mitarbeiter als Einladungsvorschläge und kann für deren Social-Profile konkrete Rechte vergeben. Wer noch kein Social-Konto verbunden hat, muss dies zunächst selbst tun.
 
-## Haupteigner und freigegebene Zugriffe
+## Technische Absicherung
 
-Eigentum, persönliche Kontoverbindung und delegierter Zugriff sind getrennte Beziehungen. Der Haupteigner eines Kontos oder Unternehmensprofils kann andere Personen einladen, konkrete Rechte vergeben und diese Personen wieder entfernen. Einladungen werden vom Empfänger angenommen; die Freigabe gibt weder das Passwort noch automatisch Zugriff auf private Nachrichten oder Sicherheitseinstellungen. Delegierte Personen erhalten nur ausdrücklich vergebene Funktionen und dürfen sich keine weiteren Rechte geben oder den Haupteigner entfernen.
+- Verbindungen, Wallet-Verweise, Einladungen, Unternehmensrechte, Eigentümerübernahmen und Herkunft eingebetteter Sitzungen haben eigene Tabellen.
+- CAD-Authentifizierung benötigt neben dem JWT eine aktuell gültige Datenbanksitzung, einen nicht gesperrten Benutzer und einen aktiven Mandanten.
+- Zufällige Einmalcodes sind nur gehasht gespeichert, 60 Sekunden gültig und werden atomar einmal eingelöst. Sie sind an CAD-Sitzung, Zweck, Kontoverbindung, Ziel-Origin und einen zufälligen Fensterzustand gebunden.
+- Beide Fenster prüfen exakten Origin und `event.source`; die Codes werden per `postMessage` und anschließend per POST übertragen. Keine Zugangstoken in URLs.
+- Bei jeder abgeleiteten Social-Sitzung werden CAD-Sitzung und Verbindung erneut geprüft. Trennen, Sperren und CAD-Abmeldung machen diese Sitzungen unbrauchbar; unabhängige manuelle Social-Anmeldungen bleiben erhalten.
+- Schreibzugriffe werden mit einem datenbankweiten, kurz wartenden `social_access`-Lock geordnet, damit Widerruf und parallel eintreffende Schreiboperationen nicht widersprüchliche Berechtigungsstände verwenden. Dies ist für die derzeit kleine Installation ausgelegt; bei deutlich höherem Schreibvolumen sollte die Sperre auf einzelne Rechtebeziehungen verfeinert werden.
+- Neue Uploads vermerken die tatsächliche hochladende Person. Delegierte Zugriffe dürfen keine ungenutzten privaten Uploads des Eigentümers veröffentlichen.
+- Freigaben, Entzug, Eigentümerübernahme und delegierte Änderungen werden mit tatsächlichem Akteur und betroffenem Konto protokolliert.
 
-Beim Entfernen werden die betroffene Mitgliedschaft und alle daraus abgeleiteten Zugriffe, offenen Einladungen sowie noch nicht eingelösten Codes widerrufen. Bereits laufende Sitzungen verlieren auf allen Geräten und in allen Fenstern den Zugriff auf dieses Konto, auch wenn es dort gespeichert ist. Die persönliche Anmeldung und Rechte bei anderen Unternehmen bleiben erhalten.
+## Betrieb und Grenzen
 
-Jede geschützte Anfrage prüft den aktuellen Berechtigungsstand; langlebige Tokens dürfen keine dauerhaft gültigen Mitarbeiterrechte enthalten. Nach Widerruf werden gespeicherte Einträge entfernt oder als nicht mehr verfügbar angezeigt. Offene Ansichten schließen den betroffenen Handlungskontext mit einem verständlichen Hinweis und bieten die Rückkehr zum eigenen Konto an. Es erfolgt kein automatisches Absenden unter einer Ersatzidentität. Bereits heruntergeladene Inhalte lassen sich durch einen Rechteentzug nicht nachträglich zurückholen.
+`SOCIAL_ENABLED`, `SOCIAL_ORIGIN`, `FRONTEND_URL_PROD`, `VITE_SOCIAL_ENABLED`, `VITE_SOCIAL_URL` und `CAD_FRAME_ORIGIN` müssen dieselben vorgesehenen Adressen beschreiben. Für die aktuelle Installation sind CAD und Social HTTPS-Subdomains derselben Hauptdomain. Unterschiedliche Hauptdomains können eingebettete Cookies blockieren; die eigenständige Social-Anmeldung bleibt dann der Ausweichweg. Es gibt keine Umgehung der Browser-Cookie-Schutzmechanismen.
 
-Das Entfernen und sicherheitsrelevante Rechteänderungen erfordern eine erneute Authentifizierung des Berechtigten. Ein Eigentümerwechsel ist eine gesonderte Aktion mit erneuter Authentifizierung und Annahme durch den neuen Eigentümer. Das Konto darf dabei niemals ohne Haupteigner bleiben. Systemweite Verwaltungsrechte bleiben gesondert geregelt und werden durch eine Mitgliedschaft nicht erteilt.
+Die Umsetzung übernimmt keine Konten automatisch und ändert keine Produktivdaten vor dem regulären Deployment. Persönliche Kontoverbindungen und Unternehmensfreigaben werden nach dem Deployment ausdrücklich eingerichtet.
 
-## Umsetzung und Sicherheit
+## Prüfung
 
-Eigene Tabellen für Mehrfach-Kontoverbindungen, gespeicherte Kontoauswahl, Eigentümer, Mitgliedschaften mit Einzelrechten und Widerrufsstand, ausstehende Bestätigungen, Einmalcodes und Unternehmenszuordnungen. Eindeutige Beziehungen verhindern doppelte Mitgliedschaften; Widerruf und Code-Einlösung werden transaktional gegeneinander abgesichert. Verknüpfung erfordert nachgewiesene Sitzungen beider Konten; Benutzer-IDs des Clients allein reichen nicht. Sensible Verbindungsänderungen erfordern erneute Authentifizierung.
-
-Einmalcodes: kryptografisch zufällig, nur gehasht gespeichert, etwa 60 Sekunden gültig, atomar einmal einlösbar. Bindung an CAD-Sitzung, Verbindung, Ziel-Origin und zufälligen Anfragestatus. CAD fordert den Code authentifiziert an; ein postMessage-Handshake prüft auf beiden Seiten exakten Origin und event.source. Übergabe nur an das erwartete Social-Fenster, Einlösung dort per POST. Keine JWTs oder langlebigen Zugangsdaten in URLs/localStorage.
-
-Bei Einlösung erneut prüfen: Sitzung gültig, CAD-Benutzer nicht gesperrt, Behörde aktiv, Social-Profil freigegeben, Verbindung nicht widerrufen und Modul aktiviert. Die erzeugte Social-Sitzung erhält einen Bezug zur Verbindung und CAD-Sitzung. Trennen und CAD-Abmeldung widerrufen diese Sitzungen; unabhängig manuell eröffnete Social-Sitzungen bleiben bestehen. Firmenrechte werden pro Anfrage aktuell geprüft. Verbindungs-, Einladungs-, Rechteänderungs-, Widerrufs- und Vertretungsaktionen werden mit handelnder Person und vertretenem Konto, aber ohne Zugangscodes protokolliert.
-
-Zunächst HTTPS und gleiche Hauptdomain unterstützen. Bei verschiedenen Hauptdomains können Browser eingebettete Cookies blockieren; dafür einen verständlichen Anmelde-Fallback anbieten und keine automatische Funktion versprechen.
-
-## Etappen
-
-1. Mehrere Konten verbinden/trennen, Eigentum und Mitgliedschaften modellieren, Kontenübersicht und Audit; getrennte Anmeldung bleibt zunächst bestehen.
-2. Einmal-Anmeldung im CAD-Fenster, Kontowechsel pro Fenster, Standardkonto, Abmeldung und Widerruf auf allen Geräten.
-3. Unternehmenszuordnung, Einladungen und Handeln im Firmennamen mit Mitarbeiterrechten; Haupteigner kann Zugriffe vollständig entziehen.
-
-Abnahmetests: fremde/fehlende zweite Sitzung, abgelaufene oder wiederverwendete Codes, parallele Einlösung, falscher Origin/Fensterabsender, Sperren, offene Freigabe, deaktivierte Behörde, Widerruf, Firmenrechteentzug, CAD-Abmeldung, bereits anderes aktives Social-Profil, mehrere Fenster und blockierte Cookies.
-
-Zusätzliche Abnahmetests: zwei eigene Social-Konten an mehreren CAD-Kontexten, mehrere Unternehmen mit unterschiedlichen Rollen, gespeicherte Auswahl ohne gültige Rechte, voneinander unabhängige Fenster, identitätsgebundene Entwürfe, Entfernung eines online aktiven Mitarbeiters auf mehreren Geräten, Widerruf parallel zur Code-Einlösung, alte Einladungen und gespeicherte Einträge nach Entfernung, unveränderte Rechte bei anderen Unternehmen sowie verhinderte Rechteausweitung und Entfernung des Haupteigners durch Delegierte.
-
-Vor Implementierung gemeinsam festlegen: Welche CAD-Rolle darf Unternehmenszuordnungen bestätigen? Mehrere eigene Konten und mehrere Unternehmensmitgliedschaften gehören fest zum Umfang.
+Automatisierte Tests prüfen unter anderem zwei gespeicherte Konten, voneinander unabhängige Tabs, angenommene und offene Einladungen, private Inhalte, Verhinderung von Rechteausweitung, mehrere Unternehmen, laufende Zugriffe nach Entzug, Eigentümerwechsel, Einmalcode-Wiederverwendung, falschen Fensterzustand, Trennen sowie CAD-Abmeldung. Browserprüfungen ergänzen den tatsächlichen Kontowechsel und die Bedienung der Freigaben.

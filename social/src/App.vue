@@ -9,6 +9,9 @@ import {
   watch,
 } from "vue";
 import { api, upload, mediaUrl, type Row } from "./api";
+import AccountsPanel from "./AccountsPanel.vue";
+import CadBridge from "./CadBridge.vue";
+import { selectAccount } from "./accountContext";
 import VerifiedIcon from "./VerifiedIcon.vue";
 import Icon from "./Icon.vue";
 import PostCard from "./PostCard.vue";
@@ -23,6 +26,7 @@ const settings = ref<Row>({ modules: {}, names: {}, icons: {}, links: [] }),
   me = ref<Row | null>(null),
   ready = ref(false),
   error = ref(""),
+  accessNotice = ref(""),
   busy = ref(false);
 const route = ref(location.hash.slice(2) || "apps"),
   page = computed(() => route.value.split("/")[0]),
@@ -144,6 +148,7 @@ const canModerate = computed(() =>
   ),
   canAds = computed(() => ["admin", "advertiser"].includes(me.value?.role)),
   canAdmin = computed(() => me.value?.role === "admin");
+const adCompanies = computed(()=>companies.value.filter(c=>c.can_ads));
 const mineCompanies = computed(() =>
     companies.value.filter((c) => Number(c.can_post)),
   ),
@@ -161,6 +166,7 @@ const mineCompanies = computed(() =>
           messages: "Nachrichten",
           notifications: "Mitteilungen",
           account: "Mein Konto",
+          accounts: "Kontoverwaltung",
           admin: "Verwaltung",
           ads: "Werbung",
           search: "Suche",
@@ -221,6 +227,7 @@ function hashChange(event?: HashChangeEvent) {
   void load();
 }
 function showError(e: unknown) {
+  if(e instanceof Error && e.message===accessNotice.value)return;
   error.value =
     e instanceof Error ? e.message : String(e).replace(/^Error: /, "");
 }
@@ -240,6 +247,7 @@ async function bootstrap() {
   const r = await api("bootstrap");
   settings.value = r.settings;
   me.value = r.me;
+  if(r.actor_id && !sessionStorage.getItem("social-account"))selectAccount(Number(r.actor_id));
   revision.value = r.revision;
   ready.value = true;
   if (
@@ -330,7 +338,8 @@ async function load(append = false) {
       } else threads.value = (await api("messages")).items;
     }
     if (page.value === "notifications") {
-      notifications.value = (await api("notifications")).items;
+      if(me.value?.delegated){await api("bootstrap");return;}
+    notifications.value = (await api("notifications")).items;
     }
     if (page.value === "ads") {
       ads.value = (await api("ads")).items;
@@ -362,6 +371,7 @@ function resumeBrowsing(){showAuth.value=false;go(authReturn.value);void load();
 async function authenticate() {
   await run(async () => {
     const r = await api(authMode.value, authForm);
+    if(r.profile_id)selectAccount(Number(r.profile_id));
     if (r.recovery_code) recovery.value = r.recovery_code;
     if (authMode.value === "recover") {
       authMode.value = "login";
@@ -370,9 +380,26 @@ async function authenticate() {
   });
   if (me.value) await load();
 }
+function switchAccount(id:number,acting=0){
+  if((dialog.value||messageBody.value) && !confirm('Offene Eingaben verwerfen und Konto wechseln?'))return;
+  selectAccount(id,acting);location.hash='#/apps';location.reload();
+}
+function ownAccount(){switchAccount(Number(sessionStorage.getItem('social-account')));}
+function manageAccounts(){
+  if((dialog.value||messageBody.value) && !confirm('Offene Eingaben verwerfen und Kontenübersicht öffnen?'))return;
+  if(me.value?.delegated){selectAccount(Number(sessionStorage.getItem('social-account')),0);location.hash='#/accounts';location.reload();}
+  else go('accounts');
+}
+function accessLost(e:Event){
+  accessNotice.value=(e as CustomEvent).detail||'Zugriff nicht mehr verfügbar. Bitte ein eigenes Konto anmelden.';
+  selectAccount(-1);me.value=null;posts.value=[];messages.value=[];dialog.value='';
+  if(['messages','account','notifications','admin','ads'].includes(page.value))go('apps');
+  void bootstrap().then(()=>load()).catch(()=>{});
+}
 async function logout() {
   await run(async () => {
     await api("logout", {});
+    selectAccount(-1);
     me.value = null;
     posts.value = [];
     messages.value = [];
@@ -398,7 +425,7 @@ function compose(p?: Row) {
           module: activeModule.value,
           title: "",
           body: "",
-          visibility: me.value?.preferences.default_visibility || "friends",
+          visibility: me.value?.delegated ? "public" : (me.value?.preferences.default_visibility || "friends"),
           price: 0,
           category:
             activeModule.value === "market"
@@ -406,7 +433,7 @@ function compose(p?: Row) {
               : settings.value.post_categories?.[0] || "Allgemein",
           ai_generated: false,
           sale_state: "available",
-          wall_id: page.value === "profile" ? routeId.value : undefined,
+          wall_id: page.value === "profile" && !me.value?.delegated ? routeId.value : undefined,
         },
   );
 }
@@ -459,7 +486,7 @@ function share(p: Row) {
     module: "social",
     body: "",
     title: "",
-    visibility: me.value?.preferences.default_visibility || "friends",
+    visibility: me.value?.delegated ? "public" : (me.value?.preferences.default_visibility || "friends"),
     shared_id: p.id,
   });
 }
@@ -640,7 +667,7 @@ async function confirmPurge() {
 }
 function requestAd() {
   open("ad", {
-    company_id: mineCompanies.value[0]?.id,
+    company_id: adCompanies.value[0]?.id,
     slot_id: slots.value[0]?.id,
     title: "",
     body: "",
@@ -755,6 +782,7 @@ async function pollInbox() {
   )
     return;
   try {
+    if(me.value?.delegated){await api("bootstrap");return;}
     notifications.value = (await api("notifications")).items;
     if (
       page.value === "messages" &&
@@ -784,6 +812,7 @@ async function olderMessages() {
 let timer: ReturnType<typeof setInterval>;
 let inboxTimer: ReturnType<typeof setInterval>;
 onMounted(async () => {
+  window.addEventListener("social-access-lost",accessLost);
   window.addEventListener("hashchange", hashChange);
   window.addEventListener("keydown", onEscape);
   timer = setInterval(() => (clock.value = Date.now()), 30000);
@@ -796,6 +825,7 @@ onMounted(async () => {
   }
 });
 onUnmounted(() => {
+  window.removeEventListener("social-access-lost",accessLost);
   clearInterval(timer);
   clearInterval(inboxTimer);
   window.removeEventListener("hashchange", hashChange);
@@ -844,7 +874,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             <Icon name="sun" /></button
           ><template v-if="me?.status === 'active'"
             ><button
-              v-if="settings.modules.messages"
+              v-if="settings.modules.messages && !me.delegated"
               class="icon-button"
               aria-label="Nachrichten"
               @click="go('messages')"
@@ -852,12 +882,14 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
               <Icon name="messages" /></button
             ><button
               class="icon-button"
+              v-if="!me.delegated"
               aria-label="Freunde"
               @click="go('friends')"
             >
               <Icon name="friends" /></button
             ><button
               class="icon-button"
+              v-if="!me.delegated"
               aria-label="Benachrichtigungen"
               @click="go('notifications')"
             >
@@ -877,21 +909,24 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
               </summary>
               <div class="menu">
                 <button @click="go('profile/' + me.id)">Mein Profil</button
-                ><button @click="go('account')">Einstellungen</button
-                ><button v-if="settings.modules.social" @click="go('ads')">
+                ><button @click="manageAccounts">Konten &amp; Zugriffe</button><button v-if="!me.delegated" @click="go('account')">Einstellungen</button
+                ><button v-if="settings.modules.social && !me.delegated" @click="go('ads')">
                   Werbung</button
                 ><button v-if="canModerate || canAds" @click="go('admin')">
                   Verwaltung</button
-                ><button @click="logout">Abmelden</button>
+                ><button v-if="!me.delegated" @click="logout">Abmelden</button><button v-else @click="ownAccount()">Zurück zum eigenen Konto</button>
               </div>
             </details></template
           ><button v-else-if="me" @click="logout">Abmelden</button
           ><button v-else-if="settings.guest || page === 'laws'" @click="beginAuth()">
             Anmelden
-          </button>
+          </button><button v-if="!me" @click="go('accounts')">Gespeicherte Konten</button>
         </div>
       </div>
     </header>
+    <CadBridge :me="me" :ready="ready" :cad-url="settings.cad_url" @login="switchAccount" />
+    <p v-if="me?.delegated" class="notice">Du arbeitest als {{me.display_name}} · angemeldet: {{me.actor_name}}. <button @click="manageAccounts">Konto wechseln</button></p>
+    <div v-if="accessNotice" class="feedback access-notice" role="alert"><span>{{accessNotice}}</span><button @click="accessNotice=''" aria-label="Zugriffshinweis schließen">Schließen</button></div>
     <div v-if="error" class="feedback" role="alert">
       <span>{{ error }}</span
       ><button
@@ -908,6 +943,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
       }}<button v-if="error" @click="bootstrap">Erneut versuchen</button>
     </div>
     <LawsApp v-else-if="page === 'laws' || page === 'laws-editor'" :editorial="page === 'laws-editor'" :cad-url="settings.cad_url || ''" />
+    <AccountsPanel v-else-if="page === 'accounts'" :me="me" @switch="switchAccount" @company="go('company/'+$event)" />
     <section v-else-if="!me && (!settings.guest || showAuth)" class="auth-layout">
       <div class="auth-intro">
         <span class="eyebrow">{{ settings.community }}</span>
@@ -1091,6 +1127,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             'wide-content': [
               'admin',
               'account',
+              'accounts',
               'friends',
               'messages',
               'ads',
@@ -1357,7 +1394,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 />
                 <div
                   v-if="
-                    companyPage && (Number(companyPage.can_post) || canModerate)
+                    companyPage && (Number(companyPage.can_edit) || canModerate)
                   "
                   class="row"
                 >
@@ -1398,13 +1435,13 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                     </p>
                   </div>
                   <button
-                    v-if="me?.id === Number(profile.id)"
+                    v-if="me?.id === Number(profile.id) && (!me.delegated || me.rights?.includes('profile'))"
                     class="end"
                     @click="editProfile"
                   >
                     Bearbeiten</button
                   ><button
-                    v-else-if="me"
+                    v-else-if="me && !me.delegated"
                     class="end"
                     @click="friend(profile.id, 'request')"
                   >
@@ -1428,7 +1465,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 "
                 class="composer panel"
               >
-                <button v-if="me" class="composer-trigger" @click="compose()">
+                <button v-if="me && (!me.delegated || me.rights?.includes('posts'))" class="composer-trigger" @click="compose()">
                   <Icon :name="activeModule" />{{
                     page === "profile"
                       ? "Auf die Pinnwand schreiben"
@@ -1859,7 +1896,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 <h2>Deine Werbung</h2>
                 <button
                   class="primary"
-                  :disabled="!mineCompanies.length || !slots.length"
+                  :disabled="!adCompanies.length || !slots.length"
                   @click="requestAd"
                 >
                   Werbung anfragen
@@ -1869,7 +1906,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 Wähle einen freien Werbeplatz und reiche deine Anzeige zur
                 Prüfung ein.
               </p>
-              <p v-if="!mineCompanies.length" class="notice">
+              <p v-if="!adCompanies.length" class="notice">
                 Die Betreiberfirma kann dich als Mitarbeiter einer
                 Unternehmensseite hinterlegen.
               </p>
@@ -2472,7 +2509,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 v-model="form.display_name"
                 required
                 maxlength="100" /></label
-            ><label
+            ><label v-if="!me?.delegated"
               >Profil sichtbar für<select v-model="form.privacy">
                 <option value="public">Alle</option>
                 <option value="friends">Freunde</option>
@@ -2509,7 +2546,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
                 alt="Header-Vorschau"
             /></label>
           </div>
-          <label
+          <template v-if="!me?.delegated"><label
             >Persönliche Signatur<textarea
               v-model="form.signature"
               rows="3"
@@ -2547,7 +2584,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
               type="checkbox"
               v-model="form.notifications"
             />Benachrichtigungen zu sozialen Aktivitäten</label
-          ><button class="primary" :disabled="busy || uploading">
+          ></template><button class="primary" :disabled="busy || uploading">
             Speichern
           </button>
         </form>
@@ -2811,7 +2848,7 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
           <h2>Werbung anfragen</h2>
           <label
             >Unternehmen<select v-model="form.company_id" required>
-              <option v-for="c in mineCompanies" :key="c.id" :value="c.id">
+              <option v-for="c in adCompanies" :key="c.id" :value="c.id">
                 {{ c.name }}
               </option>
             </select></label
@@ -2999,36 +3036,8 @@ watch(theme, () => localStorage.setItem("social-theme", theme.value));
             />Verifiziertes Unternehmen</label
           >
           <CompanyFields :model-value="form" @busy="uploading = $event" />
-          <h3>Berechtigte Mitarbeiter</h3>
-          <div class="row">
-            <input
-              v-model="friendSearch"
-              placeholder="Name suchen"
-              aria-label="Mitarbeiter suchen"
-            /><button type="button" @click="findPeople">Suchen</button>
-          </div>
-          <label
-            v-for="p in [
-              ...(form.members || [])
-                .map((id: number) =>
-                  companies
-                    .flatMap((c) => c.members || [])
-                    .concat(people)
-                    .find((p: Row) => Number(p.id) === id),
-                )
-                .filter(Boolean),
-              ...people.filter(
-                (p) => !(form.members || []).includes(Number(p.id)),
-              ),
-            ]"
-            :key="p.id"
-            class="check"
-            ><input
-              type="checkbox"
-              :value="Number(p.id)"
-              v-model="form.members"
-            />{{ p.display_name }} (@{{ p.handle }})</label
-          >
+          <p>Zugriffe verwaltet der Haupteigner unter „Konten &amp; Zugriffe“.</p>
+
           <p class="notice">
             Diese Liste ersetzt die bisherigen Seitenberechtigungen.
           </p>

@@ -32,7 +32,7 @@ const chapters = computed(() => {
 function jump(id:number|string){document.getElementById('law-'+id)?.scrollIntoView({behavior:'smooth',block:'start'});}
 function movePart(index:number,delta:number){const parts=editing.value!.subsections;[parts[index],parts[index+delta]]=[parts[index+delta],parts[index]];}
 async function api(action:string, data?:Row, q:Row={}) {
- const response = await fetch(props.endpoint+'?'+new URLSearchParams({action,...q}),{credentials:'include',method:data?'POST':'GET',headers:data?{'Content-Type':'application/json','X-Laws-Request':'1'}:{},body:data?JSON.stringify(data):undefined});
+ const response = await fetch(props.endpoint+'?'+new URLSearchParams({action,...q}),{credentials:'include',method:data?'POST':'GET',headers:{...(props.endpoint.includes('/social/')?{'X-Social-Account':sessionStorage.getItem('social-account')||'0'}:{}),...(data?{'Content-Type':'application/json','X-Laws-Request':'1'}:{})},body:data?JSON.stringify(data):undefined});
  const result = await response.json();if(!response.ok)throw new Error(result.error||'Anfrage fehlgeschlagen.');return result;
 }
 async function run(fn:()=>Promise<void>) { if(busy.value)return;busy.value=true;error.value='';notice.value='';try{await fn();}catch(e){error.value=e instanceof Error?e.message:'Anfrage fehlgeschlagen.';}finally{busy.value=false;} }

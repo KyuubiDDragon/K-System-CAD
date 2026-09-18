@@ -14,10 +14,9 @@ try {
         $actor=['id'=>(int)$decoded_jwt->userId,'authority_id'=>(int)$decoded_jwt->authority_id];
     }
     $social=false;
-    if(isset($_COOKIE['social_session'])) {
-        $q=$pdo->prepare("SELECT p.id FROM kdd_social_sessions s JOIN kdd_social_profiles p ON p.id=s.profile_id JOIN kdd_users u ON u.id=p.user_id JOIN kdd_authorities a ON a.id=p.authority_id WHERE s.token_hash=? AND s.expires_at>UTC_TIMESTAMP() AND p.status='active' AND u.banned=0 AND a.active=1");
-        $q->execute([hash('sha256',$_COOKIE['social_session'])]);$social=(bool)$q->fetchColumn();
-    }
+    require_once __DIR__.'/../social/Service.php';
+    try {[$profile]=(new \Kyuubi\Social\Accounts($pdo))->resolve();$social=$profile&&$profile['status']==='active';}
+    catch(\Kyuubi\Social\ApiError $e){$social=false;}
     $service=new \Kyuubi\Laws\Service($pdo,$actor,$social);
     $data=$method==='POST'?json_decode(file_get_contents('php://input'),true,32,JSON_THROW_ON_ERROR):[];
     if(!is_array($data))throw new \Kyuubi\Laws\Error(400,'Ungültige Anfrage.');

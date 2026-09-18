@@ -184,7 +184,7 @@ if ($isFiveM) {
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS"); // Erlaube Methoden, die deine API nutzt
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, X-Requested-With, Authorization, X-Laws-Request"); // Füge Authorization hinzu, falls du JWTs nutzt
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, X-Requested-With, Authorization, X-Laws-Request, X-Social-Cad-Request, X-Social-Account"); // Füge Authorization hinzu, falls du JWTs nutzt
 
 // Content Security Policy headers for FiveM compatibility
 if ($isFiveM) {

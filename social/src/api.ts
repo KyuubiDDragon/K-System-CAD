@@ -1,6 +1,7 @@
+import { accountHeaders, mediaContext } from "./accountContext";
 export type Row = Record<string, any>;
 export const mediaUrl = (id: number | string) =>
-  `/api/social/index.php?action=media&id=${encodeURIComponent(id)}`;
+  `/api/social/index.php?action=media&id=${encodeURIComponent(id)}${mediaContext()}`;
 export async function api(
   action: string,
   data?: Row,
@@ -17,15 +18,16 @@ export async function api(
   const response = await fetch(`/api/social/index.php?${qs}`, {
     method: data ? "POST" : "GET",
     credentials: "same-origin",
-    headers: data
-      ? { "Content-Type": "application/json", "X-Social-Request": "1" }
-      : {},
+    headers: { ...accountHeaders(), ...(["login","register","recover","bridge_login"].includes(action)?{"X-Social-Account":"-1","X-Social-Acting":"0"}:{}), ...(data ? { "Content-Type": "application/json", "X-Social-Request": "1" } : {}) },
     body: data ? JSON.stringify(data) : undefined,
   });
   const result = await response
     .json()
     .catch(() => ({ error: "Server nicht erreichbar." }));
-  if (!response.ok) throw new Error(result.error || "Anfrage fehlgeschlagen.");
+  if (!response.ok) {
+    if(!["login","register","recover","bridge_login","bridge_link"].includes(action) && (response.status===401 || result.code==="access_revoked")) window.dispatchEvent(new CustomEvent("social-access-lost",{detail:result.error}));
+    throw new Error(result.error || "Anfrage fehlgeschlagen.");
+  }
   return result;
 }
 export async function upload(
@@ -40,7 +42,7 @@ export async function upload(
   const response = await fetch("/api/social/index.php?action=upload", {
     method: "POST",
     credentials: "same-origin",
-    headers: { "X-Social-Request": "1" },
+    headers: { ...accountHeaders(), "X-Social-Request": "1" },
     body,
   });
   const result = await response.json();
