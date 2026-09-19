@@ -7,7 +7,7 @@ const password='Nur-lokale-Demo-2026!';
 const cookies={};
 async function call(who,action,data){
  const r=await fetch(base+'?action='+action,{method:data?'POST':'GET',headers:{Cookie:cookies[who]||'','X-Social-Request':'1',...(data?{'Content-Type':'application/json'}:{})},body:data?JSON.stringify(data):undefined});
- if(r.headers.get('set-cookie'))cookies[who]=r.headers.get('set-cookie').split(';')[0];
+ const jar=Object.fromEntries((cookies[who]||'').split('; ').filter(Boolean).map(v=>v.split('=')));for(const line of r.headers.getSetCookie()){const [k,v]=line.split(';')[0].split('=');jar[k]=v;}cookies[who]=Object.entries(jar).map(([k,v])=>k+'='+v).join('; ');
  const value=await r.json();if(!r.ok)throw Error(JSON.stringify(value));return value;
 }
 await call('demo','register',{handle:'demo',display_name:'Mia Bennett',password});
@@ -17,6 +17,8 @@ await call('demo','save_settings',{revision:b.revision,settings:{community:'Los 
 await call('garage','register',{handle:'bennys',display_name:'Alex Rivera',password});
 const garage=(await call('garage','bootstrap')).me.id;
 const company=(await call('demo','save_company',{name:'Benny’s Motorworks',description:'Werkstatt, Fahrzeugpflege und gute Gespräche in Strawberry.',location:'Strawberry',contact:'Nachricht an Alex Rivera',verified:true,members:[garage]})).id;
+await call('demo','grant_access',{kind:'company',id:company,handle:'bennys',rights:['posts','profile','ads'],password});
+await call('garage','accept_access',{kind:'company',id:company,accept:true});
 await call('garage','company_open',{id:company,minutes:120});
 await call('garage','save_post',{module:'social',body:'Samstag ist Werkstatttag. Kommt mit euren Klassikern vorbei – wir kümmern uns um den Rest. Ab 18 Uhr in Strawberry. #CarMeet #LosSantos',visibility:'public',company_id:company});
 async function photo(who,module,purpose='post'){const f=new FormData();f.set('file',new Blob([readFileSync(new URL('../public/city.png',import.meta.url))]),'los-santos.png');f.set('module',module);f.set('purpose',purpose);const r=await fetch(base+'?action=upload',{method:'POST',headers:{Cookie:cookies[who],'X-Social-Request':'1'},body:f});const v=await r.json();if(!r.ok)throw Error(JSON.stringify(v));return v.id;}

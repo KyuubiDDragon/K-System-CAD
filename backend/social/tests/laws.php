@@ -22,11 +22,15 @@ $publisher=actor('publisher',['READ_LAWS_DRAFTS','WRITE_LAWS_PUBLICATION','WRITE
 $outsider=actor('outsider',['READ_LAWS_DRAFTS','WRITE_LAWS_DRAFTS','WRITE_LAWS_PUBLICATION']);
 function service(?array $who=null,bool $social=false): \Kyuubi\Laws\Service {global $pdo;return new \Kyuubi\Laws\Service($pdo,$who,$social);}
 $book=service($root)->dispatch('save_book','POST',['title'=>'Testgesetzbuch','description'=>'Prüfung'])['id'];
+check(!service()->dispatch('books','GET')['items'],'new books start unpublished');
+denies(404,fn()=>service()->dispatch('book','GET',[],['id'=>$book]),'unpublished book direct access denied');
+service($root)->dispatch('book_visibility','POST',['id'=>$book,'revision'=>1,'published'=>true]);
 $draft=['book_id'=>$book,'number'=>'1','title'=>'Erste Fassung','chapter'=>'Allgemeines','body'=>'Öffentlicher Text','reason'=>'Erstanlage','subsections'=>[['number'=>'1','title'=>'Sorgfalt','body'=>'Besondere Vorsicht im Verkehr']],'amount_kind'=>'fine','amount_min'=>'125.50','amount_max'=>'500'];
 denies(403,fn()=>service($writer)->dispatch('save_draft','POST',$draft),'role alone does not grant app access');
 foreach([$writer,$publisher] as $a)service($root)->dispatch('grant','POST',['authority_id'=>$a['authority_id'],'draft_read'=>true,'edit'=>true,'publish'=>true,'repeal'=>true]);
 $second=service($writer)->dispatch('save_book','POST',['title'=>'Zweites Gesetzbuch','description'=>'App-Zuständigkeit'])['id'];
 check(service($writer)->rights($second)['edit'],'app grant covers all books, including new books');
+denies(403,fn()=>service($writer)->dispatch('book_visibility','POST',['id'=>$second,'revision'=>1,'published'=>true]),'book visibility requires publishing permission');
 denies(403,fn()=>service($writer)->dispatch('grant','POST',['authority_id'=>$outsider['authority_id'],'edit'=>true]),'assigned editor cannot distribute app access');
 check(service($root)->rights($second)['publish'],'system has full app access without assignment');
 $id=service($writer)->dispatch('save_draft','POST',$draft)['id'];
@@ -42,6 +46,10 @@ denies(403,fn()=>service($writer)->dispatch('publish','POST',['article_id'=>$id,
 denies(403,fn()=>service($publisher)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$article['revision']]),'publication does not imply editing');
 service($publisher)->dispatch('publish','POST',['article_id'=>$id,'revision'=>$article['revision']]);
 check($view($outsider)['articles'][0]['current']['title']==='Erste Fassung','published law is shared across factions');
+service($root)->dispatch('book_visibility','POST',['id'=>$book,'revision'=>2,'published'=>false]);
+denies(404,fn()=>service()->dispatch('history','GET',[],['id'=>$id]),'withdrawn book history is not public');
+check(!service()->dispatch('search','GET',[],['q'=>'Öffentlicher Text'])['items'],'withdrawn books disappear from search');
+service($root)->dispatch('book_visibility','POST',['id'=>$book,'revision'=>3,'published'=>true]);
 $a=$view($writer)['articles'][0];service($writer)->dispatch('save_draft','POST',[...$draft,'article_id'=>$id,'revision'=>$a['revision'],'title'=>'Neue Fassung','body'=>'Entwurf geheim']);
 check($view($outsider)['articles'][0]['draft']===null&&$view($outsider)['articles'][0]['current']['body']==='Öffentlicher Text','editing preserves current published text');
 check(!service($outsider)->dispatch('book','GET',[],['id'=>$book,'q'=>'Entwurf geheim'])['articles'],'search does not leak drafts');
@@ -66,7 +74,7 @@ check(count(service()->dispatch('search','GET',[],['q'=>'Öffentlicher Text'])['
 $settings=service($root)->dispatch('bootstrap','GET');service($root)->dispatch('settings','POST',['enabled'=>true,'guest'=>false,'revision'=>$settings['revision']]);
 $settings=service($root)->dispatch('bootstrap','GET');denies(401,fn()=>service()->dispatch('books','GET'),'guest access disabled independently');
 service($root)->dispatch('settings','POST',['enabled'=>true,'guest'=>true,'revision'=>$settings['revision']]);
-check(count(service()->dispatch('books','GET')['items'])===2,'law guest access can be enabled');
+check(count(service()->dispatch('books','GET')['items'])===1,'law guest access can be enabled');
 denies(403,fn()=>service(null,true)->dispatch('settings','POST',['enabled'=>true,'guest'=>true,'revision'=>2]),'Social session cannot administer laws');
 service($root)->dispatch('grant','POST',['authority_id'=>$writer['authority_id']]);
 check(!service($writer)->rights($book)['edit'],'revoked jurisdiction takes effect immediately');

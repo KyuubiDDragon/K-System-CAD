@@ -2,16 +2,27 @@
 declare(strict_types=1);
 namespace Kyuubi\Social;
 require_once __DIR__.'/Policy.php';
-final class ApiError extends \RuntimeException { public function __construct(public int $status, string $message) { parent::__construct($message); } }
+require_once __DIR__.'/Accounts.php';
+require_once __DIR__.'/Bridge.php';
+final class ApiError extends \RuntimeException { public function __construct(public int $status, string $message, public ?string $reason=null) { parent::__construct($message); } }
 final class Service {
     private ?array $me=null;
     private array $settings;
-    private string $token='';
+    private string $sessionHash='';
+    private Accounts $accounts;
+    private ?array $actor=null;
+    private array $delegatedRights=[];
     public function __construct(private \PDO $db) {
         $db->exec("SET time_zone = '+00:00'");
         $this->settings=array_replace(Policy::defaults(), json_decode($this->one('SELECT settings FROM kdd_social_settings WHERE id=1')['settings'] ?? '{}',true));
-        $this->token=$_COOKIE['social_session'] ?? '';
-        if ($this->token) $this->me=$this->one('SELECT p.* FROM kdd_social_sessions s JOIN kdd_social_profiles p ON p.id=s.profile_id JOIN kdd_users u ON u.id=p.user_id JOIN kdd_authorities a ON a.id=p.authority_id WHERE s.token_hash=? AND s.expires_at>UTC_TIMESTAMP() AND u.banned=0 AND a.active=1', [hash('sha256',$this->token)]);
+        $this->accounts=new Accounts($db);
+        [$this->me,$this->sessionHash]=$this->accounts->resolve();
+        $this->actor=$this->me;
+        $acting=(int)($_SERVER['HTTP_X_SOCIAL_ACTING']??0);
+        if($acting && $acting!==$this->id()){
+            $this->auth();$this->delegatedRights=$this->accounts->delegation($acting,$this->id());
+            $this->me=$this->profile($acting);
+        }
         if($this->me)$this->exec('UPDATE kdd_social_profiles SET last_seen=UTC_TIMESTAMP() WHERE id=?',[$this->id()]);
         if ($this->me && $this->me['status']==='deleted') $this->me=null;
         if ($this->me && $this->me['suspended_until'] && $this->me['suspended_until']<=gmdate('Y-m-d H:i:s')) { $this->exec("UPDATE kdd_social_profiles SET status='active',suspended_until=NULL WHERE id=?",[$this->id()]); $this->me['status']='active'; }
@@ -27,17 +38,18 @@ final class Service {
     private function module(string $module):void { if(empty($this->settings['modules'][$module]))$this->fail(404,'Dieses Modul ist deaktiviert.'); }
     private function auth(bool $active=true):void { if(!$this->me)$this->fail(401,'Bitte anmelden.');if($active && $this->me['status']!=='active')$this->fail(403,'Dein Konto ist noch nicht freigegeben oder gesperrt.'); }
     private function role(string $role):void { $this->auth();if(!$this->can($role))$this->fail(403,'Diese Berechtigung fehlt.'); }
-    private function can(string $role):bool { return ($this->me['role']??'')==='admin'||($role==='moderator'&&($this->me['role']??'')==='moderator')||($role==='advertiser'&&($this->me['role']??'')==='advertiser'); }
+    private function can(string $role):bool { return !$this->delegatedRights && (($this->me['role']??'')==='admin'||($role==='moderator'&&($this->me['role']??'')==='moderator')||($role==='advertiser'&&($this->me['role']??'')==='advertiser')); }
     private function rate(string $bucket,int $limit,int $seconds):void {
         $key=hash('sha256',$bucket);$this->exec('INSERT INTO kdd_social_limits(bucket,hits,expires_at) VALUES(?,1,DATE_ADD(UTC_TIMESTAMP(),INTERVAL ? SECOND)) ON DUPLICATE KEY UPDATE hits=IF(expires_at<UTC_TIMESTAMP(),1,hits+1),expires_at=IF(expires_at<UTC_TIMESTAMP(),VALUES(expires_at),expires_at)',[$key,$seconds]);
         if((int)$this->one('SELECT hits FROM kdd_social_limits WHERE bucket=?',[$key])['hits']>$limit)$this->fail(429,'Zu viele Versuche. Bitte später erneut versuchen.');
     }
     private function notice(int $id,string $body,string $target=''):void { $prefs=json_decode($this->one('SELECT preferences FROM kdd_social_profiles WHERE id=?',[$id])['preferences']??'{}',true);if(isset($prefs['notifications'])&&!$prefs['notifications']&&$target!=='ads'&&$target!=='account')return; $this->exec('INSERT INTO kdd_social_notifications(profile_id,body,target) VALUES(?,?,?)',[$id,$body,$target]); }
-    private function audit(string $action,array $details):void { $this->exec('INSERT INTO kdd_social_audit(actor,action,details) VALUES(?,?,?)',[$this->id(),$action,json_encode($details,JSON_UNESCAPED_UNICODE)]); }
+    private function audit(string $action,array $details):void { $this->exec('INSERT INTO kdd_social_audit(actor,action,details) VALUES(?,?,?)',[(int)($this->actor['id']??$this->id()),$action,json_encode(['represented_profile'=>$this->id()]+$details,JSON_UNESCAPED_UNICODE)]); }
     private function blocked(int $a,int $b):bool { return (bool)$this->one('SELECT 1 FROM kdd_social_blocks WHERE (blocker=? AND blocked=?) OR (blocker=? AND blocked=?)',[$a,$b,$b,$a]); }
     private function friend(int $a,int $b):bool { return (bool)$this->one("SELECT 1 FROM kdd_social_friends WHERE status='accepted' AND ((sender=? AND recipient=?) OR(sender=? AND recipient=?))",[$a,$b,$b,$a]); }
     private function friends(int $id):array { return array_map('intval',array_column($this->all("SELECT IF(sender=?,recipient,sender) AS id FROM kdd_social_friends WHERE status='accepted' AND (sender=? OR recipient=?)",[$id,$id,$id]),'id')); }
     private function visible(string $v,int $owner):bool {
+        if($this->delegatedRights)return $v==='public'&&!$this->blocked((int)$this->actor['id'],$owner)&&!$this->blocked($this->id(),$owner);
         if(!$this->id())return !empty($this->settings['guest'])&&$v==='public';
         return Policy::visible($v,$owner===$this->id(),$this->blocked($owner,$this->id()),$this->friend($owner,$this->id()),$v==='friends_of_friends' && count(array_intersect($this->friends($owner),$this->friends($this->id())))>0);
     }
@@ -60,11 +72,12 @@ final class Service {
         $author=$this->profile((int)$p['author_id']);$owner=(int)$p['author_id']===$this->id();
         if(!($review&&$this->can('moderator'))) {
             if($p['state']!=='published'&&!$owner)$this->fail(404,'Inhalt nicht verfügbar.');
-            if($p['state']==='deleted'||$author['status']!=='active')$this->fail(404,'Inhalt nicht verfügbar.');
+            if($p['state']==='deleted'||($author['status']!=='active'&&!($p['company_id']&&$author['status']==='deleted')))$this->fail(404,'Inhalt nicht verfügbar.');
             if(!$this->visible($p['visibility'],(int)$p['author_id']))$this->fail(404,'Inhalt nicht verfügbar.');
             if($p['wall_id'] && !$this->visible($this->profile((int)$p['wall_id'])['privacy'],(int)$p['wall_id']))$this->fail(404,'Inhalt nicht verfügbar.');
         }
         $p['author']=$this->publicProfile($author);$p['id']=(int)$p['id'];
+        $p['can_edit']=$this->id()>0&&($p['company_id']?(!$this->delegatedRights&&$this->accounts->companyRight((int)$p['company_id'],$this->id(),'posts')):($owner&&(!$this->delegatedRights||in_array('posts',$this->delegatedRights,true))));
         $p['media']=$this->all('SELECT id,mime,filename,state FROM kdd_social_media WHERE post_id=?',[$id]);
         $p['likes']=(int)$this->one('SELECT COUNT(*) AS n FROM kdd_social_reactions WHERE post_id=? AND value=1',[$id])['n'];
         $p['dislikes']=(int)$this->one('SELECT COUNT(*) AS n FROM kdd_social_reactions WHERE post_id=? AND value=-1',[$id])['n'];
@@ -75,31 +88,51 @@ final class Service {
         if($p['shared_id']) {try{$p['shared']=$this->post((int)$p['shared_id'],false,[...$seen,$id]);}catch(ApiError $e){$p['shared']=null;}}
         return $p;
     }
-    private function loginSession(array $profile):array {
+    private function loginSession(array $profile,?array $bridge=null):array {
         $token=bin2hex(random_bytes(32));$this->exec('INSERT INTO kdd_social_sessions VALUES(?,?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL 7 DAY))',[hash('sha256',$token),$profile['id']]);
         setcookie('social_session',$token,['expires'=>time()+604800,'path'=>'/api/social/','secure'=>filter_var(\getEnvVar('COOKIE_SECURE','true'),FILTER_VALIDATE_BOOLEAN),'httponly'=>true,'samesite'=>'Strict']);
-        $this->me=$profile;return ['ok'=>true];
+        $hash=hash('sha256',$token);
+        if($bridge)$this->exec('INSERT INTO kdd_social_session_links VALUES(?,?,?)',[$hash,$bridge['link_id'],$bridge['cad_session_hash']]);
+        $this->accounts->remember((int)$profile['id'],$hash);
+        $this->me=$profile;return ['ok'=>true,'profile_id'=>(int)$profile['id']];
     }
     public function dispatch(string $action,string $method,array $d,array $q):array {
-        $reads=['bookmarks','discovery','bootstrap','posts','post','comments','profile','people','friends','messages','notifications','companies','ads','slots','admin','media','search'];
+        $reads=['accounts','bookmarks','discovery','bootstrap','posts','post','comments','profile','people','friends','messages','notifications','companies','ads','slots','admin','media','search'];
         if(($method==='GET')!==in_array($action,$reads,true))$this->fail(405,'Methode nicht erlaubt.');
         if($method==='POST')$this->rate('write:'.($this->id()?:($_SERVER['REMOTE_ADDR']??'unknown')),180,60);
+        if($this->delegatedRights){
+            $allowed=['media','bootstrap','posts','post','profile','comments','discovery','companies','ads','accounts'];
+            $needed=['save_post'=>'posts','delete_post'=>'posts','save_profile'=>'profile'];
+            if($action==='upload'){$purpose=$_POST['purpose']??'post';$needed['upload']=$purpose==='profile'?'profile':($purpose==='post'?'posts':'forbidden');}
+            if(!in_array($action,$allowed,true)&&(!isset($needed[$action])||!in_array($needed[$action],$this->delegatedRights,true)))$this->fail(403,'Diese Aktion ist für den freigegebenen Zugang nicht erlaubt.');
+            if($action==='ads'&&empty($q['live']))$this->fail(403,'Werbeverwaltung gehört nicht zu diesem Zugang.');
+            if($action==='save_post'&&(($d['visibility']??'public')!=='public'||!empty($d['company_id'])||!empty($d['wall_id'])))$this->fail(403,'Dieser Zugang darf nur öffentliche Beiträge dieses Profils erstellen.');
+            if($action==='save_profile')$d=array_merge($this->me,array_intersect_key($d,array_flip(['display_name','bio','avatar_id','cover_id'])));
+            if($method==='POST')$this->audit('delegated_'.$action,['id'=>$d['id']??null]);
+        }
+        if($action==='accounts')return $this->accounts->listing($this->actor);
+        if($action==='bridge_login'||$action==='bridge_link'){
+            $r=(new Bridge($this->db))->consume($action,$d,$this->actor);
+            return $action==='bridge_login'?$this->loginSession($this->profile($r['profile_id']),$r):$r;
+        }
+        if(in_array($action,['transfer_owner','accept_owner','forget_account','unlink_cad','grant_access','revoke_access','accept_access','access_members'],true)){$this->auth();if(in_array($action,['transfer_owner','accept_owner','unlink_cad','grant_access','revoke_access'],true))$this->rate('account-security:'.$this->id(),40,900);return $this->accounts->action($action,$this->actor,$d);}
         if($action==='bootstrap') {
             $mine=$this->me?array_diff_key($this->me,array_flip(['recovery_hash','user_id','authority_id'])):null;
             if($mine){$mine['preferences']=json_decode($mine['preferences'],true);$mine['account_notice']=$this->one("SELECT body FROM kdd_social_notifications WHERE profile_id=? AND target='account' ORDER BY id DESC LIMIT 1",[$this->id()])['body']??null;}
+            if($mine&&$this->delegatedRights){$mine=array_intersect_key($mine,array_flip(['id','handle','display_name','avatar_id','cover_id','bio','status']));$mine['role']='member';$mine['preferences']=[];$mine['delegated']=true;$mine['actor_name']=$this->actor['display_name'];$mine['rights']=$this->delegatedRights;}
             $public=$this->settings;$public['laws_enabled']=(bool)($this->one('SELECT enabled FROM kdd_law_settings WHERE id=1')['enabled']??false);$public['cad_url']=(string)\getEnvVar('FRONTEND_URL_PROD','');unset($public['accept_template'],$public['reject_template'],$public['payment_instructions']);
-            return ['settings'=>$public,'me'=>$mine,'revision'=>(int)$this->one('SELECT revision FROM kdd_social_settings WHERE id=1')['revision']];
+            return ['settings'=>$public,'me'=>$mine,'actor_id'=>$this->actor['id']??null,'revision'=>(int)$this->one('SELECT revision FROM kdd_social_settings WHERE id=1')['revision']];
         }
         if(in_array($action,['register','login','recover'],true))return $this->credentials($action,$d);
         if($this->me&&!in_array($action,['logout','appeal'],true))$this->auth();
         if($action==='media'){if($this->me)$this->auth();$this->serveMedia((int)($q['id']??0));return [];}
         if(!(in_array($action,['discovery','posts','post','profile','companies','comments'],true)||($action==='ads'&&!empty($q['live'])))||!$this->settings['guest'])$this->auth(!in_array($action,['logout','appeal'],true));
         switch($action){
-            case 'logout':$this->exec('DELETE FROM kdd_social_sessions WHERE token_hash=?',[hash('sha256',$this->token)]);setcookie('social_session','',['expires'=>1,'path'=>'/api/social/','httponly'=>true,'samesite'=>'Strict']);return ['ok'=>true];
+            case 'logout':$this->exec('DELETE FROM kdd_social_sessions WHERE token_hash=?',[$this->sessionHash]);setcookie('social_session','',['expires'=>1,'path'=>'/api/social/','httponly'=>true,'samesite'=>'Strict']);return ['ok'=>true];
             case 'posts':return $this->feed($q);
             case 'post':return ['post'=>$this->post((int)($q['id']??0))];
             case 'save_post':return $this->savePost($d);
-            case 'delete_post':$p=$this->post((int)$d['id'],true);if((int)$p['author_id']!==$this->id())$this->role('moderator');$this->db->beginTransaction();$this->queueMedia('post_id=?',[$p['id']]);$this->exec("UPDATE kdd_social_posts SET state='deleted' WHERE id=?",[$p['id']]);$this->db->commit();$this->audit('delete_post',['id'=>$p['id'],'reason'=>$this->text($d,'reason',1000)]);return ['ok'=>true];
+            case 'delete_post':$p=$this->post((int)$d['id'],true);if($p['company_id']&&!$this->accounts->companyRight((int)$p['company_id'],$this->id(),'posts')&&!$this->can('moderator'))$this->fail(403,'Unternehmenszugriff wurde entzogen.');if(!$p['can_edit'])$this->role('moderator');$this->db->beginTransaction();$this->queueMedia('post_id=?',[$p['id']]);$this->exec("UPDATE kdd_social_posts SET state='deleted' WHERE id=?",[$p['id']]);$this->db->commit();$this->audit('delete_post',['id'=>$p['id'],'reason'=>$this->text($d,'reason',1000)]);return ['ok'=>true];
             case 'bookmark':
                 $id=(int)($d['id']??0);
                 if(!empty($d['remove']))$this->exec('DELETE FROM kdd_social_bookmarks WHERE profile_id=? AND post_id=?',[$this->id(),$id]);
@@ -134,17 +167,23 @@ final class Service {
                 return ['video'=>$videos[0]??null,'highlights'=>array_slice($highlights,0,3),'open_companies'=>$this->all('SELECT c.id,c.name,c.description,c.verified,c.location,o.open_until FROM kdd_social_company_openings o JOIN kdd_social_companies c ON c.id=o.company_id WHERE o.open_until>UTC_TIMESTAMP() ORDER BY c.name LIMIT 12')];
             case 'company_open':
                 $id=(int)($d['id']??0);
-                if(!$this->one('SELECT 1 FROM kdd_social_members WHERE company_id=? AND profile_id=?',[$id,$this->id()]))$this->role('moderator');
+                if(!$this->accounts->companyRight($id,$this->id(),'profile'))$this->role('moderator');
                 if(!$this->one('SELECT 1 FROM kdd_social_companies WHERE id=?',[$id]))$this->fail(404,'Unternehmen nicht gefunden.');
                 $minutes=(int)($d['minutes']??0);if($minutes<0||$minutes>720)$this->fail(422,'Öffnungsstatus maximal zwölf Stunden.');
                 if(!$minutes)$this->exec('DELETE FROM kdd_social_company_openings WHERE company_id=?',[$id]);
                 else $this->exec('INSERT INTO kdd_social_company_openings(company_id,open_until,updated_by) VALUES(?,DATE_ADD(UTC_TIMESTAMP(),INTERVAL ? MINUTE),?) ON DUPLICATE KEY UPDATE open_until=VALUES(open_until),updated_by=VALUES(updated_by)',[$id,$minutes,$this->id()]);
                 return ['ok'=>true];
-            case 'companies':$items=$this->all('SELECT c.*,(SELECT o.open_until FROM kdd_social_company_openings o WHERE o.company_id=c.id AND o.open_until>UTC_TIMESTAMP()) AS open_until,EXISTS(SELECT 1 FROM kdd_social_members m WHERE m.company_id=c.id AND m.profile_id=?) AS can_post FROM kdd_social_companies c ORDER BY name',[$this->id()]);foreach($items as &$company)if($this->can('moderator')||$company['can_post'])$company['members']=$this->all('SELECT p.id,p.display_name,p.handle FROM kdd_social_members m JOIN kdd_social_profiles p ON p.id=m.profile_id WHERE m.company_id=?',[$company['id']]);return ['items'=>$items];
+            case 'companies':
+                $items=$this->all('SELECT c.*,(SELECT o.open_until FROM kdd_social_company_openings o WHERE o.company_id=c.id AND o.open_until>UTC_TIMESTAMP()) AS open_until FROM kdd_social_companies c ORDER BY name');
+                foreach($items as &$company){
+                    foreach(['posts'=>'can_post','profile'=>'can_edit','ads'=>'can_ads'] as $right=>$key)$company[$key]=!$this->delegatedRights&&$this->accounts->companyRight((int)$company['id'],$this->id(),$right);
+                    $company['is_owner']=!$this->delegatedRights&&(int)$company['owner_id']===$this->id();
+                    if($this->can('moderator')||$company['is_owner'])$company['members']=$this->all("SELECT p.id,p.display_name,p.handle FROM kdd_social_members m JOIN kdd_social_profiles p ON p.id=m.profile_id WHERE m.company_id=? AND m.status='active'",[$company['id']]);
+                }return ['items'=>$items];
             case 'company_details':
-                $id=(int)($d['id']??0);if(!$this->one('SELECT 1 FROM kdd_social_members WHERE company_id=? AND profile_id=?',[$id,$this->id()]))$this->role('moderator');
+                $id=(int)($d['id']??0);if(!$this->accounts->companyRight($id,$this->id(),'profile'))$this->role('moderator');
                 $this->saveCompanyInfo($id,$d);return ['ok'=>true];
-            case 'save_company':$this->role('moderator');$this->db->beginTransaction();$id=(int)($d['id']??0);$name=$this->text($d,'name',100,true);$body=$this->text($d,'description',4000);if($id)$this->exec('UPDATE kdd_social_companies SET name=?,description=? WHERE id=?',[$name,$body,$id]);else $id=$this->insert('INSERT INTO kdd_social_companies(name,description,created_by) VALUES(?,?,?)',[$name,$body,$this->id()]);$this->saveCompanyInfo($id,$d);$verified=filter_var($d['verified']??false,FILTER_VALIDATE_BOOLEAN);$this->exec('UPDATE kdd_social_companies SET verified=?,location=?,contact=? WHERE id=?',[(int)$verified,$this->text($d,'location',200),$this->text($d,'contact',200),$id]);$this->exec('DELETE FROM kdd_social_members WHERE company_id=?',[$id]);foreach(array_unique($d['members']??[]) as $pid){$this->profile((int)$pid);$this->exec('INSERT INTO kdd_social_members VALUES(?,?)',[$id,(int)$pid]);}$this->db->commit();$this->audit('company',['id'=>$id]);return ['id'=>$id];
+            case 'save_company':$this->role('moderator');$this->db->beginTransaction();$id=(int)($d['id']??0);$name=$this->text($d,'name',100,true);$body=$this->text($d,'description',4000);if($id)$this->exec('UPDATE kdd_social_companies SET name=?,description=? WHERE id=?',[$name,$body,$id]);else $id=$this->insert('INSERT INTO kdd_social_companies(name,description,created_by,owner_id) VALUES(?,?,?,?)',[$name,$body,$this->id(),$this->id()]);$this->saveCompanyInfo($id,$d);$verified=filter_var($d['verified']??false,FILTER_VALIDATE_BOOLEAN);$this->exec('UPDATE kdd_social_companies SET verified=?,location=?,contact=? WHERE id=?',[(int)$verified,$this->text($d,'location',200),$this->text($d,'contact',200),$id]);$this->db->commit();$this->audit('company',['id'=>$id]);return ['id'=>$id];
             case 'slots':$this->module('social');return ['items'=>$this->all('SELECT * FROM kdd_social_slots WHERE active=1 AND ends_at>UTC_TIMESTAMP() ORDER BY starts_at')];
             case 'ads':return $this->ads($q);
             case 'request_ad':return $this->requestAd($d);
@@ -178,7 +217,7 @@ final class Service {
             $this->exec('INSERT INTO kdd_user_roles(user_id,role_id,authority_id) VALUES(?,?,?)',[$uid,$role,$authority]);
             $status=$this->settings['registration']==='immediate'?'active':'pending';
             $id=$this->insert('INSERT INTO kdd_social_profiles(user_id,authority_id,handle,display_name,preferences,status,recovery_hash) VALUES(?,?,?,?,?,?,?)',[$uid,$authority,$handle,$display,json_encode(['messages'=>'friends','requests'=>'public','wall'=>'friends','default_visibility'=>'friends','online'=>false,'receipts'=>false,'theme'=>'system']),$status,password_hash($recovery,PASSWORD_DEFAULT)]);
-            $this->db->commit();$this->loginSession($this->profile($id));return ['ok'=>true,'recovery_code'=>$recovery];
+            $this->db->commit();$this->loginSession($this->profile($id));return ['ok'=>true,'profile_id'=>$id,'recovery_code'=>$recovery];
         }
         $p=$this->one('SELECT p.*,u.password,u.banned FROM kdd_social_profiles p JOIN kdd_users u ON u.id=p.user_id WHERE p.handle=? AND p.status<>?',[$handle,'deleted']);
         $valid=$p && password_verify($action==='recover'?(string)($d['recovery_code']??''):$password,$action==='recover'?$p['recovery_hash']:$p['password']);
@@ -219,11 +258,12 @@ final class Service {
     private function savePost(array $d):array {
         $this->auth();$module=$this->enum($d['module']??'social',['social','gram','market','video']);$this->module($module);
         $id=(int)($d['id']??0);$old=$id?$this->post($id):null;
-        if($old&&((int)$old['author_id']!==$this->id()||$old['module']!==$module))$this->fail(403,'Nur eigene Beiträge können bearbeitet werden.');
+        if($old&&(!$old['can_edit']||$old['module']!==$module))$this->fail(403,'Nur eigene Beiträge können bearbeitet werden.');
+        if($old&&!empty($old['company_id'])&&!$this->accounts->companyRight((int)$old['company_id'],$this->id(),'posts'))$this->fail(403,'Unternehmenszugriff wurde entzogen.');
         $body=$this->text($d,'body',12000);$title=$this->text($d,'title',160,$module==='video'||$module==='market');
         $visibility=$this->enum($d['visibility']??'friends',['public','friends','friends_of_friends']);
         $shared=(int)($d['shared_id']??0);if($shared){$this->module('social');$source=$this->post($shared);if($source['state']!=='published'||$source['shared_id'])$this->fail(422,'Dieser Inhalt kann nicht geteilt werden.');if($module!=='social')$this->fail(422,'Teilen ist im Social-Feed möglich.');}
-        $company=(int)($d['company_id']??0);if($company&&!$this->one('SELECT 1 FROM kdd_social_members WHERE company_id=? AND profile_id=?',[$company,$this->id()]))$this->fail(403,'Keine Berechtigung für dieses Unternehmen.');
+        $company=(int)($old['company_id']??$d['company_id']??0);if($company&&!$this->accounts->companyRight($company,$this->id(),'posts'))$this->fail(403,'Keine Berechtigung für dieses Unternehmen.');
         $wall=(int)($d['wall_id']??0);if($wall){$target=$this->profile($wall);$prefs=json_decode($target['preferences'],true);if(!$this->visible($target['privacy'],$wall)||!$this->visible($prefs['wall']??'friends',$wall))$this->fail(403,'Du darfst nicht auf diese Pinnwand schreiben.');}
         $media=array_values(array_unique(array_map('intval',$d['media']??[])));if(count($media)>8)$this->fail(422,'Maximal acht Anhänge.');
         if(!$body&&!$media&&!$shared)$this->fail(422,'Der Beitrag ist leer.');
@@ -241,12 +281,13 @@ final class Service {
         if($ai===null)$this->fail(422,'KI-Kennzeichnung ungültig.');
         $state=$module==='video'?'pending':'published';
         $this->db->beginTransaction();
-        foreach($media as $mid){$m=$this->one('SELECT * FROM kdd_social_media WHERE id=? FOR UPDATE',[$mid]);if(!$m||(int)$m['owner_id']!==$this->id()||$m['module']!==$module||$m['purpose']!=='post'||($m['post_id']&&(int)$m['post_id']!==$id)||$m['message_id']||$m['ad_id'])$this->fail(422,'Datei kann nicht verwendet werden.');if($module==='video'&&!str_starts_with($m['mime'],'video/'))$this->fail(422,'Videodatei erforderlich.');if($module!=='video'&&!str_starts_with($m['mime'],'image/'))$this->fail(422,'Bilddatei erforderlich.');}
+        foreach($media as $mid){$m=$this->one('SELECT * FROM kdd_social_media WHERE id=? FOR UPDATE',[$mid]);if(!$m||((int)$m['owner_id']!==$this->id()&&!($old&&$company&&(int)$m['post_id']===$id))||$m['module']!==$module||$m['purpose']!=='post'||($m['post_id']&&(int)$m['post_id']!==$id)||$m['message_id']||$m['ad_id'])$this->fail(422,'Datei kann nicht verwendet werden.');if($this->delegatedRights&&(int)$m['uploaded_by']!==(int)$this->actor['id']&&!($old&&(int)$m['post_id']===$id))$this->fail(403,'Nur selbst hochgeladene oder bereits am öffentlichen Beitrag verwendete Dateien sind freigegeben.');if($module==='video'&&!str_starts_with($m['mime'],'video/'))$this->fail(422,'Videodatei erforderlich.');if($module!=='video'&&!str_starts_with($m['mime'],'image/'))$this->fail(422,'Bilddatei erforderlich.');}
         if($id){$this->exec('UPDATE kdd_social_posts SET title=?,body=?,visibility=?,state=?,review_reason=NULL,price=?,category=?,sale_state=?,updated_at=UTC_TIMESTAMP() WHERE id=?',[$title,$body,$visibility,$state,$price,$category,$sale,$id]);$this->exec('UPDATE kdd_social_media SET post_id=NULL WHERE post_id=?',[$id]);}
         else $id=$this->insert('INSERT INTO kdd_social_posts(author_id,company_id,wall_id,module,title,body,visibility,state,price,category,sale_state,shared_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)',[$this->id(),$company?:null,$wall?:null,$module,$title,$body,$visibility,$state,$price,$category,$sale,$shared?:null]);
         $this->exec('UPDATE kdd_social_posts SET ai_generated=? WHERE id=?',[(int)$ai,$id]);
         foreach($media as $mid)$this->exec('UPDATE kdd_social_media SET post_id=? WHERE id=?',[$id,$mid]);$this->db->commit();
         if($wall&&$wall!==$this->id())$this->notice($wall,'Neuer Pinnwandeintrag','post/'.$id);
+        $this->audit('save_post',['id'=>$id,'company_id'=>$company?:null]);
         return ['id'=>$id];
     }
     private function saveCompanyInfo(int $id,array $d):void {
@@ -264,6 +305,7 @@ final class Service {
         if(isset($d['theme']))$prefs['theme']=$this->enum($d['theme'],['light','dark','system']);
         $avatar=(int)($d['avatar_id']??$this->me['avatar_id']);$cover=(int)($d['cover_id']??$this->me['cover_id']);
         foreach([$avatar,$cover] as $mid)if($mid&&!$this->one("SELECT 1 FROM kdd_social_media WHERE id=? AND owner_id=? AND purpose='profile' AND mime LIKE 'image/%'",[$mid,$this->id()]))$this->fail(422,'Ungültiges Profilbild.');
+        if($this->delegatedRights)foreach([$avatar,$cover] as $mid)if($mid&&!in_array($mid,[(int)$this->me['avatar_id'],(int)$this->me['cover_id']],true)&&!$this->one('SELECT 1 FROM kdd_social_media WHERE id=? AND uploaded_by=?',[$mid,$this->actor['id']]))$this->fail(403,'Nur selbst hochgeladene Profilbilder sind freigegeben.');
         $this->exec('UPDATE kdd_social_profiles SET display_name=?,bio=?,signature=?,privacy=?,preferences=?,avatar_id=?,cover_id=? WHERE id=?',[$this->text($d,'display_name',100,true),$this->text($d,'bio',2000),$this->text($d,'signature',2000),$this->enum($d['privacy']??'public',['public','friends','friends_of_friends']),json_encode($prefs),$avatar?:null,$cover?:null,$this->id()]);return ['ok'=>true];
     }
     private function friendAction(array $d):array {
@@ -309,14 +351,20 @@ final class Service {
         $path=$f['tmp_name'];$temporary=null;
         if($image){$size=getimagesize($path);if(!$size||$size[0]*$size[1]>20000000)$this->fail(422,'Bildauflösung zu groß (max. 20 Megapixel).');$img=imagecreatefromstring(file_get_contents($path));if(!$img)$this->fail(422,'Bild ungültig.');$temporary=tempnam(sys_get_temp_dir(),'social-image-');imagewebp($img,$temporary,86);imagedestroy($img);$path=$temporary;$mime='image/webp';}
         $key=bin2hex(random_bytes(24));require_once __DIR__.'/Storage.php';
-        try{$storage=Storage::put($path,$key,$mime);$id=$this->insert('INSERT INTO kdd_social_media(owner_id,module,purpose,storage,storage_key,mime,filename,bytes,state) VALUES(?,?,?,?,?,?,?,?,?)',[$this->id(),$module,$purpose,$storage,$key,$mime,mb_substr(basename($f['name']),0,180),filesize($path),$video?'queued':'ready']);$this->db->commit();}finally{if($temporary)unlink($temporary);}
+        try{$storage=Storage::put($path,$key,$mime);$id=$this->insert('INSERT INTO kdd_social_media(owner_id,module,purpose,storage,storage_key,mime,filename,bytes,state) VALUES(?,?,?,?,?,?,?,?,?)',[$this->id(),$module,$purpose,$storage,$key,$mime,mb_substr(basename($f['name']),0,180),filesize($path),$video?'queued':'ready']);$this->exec('UPDATE kdd_social_media SET uploaded_by=? WHERE id=?',[(int)($this->actor['id']??$this->id()),$id]);$this->db->commit();}finally{if($temporary)unlink($temporary);}
         return ['id'=>$id,'mime'=>$mime,'state'=>$video?'queued':'ready'];
     }
     private function serveMedia(int $id):void {
         $m=$this->one('SELECT * FROM kdd_social_media WHERE id=?',[$id]);if(!$m)$this->fail(404,'Datei nicht gefunden.');if(!in_array($m['purpose'],['profile','branding','company'],true))$this->module($m['module']);
         $allowed=$m['purpose']==='company'&&($this->me||$this->settings['guest'])&&(bool)$this->one('SELECT 1 FROM kdd_social_companies WHERE photo_id=?',[$id]);
         if($m['purpose']==='branding'){$allowed=in_array($id,array_map('intval',$this->settings['icons']),true)||in_array($id,array_map('intval',[$this->settings['background_id'],$this->settings['logo_id'],$this->settings['header_id']]),true);}
-        if($this->me&&$this->me['status']==='active'&&(int)$m['owner_id']===$this->id())$allowed=true;
+        if($this->delegatedRights&&$m['purpose']==='message')$this->fail(404,'Datei nicht verfügbar.');
+        if(!$this->delegatedRights&&$this->me&&$this->me['status']==='active'&&(int)$m['owner_id']===$this->id())$allowed=true;
+        if($this->delegatedRights&&(int)$m['owner_id']===$this->id()){
+            $right=$m['purpose']==='profile'?'profile':($m['purpose']==='post'?'posts':'');
+            if(in_array($right,$this->delegatedRights,true)&&!$m['post_id']&&!$m['message_id']&&!$m['ad_id']&&(int)$m['uploaded_by']===(int)$this->actor['id'])$allowed=true;
+            if($right==='profile'&&in_array('profile',$this->delegatedRights,true)&&in_array($id,[(int)$this->me['avatar_id'],(int)$this->me['cover_id']],true))$allowed=true;
+        }
         if(!$allowed&&$m['post_id']){try{$this->post((int)$m['post_id']);$allowed=true;}catch(ApiError $e){}}
         if(!$allowed&&$m['message_id']&&$this->me&&$this->me['status']==='active'){$msg=$this->one('SELECT * FROM kdd_social_messages WHERE id=?',[$m['message_id']]);$allowed=$msg&&((int)$msg['sender']===$this->id()||(int)$msg['recipient']===$this->id())&&!$this->blocked((int)$msg['sender'],(int)$msg['recipient']);}
         if(!$allowed&&$m['purpose']==='profile'){$p=$this->profile((int)$m['owner_id']);$allowed=$p['status']==='active'&&((int)$p['avatar_id']===$id||(int)$p['cover_id']===$id)&&$this->visible($p['privacy'],(int)$p['id']);}
@@ -339,11 +387,11 @@ final class Service {
         $this->module('social');
         if(!empty($q['live']))$items=$this->all("SELECT a.*,s.placement FROM kdd_social_ads a JOIN kdd_social_slots s ON s.id=a.slot_id WHERE a.state='accepted' AND (a.paid=1 OR a.amount=0) AND s.active=1 AND a.starts_at<=UTC_TIMESTAMP() AND a.ends_at>UTC_TIMESTAMP() ORDER BY a.starts_at");
         elseif($this->can('advertiser'))$items=$this->all('SELECT a.*,s.name AS slot_name,c.name AS company_name FROM kdd_social_ads a JOIN kdd_social_slots s ON s.id=a.slot_id JOIN kdd_social_companies c ON c.id=a.company_id ORDER BY a.id DESC LIMIT 100');
-        else $items=$this->all('SELECT a.*,s.name AS slot_name FROM kdd_social_ads a JOIN kdd_social_slots s ON s.id=a.slot_id WHERE a.applicant=? ORDER BY a.id DESC LIMIT 100',[$this->id()]);
+        else $items=array_values(array_filter($this->all('SELECT a.*,s.name AS slot_name FROM kdd_social_ads a JOIN kdd_social_slots s ON s.id=a.slot_id ORDER BY a.id DESC LIMIT 500'),fn($ad)=>$this->accounts->companyRight((int)$ad['company_id'],$this->id(),'ads')));
         foreach($items as &$a){$a['media']=$this->all('SELECT id,mime,filename FROM kdd_social_media WHERE ad_id=?',[$a['id']]);if(!empty($q['live']))$a=array_intersect_key($a,array_flip(['id','title','body','target','countdown_at','media','placement','ends_at']));}return ['items'=>$items];
     }
     private function requestAd(array $d):array {
-        $this->module('social');$company=(int)$d['company_id'];if(!$this->one('SELECT 1 FROM kdd_social_members WHERE company_id=? AND profile_id=?',[$company,$this->id()]))$this->fail(403,'Keine Unternehmensberechtigung.');
+        $this->module('social');$company=(int)$d['company_id'];if(!$this->accounts->companyRight($company,$this->id(),'ads'))$this->fail(403,'Keine Unternehmensberechtigung.');
         $slot=$this->one('SELECT * FROM kdd_social_slots WHERE id=? AND active=1',[(int)$d['slot_id']]);if(!$slot)$this->fail(404,'Werbeplatz nicht verfügbar.');$start=$this->date($d,'starts_at');$end=$this->date($d,'ends_at');
         if($start>=$end||$start<gmdate('Y-m-d H:i:s')||$start<$slot['starts_at']||$end>$slot['ends_at'])$this->fail(422,'Zeitraum liegt außerhalb der Verfügbarkeit.');
         $target=$this->text($d,'target',500);if($target&&!preg_match('~^https?://~i',$target)&&!preg_match('~^#/(post|profile)/[0-9]+$~D',$target))$this->fail(422,'Ziel muss ein Weblink oder interner Beitrags-/Profillink sein.');
@@ -462,8 +510,9 @@ final class Service {
         $password=$this->text($d,'password',200,true);if(strlen($password)<12)$this->fail(422,'Mindestens 12 Zeichen.');$this->db->beginTransaction();$this->exec('UPDATE kdd_users SET password=? WHERE id=?',[password_hash($password,PASSWORD_DEFAULT),$this->me['user_id']]);$this->exec('DELETE FROM kdd_social_sessions WHERE profile_id=?',[$this->id()]);$this->db->commit();return $this->loginSession($this->me);
     }
     private function deleteAccount(array $d):array {
+        if($this->one('SELECT 1 FROM kdd_social_companies WHERE owner_id=?',[$this->id()]))$this->fail(409,'Bitte zuerst die Unternehmensinhaberschaft übertragen.');
         if($this->can('admin'))$this->fail(409,'Technische Rolle zuerst durch einen anderen Administrator entfernen lassen.');
         $u=$this->one('SELECT password FROM kdd_users WHERE id=?',[$this->me['user_id']]);if(!password_verify((string)($d['password']??''),$u['password'])||($d['confirm']??'')!=='DELETE')$this->fail(422,'Passwort und Bestätigung erforderlich.');
-        $this->db->beginTransaction();$this->queueMedia('owner_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_bookmarks WHERE profile_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_comments WHERE author_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_reactions WHERE profile_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_friends WHERE sender=? OR recipient=?',[$this->id(),$this->id()]);$this->exec('DELETE FROM kdd_social_members WHERE profile_id=?',[$this->id()]);$this->exec("UPDATE kdd_social_profiles SET status='deleted',handle=CONCAT('deleted_',id),display_name='Gelöschtes Konto',bio='',signature='',avatar_id=NULL,cover_id=NULL,recovery_hash='' WHERE id=?",[$this->id()]);$this->exec("UPDATE kdd_social_posts SET state='deleted' WHERE author_id=?",[$this->id()]);$this->exec('DELETE FROM kdd_social_sessions WHERE profile_id=?',[$this->id()]);$this->exec("UPDATE kdd_users SET banned=1,username=CONCAT('deleted_',id),email=CONCAT('deleted_',id,'@social.invalid'),password='' WHERE id=?",[$this->me['user_id']]);$this->db->commit();return ['ok'=>true];
+        $this->db->beginTransaction();$this->queueMedia('owner_id=? AND (post_id IS NULL OR post_id NOT IN (SELECT id FROM kdd_social_posts WHERE company_id IS NOT NULL)) AND id NOT IN (SELECT photo_id FROM kdd_social_companies WHERE photo_id IS NOT NULL)',[$this->id()]);$this->exec('DELETE FROM kdd_social_bookmarks WHERE profile_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_comments WHERE author_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_reactions WHERE profile_id=?',[$this->id()]);$this->exec('DELETE FROM kdd_social_friends WHERE sender=? OR recipient=?',[$this->id(),$this->id()]);$this->exec('DELETE FROM kdd_social_members WHERE profile_id=?',[$this->id()]);$this->exec("UPDATE kdd_social_profiles SET status='deleted',handle=CONCAT('deleted_',id),display_name='Gelöschtes Konto',bio='',signature='',avatar_id=NULL,cover_id=NULL,recovery_hash='' WHERE id=?",[$this->id()]);$this->exec("UPDATE kdd_social_posts SET state='deleted' WHERE author_id=? AND company_id IS NULL",[$this->id()]);$this->exec('DELETE FROM kdd_social_sessions WHERE profile_id=?',[$this->id()]);$this->exec("UPDATE kdd_users SET banned=1,username=CONCAT('deleted_',id),email=CONCAT('deleted_',id,'@social.invalid'),password='' WHERE id=?",[$this->me['user_id']]);$this->db->commit();return ['ok'=>true];
     }
 }

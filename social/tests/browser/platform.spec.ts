@@ -105,6 +105,15 @@ test("real launcher, configurable labels, theme, post and mobile layout", async 
   await page.getByLabel("Persönliche Signatur").fill("Liebe Grüße, Mia");
   await page.getByRole("button", { name: "Speichern", exact: true }).click();
   await expect(page.getByRole("dialog")).not.toBeVisible();
+  await page.request.post('/api/social/index.php?action=logout',{headers:{'X-Social-Request':'1'},data:{}});
+  await page.goto('/#/companies');
+  await page.reload();
+  await page.getByRole('banner').getByRole('button',{name:'Anmelden',exact:true}).click();
+  await page.getByLabel('Benutzername',{exact:true}).fill(handle);
+  await page.getByLabel('Passwort',{exact:true}).fill(password);
+  await page.locator('.auth-form').getByRole('button',{name:'Anmelden',exact:true}).click();
+  await expect(page).toHaveURL(/#\/companies$/);
+  await expect(page.locator('.auth-form')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
 
@@ -112,6 +121,7 @@ test('guest feed invites participation and login can return to reading', async (
   await page.goto('/#/social');
   await expect(page.getByRole('heading', {name:'Mach mit', exact:true})).toBeVisible();
   await expect(page.getByRole('heading', {name:'Willkommen zurück'})).toHaveCount(0);
+  await expect(page.getByRole('button',{name:'Freunde',exact:true})).toHaveCount(0);
   await page.locator('.guest-invitation').getByRole('button', {name:'Anmelden', exact:true}).click();
   await expect(page.getByRole('heading', {name:'Willkommen zurück'})).toBeVisible();
   const intro=await page.locator('.auth-intro').boundingBox();

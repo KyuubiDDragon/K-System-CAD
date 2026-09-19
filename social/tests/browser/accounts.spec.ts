@@ -1,0 +1,32 @@
+import {test,expect} from '@playwright/test';
+import {execFileSync} from 'node:child_process';
+import {resolve} from 'node:path';
+test('saved accounts stay separate across tabs and delegated access can be revoked',async({browser,baseURL})=>{
+ const fixture=JSON.parse(execFileSync('docker-compose',['-f','backend/social/tests/compose.yml','exec','-T','backend','cat','/tmp/accounts-test-fixture'],{cwd:resolve(process.cwd(),'..'),encoding:'utf8'}));
+ const ownerContext=await browser.newContext({baseURL});const memberContext=await browser.newContext({baseURL});
+ const owner=await ownerContext.newPage(),member=await memberContext.newPage();
+ const errors:string[]=[];member.on('pageerror',e=>errors.push(e.message));
+ async function login(context:any,handle:string){const r=await context.request.post('/api/social/index.php?action=login',{headers:{'X-Social-Request':'1'},data:{handle,password:fixture.password}});expect(r.ok()).toBeTruthy();}
+ await login(ownerContext,fixture.owner.handle);await login(memberContext,fixture.member.handle);
+ await member.goto('/#/accounts');await expect(member.getByRole('heading',{name:'Konten & Zugriffe',exact:true})).toBeVisible();
+ const secondTab=await memberContext.newPage();await secondTab.goto('/#/accounts');
+ await member.getByText('Weiteres eigenes Konto anmelden',{exact:true}).click();
+ const add=member.locator('details').filter({hasText:'Weiteres eigenes Konto anmelden'});
+ await add.getByLabel('Benutzername',{exact:true}).fill(fixture.second.handle);await add.getByLabel('Passwort',{exact:true}).fill(fixture.password);
+ await add.getByRole('button',{name:'Anmelden und speichern'}).click();await expect(member).toHaveURL(/apps/);
+ await member.goto('/#/accounts');await expect(member.locator('.account-row').filter({hasText:'@'+fixture.second.handle})).toContainText('Aktiv');
+ await secondTab.reload();await expect(secondTab.locator('.account-row').filter({hasText:'@'+fixture.member.handle})).toContainText('Aktiv');
+ await member.locator('.account-row').filter({hasText:'@'+fixture.member.handle}).getByRole('button',{name:'Öffnen',exact:true}).click();
+ await expect(member).toHaveURL(/apps/);
+ await owner.goto('/#/accounts');await owner.getByLabel('Dein Passwort zur Bestätigung').fill(fixture.password);await owner.getByLabel('Benutzername der Person').fill(fixture.member.handle);await owner.getByRole('button',{name:'Mit diesen Rechten einladen'}).click();
+ await expect(owner.locator('.account-row').filter({hasText:'@'+fixture.member.handle})).toContainText('Einladung offen');
+ await member.goto('/#/accounts');await member.getByRole('button',{name:'Annehmen',exact:true}).click();
+ await member.getByRole('button',{name:'Als dieses Profil arbeiten'}).click();await expect(member.locator('.notice').filter({hasText:'Du arbeitest als'})).toBeVisible();
+ await expect(member.getByRole('button',{name:'Nachrichten',exact:true})).toHaveCount(0);
+ await owner.getByLabel('Dein Passwort zur Bestätigung').fill(fixture.password);await owner.locator('.account-row').filter({hasText:'@'+fixture.member.handle}).getByRole('button',{name:'Zugriff entziehen'}).click();
+ await expect(owner.locator('.account-row').filter({hasText:'@'+fixture.member.handle})).toHaveCount(0);
+ await member.reload();await expect(member.getByRole('alert')).toContainText('entzogen');
+ await owner.evaluate(()=>scrollTo(0,0));await owner.screenshot({path:'test-results/accounts-desktop.png',fullPage:true});await owner.setViewportSize({width:390,height:844});await owner.evaluate(()=>scrollTo(0,0));
+ await expect.poll(()=>owner.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();await owner.screenshot({path:'test-results/accounts-mobile.png',fullPage:true});
+ expect(errors).toEqual([]);await ownerContext.close();await memberContext.close();
+});

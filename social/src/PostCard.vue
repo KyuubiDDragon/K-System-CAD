@@ -109,14 +109,14 @@ async function report() {
         }}</small>
       </div>
       <button
-        v-if="me?.id === Number(post.author_id)"
+        v-if="me && post.can_edit"
         class="icon-button end"
         aria-label="Beitrag bearbeiten"
         @click="emit('edit', post)"
       >
         <Icon name="edit" /></button
       ><button
-        v-else-if="me"
+        v-else-if="me && !me.delegated"
         class="icon-button end"
         aria-label="Beitrag melden"
         @click="report"
@@ -191,7 +191,7 @@ async function report() {
         ]
       }}</span
       ><button
-        v-if="me && me.id !== Number(post.author_id)"
+        v-if="me && !me.delegated && me.id !== Number(post.author_id)"
         @click="emit('contact', post.author_id)"
       >
         Verkäufer kontaktieren
@@ -202,7 +202,7 @@ async function report() {
     </div>
     <footer class="post-actions">
       <button
-        v-if="me"
+        v-if="me && !me.delegated"
         :aria-pressed="Boolean(post.bookmarked)"
         @click="bookmark"
         :aria-label="
@@ -212,13 +212,13 @@ async function report() {
         {{ post.bookmarked ? "★ Gespeichert" : "☆ Merken" }}
       </button>
       <button
-        :disabled="!me || post.state !== 'published'"
+        :disabled="!me || me.delegated || post.state !== 'published'"
         :aria-pressed="post.reaction === 1"
         @click="react(1)"
       >
         <Icon name="like" />{{ post.likes }}</button
       ><button
-        :disabled="!me || post.state !== 'published'"
+        :disabled="!me || me.delegated || post.state !== 'published'"
         :aria-pressed="post.reaction === -1"
         @click="react(-1)"
       >
@@ -226,7 +226,7 @@ async function report() {
       ><button @click="showComments">
         <Icon name="comment" />{{ post.comments }}</button
       ><button
-        :disabled="!me || post.state !== 'published'"
+        :disabled="!me || me.delegated || post.state !== 'published'"
         @click="emit('share', post)"
       >
         <Icon name="share" />Teilen
@@ -238,7 +238,7 @@ async function report() {
         <strong>{{ c.author.display_name }}</strong
         ><RichText :text="c.body" />
       </article>
-      <form v-if="me" @submit.prevent="comment">
+      <form v-if="me && !me.delegated" @submit.prevent="comment">
         <label
           >Kommentar<textarea
             v-model="body"

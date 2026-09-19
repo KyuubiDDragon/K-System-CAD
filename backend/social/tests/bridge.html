@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Local CAD bridge test</title></head><body>
+<button id="link">Verbinden</button><button id="login">Konto öffnen</button><pre id="status"></pre><iframe style="width:100%;height:900px"></iframe>
+<script>
+let state='';const frame=document.querySelector('iframe');const social=new URL(new URLSearchParams(location.search).get('social'));
+if(social.hostname!=='127.0.0.1')throw Error('Local test only');const targetOrigin=social.origin;frame.src=targetOrigin+'/#/apps';
+addEventListener('message',e=>{if(e.origin===targetOrigin&&e.source===frame.contentWindow&&e.data.type==='social-ready'){state=e.data.state;document.querySelector('#status').textContent='ready';}});
+async function issue(purpose){const list=await fetch('/api/social/cad.php?action=list').then(r=>r.json());const r=await fetch('/api/social/cad.php?action=issue',{method:'POST',headers:{'Content-Type':'application/json','X-Social-Cad-Request':'1'},body:JSON.stringify({purpose,state,id:list.items[0]?.id})}).then(r=>r.json());if(r.error){document.querySelector('#status').textContent=r.error;return;}frame.contentWindow.postMessage({type:'cad-social-code',state,purpose,code:r.code},targetOrigin);}
+document.querySelector('#link').onclick=()=>issue('link');document.querySelector('#login').onclick=()=>issue('login');
+</script></body></html>

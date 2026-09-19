@@ -6,7 +6,7 @@ header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
 try {
     if (!filter_var(getEnvVar('SOCIAL_ENABLED', 'false'), FILTER_VALIDATE_BOOLEAN)) throw new \Kyuubi\Social\ApiError(404, 'Social ist nicht aktiviert.');
-    $service = new \Kyuubi\Social\Service($pdo);
+
     $method = $_SERVER['REQUEST_METHOD'];
     if (!in_array($method, ['GET','POST'], true)) throw new \Kyuubi\Social\ApiError(405, 'Methode nicht erlaubt.');
     if ($method === 'POST') {
@@ -16,10 +16,18 @@ try {
         $expected = rtrim((string)getEnvVar('SOCIAL_ORIGIN', ''), '/');
         if ($origin && $expected && $origin !== $expected) throw new \Kyuubi\Social\ApiError(403, 'Ungültiger Anfrageursprung.');
     }
+    if ($method==='POST') {$lock=$pdo->query("SELECT GET_LOCK('social_access',10)")->fetchColumn();if(!$lock)throw new \Kyuubi\Social\ApiError(503,'Bitte erneut versuchen.');}
+    if(($_GET['action']??'')==='media'){
+        if(isset($_GET['account']))$_SERVER['HTTP_X_SOCIAL_ACCOUNT']=(string)(int)$_GET['account'];
+        if(isset($_GET['acting']))$_SERVER['HTTP_X_SOCIAL_ACTING']=(string)(int)$_GET['acting'];
+    }
+    $service = new \Kyuubi\Social\Service($pdo);
     $data = str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json') ? json_decode(file_get_contents('php://input'), true, 32, JSON_THROW_ON_ERROR) : $_POST;
     if (!is_array($data)) throw new \Kyuubi\Social\ApiError(400, 'Ungültige Anfrage.');
     $result = $service->dispatch((string)($_GET['action'] ?? 'bootstrap'), $method, $data, $_GET);
     echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-} catch (\Kyuubi\Social\ApiError $e) { if ($pdo->inTransaction()) $pdo->rollBack(); http_response_code($e->status); echo json_encode(['error'=>$e->getMessage()], JSON_UNESCAPED_UNICODE);
+} catch (\Kyuubi\Social\ApiError $e) { if ($pdo->inTransaction()) $pdo->rollBack(); http_response_code($e->status); echo json_encode(['error'=>$e->getMessage(),'code'=>$e->reason], JSON_UNESCAPED_UNICODE);
 } catch (\JsonException $e) { http_response_code(400); echo json_encode(['error'=>'Ungültige JSON-Daten.']);
 } catch (\Throwable $e) { if ($pdo->inTransaction()) $pdo->rollBack(); error_log('Social: '.$e->getMessage()); http_response_code(500); echo json_encode(['error'=>'Die Anfrage konnte nicht verarbeitet werden.']); }
+
+finally {if(!empty($lock))$pdo->query("SELECT RELEASE_LOCK('social_access')");}

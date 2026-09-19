@@ -60,19 +60,19 @@ final class Service {
         if (($method==='GET')!==in_array($action,$reads,true))throw new Error(405,'Methode nicht erlaubt.');
         if ($action==='bootstrap')return ['enabled'=>(bool)$this->settings['enabled'],'guest'=>(bool)$this->settings['guest'],'revision'=>(int)$this->settings['revision'],'admin'=>$this->system,'rights'=>$this->rights(0),'can_read'=>(bool)($this->actor||$this->socialReader||$this->settings['guest']),'context'=>$this->actor?['authority_id'=>$this->actor['authority_id'],'name'=>$this->one('SELECT display_name FROM kdd_authorities WHERE id=?',[$this->actor['authority_id']])['display_name']]:null];
         $this->reader();
-        if ($action==='books')return ['items'=>$this->all('SELECT id,title,description,revision FROM kdd_law_books ORDER BY title,id')];
+        if ($action==='books')return ['items'=>$this->all('SELECT id,title,description,revision,published FROM kdd_law_books'.((($q['view']??'')!=='reader'&&$this->rights(0)['draft_read'])?'':' WHERE published=1').' ORDER BY title,id')];
         if ($action==='search') {
             $query=trim((string)($q['q']??''));
             if(mb_strlen($query)>200)throw new Error(400,'Suchbegriff ist zu lang.');
             $items=[];
-            if($query!=='')foreach($this->all('SELECT id,title FROM kdd_law_books ORDER BY title,id') as $book) {
+            if($query!=='')foreach($this->dispatch('books','GET',[],$q)['items'] as $book) {
                 $result=$this->dispatch('book','GET',[],['id'=>$book['id'],'q'=>$query,'view'=>$q['view']??'']);
                 foreach($result['articles'] as $article)$items[]=['book_id'=>(int)$book['id'],'book_title'=>$book['title'],'article'=>$article];
             }
             return ['items'=>$items];
         }
         if ($action==='book') {
-            $id=(int)($q['id']??0);$book=$this->book($id);$rights=($q['view']??'')==='reader'?array_fill_keys(['draft_read','edit','publish','repeal'],false):$this->rights($id);$articles=[];$search=mb_strtolower(trim((string)($q['q']??'')));
+            $id=(int)($q['id']??0);$book=$this->book($id);if(!$book['published']&&(($q['view']??'')==='reader'||!$this->rights(0)['draft_read']))throw new Error(404,'Gesetzbuch nicht veröffentlicht.');$rights=($q['view']??'')==='reader'?array_fill_keys(['draft_read','edit','publish','repeal'],false):$this->rights($id);$articles=[];$search=mb_strtolower(trim((string)($q['q']??'')));
             foreach($this->all('SELECT * FROM kdd_law_articles WHERE book_id=? ORDER BY id',[$id]) as $a) {
                 $v=$this->one("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='published' AND effective_at<=UTC_TIMESTAMP() ORDER BY effective_at DESC,id DESC LIMIT 1",[$a['id']]);
                 $draft=$rights['draft_read']?$this->one("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='draft' ORDER BY id DESC LIMIT 1",[$a['id']]):null;
@@ -86,7 +86,7 @@ final class Service {
             return ['book'=>$book,'rights'=>$rights,'articles'=>$articles];
         }
         if($action==='history') {
-            $a=$this->article((int)($q['id']??0));$drafts=$this->rights((int)$a['book_id'])['draft_read'];
+            $a=$this->article((int)($q['id']??0));$b=$this->book((int)$a['book_id']);if(!$b['published']&&(($q['view']??'')==='reader'||!$this->rights(0)['draft_read']))throw new Error(404,'Gesetzbuch nicht veröffentlicht.');$drafts=$this->rights((int)$a['book_id'])['draft_read'];
             $rows=$this->all("SELECT * FROM kdd_law_versions WHERE article_id=? AND state='published' ORDER BY effective_at DESC,id DESC",[$a['id']]);
             if(!$rows&&!$drafts)throw new Error(404,'Paragraph nicht gefunden.');
             return ['items'=>array_map(fn($v)=>$this->versionView($v),$rows)];
@@ -105,6 +105,12 @@ final class Service {
             $this->admin();$s=$this->one('SELECT revision FROM kdd_law_settings WHERE id=1 FOR UPDATE');
             if((int)$s['revision']!==(int)($d['revision']??0))throw new Error(409,'Einstellungen wurden inzwischen geändert. Bitte neu laden.');
             $this->exec('UPDATE kdd_law_settings SET enabled=?,guest=?,revision=revision+1 WHERE id=1',[!empty($d['enabled'])?1:0,!empty($d['guest'])?1:0]);$this->audit('settings',$d);return ['ok'=>true];
+        }
+        if($action==='book_visibility') {
+            $this->requireRight(0,'publish');$id=(int)($d['id']??0);$b=$this->one('SELECT * FROM kdd_law_books WHERE id=? FOR UPDATE',[$id]);
+            if(!$b)throw new Error(404,'Gesetzbuch nicht gefunden.');
+            if((int)$b['revision']!==(int)($d['revision']??0))throw new Error(409,'Gesetzbuch wurde inzwischen geändert.');
+            $published=!empty($d['published'])?1:0;$this->exec('UPDATE kdd_law_books SET published=?,revision=revision+1 WHERE id=?',[$published,$id]);$this->audit('book_visibility',['id'=>$id,'published'=>$published]);return ['ok'=>true];
         }
         if($action==='save_book') {
             $this->requireRight(0,'edit');$id=(int)($d['id']??0);$title=$this->text($d,'title',160);$description=$this->text($d,'description',4000,false);

@@ -27,6 +27,8 @@ services:
       DB_USERNAME: social_test
       DB_PASSWORD: social-test-only
       SOCIAL_ENABLED: "true"
+      SOCIAL_ORIGIN: "http://127.0.0.1:${SOCIAL_TEST_UI_PORT:-5186}"
+      FRONTEND_URL_PROD: "http://127.0.0.1:${SOCIAL_TEST_PORT:-8087}"
       CAD_ENABLED: "true"
       SOCIAL_STORAGE_PATH: /var/www/social-private
       COOKIE_SECURE: "false"
@@ -44,6 +46,8 @@ services:
   social:
     profiles: [browser]
     build: ../../../social
+    environment:
+      CAD_FRAME_ORIGIN: "http://127.0.0.1:${SOCIAL_TEST_PORT:-8087}"
     ports: ["127.0.0.1:${SOCIAL_TEST_UI_PORT:-5186}:80"]
     depends_on:
       backend:

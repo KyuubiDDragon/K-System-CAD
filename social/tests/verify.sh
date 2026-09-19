@@ -17,5 +17,6 @@ docker build -t kyuubi-social-backend-dev backend
 "${compose[@]}" up -d --build --wait
 npm --prefix social test
 "${compose[@]}" exec -T backend php social/tests/laws.php
+"${compose[@]}" exec -T backend php social/tests/accounts.php
 (cd social && npx playwright test)
 npm --prefix social run build
