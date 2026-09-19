@@ -326,7 +326,7 @@ function resetSelectedDocumentEmployeeNotes() {
     selectedDocumentEmployeeNotes.value = null;
 }
 
-const updateSelectedDocumentEmployeeNotes = async (updatedEmployee: any) => {
+const updateSelectedDocumentEmployeeNotes = async (updatedEmployee: any): Promise<boolean> => {
     if (updatedEmployee.id != -1) {
         try {
             const response = await api.post('employee/?action=updateNotes', {
@@ -338,11 +338,13 @@ const updateSelectedDocumentEmployeeNotes = async (updatedEmployee: any) => {
                     id: updatedEmployee.id,
                     notes: updatedEmployee.notes,
                 });
+                return true;
             }
         } catch (error: any) {
             toast.error(error.response?.data?.error || 'An error occurred');
         }
     }
+    return false;
 };
 
 async function editNotes(member: Employee) {
@@ -975,7 +977,7 @@ async function addVacation(member: Employee) {
         :selectedDocumentPreview="null"
         :selectedDocumentEmployeeDocument="selectedDocumentEmployeeNotes"
         :categories="[]"
-        @update:selectedDocumentEmployeeDocument="updateSelectedDocumentEmployeeNotes"
+        :save-employee-notes="updateSelectedDocumentEmployeeNotes"
         @close-document="resetSelectedDocumentEmployeeNotes"
         persistent
     />

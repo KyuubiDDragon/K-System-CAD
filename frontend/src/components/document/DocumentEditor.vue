@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { defineComponent, ref, watch, watchEffect, onBeforeUnmount, onMounted, defineAsyncComponent } from 'vue';
+import { defineComponent, ref, computed, watch, onBeforeUnmount, onMounted, defineAsyncComponent } from 'vue';
 import { type Document, type Category, type ViewType, type DefaultView } from '@/types/Document';
 import { type Employee } from '@/types/Members';
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+import { useThemeStore } from '@/stores/theme';
 import TiptapEditor from '@/components/TiptapEditor.vue';
 import AddShortcutButton from '@/components/shortcuts/AddShortcutButton.vue';
 import { importXLSXToUniver, exportUniverToXLSX } from '@/utils/xlsxToUniver';
@@ -18,6 +20,10 @@ const props = defineProps<{
     categories: Category[];
     areaId?: string | number;
     areaKey?: string;
+    canEdit?: boolean;
+    windowId?: string;
+    saveDocument?: (document: Document) => Promise<boolean>;
+    saveEmployeeNotes?: (employee: Employee) => Promise<boolean>;
 }>();
 
 const selectedCategory = ref<number>(1);
@@ -35,9 +41,13 @@ const viewType = ref<ViewType>('document');
 const spreadsheetData = ref<any>(null);
 const defaultView = ref<DefaultView>('document');
 const currentView = ref<'document' | 'spreadsheet'>('document');
+watch(viewType, value => {
+    if (value !== 'both') { currentView.value = value; defaultView.value = value; }
+});
 
 // Spreadsheet display options
-const isDarkMode = ref(true); // Default to dark mode
+const themeStore = useThemeStore();
+const isDarkMode = computed(() => themeStore.isDark);
 const isFullscreen = ref(false);
 
 // Fullscreen preview mode for documents
@@ -47,8 +57,6 @@ const isDocumentFullscreenPreview = ref(false);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const emit = defineEmits<{
-    (e: 'update:selectedDocument', payload: Document): void;
-    (e: 'update:selectedDocumentEmployeeDocument', payload: Employee): void;
     (e: 'close-document'): void;
 }>();
 
@@ -78,37 +86,67 @@ watch(
 watch(
     () => props.categories,
     newCategories => {
-        if (newCategories.length > 0) {
+        if (newCategories.length > 0 && !props.selectedDocument) {
             selectedCategory.value = newCategories[0].id;
         }
     },
     { immediate: true }
 );
 
-const save = () => {
-    if (props.selectedDocument) {
-        emit('update:selectedDocument', {
-            ...props.selectedDocument,
-            category_id: selectedCategory.value,
-            title: title.value,
-            content: content.value,
-            notes: notes.value,
-            sort_order: sort_order.value,
-            view_type: viewType.value,
-            spreadsheet_data: spreadsheetData.value,
-            default_view: defaultView.value,
-        });
-        closeEditor();
-    } else if (props.selectedDocumentEmployeeDocument) {
-        emit('update:selectedDocumentEmployeeDocument', {
-            ...props.selectedDocumentEmployeeDocument,
-            notes: content.value
-        });
-        closeEditor();
+const editing = ref(false);
+const saving = ref(false);
+const saveError = ref('');
+const detailsOpen = ref(false);
+const baseline = ref('');
+const snapshot = () => JSON.stringify({title:title.value, content:content.value, notes:notes.value,
+    category:selectedCategory.value, sort:sort_order.value, type:viewType.value,
+    sheet:spreadsheetData.value, defaultView:defaultView.value});
+const dirty = computed(() => editorDialog.value && editing.value && snapshot() !== baseline.value);
+const allowLeave = () => !saving.value && (!dirty.value || window.confirm('Ungespeicherte Änderungen verwerfen?'));
+const beforeUnload = (event: BeforeUnloadEvent) => {
+    if (dirty.value || saving.value) { event.preventDefault(); event.returnValue = ''; }
+};
+const editorRoot = ref<HTMLElement | null>(null);
+const editorWidth = ref(0);
+let resizeObserver: ResizeObserver | undefined;
+const showContents = computed(() => editorWidth.value >= 760 && /<h[1-6][\s>]/i.test(content.value));
+const beforeDesktopClose = (event: Event) => {
+    const target = (event as CustomEvent).detail?.windowId;
+    const ownWindow = props.windowId || editorRoot.value?.closest('[data-window-id]')?.getAttribute('data-window-id');
+    if ((!target || target === ownWindow) && !allowLeave()) event.preventDefault();
+};
+onBeforeRouteLeave(allowLeave);
+onBeforeRouteUpdate(allowLeave);
+const save = async () => {
+    if (saving.value || !editing.value) return;
+    if (props.selectedDocument && (!title.value.trim() || !props.categories.some(c => c.id === selectedCategory.value))) {
+        saveError.value = 'Bitte einen Titel und eine gültige Kategorie angeben.';
+        detailsOpen.value = true;
+        return;
     }
+    saving.value = true;
+    saveError.value = '';
+    try {
+        let success = false;
+        if (props.selectedDocument && props.canEdit && props.saveDocument) {
+            success = await props.saveDocument({...props.selectedDocument, category_id:selectedCategory.value,
+                title:title.value.trim(), content:content.value, notes:notes.value, sort_order:sort_order.value,
+                view_type:viewType.value, spreadsheet_data:spreadsheetData.value, default_view:defaultView.value});
+        } else if (props.selectedDocumentEmployeeDocument && props.saveEmployeeNotes) {
+            success = await props.saveEmployeeNotes({...props.selectedDocumentEmployeeDocument, notes:content.value});
+        }
+        if (success) {
+            baseline.value = snapshot();
+            editorDialog.value = false;
+            emit('close-document');
+        } else saveError.value = 'Nicht gespeichert. Deine Eingaben bleiben erhalten. Bitte erneut versuchen.';
+    } catch {
+        saveError.value = 'Nicht gespeichert. Deine Eingaben bleiben erhalten. Bitte erneut versuchen.';
+    } finally { saving.value = false; }
 };
 
-watchEffect(() => {
+watch(() => [props.selectedDocument, props.selectedDocumentPreview, props.selectedDocumentEmployeeDocument], () => {
+
     if (props.selectedDocument && props.selectedDocument.id != -1) {
         title.value = props.selectedDocument.title;
         content.value = props.selectedDocument.content;
@@ -162,36 +200,14 @@ watchEffect(() => {
         showModal.value = false;
         editorDialog.value = false;
     }
-});
-
-// Toggle between document and spreadsheet view
-const toggleView = () => {
-    if (viewType.value === 'both') {
-        currentView.value = currentView.value === 'document' ? 'spreadsheet' : 'document';
-    }
-};
-
-// ... setup function ...
-const updateEditorContent = () => {
-	if (props.selectedDocument) {
-		content.value = props.selectedDocument.content;
-	} else if (props.selectedDocumentPreview) {
-		content.value = props.selectedDocumentPreview;
-	} else if (props.selectedDocumentEmployeeDocument) {
-		content.value = props.selectedDocumentEmployeeDocument.notes;
-	} else {
-		content.value = '';
-	}
-};
-
-watch(
-    () => props.selectedDocument,
-    () => {
-        updateEditorContent();
-    }
-);
+    editing.value = !!props.selectedDocumentEmployeeDocument || (!!props.canEdit && props.selectedDocument?.id === -1);
+    detailsOpen.value = props.selectedDocument?.id === -1;
+    saveError.value = '';
+    baseline.value = snapshot();
+}, { immediate: true });
 
 const closeEditor = () => {
+    if (!allowLeave()) return;
     editorDialog.value = false;
     emit('close-document');
 };
@@ -375,122 +391,72 @@ const handleKeydown = (event: KeyboardEvent) => {
 
 onMounted(() => {
     document.addEventListener('keydown', handleKeydown);
+    if (editorRoot.value) {
+        resizeObserver = new ResizeObserver(entries => { editorWidth.value = entries[0]?.contentRect.width || 0; });
+        resizeObserver.observe(editorRoot.value);
+    }
+    window.addEventListener('beforeunload', beforeUnload);
+    window.addEventListener('cad-before-close', beforeDesktopClose);
 });
 
 onBeforeUnmount(() => {
+    resizeObserver?.disconnect();
     document.removeEventListener('keydown', handleKeydown);
+    window.removeEventListener('beforeunload', beforeUnload);
+    window.removeEventListener('cad-before-close', beforeDesktopClose);
     document.body.style.overflow = '';
 });
 </script>
 <template>
-    <div v-show="editorDialog" class="editor-overlay">
+    <div v-show="editorDialog" class="editor-overlay" ref="editorRoot">
       <div class="editor-content">
         <!-- Standard Dokumenteneditor -->
         <v-card v-if="selectedDocument" class="editor-card">
-          <v-toolbar dense class="editor-toolbar" ref="toolbarRef">
-            <v-icon icon="mdi-file-document-edit" class="ml-4"></v-icon>
-            <v-toolbar-title>{{ title || $t('documentEditor.newDocument') }}</v-toolbar-title>
-            <v-spacer></v-spacer>
-
-            <!-- Spreadsheet Controls (only show when spreadsheet is visible) -->
-            <template v-if="viewType === 'spreadsheet' || (viewType === 'both' && currentView === 'spreadsheet')">
-              <v-btn
-                icon
-                @click="triggerImportXLSX"
-                variant="text"
-                width="48"
-                height="48"
-                title="XLSX importieren"
-              >
-                <v-icon>mdi-file-excel-box</v-icon>
-              </v-btn>
-              <v-btn
-                icon
-                @click="handleExportXLSX"
-                variant="text"
-                width="48"
-                height="48"
-                title="Als XLSX exportieren"
-              >
-                <v-icon>mdi-download</v-icon>
-              </v-btn>
-              <v-divider vertical class="mx-2"></v-divider>
-              <v-btn
-                icon
-                @click="isDarkMode = !isDarkMode"
-                variant="text"
-                width="48"
-                height="48"
-              >
-                <v-icon>{{ isDarkMode ? 'mdi-white-balance-sunny' : 'mdi-weather-night' }}</v-icon>
-              </v-btn>
-              <v-btn
-                icon
-                @click="isFullscreen = !isFullscreen"
-                variant="text"
-                width="48"
-                height="48"
-              >
-                <v-icon>{{ isFullscreen ? 'mdi-fullscreen-exit' : 'mdi-fullscreen' }}</v-icon>
-              </v-btn>
-              <v-divider vertical class="mx-2"></v-divider>
-            </template>
-
-            <add-shortcut-button
-              v-if="selectedDocument && selectedDocument.id"
-              type="document"
-              :resource-id="selectedDocument.id"
-              :title="title || 'Unbenanntes Dokument'"
-              :subtitle="categories.find(c => c.id === selectedCategory)?.name || undefined"
-              icon="mdi-file-document"
-              color="accent"
-              :metadata="props.areaKey ? { areaKey: props.areaKey, areaId: props.areaId } : undefined"
-            />
-            <v-btn
-              v-if="selectedDocument && (viewType === 'document' || viewType === 'both')"
-              icon
-              @click="openFullscreenPreview"
-              variant="text"
-              width="48"
-              height="48"
-              title="Vollbild-Vorschau"
-            >
-              <v-icon>mdi-eye</v-icon>
+          <v-toolbar class="editor-toolbar" ref="toolbarRef">
+            <v-icon icon="mdi-file-document-outline" class="ml-4 mr-2" />
+            <v-text-field v-if="editing" v-model="title" aria-label="Dokumenttitel" placeholder="Dokumenttitel"
+              variant="plain" hide-details class="document-title-input" :disabled="saving" />
+            <v-toolbar-title v-else>{{ title || 'Unbenanntes Dokument' }}</v-toolbar-title>
+            <v-btn v-if="!editing && canEdit" variant="tonal" prepend-icon="mdi-pencil" @click="baseline = snapshot(); editing = true">Bearbeiten</v-btn>
+            <v-btn v-if="editing" color="primary" variant="flat" :loading="saving" :disabled="saving" @click="save" class="mx-2">
+              {{ saving ? 'Wird gespeichert …' : 'Speichern' }}
             </v-btn>
-            <v-btn
-              v-if="selectedDocument && (viewType === 'document' || viewType === 'both')"
-              color="secondary"
-              variant="elevated"
-              prepend-icon="mdi-file-pdf-box"
-              @click="exportToPDF"
-              class="mx-2"
-            >
-              PDF
-            </v-btn>
-            <v-btn
-              color="primary"
-              variant="elevated"
-              prepend-icon="mdi-content-save"
-              @click="save"
-              class="mx-2"
-            >
-              {{ $t('save') }}
-            </v-btn>
-            <v-btn icon="mdi-close" variant="text" @click="closeEditor">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
+            <v-menu>
+              <template #activator="{ props: menuProps }"><v-btn v-bind="menuProps" icon="mdi-dots-vertical" aria-label="Weitere Dokumentaktionen" :disabled="saving" /></template>
+              <v-list>
+                <v-list-item title="Dokumentdetails" prepend-icon="mdi-information-outline" @click="detailsOpen = !detailsOpen" />
+                <v-list-item v-if="viewType !== 'spreadsheet'" title="Vollbild-Vorschau" prepend-icon="mdi-eye" @click="openFullscreenPreview" />
+                <v-list-item v-if="viewType !== 'spreadsheet'" title="Als PDF exportieren" prepend-icon="mdi-file-pdf-box" @click="exportToPDF" />
+                <template v-if="viewType !== 'document'">
+                  <v-list-item title="Als XLSX exportieren" prepend-icon="mdi-download" @click="handleExportXLSX" />
+                  <v-list-item v-if="editing" title="XLSX importieren" prepend-icon="mdi-upload" @click="triggerImportXLSX" />
+                  <v-list-item :title="isFullscreen ? 'Vollbild beenden' : 'Tabelle im Vollbild'" prepend-icon="mdi-fullscreen" @click="isFullscreen = !isFullscreen" />
+                </template>
+              </v-list>
+            </v-menu>
+            <add-shortcut-button v-if="selectedDocument.id > 0" type="document" :resource-id="selectedDocument.id"
+              :title="title" :metadata="props.areaKey ? { areaKey: props.areaKey, areaId: props.areaId } : undefined" icon="mdi-file-document" />
+            <v-btn icon="mdi-close" aria-label="Dokument schließen" :disabled="saving" @click="closeEditor" />
           </v-toolbar>
-          
+          <v-alert v-if="saveError" type="error" variant="tonal" role="alert" class="ma-3">{{ saveError }}</v-alert>
+          <div v-if="editing" class="document-save-status" role="status">{{ saving ? 'Wird gespeichert …' : dirty ? 'Ungespeicherte Änderungen' : 'Keine ungespeicherten Änderungen' }}</div>
+          <div v-if="viewType === 'both'" class="document-view-tabs">
+            <v-btn-toggle v-model="currentView" mandatory density="compact" variant="text">
+              <v-btn value="document">Dokument</v-btn><v-btn value="spreadsheet">Tabelle</v-btn>
+            </v-btn-toggle>
+          </div>
           <v-container class="pa-0 document-container">
-            <v-card class="mb-6 document-settings-card" variant="outlined">
+            <v-card v-if="detailsOpen" class="mb-4 document-settings-card" variant="outlined">
+              <v-card-title>Dokumentdetails</v-card-title>
               <v-card-text class="pa-4">
                 <v-row>
-                  <v-col cols="12" sm="6" md="3">
+                  <v-col cols="12" sm="6" md="6">
                     <v-select
                       :items="categories"
                       item-title="name"
                       item-value="id"
                       v-model="selectedCategory"
+                      :readonly="!editing || saving"
                       :label="$t('category')"
                       variant="outlined"
                       density="comfortable"
@@ -499,18 +465,7 @@ onBeforeUnmount(() => {
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      v-model="title"
-                      :label="$t('title')"
-                      variant="outlined"
-                      density="comfortable"
-                      color="primary"
-                      prepend-inner-icon="mdi-format-title"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="2">
+                  <v-col cols="12" sm="6" md="6">
                     <v-select
                       :items="[
                         { value: 'document', title: $t('documentEditor.documentOnly') },
@@ -518,6 +473,7 @@ onBeforeUnmount(() => {
                         { value: 'both', title: $t('documentEditor.both') }
                       ]"
                       v-model="viewType"
+                      :readonly="!editing || saving"
                       :label="$t('documentEditor.viewType')"
                       variant="outlined"
                       density="comfortable"
@@ -526,36 +482,8 @@ onBeforeUnmount(() => {
                     ></v-select>
                   </v-col>
 
-                  <!-- View Toggle Buttons (only show when viewType is 'both') -->
-                  <v-col v-if="viewType === 'both'" cols="12" sm="6" md="1">
-                    <div class="view-toggle-buttons">
-                      <v-btn-toggle
-                        v-model="currentView"
-                        mandatory
-                        color="primary"
-                        density="comfortable"
-                        divided
-                      >
-                        <v-btn value="document" width="48" height="48" icon>
-                          <v-icon>mdi-file-document</v-icon>
-                        </v-btn>
-                        <v-btn value="spreadsheet" width="48" height="48" icon>
-                          <v-icon>mdi-table-large</v-icon>
-                        </v-btn>
-                      </v-btn-toggle>
-                    </div>
-                  </v-col>
-
-                  <v-col cols="12" sm="6" md="2">
-                    <v-text-field
-                      v-model="sort_order"
-                      :label="$t('sortOrder')"
-                      type="number"
-                      variant="outlined"
-                      density="comfortable"
-                      color="primary"
-                      prepend-inner-icon="mdi-sort"
-                    ></v-text-field>
+                  <v-col cols="12">
+                    <v-textarea v-model="notes" label="Notizen" variant="outlined" rows="2" auto-grow :readonly="!editing || saving" hide-details />
                   </v-col>
                 </v-row>
               </v-card-text>
@@ -572,9 +500,9 @@ onBeforeUnmount(() => {
                 <TiptapEditor
                   v-model="content"
                   :show-character-count="false"
-                  :show-source-button="true"
-                  :show-table-of-contents="true"
-                  :editable="true"
+                  :show-source-button="editing"
+                  :show-table-of-contents="showContents"
+                  :editable="editing && !saving"
                   class="document-editor expanded-editor"
                 />
               </template>
@@ -588,7 +516,7 @@ onBeforeUnmount(() => {
 
                 <SpreadsheetEditor
                   v-model="spreadsheetData"
-                  :editable="true"
+                  :editable="editing && !saving"
                   :title="title"
                   :dark-mode="isDarkMode"
                   :fullscreen="isFullscreen"
@@ -598,19 +526,6 @@ onBeforeUnmount(() => {
             </div>
           </v-container>
         </v-card>
-
-        <!-- Notes section moved to editor-content level (one level higher) -->
-        <div v-if="selectedDocument" class="notes-section">
-          <v-textarea
-            v-model="notes"
-            variant="outlined"
-            color="primary"
-            :label="$t('documentEditor.notes')"
-            rows="3"
-            auto-grow
-            class="notes-textarea"
-          ></v-textarea>
-        </div>
 
         <!-- Vorschaumodus -->
         <v-card v-else-if="selectedDocumentPreview" class="editor-card">
@@ -628,7 +543,7 @@ onBeforeUnmount(() => {
               <TiptapEditor
                 v-model="content"
                 :show-character-count="false"
-                :show-source-button="true"
+                :show-source-button="editing"
                 :editable="false"
                 class="preview-editor expanded-editor"
               />
@@ -656,6 +571,7 @@ onBeforeUnmount(() => {
             </v-btn>
           </v-toolbar>
 
+          <v-alert v-if="saveError" type="error" role="alert">{{ saveError }}</v-alert>
           <v-container class="pa-0 document-container">
             <div class="editor-container">
               <div class="editor-label">
@@ -666,27 +582,14 @@ onBeforeUnmount(() => {
               <TiptapEditor
                 v-model="content"
                 :show-character-count="false"
-                :show-source-button="true"
-                :show-table-of-contents="true"
-                :editable="true"
+                :show-source-button="editing"
+                :show-table-of-contents="showContents"
+                :editable="editing && !saving"
                 class="document-editor expanded-editor"
               />
             </div>
           </v-container>
         </v-card>
-
-        <!-- Notes section moved to editor-content level (one level higher) -->
-        <div v-if="selectedDocumentEmployeeDocument" class="notes-section">
-          <v-textarea
-            v-model="notes"
-            variant="outlined"
-            color="primary"
-            :label="$t('documentEditor.notes')"
-            rows="3"
-            auto-grow
-            class="notes-textarea"
-          ></v-textarea>
-        </div>
 
         <!-- Hidden file input for XLSX import -->
         <input
@@ -737,41 +640,56 @@ onBeforeUnmount(() => {
   
   .editor-overlay {
     /* Inline container - no special styling needed */
-    display: contents;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
 
   .editor-content {
     /* Direct passthrough - no special styling needed */
-    display: contents;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
   }
 
   .editor-card {
     /* Simplified card - let parent handle sizing */
     display: flex;
     flex-direction: column;
-    height: calc(100dvh - 144px);
-    max-height: calc(100dvh - 144px);
+    flex: 1;
+    min-height: 0;
+    height: 100%;
   }
 
   .document-container {
     /* height, max-height and min-height removed to prevent scrolling issues */
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
-    padding: 0 16px 120px 16px; /* Increased bottom padding to 120px to prevent 3 lines from being cut off */
+    padding: 16px; /* Increased bottom padding to 120px to prevent 3 lines from being cut off */
   }
   
-  .editor-toolbar {
-    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover)) !important;
+  .editor-card > .v-alert { flex: 0 0 auto; }
+  .document-title-input { min-width: 80px; flex: 1; }
+  .document-save-status { padding: 4px 16px; color: var(--k-ink-muted); font-size: .8rem; }
+  .document-view-tabs { padding: 4px 16px; border-bottom: 1px solid var(--k-line); }
+  .editor-toolbar :deep(.v-toolbar__content) { flex-wrap: wrap; height: auto !important; min-height: 64px; gap: 4px; }
+  .editor-toolbar { flex-shrink: 0; height: auto !important;
+    background: var(--k-surface) !important;
     color: var(--k-ink);
+    border-bottom: 1px solid var(--k-line);
     position: sticky;
     top: 0;
     z-index: 10;
   }
   
   .document-settings-card {
+    flex-shrink: 0;
     background: var(--k-sunken) !important;
     border: 1px solid var(--k-line);
   }
@@ -1083,7 +1001,7 @@ onBeforeUnmount(() => {
     margin: 1em 0;
     padding: 0.5em 1em;
     background: var(--k-sunken);
-    color: #475569;
+    color: var(--k-ink-muted);
     font-style: italic;
   }
 

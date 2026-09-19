@@ -1,0 +1,16 @@
+import { createApp, h } from 'vue';
+import { createPinia } from 'pinia';
+import { createRouter, createWebHashHistory, RouterView } from 'vue-router';
+import vuetify, {setVuetifyTheme} from '../../src/plugins/vuetify';
+import i18n from '../../src/plugins/i18n';
+import Toast from 'vue-toastification';
+import Harness from './Harness.vue';
+import { useThemeStore } from '../../src/stores/theme';
+import { tokensFor, tokensToCssVars } from '../../src/theme/tokens';
+const dark = location.search.includes('dark');
+for (const [key, value] of Object.entries(tokensToCssVars(tokensFor(dark)))) document.documentElement.style.setProperty(key, value);
+setVuetifyTheme(dark);
+const pinia=createPinia();
+const app=createApp({render:()=>h(RouterView)}).use(pinia);
+useThemeStore(pinia).isDarkTheme=dark;
+app.use(createRouter({history:createWebHashHistory(),routes:[{path:'/',component:Harness},{path:'/other',component:{render:()=>h('p','Andere Seite')}}]})).use(vuetify).use(i18n).use(Toast).mount('#app');

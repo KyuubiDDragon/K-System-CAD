@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { ref, toRaw, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { createUniver, LocaleType, mergeLocales, defaultTheme } from '@univerjs/presets';
 
 // Import all preset packages
@@ -51,6 +51,9 @@ const isDarkMode = ref(props.darkMode ?? true);
 const isFullscreen = ref(props.fullscreen ?? false);
 let univer: any = null;
 let univerAPI: any = null;
+let changeSubscription: { dispose(): void } | null = null;
+let emittedData: any = null;
+watch(() => props.editable, value => univerAPI?.getActiveWorkbook()?.setEditable(value !== false));
 
 // Watch for dark mode changes
 watch(() => props.darkMode, (newVal) => {
@@ -73,7 +76,7 @@ watch(() => props.fullscreen, (newVal) => {
 watch(() => props.modelValue, async (newVal, oldVal) => {
   // Only reload if the entire object reference changed (e.g., XLSX import)
   // and Univer is already initialized
-  if (newVal && univerAPI && newVal !== oldVal) {
+  if (newVal && univerAPI && newVal !== oldVal && toRaw(newVal) !== emittedData) {
     // Reload the Univer instance with new data
     destroyUniver();
     // Wait for next tick to ensure cleanup is complete
@@ -139,13 +142,21 @@ const initializeUniver = async () => {
       },
     };
 
-    univerAPI.createUniverSheet(workbookData);
+    const workbook = univerAPI.createUniverSheet(workbookData);
+    workbook.setEditable(props.editable !== false);
+    changeSubscription = univerAPI.onCommandExecuted((command: { type: number }) => {
+      if (command.type !== 2 || props.editable === false) return;
+      emittedData = workbook.save();
+      emit('update:modelValue', emittedData);
+    });
   } catch (error) {
     console.error('Univer initialization error:', error);
   }
 };
 
 const destroyUniver = () => {
+  changeSubscription?.dispose();
+  changeSubscription = null;
   if (univer) {
     univer.dispose();
     univer = null;
@@ -207,7 +218,7 @@ defineExpose({
 .spreadsheet-container {
   width: 100%;
   height: 100%;
-  min-height: 500px;
+  min-height: 300px;
   flex: 1;
   overflow: hidden;
   position: relative;
