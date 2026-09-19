@@ -30,6 +30,7 @@ interface Props {
   canDelete?: boolean
   canCreate?: boolean
   allPermissions?: boolean
+  windowId?: string
   desktopWindow?: boolean
   id?: number | string
   areaId?: string
@@ -107,7 +108,9 @@ const selectedDocumentPreview = ref<string | null>(null);
 const selectedDocumentEmployeeDocument = ref<any | null>(null); // Using 'any' type for Employee, adjust if needed
 
 // View Mode
-const viewMode = ref<'tiles' | 'table'>('tiles'); // Default view
+const viewMode = ref<'tiles' | 'table'>('tiles');
+const viewPreferenceKey = computed(() => `documents:view:${authStore.user?.id ?? 'guest'}`);
+watch(viewMode, value => { try { localStorage.setItem(viewPreferenceKey.value, value); } catch { /* Storage may be unavailable. */ } });
 
 // --- Dialog States & Data ---
 const selectedDocument = ref<Document | null>(null); // Document passed to editor
@@ -153,39 +156,15 @@ const flattenedDocuments = computed(() => {
     );
 });
 
-// Filtered categories (for tiles view)
-const filteredCategories = computed(() => {
-    const searchTermLower = search.value.trim().toLowerCase();
-    if (!searchTermLower) {
-        return categories.value; // Return all if no search term
-    }
-    return categories.value
-        .map(category => ({
-            ...category,
-            documents: (category.documents || []).filter(doc =>
-                doc.title.toLowerCase().includes(searchTermLower)
-            ),
-        }))
-        .filter(
-            category =>
-                category.documents.length > 0 ||
-                category.name.toLowerCase().includes(searchTermLower)
-        );
-});
-
-// Filtered flattened documents (for table view)
-const filteredFlattenedDocuments = computed(() => {
-    const searchTermLower = search.value.trim().toLowerCase();
-    if (!searchTermLower) {
-        return flattenedDocuments.value;
-    }
-    return flattenedDocuments.value.filter(
-        doc =>
-            doc.title.toLowerCase().includes(searchTermLower) ||
-            (doc.creator_name && doc.creator_name.toLowerCase().includes(searchTermLower)) ||
-            (doc.categoryName && doc.categoryName.toLowerCase().includes(searchTermLower))
-    );
-});
+// Both layouts search exactly the same fields and tolerate a cleared search input.
+const matchesDocument = (doc: Document, categoryName: string) => {
+    const term = (search.value || '').trim().toLocaleLowerCase();
+    return !term || [doc.title, doc.creator_name, categoryName].some(value => (value || '').toLocaleLowerCase().includes(term));
+};
+const filteredCategories = computed(() => categories.value.map(category => ({...category,
+    documents:(category.documents || []).filter(doc => matchesDocument(doc, category.name))
+})).filter(category => !(search.value || '').trim() || category.documents.length > 0));
+const filteredFlattenedDocuments = computed(() => flattenedDocuments.value.filter(doc => matchesDocument(doc, doc.categoryName)));
 
 // Delete Dialog Content
 const deleteDialogContent = computed(() => {
@@ -261,8 +240,7 @@ const requiredRule = (feld?: string) => (value: any) =>
 // View Mode
 const toggleViewMode = () => {
     viewMode.value = viewMode.value === 'tiles' ? 'table' : 'tiles';
-    // Optionally save preference to user settings via Pinia action -> API call
-    // authStore.updateUserPreferences({ documentView: viewMode.value });
+
 };
 
 // Document Editor Handling
@@ -272,6 +250,7 @@ const openDocumentEditor = (document: Document | null, isNew: boolean = false, e
         event.stopPropagation();
     }
     
+    if (isNew && !canEdit.value) return;
     if (isNew) {
         selectedDocument.value = {
             id: -1, // Temporary ID for new document
@@ -315,6 +294,7 @@ const handleDocumentSaved = () => {
 
 // This function is called by the editor on save, determines add vs update
 const updateSelectedDocument = async (updatedDocument: Document) => {
+    if (savingDocument.value || !canEdit.value) return false;
     savingDocument.value = true;
     const isNew = updatedDocument.id === -1;
     const action = isNew ? 'addDocument' : 'updateDocument';
@@ -337,14 +317,16 @@ const updateSelectedDocument = async (updatedDocument: Document) => {
 
     try {
         await apiClientAuth.post(`document?action=${action}`, payload);
-        await fetchCategoriesAndDocuments();
         toast.success(isNew ? t('toast.documentAddSuccess') : t('toast.documentUpdateSuccess'));
+        void fetchCategoriesAndDocuments();
+        return true;
     } catch (error: any) {
         console.error(`Error ${action}:`, error);
         toast.error(
             error.response?.data?.error ||
                 (isNew ? t('toast.documentAddError') : t('toast.documentUpdateError'))
         );
+        return false;
     } finally {
         savingDocument.value = false;
     }
@@ -647,7 +629,9 @@ onMounted(async () => {
     }
     
     // Get initial view mode from Pinia store, fallback to 'tiles'
-    viewMode.value = authStore.user?.documentView === 'table' ? 'table' : 'tiles';
+    let savedView: string | null = null;
+    try { savedView = localStorage.getItem(viewPreferenceKey.value); } catch { /* Optional preference. */ }
+    viewMode.value = savedView === 'table' || savedView === 'tiles' ? savedView : authStore.user?.documentView === 'table' ? 'table' : 'tiles';
     
     // Override view mode from query params if provided
     if (route.query.view === 'table' || route.query.view === 'tiles') {
@@ -735,7 +719,7 @@ const kFilters = useTableFilters(
 </script>
 
 <template>
-    <div class="document-container" :class="{ 'embedded-mode': props.embedded || route.query.embedded === 'true' }">
+    <div class="document-container" :class="{ 'embedded-mode': props.embedded || route.query.embedded === 'true', 'document-is-open': selectedDocument !== null }">
         <v-container fluid class="pa-4">
             <!-- Header mit Aktionsbuttons - Hidden when editor is open -->
             <div v-if="!props.hideHeader && route.query.hideHeader !== 'true' && selectedDocument === null" class="section-header mb-4">
@@ -803,7 +787,7 @@ const kFilters = useTableFilters(
                 <div class="search-field">
                     <v-text-field
                         v-model="search"
-                        :label="$t('documentView.searchByTitle')"
+                        label="Titel, Kategorie oder Ersteller suchen"
                         variant="outlined"
                         density="compact"
                         prepend-inner-icon="mdi-magnify"
@@ -963,6 +947,7 @@ const kFilters = useTableFilters(
                                 class="document-draggable"
                                 :animation="150"
                                 item-key="id"
+                                handle=".document-drag-handle"
                                 @end="
                                     event =>
                                         saveDocumentSorting(event, category.documents, category.id)
@@ -978,13 +963,13 @@ const kFilters = useTableFilters(
                                                     hover
                                                     @click="(e) => openDocumentEditor(document, false, e)"
                                                     :style="
-                                                        canEdit
-                                                            ? 'cursor: grab;'
-                                                            : 'cursor: pointer;'
+                                                        'cursor: pointer;'
                                                     "
                                                     elevation="2"
                                                     v-bind="tooltipProps"
                                                 >
+                                                    <v-btn v-if="canEdit" class="document-drag-handle" icon="mdi-drag" variant="text" size="small"
+                                                      title="Dokument verschieben" aria-label="Dokument verschieben" @click.stop />
                                                     <div class="card-actions">
                                                         <v-tooltip text="Löschen" location="top">
                                                             <template v-slot:activator="{ props }">
@@ -1223,7 +1208,9 @@ const kFilters = useTableFilters(
                 :categories="categories"
                 :area-id="docSite"
                 :area-key="areaKey"
-                @update:selectedDocument="updateSelectedDocument"
+                :save-document="updateSelectedDocument"
+                :can-edit="canEdit"
+                :window-id="props.windowId"
                 @close-document="resetSelectedDocument"
                 @document-saved="handleDocumentSaved"
                 persistent
@@ -1648,9 +1635,10 @@ const kFilters = useTableFilters(
     }
 }
 
-.document-editor-container {
-    max-height: 100vh !important;
-}
+.document-is-open { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.document-is-open > .v-container { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+.document-drag-handle { position: absolute; top: 4px; left: 4px; cursor: grab; z-index: 1; }
+.document-drag-handle:active { cursor: grabbing; }
 
 /* Iframe/Embedded mode styles */
 .embedded-mode {
