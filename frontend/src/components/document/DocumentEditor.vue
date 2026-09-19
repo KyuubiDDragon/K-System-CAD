@@ -764,8 +764,9 @@ onBeforeUnmount(() => {
   }
   
   .editor-toolbar {
-    background: linear-gradient(90deg, var(--k-accent-hover), var(--k-accent-hover)) !important;
+    background: var(--k-surface) !important;
     color: var(--k-ink);
+    border-bottom: 1px solid var(--k-line);
     position: sticky;
     top: 0;
     z-index: 10;
